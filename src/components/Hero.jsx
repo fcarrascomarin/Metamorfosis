@@ -5,8 +5,8 @@ export default function Hero() {
     <section id="inicio" className="hero">
       <div className="hero-copy">
         <Reveal direction="left">
-          <p className="eyebrow">Estudio de ingeniería</p>
-          <h1>Convertimos ideas en planes de estrategia con presencia digital y con identidad</h1>
+          <p className="eyebrow">Estudio de ingeniería y transformación digital con identidad y estrategia</p>
+          <h1>Tus ideas las transformamos en planes de estrategia con presencia digital e identidad</h1>
           <p className="hero-text">
             En METAMORFOSIS ordenamos relatos, servicios, identidad visual y canales de contacto para transformar proyectos en herramientas digitales atractivas, funcionales, escalables y eficientes.
           </p>
@@ -19,7 +19,7 @@ export default function Hero() {
       <Reveal direction="right" delay={180} className="hero-visual">
         <div className="orb orb-one" />
         <div className="orb orb-two" />
-        <div className="butterfly-mark">M</div>
+        <div className="butterfly-mark"><img src="./puclic/logo-metamorfosis.png" alt="" /></div>
       </Reveal>
     </section>
   );

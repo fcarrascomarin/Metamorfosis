@@ -3,7 +3,7 @@ export default function Footer() {
     <footer className="footer">
       <div>
         <strong>METAMORFOSIS</strong>
-        <p>Estudio de transformación digital, identidad y estrategia.</p>
+        <p>Estudio de ingeniería,transformación digital con identidad y estrategia</p>
       </div>
       <div>
         <a href="#inicio">Inicio</a>
