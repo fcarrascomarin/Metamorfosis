@@ -6,7 +6,7 @@ export default function Hero() {
       <div className="hero-copy">
         <Reveal direction="left">
           <p className="eyebrow">Estudio de ingeniería y transformación digital con identidad y estrategia</p>
-          <h1>Tus ideas las transformamos en planes de estrategia con presencia digital e identidad</h1>
+          <h1>Transformamos ideas en planes de estrategia </h1>
           <p className="hero-text">
             En METAMORFOSIS ordenamos relatos, servicios, identidad visual y canales de contacto para transformar proyectos en herramientas digitales atractivas, funcionales, escalables y eficientes.
           </p>
