@@ -7,7 +7,7 @@ const casos = [
     texto:
       "Desarrollo de una tienda digital para una marca de joyas de plata con identidad propia, catálogo organizado, categorías de productos, carrito de compra y contacto directo por WhatsApp. El proyecto no se construyó solo desde la venta, sino desde el valor simbólico de cada pieza: amuletos, colecciones temáticas y una experiencia orientada a que cada persona encuentre una joya con sentido.",
     tags: "E-commerce · Marca · Catálogo · Contenido · WhatsApp",
-    imagen: "./public/joyas-juana-de-arco.png",
+    imagen: "./public/joyas.png",
     url: "https://www.joyasjuanadearco.cl",
     destacado: true,
   },
@@ -18,7 +18,7 @@ const casos = [
     texto:
       "Creación de una plataforma digital orientada a comunicar un proyecto de análisis, formación y servicios profesionales vinculados a seguridad, sistema penal, políticas públicas y discusión pública. El desafío fue transformar conocimiento especializado en una propuesta clara, navegable y comprensible para distintos públicos.",
     tags: "Institucional · Servicios · Contenido · Estrategia · Análisis",
-    imagen: "./public/con-criterio.png",
+    imagen: "./public/concriterio.png",
     url: "https://www.concriterio.cl",
   },
   {
@@ -28,7 +28,7 @@ const casos = [
     texto:
       "Desarrollo de una página web para una consultora orientada a servicios comerciales, estratégicos y de conexión entre negocios. El foco estuvo en construir una presencia sobria, profesional y directa, capaz de transmitir confianza desde el primer contacto y ordenar la oferta.",
     tags: "Consultoría · Web corporativa · Servicios · Confianza · Negocios",
-    imagen: "./public/red-oriente.png",
+    imagen: "./public/redoriente.png",
     url: "https://www.redoriente.cl",
   },
   {
@@ -38,8 +38,8 @@ const casos = [
     texto:
       "Desarrollo de una página web para una consultora orientada a servicios comerciales, estratégicos y de conexión entre negocios. El foco estuvo en construir una presencia sobria, profesional y directa, capaz de transmitir confianza desde el primer contacto y ordenar la oferta.",
     tags: "Consultoría · Web corporativa · Servicios · Confianza · Negocios",
-    imagen: "./public/red-oriente.png",
-    url: "https://www.redoriente.cl",
+    imagen: "./public/servimak.png",
+    url: "https://www.servimakspa.cl",
   },
 ];
 
