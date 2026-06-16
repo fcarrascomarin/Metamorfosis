@@ -19,7 +19,7 @@ export default function Hero() {
       <Reveal direction="right" delay={180} className="hero-visual">
         <div className="orb orb-one" />
         <div className="orb orb-two" />
-        <div className="butterfly-mark"><img src="./puclic/logo-metamorfosis.png" alt="" /></div>
+        <div className="butterfly-mark"><img src="./public/logo-metamorfosis.png" alt="" /></div>
       </Reveal>
     </section>
   );
