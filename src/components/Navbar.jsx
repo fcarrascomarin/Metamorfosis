@@ -7,7 +7,7 @@ export default function Navbar() {
       </a>
       <nav>
         <a href="#noticias">Noticias</a>
-        <a href="#casos">Casos</a>
+        <a href="#casos">Casos de Transformación</a>
         <a href="#trayectoria">Trayectoria</a>
         <a href="#contacto">Contacto</a>
       </nav>
