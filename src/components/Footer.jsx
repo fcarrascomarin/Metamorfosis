@@ -15,7 +15,7 @@ export default function Footer() {
         <div className="footer-brand">
           <a href="/" className="footer-logo-wrap" aria-label="Ir al inicio">
             <img
-              src="/logo-metamorfosis.png"
+              src="/logo-1.png"
               alt="Logo Metamorfosis"
               className="footer-logo-img"
             />
@@ -42,9 +42,9 @@ export default function Footer() {
             contacto@metamorfosislab.cl
           </a>
 
-          <a href="tel:+56900000000" className="footer-contact-link">
+          <a href="tel:+56923770543" className="footer-contact-link">
             <Phone size={18} />
-            +56 9 0000 0000
+            +56 9 23770543
           </a>
 
           <div className="footer-contact-link">
@@ -77,7 +77,7 @@ export default function Footer() {
             </a>
 
             <a
-              href="https://www.linkedin.com/"
+              href="https://www.linkedin.com/francisca-carrasco"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
@@ -86,7 +86,7 @@ export default function Footer() {
             </a>
 
             <a
-              href="https://github.com/fcarrascomarin/Metamorfosis"
+              href="https://github.com/fcarrascomarin"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
@@ -107,7 +107,7 @@ export default function Footer() {
         <div>
           <a href="#contacto">Trabajemos juntos</a>
           <span>·</span>
-          <a href="https://www.metamorfosislab.cl">metamorfosislab.cl</a>
+          <a href="https://www.metamorfosislab.cl">Metamorfosislab.cl</a>
         </div>
       </div>
     </footer>
