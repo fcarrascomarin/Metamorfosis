@@ -248,7 +248,18 @@ a { color: inherit; }
   font-weight: 800;
   letter-spacing: 0.08em;
 }
+.hero-domain {
+  color: #dbeafe;
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+}
 
+.hero-domain:hover {
+  color: #20c7e8;
+}
 /* RESPONSIVE HERO */
 
 @media (max-width: 980px) {

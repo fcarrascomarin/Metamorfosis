@@ -37,7 +37,15 @@ export default function Hero() {
             className="hero-logo"
           />
 
-          <span>metamorfosislab.cl</span>
+         <a
+    href="https://www.metamorfosislab.cl"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="hero-domain"
+  >
+    metamorfosislab.cl
+  </a>
+</div>
         </div>
       </div>
     </section>
