@@ -1,13 +1,3 @@
-import {
-  Mail,
-  MapPin,
-  Phone,
-  Instagram,
-  Linkedin,
-  Github,
-  Globe,
-} from "lucide-react";
-
 export default function Footer() {
   return (
     <footer className="site-footer">
@@ -15,13 +5,17 @@ export default function Footer() {
         <div className="footer-brand">
           <a href="/" className="footer-logo-wrap" aria-label="Ir al inicio">
             <img
-              src="/logo-1.png"
+              src="/logo-metamorfosis.png"
               alt="Logo Metamorfosis"
               className="footer-logo-img"
             />
+
             <div>
               <h2>METAMORFOSIS</h2>
-              <p>Estudio de transformación digital, identidad y estrategia.</p>
+              <p>
+                Estudio de transformación digital, identidad, estrategia y
+                presencia web.
+              </p>
             </div>
           </a>
         </div>
@@ -38,19 +32,9 @@ export default function Footer() {
           <h3>Contacto</h3>
 
           <a href="mailto:contacto@metamorfosislab.cl" className="footer-contact-link">
-            <Mail size={18} />
+            <span className="footer-icon">✉</span>
             contacto@metamorfosislab.cl
           </a>
-
-          <a href="tel:+56923770543" className="footer-contact-link">
-            <Phone size={18} />
-            +56 9 23770543
-          </a>
-
-          <div className="footer-contact-link">
-            <MapPin size={18} />
-            Concepción, Chile
-          </div>
 
           <a
             href="https://www.metamorfosislab.cl"
@@ -58,13 +42,18 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="footer-contact-link"
           >
-            <Globe size={18} />
+            <span className="footer-icon">◎</span>
             www.metamorfosislab.cl
           </a>
+
+          <div className="footer-contact-link">
+            <span className="footer-icon">⌖</span>
+            Concepción, Chile
+          </div>
         </div>
 
         <div className="footer-column">
-          <h3>Redes sociales</h3>
+          <h3>Redes y comunidad</h3>
 
           <div className="footer-socials">
             <a
@@ -73,7 +62,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               aria-label="Instagram"
             >
-              <Instagram size={20} />
+              IG
             </a>
 
             <a
@@ -82,32 +71,33 @@ export default function Footer() {
               rel="noopener noreferrer"
               aria-label="LinkedIn"
             >
-              <Linkedin size={20} />
+              in
             </a>
 
             <a
-              href="https://github.com/fcarrascomarin"
+              href="https://github.com/fcarrascomarin/Metamorfosis"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
             >
-              <Github size={20} />
+              GH
             </a>
           </div>
 
           <p className="footer-small-text">
-            Transformamos ideas, relatos y servicios en herramientas digitales claras,
-            útiles y proyectables.
+            Transformamos ideas, relatos y servicios en herramientas digitales
+            claras, útiles y proyectables.
           </p>
         </div>
       </div>
 
       <div className="footer-bottom">
         <p>© {new Date().getFullYear()} METAMORFOSIS. Todos los derechos reservados.</p>
+
         <div>
           <a href="#contacto">Trabajemos juntos</a>
           <span>·</span>
-          <a href="https://www.metamorfosislab.cl">Metamorfosislab.cl</a>
+          <a href="https://www.metamorfosislab.cl">metamorfosislab.cl</a>
         </div>
       </div>
     </footer>
