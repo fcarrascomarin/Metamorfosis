@@ -377,3 +377,52 @@ a { color: inherit; }
     min-height: 210px;
   }
 }
+
+.case-image-link {
+  display: block;
+  width: 100%;
+  border-radius: 22px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #111d33, var(--celeste));
+  text-decoration: none;
+  position: relative;
+}
+
+.case-image-link::after {
+  content: "Ver sitio";
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  background: rgba(6, 21, 43, 0.88);
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 9px 13px;
+  border-radius: 999px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.25s ease;
+}
+
+.case-image-link:hover::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.case-image {
+  width: 100%;
+  height: 270px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.case-image-small {
+  height: 190px;
+  margin-bottom: 24px;
+}
+
+.case-image-link:hover .case-image {
+  transform: scale(1.04);
+  filter: brightness(0.82);
+}
