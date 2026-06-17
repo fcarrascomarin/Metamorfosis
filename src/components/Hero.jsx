@@ -18,8 +18,7 @@ export default function Hero() {
       </div>
       <Reveal direction="right" delay={180} className="hero-visual">
         <div className="orb orb-one" />
-        <div className="orb orb-two" />
-        <div className="butterfly-mark"><img src="/logo-1.png" alt="" /></div>
+        <div className="orb orb-two" /><img src="/logo-1.png" alt="" />
       </Reveal>
     </section>
   );
