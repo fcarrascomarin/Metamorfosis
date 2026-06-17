@@ -1,21 +1,25 @@
+const contactLinks = [
+  { label: "contacto@metamorfosislab.cl", href: "mailto:contacto@metamorfosislab.cl", icon: "✉" },
+  { label: "www.metamorfosislab.cl", href: "https://www.metamorfosislab.cl", icon: "◎" },
+  { label: "Concepción, Chile", href: null, icon: "⌖" },
+];
+
+const socialLinks = [
+  { label: "IG", href: "https://www.instagram.com/", name: "Instagram" },
+  { label: "in", href: "https://www.linkedin.com/", name: "LinkedIn" },
+  { label: "GH", href: "https://github.com/fcarrascomarin/Metamorfosis", name: "GitHub" },
+];
+
 export default function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-inner">
         <div className="footer-brand">
-          <a href="/" className="footer-logo-wrap" aria-label="Ir al inicio">
-            <img
-              src="/logo-1.png"
-              alt="Logo Metamorfosis"
-              className="footer-logo-img"
-            />
-
+          <a href="#inicio" className="footer-logo-wrap" aria-label="Ir al inicio">
+            <img src="/logo-1.png" alt="Logo Metamorfosis" className="footer-logo-img" />
             <div>
               <h2>METAMORFOSIS</h2>
-              <p>
-                Estudio de transformación digital, identidad, estrategia y
-                presencia web.
-              </p>
+              <p>Estudio de transformación digital, identidad, estrategia y presencia web.</p>
             </div>
           </a>
         </div>
@@ -30,70 +34,38 @@ export default function Footer() {
 
         <div className="footer-column">
           <h3>Contacto</h3>
-
-          <a href="mailto:contacto@metamorfosislab.cl" className="footer-contact-link">
-            <span className="footer-icon">✉</span>
-            contacto@metamorfosislab.cl
-          </a>
-
-          <a
-            href="https://www.metamorfosislab.cl"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer-contact-link"
-          >
-            <span className="footer-icon">◎</span>
-            www.metamorfosislab.cl
-          </a>
-
-          <div className="footer-contact-link">
-            <span className="footer-icon">⌖</span>
-            Concepción, Chile
-          </div>
+          {contactLinks.map((item) =>
+            item.href ? (
+              <a key={item.label} href={item.href} className="footer-contact-link" target={item.href.startsWith("http") ? "_blank" : undefined} rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}>
+                <span className="footer-icon">{item.icon}</span>
+                {item.label}
+              </a>
+            ) : (
+              <div key={item.label} className="footer-contact-link">
+                <span className="footer-icon">{item.icon}</span>
+                {item.label}
+              </div>
+            )
+          )}
         </div>
 
         <div className="footer-column">
           <h3>Redes y comunidad</h3>
-
           <div className="footer-socials">
-            <a
-              href="https://www.instagram.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-            >
-              IG
-            </a>
-
-            <a
-              href="https://www.linkedin.com/francisca-carrasco"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-            >
-              in
-            </a>
-
-            <a
-              href="https://github.com/fcarrascomarin/Metamorfosis"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub"
-            >
-              GH
-            </a>
+            {socialLinks.map((item) => (
+              <a key={item.name} href={item.href} target="_blank" rel="noopener noreferrer" aria-label={item.name}>
+                {item.label}
+              </a>
+            ))}
           </div>
-
           <p className="footer-small-text">
-            Transformamos ideas, relatos y servicios en herramientas digitales
-            claras, útiles y proyectables.
+            Transformamos ideas, relatos y servicios en herramientas digitales claras, útiles y proyectables.
           </p>
         </div>
       </div>
 
       <div className="footer-bottom">
         <p>© {new Date().getFullYear()} METAMORFOSIS. Todos los derechos reservados.</p>
-
         <div>
           <a href="#contacto">Trabajemos juntos</a>
           <span>·</span>
