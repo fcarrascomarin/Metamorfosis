@@ -241,13 +241,7 @@ a { color: inherit; }
   filter: drop-shadow(0 18px 34px rgba(0, 0, 0, 0.35));
 }
 
-.hero-logo-card span {
-  color: #dbeafe;
-  font-family: "Inter", sans-serif;
-  font-size: 0.95rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-}
+
 .hero-domain {
   color: #dbeafe;
   font-family: "Inter", sans-serif;
