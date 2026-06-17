@@ -2,7 +2,7 @@ export default function Navbar() {
   return (
     <header className="navbar">
       <a className="brand" href="#inicio" aria-label="Ir al inicio">
-        <img src="/public/logo-1.png" alt="Logo Metamorfosis" onError={(e) => (e.currentTarget.style.display = "none")} />
+        <img src="/logo-1.png" alt="Logo Metamorfosis" onError={(e) => (e.currentTarget.style.display = "none")} />
         <span>METAMORFOSIS</span>
       </a>
       <nav>
