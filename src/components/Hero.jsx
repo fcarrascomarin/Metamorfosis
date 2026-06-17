@@ -32,7 +32,7 @@ export default function Hero() {
 
         <div className="hero-logo-card">
           <img
-            src="/logo-metamorfosis.png"
+            src="/logo-1.png"
             alt="Logo Metamorfosis"
             className="hero-logo"
           />
