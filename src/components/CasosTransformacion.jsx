@@ -31,6 +31,16 @@ const casos = [
     imagen: "/redoriente.png",
     url: "https://www.redoriente.cl",
   },
+  {
+    nombre: "Servimak SpA",
+    bajada:
+      "De un proyecto de servicios industriales a una presencia digital que permita demostrar el profesionalismo de Servimak",
+    texto:
+      "Implementación de página web para empresa de servicios industriales para potenciar su conexión con clientes. Mediante la demostración de trayectoria y profesionalismo del trabajo desarrollado por Servimak.",
+    tags: "Consultoría · Web corporativa · Servicios · Negocios",
+    imagen: "/servimak.png",
+    url: "https://www.servimakspa.cl",
+  },
 ];
 
 export default function CasosTransformacion() {
