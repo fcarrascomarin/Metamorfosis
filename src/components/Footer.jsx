@@ -5,7 +5,7 @@ export default function Footer() {
         <div className="footer-brand">
           <a href="/" className="footer-logo-wrap" aria-label="Ir al inicio">
             <img
-              src="/logo-metamorfosis.png"
+              src="/logo-1.png"
               alt="Logo Metamorfosis"
               className="footer-logo-img"
             />

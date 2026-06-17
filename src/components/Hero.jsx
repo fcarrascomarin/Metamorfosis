@@ -1,26 +1,45 @@
-import Reveal from "./Reveal.jsx";
-
 export default function Hero() {
   return (
-    <section id="inicio" className="hero">
-      <div className="hero-copy">
-        <Reveal direction="left">
-          <p className="eyebrow">Estudio de ingeniería y transformación digital con identidad y estrategia</p>
-          <h1>Transformamos ideas en planes de estrategia </h1>
-          <p className="hero-text">
-            En METAMORFOSIS ordenamos relatos, servicios, identidad visual y canales de contacto para transformar proyectos en herramientas digitales atractivas, funcionales, escalables y eficientes.
-          </p>
-          <div className="hero-actions">
-            <a className="btn btn-primary" href="#casos">Casos de transformación</a>
-            <a className="btn btn-ghost" href="#contacto">Transforma tu idea en proyecto</a>
-          </div>
-        </Reveal>
+    <section className="hero">
+      <div className="hero-content">
+        <p className="hero-kicker">Metamorfosis Estudio</p>
+
+        <h1>
+          Transformamos ideas en presencia digital clara, útil y proyectable.
+        </h1>
+
+        <p className="hero-text">
+          Ordenamos relatos, servicios, identidad y canales de contacto para
+          convertir proyectos, marcas y organizaciones en herramientas digitales
+          con sentido estratégico.
+        </p>
+
+        <div className="hero-actions">
+          <a href="#casos" className="btn btn-primary">
+            Ver casos de transformación
+          </a>
+
+          <a href="#contacto" className="btn btn-secondary">
+            Conversemos sobre tu proyecto
+          </a>
+        </div>
       </div>
-      <Reveal direction="right" delay={180} className="hero-visual">
-        <div className="orb orb-one" />
-        <div className="orb orb-two" />
-        <div className="butterfly-mark"><img src="/logo-1.png" alt="" /></div>
-      </Reveal>
+
+      <div className="hero-visual" aria-label="Logo Metamorfosis">
+        <div className="hero-circle hero-circle-one"></div>
+        <div className="hero-circle hero-circle-two"></div>
+        <div className="hero-circle hero-circle-three"></div>
+
+        <div className="hero-logo-card">
+          <img
+            src="/logo-metamorfosis.png"
+            alt="Logo Metamorfosis"
+            className="hero-logo"
+          />
+
+          <span>metamorfosislab.cl</span>
+        </div>
+      </div>
     </section>
   );
 }
