@@ -1,5 +1,44 @@
+import React from "react";
 import Reveal from "./Reveal.jsx";
 import { transformationCases } from "../data/cases.js";
+
+function CaseCard({ item, featured = false }) {
+  return (
+    <article className={featured ? "case-card featured-case" : "case-card"}>
+      <a
+        href={item.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="case-visual-link"
+        aria-label={`Visitar sitio web de ${item.name}`}
+      >
+        <span className="case-browser-bar" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </span>
+
+        <span className="case-visual-stage">
+          <img src={item.image} alt={`Pantallazo del sitio web ${item.name}`} className="case-screen-image" />
+          <span className="case-brand-panel">
+            <img src={item.logo} alt={`Marca ${item.name}`} className="case-logo-image" />
+          </span>
+        </span>
+      </a>
+
+      <div className="case-content">
+        {item.eyebrow ? <span className="case-label">{item.eyebrow}</span> : null}
+        <h3>{item.name}</h3>
+        <h4>{item.summary}</h4>
+        <p>{item.description}</p>
+        <strong>{item.tags.join(" · ")}</strong>
+        <a href={item.url} target="_blank" rel="noopener noreferrer" className="case-link">
+          Ver sitio web
+        </a>
+      </div>
+    </article>
+  );
+}
 
 export default function CasosTransformacion() {
   const featured = transformationCases.find((item) => item.featured) ?? transformationCases[0];
@@ -19,54 +58,13 @@ export default function CasosTransformacion() {
       </Reveal>
 
       <Reveal direction="left">
-        <article className="case-card featured-case">
-          <a
-            href={featured.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="case-image-link"
-            aria-label={`Visitar sitio web de ${featured.name}`}
-          >
-            <img src={featured.image} alt={`Miniatura del sitio web ${featured.name}`} className="case-image" />
-          </a>
-
-          <div className="case-content">
-            <span className="case-label">{featured.eyebrow}</span>
-            <h3>{featured.name}</h3>
-            <h4>{featured.summary}</h4>
-            <p>{featured.description}</p>
-            <strong>{featured.tags.join(" · ")}</strong>
-            <a href={featured.url} target="_blank" rel="noopener noreferrer" className="case-link">
-              Ver sitio web →
-            </a>
-          </div>
-        </article>
+        <CaseCard item={featured} featured />
       </Reveal>
 
-      <div className="case-grid">
+      <div className="cases-list">
         {secondaryCases.map((item, index) => (
           <Reveal key={item.name} direction={index % 2 === 0 ? "left" : "right"}>
-            <article className="case-card">
-              <a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="case-image-link"
-                aria-label={`Visitar sitio web de ${item.name}`}
-              >
-                <img src={item.image} alt={`Miniatura del sitio web ${item.name}`} className="case-image case-image-small" />
-              </a>
-
-              <div className="case-content">
-                <h3>{item.name}</h3>
-                <h4>{item.summary}</h4>
-                <p>{item.description}</p>
-                <strong>{item.tags.join(" · ")}</strong>
-                <a href={item.url} target="_blank" rel="noopener noreferrer" className="case-link">
-                  Ver sitio web →
-                </a>
-              </div>
-            </article>
+            <CaseCard item={item} />
           </Reveal>
         ))}
       </div>

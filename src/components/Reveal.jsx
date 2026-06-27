@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export default function Reveal({ children, direction = "up", className = "" }) {
   const ref = useRef(null);

@@ -1,3 +1,5 @@
+import React from "react";
+
 const contactLinks = [
   { label: "contacto@metamorfosislab.cl", href: "mailto:contacto@metamorfosislab.cl", icon: "✉" },
   { label: "www.metamorfosislab.cl", href: "https://www.metamorfosislab.cl", icon: "◎" },
