@@ -7,6 +7,7 @@ export const transformationCases = [
       "Desarrollo de una tienda digital para una marca de joyas de plata con identidad propia, catálogo organizado, categorías de productos, carrito de compra y contacto directo por WhatsApp. El proyecto no se construyó solo desde la venta, sino desde el valor simbólico de cada pieza: amuletos, colecciones temáticas y una experiencia orientada a que cada persona encuentre una joya con sentido.",
     tags: ["E-commerce", "Marca", "Catálogo", "Contenido", "WhatsApp"],
     image: "/joyas.png",
+    logo: "/logo-joyas.svg",
     url: "https://www.joyasjuanadearco.cl",
     featured: true,
   },
@@ -18,6 +19,7 @@ export const transformationCases = [
       "Creación de una plataforma digital orientada a comunicar un proyecto de análisis, formación y servicios profesionales vinculados a seguridad, sistema penal, políticas públicas y discusión pública. El desafío fue transformar conocimiento especializado en una propuesta clara, navegable y comprensible para distintos públicos.",
     tags: ["Institucional", "Servicios", "Contenido", "Estrategia", "Análisis"],
     image: "/concriterio.png",
+    logo: "/logo-concriterio.svg",
     url: "https://www.concriterio.cl",
   },
   {
@@ -27,16 +29,18 @@ export const transformationCases = [
       "Desarrollo de una página web para una consultora orientada a servicios comerciales, estratégicos y de conexión entre negocios. El foco estuvo en construir una presencia sobria, profesional y directa, capaz de transmitir confianza desde el primer contacto, ordenar la oferta y facilitar que el cliente entienda rápidamente por qué contactar.",
     tags: ["Consultoría", "Web corporativa", "Servicios", "Confianza", "Negocios"],
     image: "/redoriente.png",
+    logo: "/logo-redoriente.svg",
     url: "https://www.redoriente.cl",
   },
   {
-    name: "SERVIMAK SpA",
-    summary: "De una empresa técnica a una presencia digital profesional y verificable.",
+    name: "CM Banquetería & Restaurant",
+    summary: "De un restaurant local a una plataforma digital pública e interna.",
     description:
-      "Construcción de una web corporativa para servicios técnicos e industriales, orientada a presentar trayectoria, líneas de servicio, confianza operativa y canales de contacto claros para clientes públicos y privados.",
-    tags: ["Servicios técnicos", "Web corporativa", "Confianza", "Industria", "Contacto"],
-    image: "/Servimak.png",
-    url: "https://www.servimakspa.cl",
+      "Desarrollo de una presencia digital para CM Banquetería, conectando su oferta pública de restaurant, menú del día, cotización de eventos y contacto directo con una plataforma interna para ordenar reservas, operación, documentos y gestión administrativa.",
+    tags: ["Restaurant", "Panel interno", "Menú", "Eventos", "Operación"],
+    image: "/cmbanqueteria.png",
+    logo: "/logo-cmbanqueteria.png",
+    url: "https://cmbanqueteria.cl/",
   },
 ];
 
@@ -54,7 +58,7 @@ export const trajectoryItems = [
     projects: ["Web corporativa", "Ordenamiento de servicios", "Comunicación de confianza", "Canales de contacto"],
   },
   {
-    company: "SERVIMAK SpA",
-    projects: ["Presencia digital", "Servicios técnicos", "Imagen corporativa", "Contacto comercial"],
+    company: "CM Banquetería & Restaurant",
+    projects: ["Web pública", "Panel interno", "Menú diario", "Cotización de eventos"],
   },
 ];
