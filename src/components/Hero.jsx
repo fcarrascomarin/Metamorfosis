@@ -1,29 +1,42 @@
 import React from "react";
 
+const heroPillars = ["Estrategia", "Diseño", "Tecnología"];
+
 export default function Hero() {
   return (
     <section id="inicio" className="hero">
       <div className="hero-content">
-        <p className="eyebrow">Metamorfosis Estudio</p>
+        <p className="hero-kicker">Metamorfosis Lab</p>
 
-        <h1>Transformamos ideas en presencia digital clara, útil y proyectable.</h1>
+        <h1 className="hero-title">Ideas que evolucionan.</h1>
 
         <p className="hero-text">
-          Ordenamos relatos, servicios, identidad y canales de contacto para convertir proyectos,
-          marcas y organizaciones en herramientas digitales con sentido estratégico.
+          Unimos estrategia, diseño y tecnología para transformar proyectos en presencia digital
+          clara, útil y escalable.
         </p>
+
+        <div className="hero-pills" aria-label="Servicios principales">
+          {heroPillars.map((item) => (
+            <span key={item}>{item}</span>
+          ))}
+        </div>
 
         <div className="hero-actions">
           <a href="#casos" className="btn btn-primary">
-            Ver casos de transformación
+            Ver casos
           </a>
           <a href="#contacto" className="btn btn-ghost">
-            Conversemos sobre tu proyecto
+            Conversemos
           </a>
         </div>
       </div>
 
       <div className="hero-visual" aria-label="Identidad visual Metamorfosis">
+        <div className="hero-orbit hero-orbit-one" />
+        <div className="hero-orbit hero-orbit-two" />
+        <div className="hero-node hero-node-one" />
+        <div className="hero-node hero-node-two" />
+        <div className="hero-node hero-node-three" />
         <div className="hero-circle hero-circle-one" />
         <div className="hero-circle hero-circle-two" />
         <div className="hero-circle hero-circle-three" />
@@ -38,6 +51,7 @@ export default function Hero() {
           >
             metamorfosislab.cl
           </a>
+          <span className="hero-signature">Transformación digital con sentido</span>
         </div>
       </div>
     </section>
