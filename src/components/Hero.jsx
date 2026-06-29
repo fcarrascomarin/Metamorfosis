@@ -19,7 +19,7 @@ export default function Hero() {
         <h1 className="hero-title">Transformamos ideas en sistemas claros y proyectables.</h1>
 
         <p className="hero-text">
-          Metamorfosis Lab ordena proyectos, diseña herramientas digitales y crea experiencias
+          Metamorfosis Laboratiorio de Innovación gestión de proyectos, diseña herramientas digitales y crea experiencias
           para convertir necesidades reales en operaciones más nítidas, atractivas y escalables.
         </p>
 
