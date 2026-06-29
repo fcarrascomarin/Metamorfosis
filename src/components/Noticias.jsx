@@ -3,10 +3,15 @@ import Reveal from "./Reveal.jsx";
 import { transformationCases } from "../data/cases.js";
 
 const news = [
-    {
+  {
+    date: "Actualidad",
+    title: "CM como caso activo principal",
+    text: "La Consultoría Consolidación CM ordena operación, identidad, gestión, herramientas digitales y proyección comercial desde Metamorfosis Lab.",
+  },
+  {
     date: "Método",
     title: "Del diagnóstico al sistema",
-    text: "Ofrecemos servicios de ingeniería e innovación basados en tus necesidades.",
+    text: "El Sistema Interno CM no es un proyecto suelto: es un entregable tecnológico dentro de la consultoría de consolidación.",
   },
   {
     date: "Proyección",

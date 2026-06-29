@@ -2,7 +2,8 @@ import React, { useState } from "react";
 
 const navItems = [
   { href: "#plataforma", label: "Plataforma" },
-  { href: "#trayectoria", label: "Lineas de Proyecto" },
+  { href: "#casos", label: "Casos" },
+  { href: "#trayectoria", label: "Lineas" },
   { href: "#contacto", label: "Contacto" },
 ];
 
@@ -15,7 +16,7 @@ export default function Navbar() {
     <header className="navbar">
       <a className="brand" href="#inicio" aria-label="Ir al inicio de Metamorfosis">
         <img src="/logo-1.png" alt="Logo Metamorfosis" />
-        <span>METAMORFOSIS LABORATORIO DE INNOVACIÓN</span>
+        <span>METAMORFOSIS LAB</span>
       </a>
 
       <button
