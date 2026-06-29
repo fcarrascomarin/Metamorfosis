@@ -239,50 +239,42 @@ a {
 
 .hero {
   min-height: calc(100vh - 78px);
-  display: grid;
-  grid-template-columns: minmax(360px, 0.78fr) minmax(520px, 1.22fr);
+  display: flex;
   align-items: center;
-  gap: clamp(22px, 4vw, 68px);
-  padding: clamp(62px, 6vw, 94px) 0 clamp(68px, 6vw, 94px) 7vw;
+  padding: clamp(72px, 8vw, 118px) 7vw;
   color: white;
   overflow: hidden;
   position: relative;
   background:
-    linear-gradient(90deg, rgba(8, 19, 33, 0.98) 0%, rgba(8, 19, 33, 0.92) 34%, rgba(8, 31, 51, 0.38) 100%),
-    radial-gradient(circle at 74% 44%, rgba(22, 199, 232, 0.42), transparent 33%),
-    radial-gradient(circle at 26% 72%, rgba(36, 70, 102, 0.46), transparent 30%),
-    linear-gradient(135deg, #06111f 0%, #0b2139 52%, #071525 100%);
+    linear-gradient(90deg, rgba(6, 17, 31, 0.94) 0%, rgba(6, 17, 31, 0.84) 34%, rgba(6, 17, 31, 0.38) 63%, rgba(6, 17, 31, 0.2) 100%),
+    linear-gradient(180deg, rgba(6, 17, 31, 0.18) 0%, rgba(6, 17, 31, 0.48) 100%),
+    url("/hero-metamorfosis-fullbleed-v2.png") center right / cover no-repeat;
 }
 
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(130, 216, 232, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(130, 216, 232, 0.06) 1px, transparent 1px);
-  background-size: 70px 70px;
-  mask-image: linear-gradient(90deg, transparent 0%, #000 30%, #000 100%);
-  opacity: 0.38;
+  background:
+    radial-gradient(circle at 18% 32%, rgba(22, 166, 207, 0.18), transparent 30%),
+    linear-gradient(90deg, rgba(6, 17, 31, 0.22), transparent 72%);
+  opacity: 0.88;
   pointer-events: none;
 }
 
 .hero::after {
   content: "";
   position: absolute;
-  width: 50vw;
-  height: 50vw;
-  right: -18vw;
-  top: -14vw;
-  border-radius: 999px;
-  background: radial-gradient(circle, rgba(130, 216, 232, 0.14), transparent 62%);
+  inset: auto 0 0;
+  height: 36%;
+  background: linear-gradient(0deg, rgba(8, 19, 33, 0.9), transparent);
   pointer-events: none;
 }
 
-.hero-content,
-.hero-visual {
+.hero-content {
   position: relative;
   z-index: 1;
+  max-width: 720px;
 }
 
 .hero-kicker {
@@ -381,79 +373,6 @@ a {
   border: 1px solid rgba(255, 255, 255, 0.38);
   color: white;
   background: rgba(255, 255, 255, 0.08);
-}
-
-.hero-visual {
-  position: relative;
-  min-height: min(56vw, 680px);
-  display: grid;
-  place-items: center;
-}
-
-.hero-visual-disruptive {
-  justify-self: stretch;
-  overflow: visible;
-}
-
-.hero-art {
-  width: min(100%, 980px);
-  height: min(54vw, 650px);
-  min-height: 520px;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-  border-radius: 42px 0 0 42px;
-  box-shadow:
-    -34px 36px 120px rgba(0, 0, 0, 0.42),
-    0 0 120px rgba(22, 199, 232, 0.18);
-  border: 1px solid rgba(130, 216, 232, 0.16);
-  border-right: 0;
-}
-
-.hero-brand-seal {
-  position: absolute;
-  left: clamp(16px, 3vw, 42px);
-  top: clamp(20px, 4vw, 58px);
-  width: min(36vw, 330px);
-  min-width: 240px;
-  display: grid;
-  justify-items: center;
-  gap: 7px;
-  padding: 18px 18px 16px;
-  border-radius: 28px;
-  background: radial-gradient(circle at 55% 38%, rgba(130, 216, 232, 0.16), rgba(5, 14, 26, 0.48) 70%);
-  border: 1px solid rgba(130, 216, 232, 0.16);
-  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28), 0 0 60px rgba(22, 199, 232, 0.12);
-  backdrop-filter: blur(10px);
-  transform: rotate(-6deg);
-}
-
-.hero-seal-logo {
-  width: min(92%, 240px);
-  height: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 20px 32px rgba(0, 0, 0, 0.44)) drop-shadow(0 0 22px rgba(130, 216, 232, 0.12));
-}
-
-.hero-domain {
-  color: #dbeafe;
-  font-size: clamp(0.85rem, 1vw, 1rem);
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-decoration: none;
-}
-
-.hero-domain:hover {
-  color: var(--celeste-suave);
-}
-
-.hero-signature {
-  color: rgba(219, 234, 254, 0.7);
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.13em;
-  text-align: center;
-  text-transform: uppercase;
 }
 
 .section {
@@ -1232,8 +1151,10 @@ a {
   }
 
   .hero {
-    padding: 72px 5vw 0;
+    min-height: calc(100vh - 72px);
+    padding: 72px 5vw;
     text-align: center;
+    background-position: 63% center;
   }
 
   .hero-kicker {
@@ -1253,33 +1174,6 @@ a {
 
   .hero-actions {
     justify-content: center;
-  }
-
-  .hero-visual {
-    min-height: 430px;
-    margin-left: -5vw;
-    margin-right: -5vw;
-  }
-
-  .hero-art {
-    width: 100%;
-    height: 430px;
-    min-height: 430px;
-    border-radius: 34px 34px 0 0;
-    border-right: 1px solid rgba(130, 216, 232, 0.16);
-  }
-
-  .hero-brand-seal {
-    left: 50%;
-    top: 26px;
-    bottom: auto;
-    transform: translateX(-50%);
-    justify-items: center;
-    text-align: center;
-  }
-
-  .hero-signature {
-    text-align: center;
   }
 
   .section {
@@ -1302,7 +1196,8 @@ a {
   }
 
   .hero {
-    padding: 58px 5vw 0;
+    padding: 58px 5vw;
+    background-position: 68% center;
   }
 
   .hero-title {
@@ -1335,31 +1230,6 @@ a {
 
   .btn {
     width: 100%;
-  }
-
-  .hero-visual {
-    min-height: 360px;
-  }
-
-  .hero-art {
-    height: 360px;
-    min-height: 360px;
-    object-position: 64% center;
-  }
-
-  .hero-brand-seal {
-    width: min(82vw, 285px);
-    min-width: 0;
-    padding: 15px 16px;
-    border-radius: 20px;
-  }
-
-  .hero-seal-logo {
-    width: min(82%, 165px);
-  }
-
-  .hero-signature {
-    font-size: 0.66rem;
   }
 
   .news-grid,
