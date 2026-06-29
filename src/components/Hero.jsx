@@ -13,7 +13,7 @@ export default function Hero() {
         <p className="hero-text">
           Metamorfosis Lab ordena proyectos, diseña herramientas digitales y crea experiencias
           para que emprendimientos y pymes pasen de operar por intuición a crecer con método,
-          identidad y futuro.
+          identidad y visión de futuro.
         </p>
 
         <div className="hero-pills" aria-label="Servicios principales">
