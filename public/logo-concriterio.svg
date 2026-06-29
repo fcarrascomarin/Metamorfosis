@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" role="img" aria-labelledby="title desc">
+  <title id="title">Con Criterio</title>
+  <desc id="desc">Marca tipografica para el caso Con Criterio.</desc>
+  <rect width="720" height="420" rx="34" fill="#0b1729"/>
+  <rect x="162" y="112" width="396" height="88" rx="16" fill="none" stroke="#82d8e8" stroke-width="3"/>
+  <text x="360" y="171" text-anchor="middle" fill="#82d8e8" font-family="Arial, sans-serif" font-size="28" font-weight="800" letter-spacing="8">CON</text>
+  <text x="360" y="258" text-anchor="middle" fill="#f3f7fb" font-family="Georgia, 'Times New Roman', serif" font-size="66" font-weight="700">Criterio</text>
+  <text x="360" y="305" text-anchor="middle" fill="#aebfd4" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="4">ANALISIS · SERVICIOS · CONVERSACION</text>
+</svg>
