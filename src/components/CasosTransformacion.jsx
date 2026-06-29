@@ -2,11 +2,26 @@ import React from "react";
 import Reveal from "./Reveal.jsx";
 import { transformationCases } from "../data/cases.js";
 
-function CaseCard({ item, featured = false }) {
+function CaseCard({ item, compact = false }) {
   const isExternal = item.url.startsWith("http");
 
+  if (compact) {
+    return (
+      <a
+        href={item.url}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noopener noreferrer" : undefined}
+        className="case-mini-card case-mini-card-detailed"
+      >
+        <img src={item.logo} alt={`Marca ${item.name}`} />
+        <strong>{item.name}</strong>
+        <span>{item.tags.slice(0, 3).join(" · ")}</span>
+      </a>
+    );
+  }
+
   return (
-    <article className={featured ? "case-card featured-case" : "case-card"}>
+    <article className="case-card">
       <a
         href={item.url}
         target={isExternal ? "_blank" : undefined}
@@ -47,44 +62,61 @@ function CaseCard({ item, featured = false }) {
   );
 }
 
-export default function CasosTransformacion() {
-  const featured = transformationCases.find((item) => item.featured) ?? transformationCases[0];
-  const secondaryCases = transformationCases.filter((item) => item.name !== featured.name);
+export default function CasosTransformacion({ compact = false }) {
+  const items = compact ? transformationCases.slice(0, 4) : transformationCases;
 
-  return (
-    <section id="casos" className="section section-dark cases-section">
+  const content = (
+    <>
       <Reveal>
-        <div className="section-heading narrow centered">
+        <div className={`section-heading ${compact ? "split-heading" : "narrow centered"}`}>
           <p className="eyebrow">Casos de transformación</p>
-          <h2>Metamorfosis Laboratorio de Innovación</h2>
+          <h2>{compact ? "Capacidades aplicadas" : "Metamorfosis Laboratorio de Innovación"}</h2>
           <p>
             La consultoría de consolidación tiene como objetivo proyectar mejoras en las brechas operacionales que permitan estandarizar y mejorar las capacidades comerciales de empresas.
           </p>
         </div>
       </Reveal>
 
-      <Reveal direction="left">
-        <CaseCard item={featured} featured />
-      </Reveal>
-
-      <div className="cases-list">
-        {secondaryCases.map((item, index) => (
-          <Reveal key={item.name} direction={index % 2 === 0 ? "left" : "right"}>
-            <CaseCard item={item} />
-          </Reveal>
-        ))}
-      </div>
-
-      <Reveal>
-        <div className="section-remate">
-          <p>
-            Cada caso muestra una necesidad distinta, pero todos se vinculan en lo mismo: falta de herramientas actualizadas que faciliten las decisiones empresariales.
-          </p>
-          <a href="#contacto" className="btn btn-primary">
-            Quiero transformar mi proyecto
-          </a>
+      {compact ? (
+        <div className="case-mini-grid case-mini-grid-compact">
+          {items.map((item, index) => (
+            <Reveal key={item.name} direction={index % 2 === 0 ? "left" : "right"}>
+              <CaseCard item={item} compact />
+            </Reveal>
+          ))}
         </div>
-      </Reveal>
+      ) : (
+        <div className="cases-list">
+          {items.map((item, index) => (
+            <Reveal key={item.name} direction={index % 2 === 0 ? "left" : "right"}>
+              <CaseCard item={item} />
+            </Reveal>
+          ))}
+        </div>
+      )}
+
+      {!compact ? (
+        <Reveal>
+          <div className="section-remate">
+            <p>
+              Cada caso muestra una necesidad distinta, pero todos se vinculan en lo mismo: falta de herramientas actualizadas que faciliten las decisiones empresariales.
+            </p>
+            <a href="#contacto" className="btn btn-primary">
+              Quiero transformar mi proyecto
+            </a>
+          </div>
+        </Reveal>
+      ) : null}
+    </>
+  );
+
+  if (compact) {
+    return <div className="split-column">{content}</div>;
+  }
+
+  return (
+    <section className="section section-dark cases-section">
+      {content}
     </section>
   );
 }
