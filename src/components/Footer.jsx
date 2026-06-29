@@ -20,17 +20,17 @@ export default function Footer() {
           <a href="#inicio" className="footer-logo-wrap" aria-label="Ir al inicio">
             <img src="/logo-1.png" alt="Logo Metamorfosis" className="footer-logo-img" />
             <div>
-              <h2>METAMORFOSIS</h2>
-              <p>Estudio de transformación digital, identidad, estrategia y presencia web.</p>
+              <h2>METAMORFOSIS LAB</h2>
+              <p>Plataforma de consultoría, diseño, tecnología e innovación aplicada para pymes y proyectos territoriales.</p>
             </div>
           </a>
         </div>
 
         <div className="footer-column">
           <h3>Navegación</h3>
-          <a href="#noticias">Noticias</a>
-          <a href="#casos">Casos de transformación</a>
-          <a href="#trayectoria">Trayectoria</a>
+          <a href="#plataforma">Plataforma</a>
+          <a href="#casos">Casos y entregables</a>
+          <a href="#trayectoria">Líneas de desarrollo</a>
           <a href="#contacto">Contacto</a>
         </div>
 
@@ -61,13 +61,13 @@ export default function Footer() {
             ))}
           </div>
           <p className="footer-small-text">
-            Transformamos ideas, relatos y servicios en herramientas digitales claras, útiles y proyectables.
+            Transformamos negocios reales en sistemas claros, útiles y proyectables.
           </p>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} METAMORFOSIS. Todos los derechos reservados.</p>
+        <p>© {new Date().getFullYear()} METAMORFOSIS LAB. Todos los derechos reservados.</p>
         <div>
           <a href="#contacto">Trabajemos juntos</a>
           <span>·</span>

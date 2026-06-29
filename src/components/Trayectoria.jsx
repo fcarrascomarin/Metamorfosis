@@ -7,18 +7,33 @@ export default function Trayectoria() {
     <section id="trayectoria" className="section section-light">
       <Reveal>
         <div className="section-heading">
-          <p className="eyebrow dark">Innovación aplicada y trayectoria</p>
-          <h2>Empresas y proyectos trabajados.</h2>
+          <p className="eyebrow dark">Lineas de desarrollo</p>
+          <h2>La empresa se consolida desde una plataforma comun.</h2>
           <p>
-            Nuestra trayectoria muestra capacidades distintas: marca, relato, catálogo, autoridad,
-            confianza profesional, canales de contacto y comunicación comercial.
+            Metamorfosis Lab articula consultoría, sistema interno, producto pyme, merchandising
+            territorial y diseño de experiencias sin separar artificialmente lo que nace de una misma metodología.
           </p>
         </div>
       </Reveal>
 
-      <div className="trajectory-grid">
+      <div className="trajectory-map">
+        <Reveal className="trajectory-slot trajectory-slot-core">
+          <article className="trajectory-core">
+            <span>Metamorfosis Lab</span>
+            <h3>Plataforma principal</h3>
+            <p>
+              Diagnóstico, estrategia, identidad, herramientas digitales y experiencias conectadas
+              en una sola arquitectura de trabajo.
+            </p>
+          </article>
+        </Reveal>
+
         {trajectoryItems.map((item, index) => (
-          <Reveal key={item.company} direction={index % 2 === 0 ? "left" : "right"}>
+          <Reveal
+            key={item.company}
+            direction={index % 2 === 0 ? "left" : "right"}
+            className={`trajectory-slot trajectory-slot-${index + 1}`}
+          >
             <article className="trajectory-card">
               <span>Proyecto</span>
               <h3>{item.company}</h3>

@@ -35,10 +35,10 @@ export default function Contacto() {
       <Reveal direction="left">
         <div className="contact-copy">
           <p className="eyebrow">Contacto</p>
-          <h2>Conversemos sobre tu proyecto.</h2>
+          <h2>Conversemos sobre la transformación de tu proyecto.</h2>
           <p>
-            Cuéntanos qué quieres ordenar, diseñar o transformar. Podemos ayudarte a convertir una
-            idea, servicio o marca en una presencia digital clara y profesional.
+            Cuéntanos qué necesitas ordenar, consolidar, diseñar o digitalizar. Podemos ayudarte a
+            convertir un negocio real en una operación más clara, sostenible y escalable.
           </p>
         </div>
       </Reveal>
@@ -56,7 +56,7 @@ export default function Contacto() {
             <option value="">Seleccionar</option>
             <option value="Persona natural">Persona natural</option>
             <option value="Persona jurídica">Persona jurídica</option>
-            <option value="Emprendimiento">Emprendimiento</option>
+            <option value="Emprendimiento">Emprendimiento o pyme</option>
             <option value="Organización">Organización</option>
           </select>
 
@@ -66,7 +66,7 @@ export default function Contacto() {
             name="topic"
             value={form.topic}
             onChange={handleChange}
-            placeholder="Web, identidad, catálogo, estrategia, contenido..."
+            placeholder="Consultoría, sistema interno, identidad, experiencia, web..."
             required
           />
 
