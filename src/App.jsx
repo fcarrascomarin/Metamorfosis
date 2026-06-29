@@ -15,8 +15,14 @@ export default function App() {
       <main>
         <Hero />
         <Noticias />
-        <Plataforma />
-        <CasosTransformacion />
+
+        <section id="plataforma" className="section section-platform project-split-section">
+          <div className="project-split-grid">
+            <Plataforma compact />
+            <CasosTransformacion compact />
+          </div>
+        </section>
+
         <Trayectoria />
         <Contacto />
       </main>
