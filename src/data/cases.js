@@ -1,64 +1,116 @@
 export const transformationCases = [
   {
-    name: "Joyas Juana de Arco",
+    name: "Consultoría Consolidación CM",
     eyebrow: "Proyecto destacado",
-    summary: "De una colección de joyas a una experiencia simbólica de compra.",
+    summary: "Proyecto activo desarrollado por Metamorfosis Lab para consolidar CM.",
     description:
-      "Desarrollo de una tienda digital para una marca de joyas de plata con identidad propia, catálogo organizado, categorías de productos, carrito de compra y contacto directo por WhatsApp. El proyecto no se construyó solo desde la venta, sino desde el valor simbólico de cada pieza: amuletos, colecciones temáticas y una experiencia orientada a que cada persona encuentre una joya con sentido.",
-    tags: ["E-commerce", "Marca", "Catálogo", "Contenido", "WhatsApp"],
-    image: "/joyas.png",
-    logo: "/logo-joyas.svg",
-    url: "https://www.joyasjuanadearco.cl",
-    featured: true,
-  },
-  {
-    name: "Con Criterio",
-    summary:
-      "De una idea profesional a una plataforma de análisis, servicios y conversación pública.",
-    description:
-      "Creación de una plataforma digital orientada a comunicar un proyecto de análisis, formación y servicios profesionales vinculados a seguridad, sistema penal, políticas públicas y discusión pública. El desafío fue transformar conocimiento especializado en una propuesta clara, navegable y comprensible para distintos públicos.",
-    tags: ["Institucional", "Servicios", "Contenido", "Estrategia", "Análisis"],
-    image: "/concriterio.png",
-    logo: "/logo-concriterio.svg",
-    url: "https://www.concriterio.cl",
-  },
-  {
-    name: "Red Oriente",
-    summary: "De una consultoría especializada a una presencia digital clara y confiable.",
-    description:
-      "Desarrollo de una página web para una consultora orientada a servicios comerciales, estratégicos y de conexión entre negocios. El foco estuvo en construir una presencia sobria, profesional y directa, capaz de transmitir confianza desde el primer contacto, ordenar la oferta y facilitar que el cliente entienda rápidamente por qué contactar.",
-    tags: ["Consultoría", "Web corporativa", "Servicios", "Confianza", "Negocios"],
-    image: "/redoriente.png",
-    logo: "/logo-redoriente.svg",
-    url: "https://www.redoriente.cl",
-  },
-  {
-    name: "CM Banquetería & Restaurant",
-    summary: "De un restaurant local a una plataforma digital pública e interna.",
-    description:
-      "Desarrollo de una presencia digital para CM Banquetería, conectando su oferta pública de restaurant, menú del día, cotización de eventos y contacto directo con una plataforma interna para ordenar reservas, operación, documentos y gestión administrativa.",
-    tags: ["Restaurant", "Panel interno", "Menú", "Eventos", "Operación"],
+      "Consultoría integral para ordenar la operación, identidad, estructura comercial, gestión documental, menús, proveedores, eventos y proyección de CM Banquetería. Este caso funciona como prioridad máxima de Metamorfosis y como base metodológica para futuros servicios estandarizables para pymes.",
+    tags: ["Consultoría", "Operación", "Gestión", "Identidad", "Pyme"],
     image: "/cmbanqueteria.png",
     logo: "/logo-cmbanqueteria.png",
     url: "https://cmbanqueteria.cl/",
+    featured: true,
+  },
+  {
+    name: "Sistema Interno CM",
+    summary: "Entregable tecnológico dentro de la Consultoría Consolidación CM.",
+    description:
+      "Herramienta interna en desarrollo para ordenar menús, reservas, pedidos, proveedores, stock, gastos, documentos del personal, minutas, cotizaciones e informes. No se presenta como proyecto independiente: es un entregable de la consultoría y un prototipo para futuras soluciones pyme.",
+    tags: ["Entregable", "Sistema interno", "Panel", "Gestión", "CM"],
+    image: "/cmbanqueteria.png",
+    logo: "/logo-cmbanqueteria.png",
+    url: "https://cmbanqueteria.cl/",
+  },
+  {
+    name: "Producto Pyme Estandarizable",
+    summary: "Servicio futuro nacido desde el aprendizaje aplicado en CM.",
+    description:
+      "Línea en diseño para transformar la metodología de diagnóstico, ordenamiento y digitalización usada en CM en un producto replicable para otras pymes: formularios, matriz de brechas, panel operativo, reportes y acompañamiento.",
+    tags: ["Producto", "Pyme", "Metodología", "SaaS", "Escalable"],
+    image: "/hero-metamorfosis-ai-brote.png",
+    logo: "/logo-metamorfosis-transparente.png",
+    url: "#contacto",
+  },
+  {
+    name: "Doña Señoraza Merch",
+    summary: "Línea exclusiva de Metamorfosis con identidad territorial.",
+    description:
+      "Línea activa de merchandising, relato local y diseño de productos inspirada en símbolos territoriales. Funciona como capacidad comercial propia de Metamorfosis para crear objetos, experiencias y marcas con identidad.",
+    tags: ["Merch", "Territorio", "Diseño", "Producto", "Experiencia"],
+    image: "/hero-metamorfosis-disruptivo.png",
+    logo: "/logo-metamorfosis-transparente.png",
+    url: "#contacto",
+  },
+  {
+    name: "Diseño de Experiencias",
+    summary: "Servicio transversal para activar identidad, relato y operación.",
+    description:
+      "Capacidad activa de Metamorfosis Lab para diseñar experiencias comerciales, gastronómicas y territoriales: activaciones, eventos controlados, packaging narrativo, recorridos, lanzamientos y formatos que conectan marca, usuario y operación.",
+    tags: ["Experiencias", "Activaciones", "Marca", "Territorio", "Servicio"],
+    image: "/hero-metamorfosis-portal.png",
+    logo: "/logo-metamorfosis-transparente.png",
+    url: "#contacto",
   },
 ];
 
 export const trajectoryItems = [
   {
-    company: "Joyas Juana de Arco",
-    projects: ["Tienda digital", "Catálogo de productos", "Relato de marca", "Venta asistida por WhatsApp"],
+    company: "Consultoría Consolidación CM",
+    projects: ["Proyecto activo desarrollado por Metamorfosis", "Prioridad máxima", "Orden operativo y comercial", "Base metodológica"],
   },
   {
-    company: "Con Criterio",
-    projects: ["Plataforma institucional", "Servicios profesionales", "Contenido especializado", "Arquitectura de navegación"],
+    company: "Sistema Interno CM",
+    projects: ["Entregable de la consultoría", "Panel administrativo", "Gestión diaria", "Prototipo replicable"],
   },
   {
-    company: "Red Oriente",
-    projects: ["Web corporativa", "Ordenamiento de servicios", "Comunicación de confianza", "Canales de contacto"],
+    company: "Producto Pyme Estandarizable",
+    projects: ["Servicio futuro", "Diagnóstico y digitalización", "Herramientas modulares", "Acompañamiento pyme"],
   },
   {
-    company: "CM Banquetería & Restaurant",
-    projects: ["Web pública", "Panel interno", "Menú diario", "Cotización de eventos"],
+    company: "Doña Señoraza Merch",
+    projects: ["Línea exclusiva", "Identidad territorial", "Merchandising", "Diseño de productos"],
+  },
+  {
+    company: "Diseño de Experiencias",
+    projects: ["Servicio activo", "Activaciones", "Experiencias gastronómicas", "Relato y operación"],
+  },
+];
+
+export const platformLines = [
+  {
+    name: "Consultoría Consolidación CM",
+    type: "Proyecto activo desarrollado por Metamorfosis",
+    status: "Prioridad máxima",
+    description:
+      "Caso principal de trabajo para consolidar CM Banquetería desde una mirada operativa, comercial, documental, digital y territorial.",
+    priority: true,
+  },
+  {
+    name: "Sistema Interno CM",
+    type: "Entregable dentro de la consultoría",
+    status: "En desarrollo",
+    description:
+      "Panel privado para ordenar gestión diaria, menús, pedidos, proveedores, stock, gastos, documentos, minutas y cotizaciones.",
+  },
+  {
+    name: "Producto Pyme Estandarizable",
+    type: "Futuro servicio o producto nacido desde el caso CM",
+    status: "En diseño",
+    description:
+      "Metodología y sistema modular para diagnosticar, ordenar y digitalizar otras pymes desde el aprendizaje práctico de CM.",
+  },
+  {
+    name: "Doña Señoraza Merch",
+    type: "Línea exclusiva de Metamorfosis",
+    status: "Activa",
+    description:
+      "Línea comercial propia que cruza relato territorial, diseño de producto, merchandising y nuevas experiencias de marca.",
+  },
+  {
+    name: "Diseño de Experiencias",
+    type: "Capacidad y servicio de Metamorfosis",
+    status: "Activa",
+    description:
+      "Servicio transversal para crear experiencias gastronómicas, comerciales y territoriales conectadas con identidad y operación.",
   },
 ];
