@@ -31,27 +31,6 @@ export default function Hero() {
           </a>
         </div>
       </div>
-
-      <div className="hero-visual hero-visual-disruptive" aria-label="Idea digital transformándose en sistema">
-        <img
-          src="/hero-metamorfosis-portal.png"
-          alt="Visual conceptual de una idea convirtiéndose en sistema digital"
-          className="hero-art"
-        />
-
-        <div className="hero-brand-seal">
-          <img src="/logo-metamorfosis-transparente.png" alt="Logo Metamorfosis" className="hero-seal-logo" />
-          <a
-            href="https://www.metamorfosislab.cl"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hero-domain"
-          >
-            metamorfosislab.cl
-          </a>
-          <span className="hero-signature">Estrategia · Tecnología · Identidad</span>
-        </div>
-      </div>
     </section>
   );
 }
