@@ -55,11 +55,10 @@ export default function CasosTransformacion() {
     <section id="casos" className="section section-dark cases-section">
       <Reveal>
         <div className="section-heading narrow centered">
-          <p className="eyebrow">Casos y entregables</p>
-          <h2>CM se desarrolla dentro de Metamorfosis Lab, no como proyecto aislado.</h2>
+          <p className="eyebrow">Casos de transformación</p>
+          <h2>Metamorfosis Laboratorio de Innovación</h2>
           <p>
-            La consultoría de consolidación CM es el proyecto activo prioritario. Desde ahí nacen
-            el sistema interno, el producto pyme estandarizable y nuevas capacidades comerciales.
+            La consultoría de consolidación tiene como objetivo proyectar mejoras en las brechas operacionales que permitan estandarizar y mejorar las capacidades comerciales de empresas.
           </p>
         </div>
       </Reveal>
@@ -79,9 +78,7 @@ export default function CasosTransformacion() {
       <Reveal>
         <div className="section-remate">
           <p>
-            Cada caso muestra una capacidad distinta, pero todos responden a la misma base:
-            diagnosticar, ordenar, diseñar, implementar y convertir aprendizajes en herramientas
-            útiles para negocios reales.
+            Cada caso muestra una necesidad distinta, pero todos se vinculan en lo mismo: falta de herramientas actualizadas que faciliten las decisiones empresariales.
           </p>
           <a href="#contacto" className="btn btn-primary">
             Quiero transformar mi proyecto
