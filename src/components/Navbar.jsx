@@ -5,6 +5,7 @@ const navItems = [
   { href: "#casos", label: "Casos" },
   { href: "#trayectoria", label: "Lineas" },
   { href: "#contacto", label: "Contacto" },
+  { href: "#/os", label: "OS" },
 ];
 
 export default function Navbar() {
