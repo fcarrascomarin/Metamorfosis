@@ -1300,16 +1300,26 @@ a {
 
 .os-project-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .os-project-card {
-  min-height: 236px;
-  padding: 18px;
+  position: relative;
+  min-height: 178px;
+  padding: 16px 16px 16px 20px;
   border: 1px solid rgba(130, 216, 232, 0.14);
   border-radius: 16px;
   background: linear-gradient(145deg, rgba(22, 40, 63, 0.84), rgba(8, 19, 33, 0.92));
+  overflow: hidden;
+}
+
+.os-project-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: var(--project-color, var(--celeste));
 }
 
 .os-project-card span {
@@ -1318,29 +1328,131 @@ a {
   align-items: center;
   padding: 0 10px;
   border-radius: 999px;
-  background: rgba(130, 216, 232, 0.1);
-  color: var(--celeste-suave);
+  background: color-mix(in srgb, var(--project-color, var(--celeste)) 20%, transparent);
+  color: #e8fbff;
   font-size: 0.7rem;
   font-weight: 900;
   text-transform: uppercase;
 }
 
 .os-project-card h3 {
-  margin-top: 16px;
-  font-size: 1.35rem;
+  margin-top: 14px;
+  font-size: 1.12rem;
+  line-height: 1.12;
 }
 
 .os-project-card p {
   color: var(--texto-muted);
-  font-size: 0.92rem;
-  line-height: 1.55;
+  font-size: 0.84rem;
+  line-height: 1.46;
 }
 
 .os-project-card strong {
-  color: var(--celeste);
+  color: var(--project-color, var(--celeste));
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+.os-project-card.is-active {
+  border-color: color-mix(in srgb, var(--project-color, var(--celeste)) 70%, white 8%);
+  background:
+    radial-gradient(circle at 15% 0%, color-mix(in srgb, var(--project-color, var(--celeste)) 22%, transparent), transparent 36%),
+    linear-gradient(145deg, rgba(25, 50, 76, 0.94), rgba(8, 19, 33, 0.96));
+}
+
+.os-active-context,
+.os-workspace {
+  border: 1px solid rgba(130, 216, 232, 0.16);
+  border-radius: 18px;
+  background: rgba(13, 28, 47, 0.78);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+}
+
+.os-active-context {
+  position: sticky;
+  top: 12px;
+  z-index: 8;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  margin-top: 18px;
+  padding: 18px 20px;
+  border-color: color-mix(in srgb, var(--project-color, var(--celeste)) 58%, transparent);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--project-color, var(--celeste)) 18%, transparent), transparent 42%),
+    rgba(13, 28, 47, 0.96);
+  backdrop-filter: blur(16px);
+}
+
+.os-active-context h2 {
+  margin: 0 0 8px;
+  font-size: clamp(1.5rem, 2.6vw, 2.45rem);
+  line-height: 1.03;
+}
+
+.os-active-context p {
+  max-width: 920px;
+  margin: 0;
+  color: var(--texto-muted);
+}
+
+.os-active-context dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(120px, auto));
+  gap: 10px;
+  margin: 0;
+}
+
+.os-active-context dl div {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.os-active-context dt {
+  color: var(--project-color, var(--celeste));
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.os-active-context dd {
+  margin: 4px 0 0;
+  color: var(--texto);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.os-workspace {
+  margin-top: 14px;
+  padding: 16px;
+}
+
+.os-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.os-tabs button {
+  min-height: 40px;
+  border: 1px solid rgba(130, 216, 232, 0.16);
+  border-radius: 999px;
+  padding: 0 14px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--texto-muted);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.os-tabs button.is-active {
+  border-color: color-mix(in srgb, var(--project-color, var(--celeste)) 70%, white 10%);
+  background: color-mix(in srgb, var(--project-color, var(--celeste)) 22%, rgba(255, 255, 255, 0.04));
+  color: #fff;
 }
 
 .os-detail-grid {
@@ -1352,10 +1464,11 @@ a {
 
 .os-detail-card {
   padding: 20px;
+  border-color: color-mix(in srgb, var(--project-color, var(--celeste)) 28%, rgba(130, 216, 232, 0.16));
 }
 
 .os-project-detail {
-  grid-row: span 2;
+  grid-row: auto;
 }
 
 .os-facts {
@@ -1619,7 +1732,8 @@ a {
   .work-hub-grid,
   .trajectory-map,
   .os-layout,
-  .os-detail-grid {
+  .os-detail-grid,
+  .os-active-context {
     grid-template-columns: 1fr;
   }
 
@@ -1629,6 +1743,14 @@ a {
 
   .os-header {
     flex-direction: column;
+  }
+
+  .os-active-context {
+    position: static;
+  }
+
+  .os-active-context dl {
+    grid-template-columns: 1fr;
   }
 
   .hero {
@@ -1736,6 +1858,10 @@ a {
     grid-template-columns: 1fr;
   }
 
+  .os-tabs button {
+    flex: 1 1 140px;
+  }
+
   .case-mini-grid {
     grid-template-columns: 1fr;
   }
@@ -1769,216 +1895,5 @@ a {
     opacity: 1;
     transform: none;
     transition: none;
-  }
-}
-
-/* === Correccion definitiva hero + OS, julio 2026 === */
-
-.hero.hero-fullbleed {
-  position: relative !important;
-  isolation: isolate !important;
-  min-height: clamp(620px, calc(100vh - 78px), 820px) !important;
-  width: 100% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  padding: clamp(86px, 8vw, 126px) 7vw !important;
-  overflow: hidden !important;
-  text-align: left !important;
-  background:
-    linear-gradient(90deg, rgba(4, 13, 25, 0.92) 0%, rgba(4, 13, 25, 0.72) 34%, rgba(4, 13, 25, 0.18) 66%, rgba(4, 13, 25, 0.3) 100%),
-    linear-gradient(180deg, rgba(4, 13, 25, 0.14) 0%, rgba(4, 13, 25, 0.62) 100%),
-    url("/hero-metamorfosis-portal.png") center right / cover no-repeat !important;
-}
-
-.hero.hero-fullbleed::before,
-.hero.hero-fullbleed::after,
-.hero.hero-fullbleed .hero-bg-image,
-.hero.hero-fullbleed .hero-overlay,
-.hero.hero-fullbleed .hero-brand-seal {
-  display: none !important;
-}
-
-.hero.hero-fullbleed .hero-content.hero-content-centered {
-  position: relative !important;
-  z-index: 1 !important;
-  width: min(620px, 100%) !important;
-  max-width: 620px !important;
-  margin: 0 !important;
-  padding: clamp(24px, 2.6vw, 34px) !important;
-  border: 1px solid rgba(130, 216, 232, 0.18) !important;
-  border-radius: 24px !important;
-  background: rgba(5, 17, 31, 0.42) !important;
-  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.26) !important;
-  backdrop-filter: blur(10px) !important;
-}
-
-.hero.hero-fullbleed .hero-kicker {
-  width: fit-content !important;
-  margin: 0 0 18px !important;
-  padding: 8px 14px !important;
-  border: 1px solid rgba(130, 216, 232, 0.28) !important;
-  border-radius: 999px !important;
-  color: var(--celeste-suave) !important;
-  background: rgba(130, 216, 232, 0.08) !important;
-  font-size: clamp(0.68rem, 0.78vw, 0.82rem) !important;
-  line-height: 1 !important;
-  letter-spacing: 0.14em !important;
-  text-transform: uppercase !important;
-}
-
-.hero.hero-fullbleed .hero-title {
-  max-width: 100% !important;
-  margin: 0 !important;
-  color: #f4f8fd !important;
-  font-size: clamp(3rem, 4.7vw, 4.85rem) !important;
-  line-height: 1.02 !important;
-  letter-spacing: -0.035em !important;
-  text-wrap: balance;
-  overflow-wrap: normal !important;
-}
-
-.hero.hero-fullbleed .hero-title span {
-  display: block !important;
-  max-width: 100% !important;
-}
-
-.hero.hero-fullbleed .hero-text {
-  max-width: 46ch !important;
-  margin: 22px 0 0 !important;
-  color: rgba(237, 244, 251, 0.88) !important;
-  font-size: clamp(1rem, 1.08vw, 1.15rem) !important;
-  line-height: 1.65 !important;
-}
-
-.hero.hero-fullbleed .hero-pills {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 10px !important;
-  justify-content: flex-start !important;
-  margin-top: 24px !important;
-}
-
-.hero.hero-fullbleed .hero-pills span {
-  min-height: 34px !important;
-  padding: 0 13px !important;
-  border-radius: 999px !important;
-  color: #eaf7fb !important;
-  background: rgba(130, 216, 232, 0.1) !important;
-  border: 1px solid rgba(130, 216, 232, 0.22) !important;
-  font-size: 0.78rem !important;
-  font-weight: 800 !important;
-}
-
-.hero.hero-fullbleed .hero-actions {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 12px !important;
-  justify-content: flex-start !important;
-  margin-top: 28px !important;
-}
-
-.hero.hero-fullbleed .btn {
-  width: auto !important;
-  min-height: 46px !important;
-  padding: 0 18px !important;
-  border-radius: 13px !important;
-  font-size: 0.92rem !important;
-}
-
-.os-shell {
-  position: relative !important;
-  isolation: isolate !important;
-  background:
-    linear-gradient(90deg, rgba(5, 14, 26, 0.96), rgba(5, 14, 26, 0.82)),
-    radial-gradient(circle at 76% 12%, rgba(22, 166, 207, 0.18), transparent 32%),
-    url("/hero-metamorfosis-disruptivo.png") center / cover fixed no-repeat !important;
-}
-
-.os-shell::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    linear-gradient(rgba(130, 216, 232, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(130, 216, 232, 0.035) 1px, transparent 1px);
-  background-size: 52px 52px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.74), transparent 92%);
-}
-
-.os-login-panel,
-.os-sidebar,
-.os-main-panel,
-.os-detail-card,
-.os-kpis article,
-.os-briefing-card,
-.os-project-card {
-  background: linear-gradient(145deg, rgba(15, 31, 52, 0.9), rgba(6, 18, 32, 0.84)) !important;
-  border-color: rgba(130, 216, 232, 0.2) !important;
-  backdrop-filter: blur(14px) !important;
-}
-
-@media (max-width: 980px) {
-  .hero.hero-fullbleed {
-    min-height: 720px !important;
-    align-items: flex-end !important;
-    justify-content: center !important;
-    padding: 92px 5vw 54px !important;
-    text-align: center !important;
-    background:
-      linear-gradient(180deg, rgba(4, 13, 25, 0.22) 0%, rgba(4, 13, 25, 0.88) 68%, rgba(4, 13, 25, 0.96) 100%),
-      url("/hero-metamorfosis-portal.png") center top / cover no-repeat !important;
-  }
-
-  .hero.hero-fullbleed .hero-content.hero-content-centered {
-    width: min(640px, 100%) !important;
-    max-width: 640px !important;
-    margin: 0 auto !important;
-  }
-
-  .hero.hero-fullbleed .hero-kicker,
-  .hero.hero-fullbleed .hero-title,
-  .hero.hero-fullbleed .hero-text {
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-
-  .hero.hero-fullbleed .hero-pills,
-  .hero.hero-fullbleed .hero-actions {
-    justify-content: center !important;
-  }
-}
-
-@media (max-width: 680px) {
-  .hero.hero-fullbleed {
-    min-height: 660px !important;
-    padding: 82px 5vw 42px !important;
-  }
-
-  .hero.hero-fullbleed .hero-content.hero-content-centered {
-    padding: 20px !important;
-    border-radius: 20px !important;
-  }
-
-  .hero.hero-fullbleed .hero-title {
-    max-width: 100% !important;
-    font-size: clamp(2.35rem, 11vw, 3.25rem) !important;
-    line-height: 1.04 !important;
-    letter-spacing: -0.032em !important;
-  }
-
-  .hero.hero-fullbleed .hero-text {
-    font-size: 0.96rem !important;
-    line-height: 1.58 !important;
-  }
-
-  .hero.hero-fullbleed .hero-actions {
-    flex-direction: column !important;
-  }
-
-  .hero.hero-fullbleed .btn {
-    width: 100% !important;
   }
 }
