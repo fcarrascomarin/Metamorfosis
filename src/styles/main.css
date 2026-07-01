@@ -1802,10 +1802,10 @@ a {
 .hero.hero-fullbleed .hero-content.hero-content-centered {
   position: relative !important;
   z-index: 1 !important;
-  width: min(560px, 100%) !important;
-  max-width: 560px !important;
+  width: min(620px, 100%) !important;
+  max-width: 620px !important;
   margin: 0 !important;
-  padding: clamp(22px, 3vw, 34px) !important;
+  padding: clamp(24px, 2.6vw, 34px) !important;
   border: 1px solid rgba(130, 216, 232, 0.18) !important;
   border-radius: 24px !important;
   background: rgba(5, 17, 31, 0.42) !important;
@@ -1828,13 +1828,19 @@ a {
 }
 
 .hero.hero-fullbleed .hero-title {
-  max-width: 9.2ch !important;
+  max-width: 100% !important;
   margin: 0 !important;
   color: #f4f8fd !important;
-  font-size: clamp(3.1rem, 6.1vw, 6rem) !important;
-  line-height: 0.96 !important;
-  letter-spacing: -0.045em !important;
+  font-size: clamp(3rem, 4.7vw, 4.85rem) !important;
+  line-height: 1.02 !important;
+  letter-spacing: -0.035em !important;
   text-wrap: balance;
+  overflow-wrap: normal !important;
+}
+
+.hero.hero-fullbleed .hero-title span {
+  display: block !important;
+  max-width: 100% !important;
 }
 
 .hero.hero-fullbleed .hero-text {
@@ -1957,9 +1963,10 @@ a {
   }
 
   .hero.hero-fullbleed .hero-title {
-    max-width: 10ch !important;
-    font-size: clamp(2.45rem, 13vw, 3.6rem) !important;
-    line-height: 1 !important;
+    max-width: 100% !important;
+    font-size: clamp(2.35rem, 11vw, 3.25rem) !important;
+    line-height: 1.04 !important;
+    letter-spacing: -0.032em !important;
   }
 
   .hero.hero-fullbleed .hero-text {
