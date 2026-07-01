@@ -6,7 +6,10 @@ export default function Hero() {
       <div className="hero-content hero-content-centered">
         <p className="hero-kicker">Metamorfosis Lab</p>
 
-        <h1 className="hero-title">Ideas que evolucionan.</h1>
+        <h1 className="hero-title">
+          <span>Ideas que</span>
+          <span>evolucionan.</span>
+        </h1>
 
         <p className="hero-text">
           Unimos estrategia, diseño y tecnología para transformar proyectos en presencia digital clara, útil y escalable.
