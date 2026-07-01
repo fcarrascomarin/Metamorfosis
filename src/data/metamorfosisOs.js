@@ -313,3 +313,400 @@ export const defaultWeeklyTasks = [
     status: "Proxima",
   },
 ];
+
+export const defaultLogEntries = [
+  {
+    id: "log-cm-01",
+    projectId: "consultoria-cm",
+    date: "2026-07-01",
+    title: "CM es cliente cercano, no negocio propio",
+    note:
+      "CM Banqueteria pertenece a su duena/familia. Metamorfosis Lab realiza una consultoria para consolidar, formalizar, ordenar y digitalizar el negocio.",
+    author: "Benjamin",
+  },
+  {
+    id: "log-cm-02",
+    projectId: "consultoria-cm",
+    date: "2026-07-01",
+    title: "Consultoria Consolidacion CM pertenece a Metamorfosis",
+    note:
+      "Consultoria Consolidacion CM es un proyecto desarrollado por Metamorfosis Lab. El Sistema Interno CM es un entregable dentro de ese proyecto, no una linea independiente.",
+    author: "Benjamin",
+  },
+  {
+    id: "log-sistema-cm-01",
+    projectId: "sistema-cm",
+    date: "2026-07-01",
+    title: "Sistema interno como entregable central",
+    note:
+      "El sistema debe reemplazar cuadernos y Excel: gastos, proveedores, stock, personal, menu diario, minutas, reservas/despacho, documentos, actas e informes.",
+    author: "Benjamin",
+  },
+  {
+    id: "log-cmexp-01",
+    projectId: "cm-experiencias",
+    date: "2026-07-01",
+    title: "Reparto base de alianza",
+    note:
+      "Se trabaja con estructura base 50% CM, 40% Metamorfosis o Francisca-Benjamin y 10% Martin. CM aporta local, cocina, personal y operacion; Metamorfosis disena experiencia, relato, IA, ambientacion y merch; Martin aporta audiovisual y redes.",
+    author: "Benjamin",
+  },
+  {
+    id: "log-cmexp-02",
+    projectId: "cm-experiencias",
+    date: "2026-07-01",
+    title: "Formato de primera jornada",
+    note:
+      "Se proyecta una tarde social gratuita, sin alcohol, para jovenes en situacion de vulnerabilidad de Laja; y una noche pagada para 30 personas mas 4 invitados, con ticket estimado de $30.000 por persona o $50.000 por pareja.",
+    author: "Benjamin",
+  },
+  {
+    id: "log-senoraza-01",
+    projectId: "dona-senoraza",
+    date: "2026-07-01",
+    title: "Merch exclusivo de Metamorfosis",
+    note:
+      "Dona Senoraza Merch es 100% Metamorfosis. Puede venderse en CM o durante CM Experiencias, pagando eventualmente 20% a CM por ventas realizadas en local o evento.",
+    author: "Benjamin",
+  },
+  {
+    id: "log-juana-01",
+    projectId: "juana-arco",
+    date: "2026-07-01",
+    title: "Identidad cerrada, comienza plan estrategico",
+    note:
+      "Juana de Arco es marca 100% de Francisca. Terminada la construccion de identidad, el foco pasa a plan estrategico, seguimiento, validacion, campanas, contenidos y metricas.",
+    author: "Benjamin",
+  },
+  {
+    id: "log-red-01",
+    projectId: "red-oriente",
+    date: "2026-07-01",
+    title: "Pausa activa",
+    note:
+      "Red Oriente es una linea compartida con un tercero. Puede avanzar sin prisa, pero no debe competir con CM, CM Experiencias, Juana ni ConCriterio.",
+    author: "Benjamin",
+  },
+  {
+    id: "log-metodo-01",
+    projectId: "estandarizacion",
+    date: "2026-07-01",
+    title: "Metodo Metamorfosis en construccion",
+    note:
+      "La estandarizacion debe capturar el proceso semiestandarizado de innovacion y apoyo en gestion de proyectos: diagnostico, orden, costos, formalizacion, digitalizacion, postulacion, validacion y seguimiento.",
+    author: "Benjamin",
+  },
+  {
+    id: "log-sust-01",
+    projectId: "sustentabilidad",
+    date: "2026-07-01",
+    title: "Linea sustentabilidad",
+    note:
+      "Metamorfosis tiene una linea de sustentabilidad, economia circular y ecodiseno intentada en proyectos semilla como Revotrush y Poiesis. Debe quedar como activo metodologico.",
+    author: "Benjamin",
+  },
+  {
+    id: "log-concriterio-01",
+    projectId: "concriterio-minimo",
+    date: "2026-07-01",
+    title: "Definicion fina de ConCriterio",
+    note:
+      "ConCriterio es plataforma independiente de formacion, analisis aplicado y acompanamiento estrategico en seguridad, sistema penal, convivencia, reinsercion, justicia restaurativa y conflictividad territorial. No es consultoria pyme.",
+    author: "Benjamin",
+  },
+  {
+    id: "log-academico-01",
+    projectId: "magister-uba",
+    date: "2026-07-01",
+    title: "Separacion academica",
+    note:
+      "Magister UBA, Tesis UBA, Seminario de Paz y trabajos UBA deben aparecer separados. El Seminario aporta enfoque y metodo a la tesis, pero no es la tesis.",
+    author: "Benjamin",
+  },
+  {
+    id: "log-tesis-01",
+    projectId: "tesis-uba",
+    date: "2026-07-01",
+    title: "Base de tesis",
+    note:
+      "La tesis se orienta a conflictos penitenciarios, justicia restaurativa, ejecucion penal e interculturalidad en Chile, con posible recorte Biobio/sur.",
+    author: "Benjamin",
+  },
+  {
+    id: "log-seminario-01",
+    projectId: "seminario-paz",
+    date: "2026-07-01",
+    title: "Seminario como insumo",
+    note:
+      "El Seminario de Paz aporta formas de investigar, sensibilidad sobre conflicto, violencia, sancion, palabra, vinculos y enfoque restaurativo.",
+    author: "Benjamin",
+  },
+  {
+    id: "log-catloop-01",
+    projectId: "catloop",
+    date: "2026-07-01",
+    title: "Incubadora 50/50",
+    note:
+      "CatLoop / estacion modular es 50% Francisca y 50% Benjamin. Es secundaria pero con potencial para postulaciones, cofinanciamiento e innovacion sustentable.",
+    author: "Benjamin",
+  },
+  {
+    id: "log-aji-01",
+    projectId: "aji",
+    date: "2026-07-01",
+    title: "Aji en pausa util",
+    note:
+      "El aji / Senoraza alimentaria queda para el final, salvo que sirva como insumo, degustacion, relato o producto asociado a CM Experiencias.",
+    author: "Benjamin",
+  },
+];
+
+export const defaultSourceDocs = [
+  {
+    id: "source-cm-panel",
+    projectId: "consultoria-cm",
+    title: "Repositorio y panel CM Banqueteria",
+    type: "Codigo / sistema",
+    location: "cmbanqueteria-main y variantes trabajadas del panel administrativo",
+    status: "Fuente activa",
+  },
+  {
+    id: "source-cm-sanitaria",
+    projectId: "consultoria-cm",
+    title: "Instrumentos sanitarios y planos CM",
+    type: "PDF / checklist / planos",
+    location: "Instrumentos de autoevaluacion sanitaria, planos por zonas y documentos de formalizacion",
+    status: "Fuente normativa-operativa",
+  },
+  {
+    id: "source-sistema-cm",
+    projectId: "sistema-cm",
+    title: "Modulos definidos del sistema interno",
+    type: "Arquitectura funcional",
+    location:
+      "Menu diario, dulces/promos, reservas/despacho, gastos, proveedores, stock, personal, minutas, consultoria y cotizaciones",
+    status: "Fuente funcional",
+  },
+  {
+    id: "source-cmexp-relato",
+    projectId: "cm-experiencias",
+    title: "Relato CM Experiencias",
+    type: "Brief narrativo",
+    location:
+      "Experiencia gastronomica/inmersiva con historia local de Laja, videos IA, guia historico, violinista y leyenda de La Senoraza",
+    status: "Fuente creativa",
+  },
+  {
+    id: "source-senoraza",
+    projectId: "dona-senoraza",
+    title: "Linea Dona Senoraza Merch",
+    type: "Brief producto",
+    location: "Vela con forma de La Senoraza, caja ilustrada, souvenir y objeto identitario",
+    status: "Fuente de producto",
+  },
+  {
+    id: "source-juana",
+    projectId: "juana-arco",
+    title: "Identidad Juana de Arco",
+    type: "Marca / contenido",
+    location: "Linea de amuletos, joyas, tag, empaque pergamino, campanas y material visual trabajado",
+    status: "Fuente de marca",
+  },
+  {
+    id: "source-concriterio",
+    projectId: "concriterio-minimo",
+    title: "Informe Final ConCriterio",
+    type: "Documento base",
+    location: "Informe final depurado de ConCriterio",
+    status: "Fuente estrategica",
+  },
+  {
+    id: "source-tesis",
+    projectId: "tesis-uba",
+    title: "Mas alla de la sancion",
+    type: "Documento academico",
+    location: "Base de investigacion sobre conflictos penitenciarios y justicia restaurativa",
+    status: "Fuente academica",
+  },
+  {
+    id: "source-seminario",
+    projectId: "seminario-paz",
+    title: "Lecturas y minutas Seminario de Paz",
+    type: "Lecturas / apuntes",
+    location: "Materiales sobre paz, interser, comunicacion no violenta, convivencia y enfoque restaurativo",
+    status: "Fuente metodologica",
+  },
+  {
+    id: "source-catloop",
+    projectId: "catloop",
+    title: "Proyecto CatLoop / MutaCat",
+    type: "Postulacion / producto",
+    location: "Sistema modular sustentable para gatos, conectores 3D, kit base y repuestos",
+    status: "Fuente incubadora",
+  },
+  {
+    id: "source-sust",
+    projectId: "sustentabilidad",
+    title: "Revotrush y Poiesis",
+    type: "Antecedentes semilla",
+    location: "Proyectos semilla vinculados a sustentabilidad, economia circular y ecodiseno",
+    status: "Fuente historica",
+  },
+];
+
+export const defaultDeliverables = [
+  {
+    id: "deliverable-cm-roadmap",
+    projectId: "consultoria-cm",
+    title: "Plan de trabajo Consultoria Consolidacion CM",
+    type: "Plan / hoja de ruta",
+    version: "v0.1",
+    status: "Borrador",
+    location: "",
+    content:
+      "Proyecto desarrollado por Metamorfosis Lab para consolidar CM Banqueteria. Debe ordenar formalizacion, sistema interno, procesos, costos, documentos, permisos y metodologia replicable.",
+  },
+  {
+    id: "deliverable-sistema-cm-mvp",
+    projectId: "sistema-cm",
+    title: "MVP Sistema Interno CM",
+    type: "Arquitectura funcional",
+    version: "v0.1",
+    status: "En desarrollo",
+    location: "",
+    content:
+      "Modulos base: menu diario, dulces/promos, reservas/despacho, gastos, proveedores, stock, personal, minutas, consultoria, actas, informes y cotizaciones.",
+  },
+  {
+    id: "deliverable-cmexp-brief",
+    projectId: "cm-experiencias",
+    title: "Brief base CM Experiencias",
+    type: "Brief / produccion",
+    version: "v0.1",
+    status: "En diseno",
+    location: "",
+    content:
+      "Experiencia gastronomica, cultural e inmersiva en Laja. Incluye jornada social gratuita y jornada pagada, videos IA, guia historico, menu local, violinista, relato de mitos y aparicion teatral de La Senoraza.",
+  },
+  {
+    id: "deliverable-senoraza-ficha",
+    projectId: "dona-senoraza",
+    title: "Ficha Dona Senoraza Merch",
+    type: "Ficha producto",
+    version: "v0.1",
+    status: "En diseno",
+    location: "",
+    content:
+      "Linea 100% Metamorfosis. Productos: vela pequena de regalo, vela grande comercializable, caja ilustrada, relato visual y objeto identitario. CM podria recibir 20% por ventas realizadas en local o evento.",
+  },
+  {
+    id: "deliverable-juana-plan",
+    projectId: "juana-arco",
+    title: "Plan estrategico Juana de Arco",
+    type: "Plan comercial",
+    version: "v0.1",
+    status: "Pendiente",
+    location: "",
+    content:
+      "Despues de cerrar identidad, se requiere plan estrategico, calendario de campanas, validacion de ventas, seguimiento de contenido, metricas y posicionamiento.",
+  },
+  {
+    id: "deliverable-red-pausa",
+    projectId: "red-oriente",
+    title: "Ficha pausa activa Red Oriente",
+    type: "Ficha estrategica",
+    version: "v0.1",
+    status: "Pausado",
+    location: "",
+    content:
+      "Proyecto compartido con tercero. Mantener como reactivable, sin consumir foco actual. Definir criterios para avanzar sin prisa.",
+  },
+  {
+    id: "deliverable-metodo",
+    projectId: "estandarizacion",
+    title: "Mapa Metodo Metamorfosis",
+    type: "Metodo / producto",
+    version: "v0.1",
+    status: "En construccion",
+    location: "",
+    content:
+      "Estandarizar el proceso usado en CM, Juana, CatLoop, aji, Revotrush y Poiesis: diagnostico, orden estrategico, gestion, costos, formalizacion, digitalizacion, postulacion, validacion y seguimiento.",
+  },
+  {
+    id: "deliverable-sust",
+    projectId: "sustentabilidad",
+    title: "Banco sustentabilidad Metamorfosis",
+    type: "Banco de argumentos",
+    version: "v0.1",
+    status: "Pendiente",
+    location: "",
+    content:
+      "Registrar aprendizajes de Revotrush y Poiesis para futuros proyectos semilla, postulaciones, economia circular, ecodiseno y narrativa sustentable.",
+  },
+  {
+    id: "deliverable-concriterio-kit",
+    projectId: "concriterio-minimo",
+    title: "Kit inicial ConCriterio",
+    type: "Oferta comercial",
+    version: "v0.1",
+    status: "Pendiente",
+    location: "",
+    content:
+      "Oferta minima: talleres Sistema penal, carcel y prevencion; Seguridad con evidencia; Comunicacion, conflicto y convivencia; Mapa Inicial; Acompanamiento Estrategico mensual.",
+  },
+  {
+    id: "deliverable-magister-control",
+    projectId: "magister-uba",
+    title: "Tablero Magister UBA",
+    type: "Control academico",
+    version: "v0.1",
+    status: "Pendiente",
+    location: "",
+    content:
+      "Separar programa general, cursos, trabajos, tesis y seminarios. Mantener calendario, entregas y requisitos visibles.",
+  },
+  {
+    id: "deliverable-tesis",
+    projectId: "tesis-uba",
+    title: "Proyecto tesis UBA",
+    type: "Investigacion",
+    version: "v0.1",
+    status: "En formulacion",
+    location: "",
+    content:
+      "Tema: conflictos penitenciarios y justicia restaurativa en Chile. Foco: ejecucion penal, respuesta disciplinaria, violencia institucional, interculturalidad y condiciones normativas/institucionales/comunitarias.",
+  },
+  {
+    id: "deliverable-seminario",
+    projectId: "seminario-paz",
+    title: "Banco de insumos Seminario de Paz",
+    type: "Insumos academicos",
+    version: "v0.1",
+    status: "Activo",
+    location: "",
+    content:
+      "Registrar ideas del seminario que sirven a la tesis: conflicto como relacion danada, palabra, sancion, violencia, vinculos, paz, interser y enfoque restaurativo.",
+  },
+  {
+    id: "deliverable-catloop",
+    projectId: "catloop",
+    title: "Carpeta viva CatLoop",
+    type: "Postulacion / producto",
+    version: "v0.1",
+    status: "Incubadora",
+    location: "",
+    content:
+      "Proyecto modular para gatos, 50/50 Francisca-Benjamin. Mantener narrativa, MVP, vision ano 2, conectores 3D, modelo circular y posibles cartas de apoyo.",
+  },
+  {
+    id: "deliverable-aji",
+    projectId: "aji",
+    title: "Criterio de activacion Aji",
+    type: "Filtro de oportunidad",
+    version: "v0.1",
+    status: "Pausado",
+    location: "",
+    content:
+      "Activar solo si sirve a CM Experiencias como insumo, degustacion, relato territorial, producto de regalo o futura postulacion. No consumir foco antes de validar la experiencia.",
+  },
+];
