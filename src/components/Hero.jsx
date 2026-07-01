@@ -1,26 +1,15 @@
-import React from "react";
-
-const heroPillars = ["Consultoría", "Diseño", "Tecnología", "Experiencias"];
+const heroPillars = ["Estrategia", "Diseño", "Tecnología"];
 
 export default function Hero() {
   return (
     <section id="inicio" className="hero hero-fullbleed">
-      <img
-        src="/hero-metamorfosis-portal.png"
-        alt="Visual conceptual de ecosistema digital y crecimiento"
-        className="hero-bg-image"
-      />
-
-      <div className="hero-overlay" aria-hidden="true" />
-
       <div className="hero-content hero-content-centered">
-        <p className="hero-kicker">Consultoría, diseño e innovación aplicada</p>
+        <p className="hero-kicker">Metamorfosis Lab</p>
 
-        <h1 className="hero-title">Transformamos ideas en sistemas claros y proyectables.</h1>
+        <h1 className="hero-title">Ideas que evolucionan.</h1>
 
         <p className="hero-text">
-          Metamorfosis Laboratiorio de Innovación gestión de proyectos, diseña herramientas digitales y crea experiencias
-          para convertir necesidades reales en operaciones más nítidas, atractivas y escalables.
+          Unimos estrategia, diseño y tecnología para transformar proyectos en presencia digital clara, útil y escalable.
         </p>
 
         <div className="hero-pills" aria-label="Servicios principales">
@@ -34,15 +23,10 @@ export default function Hero() {
             Ver plataforma
           </a>
           <a href="#contacto" className="btn btn-ghost">
-            Consolidar mi proyecto
+            Conversemos
           </a>
         </div>
       </div>
-
-      <a href="https://metamorfosislab.cl" target="_blank" rel="noopener noreferrer" className="hero-brand-seal" aria-label="Ir a metamorfosislab.cl">
-        <img src="/logo-metamorfosis-transparente.png" alt="Logo Metamorfosis" className="hero-seal-logo" />
-        <span className="hero-domain">metamorfosislab.cl</span>
-      </a>
     </section>
   );
 }
