@@ -15,6 +15,30 @@ const STORAGE_KEYS = {
   deliverables: "metamorfosis-os-deliverables-v1",
 };
 const ACCESS_KEY = "metamorfosis";
+const PROJECT_COLORS = {
+  "consultoria-cm": "#35c7d8",
+  "sistema-cm": "#62d6a5",
+  "cm-experiencias": "#f2b35d",
+  "dona-senoraza": "#d78adf",
+  "juana-arco": "#f6d36b",
+  "red-oriente": "#89a7ff",
+  estandarizacion: "#41d9b5",
+  sustentabilidad: "#7ed27a",
+  "concriterio-minimo": "#5ba7ff",
+  "magister-uba": "#b592ff",
+  "tesis-uba": "#cf9cff",
+  "seminario-paz": "#8fd0ff",
+  catloop: "#6fd4c4",
+  aji: "#ff8a63",
+};
+const OS_TABS = [
+  { id: "resumen", label: "Resumen" },
+  { id: "tareas", label: "Tareas" },
+  { id: "bitacora", label: "Bitacora" },
+  { id: "fuentes", label: "Fuentes" },
+  { id: "entregables", label: "Entregables" },
+  { id: "chatgpt", label: "ChatGPT" },
+];
 
 function loadCollection(key, fallback) {
   try {
@@ -39,6 +63,7 @@ export default function MetamorfosisOS() {
   const [accessValue, setAccessValue] = useState("");
   const [activePlatform, setActivePlatform] = useState("all");
   const [activeProjectId, setActiveProjectId] = useState(osProjects[0].id);
+  const [activeTab, setActiveTab] = useState("resumen");
   const [tasks, setTasks] = useState(() => loadCollection(STORAGE_KEYS.tasks, defaultWeeklyTasks));
   const [logs, setLogs] = useState(() => loadCollection(STORAGE_KEYS.logs, defaultLogEntries));
   const [sources, setSources] = useState(() => loadCollection(STORAGE_KEYS.sources, defaultSourceDocs));
@@ -59,6 +84,7 @@ export default function MetamorfosisOS() {
   const [copied, setCopied] = useState(false);
 
   const activeProject = osProjects.find((project) => project.id === activeProjectId) || osProjects[0];
+  const activeProjectColor = PROJECT_COLORS[activeProject.id] || "#16a6cf";
   const activeProjectTasks = tasks.filter((task) => task.projectId === activeProject.id);
   const activeProjectLogs = logs.filter((entry) => entry.projectId === activeProject.id);
   const activeProjectSources = sources.filter((source) => source.projectId === activeProject.id);
@@ -327,7 +353,10 @@ export default function MetamorfosisOS() {
           <button
             type="button"
             className={activePlatform === "all" ? "os-filter is-active" : "os-filter"}
-            onClick={() => setActivePlatform("all")}
+            onClick={() => {
+              setActivePlatform("all");
+              setActiveTab("resumen");
+            }}
           >
             <span>Todas</span>
             <strong>{osProjects.length}</strong>
@@ -337,7 +366,12 @@ export default function MetamorfosisOS() {
               key={platform.id}
               type="button"
               className={activePlatform === platform.id ? "os-filter is-active" : "os-filter"}
-              onClick={() => setActivePlatform(platform.id)}
+              onClick={() => {
+                const firstProject = osProjects.find((project) => project.platform === platform.id);
+                setActivePlatform(platform.id);
+                if (firstProject) setActiveProjectId(firstProject.id);
+                setActiveTab("resumen");
+              }}
             >
               <span>{platform.name}</span>
               <strong>{platform.count}</strong>
@@ -360,7 +394,11 @@ export default function MetamorfosisOS() {
                 key={project.id}
                 type="button"
                 className={project.id === activeProject.id ? "os-project-card is-active" : "os-project-card"}
-                onClick={() => setActiveProjectId(project.id)}
+                style={{ "--project-color": PROJECT_COLORS[project.id] || "#16a6cf" }}
+                onClick={() => {
+                  setActiveProjectId(project.id);
+                  setActiveTab("resumen");
+                }}
               >
                 <span>{project.priority}</span>
                 <h3>{project.title}</h3>
@@ -372,8 +410,44 @@ export default function MetamorfosisOS() {
         </section>
       </section>
 
-      <section className="os-detail-grid">
-        <article className="os-detail-card os-project-detail">
+      <section className="os-active-context" style={{ "--project-color": activeProjectColor }}>
+        <div>
+          <p className="os-eyebrow">Proyecto activo</p>
+          <h2>{activeProject.title}</h2>
+          <p>{activeProject.summary}</p>
+        </div>
+        <dl>
+          <div>
+            <dt>Estado</dt>
+            <dd>{activeProject.status}</dd>
+          </div>
+          <div>
+            <dt>Prioridad</dt>
+            <dd>{activeProject.priority}</dd>
+          </div>
+          <div>
+            <dt>Fecha</dt>
+            <dd>{activeProject.due}</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section className="os-workspace" style={{ "--project-color": activeProjectColor }}>
+        <nav className="os-tabs" aria-label="Informacion y edicion del proyecto activo">
+          {OS_TABS.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              className={activeTab === tab.id ? "is-active" : ""}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </nav>
+
+        {activeTab === "resumen" && (
+          <article className="os-detail-card os-project-detail">
           <div className="os-card-heading">
             <p className="os-eyebrow">Ficha activa</p>
             <h2>{activeProject.title}</h2>
@@ -409,8 +483,10 @@ export default function MetamorfosisOS() {
             <p>{activeProject.deliverable}</p>
           </div>
         </article>
+        )}
 
-        <article className="os-detail-card">
+        {activeTab === "tareas" && (
+          <article className="os-detail-card">
           <div className="os-card-heading">
             <p className="os-eyebrow">Semana</p>
             <h2>Tareas abiertas</h2>
@@ -444,19 +520,10 @@ export default function MetamorfosisOS() {
             )}
           </div>
         </article>
+        )}
 
-        <article className="os-detail-card os-briefing-card">
-          <div className="os-card-heading">
-            <p className="os-eyebrow">ChatGPT</p>
-            <h2>Briefing exportable</h2>
-          </div>
-          <textarea readOnly value={briefing} />
-          <button type="button" onClick={copyBriefing}>
-            {copied ? "Copiado" : "Copiar briefing"}
-          </button>
-        </article>
-
-        <article className="os-detail-card">
+        {activeTab === "bitacora" && (
+          <article className="os-detail-card">
           <div className="os-card-heading">
             <p className="os-eyebrow">Bitacora</p>
             <h2>Decisiones y avances</h2>
@@ -496,8 +563,10 @@ export default function MetamorfosisOS() {
             )}
           </div>
         </article>
+        )}
 
-        <article className="os-detail-card">
+        {activeTab === "fuentes" && (
+          <article className="os-detail-card">
           <div className="os-card-heading">
             <p className="os-eyebrow">Fuentes</p>
             <h2>Documentos base</h2>
@@ -542,8 +611,10 @@ export default function MetamorfosisOS() {
             )}
           </div>
         </article>
+        )}
 
-        <article className="os-detail-card os-wide-card">
+        {activeTab === "entregables" && (
+          <article className="os-detail-card os-wide-card">
           <div className="os-card-heading">
             <p className="os-eyebrow">Entregables</p>
             <h2>Versiones descargables</h2>
@@ -608,6 +679,27 @@ export default function MetamorfosisOS() {
             )}
           </div>
         </article>
+        )}
+
+        {activeTab === "chatgpt" && (
+          <article className="os-detail-card os-briefing-card">
+            <div className="os-card-heading">
+              <p className="os-eyebrow">ChatGPT</p>
+              <h2>Briefing exportable</h2>
+            </div>
+            <div className="os-decision-block">
+              <h3>Automatizacion asistida</h3>
+              <p>
+                Este briefing no reemplaza la revision humana. Sirve para traer contexto a ChatGPT,
+                trabajar el entregable y luego registrar manualmente la version validada en el panel.
+              </p>
+            </div>
+            <textarea readOnly value={briefing} />
+            <button type="button" onClick={copyBriefing}>
+              {copied ? "Copiado" : "Copiar briefing"}
+            </button>
+          </article>
+        )}
       </section>
     </main>
   );
