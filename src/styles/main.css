@@ -1771,3 +1771,207 @@ a {
     transition: none;
   }
 }
+
+/* === Correccion definitiva hero + OS, julio 2026 === */
+
+.hero.hero-fullbleed {
+  position: relative !important;
+  isolation: isolate !important;
+  min-height: clamp(620px, calc(100vh - 78px), 820px) !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding: clamp(86px, 8vw, 126px) 7vw !important;
+  overflow: hidden !important;
+  text-align: left !important;
+  background:
+    linear-gradient(90deg, rgba(4, 13, 25, 0.92) 0%, rgba(4, 13, 25, 0.72) 34%, rgba(4, 13, 25, 0.18) 66%, rgba(4, 13, 25, 0.3) 100%),
+    linear-gradient(180deg, rgba(4, 13, 25, 0.14) 0%, rgba(4, 13, 25, 0.62) 100%),
+    url("/hero-metamorfosis-portal.png") center right / cover no-repeat !important;
+}
+
+.hero.hero-fullbleed::before,
+.hero.hero-fullbleed::after,
+.hero.hero-fullbleed .hero-bg-image,
+.hero.hero-fullbleed .hero-overlay,
+.hero.hero-fullbleed .hero-brand-seal {
+  display: none !important;
+}
+
+.hero.hero-fullbleed .hero-content.hero-content-centered {
+  position: relative !important;
+  z-index: 1 !important;
+  width: min(560px, 100%) !important;
+  max-width: 560px !important;
+  margin: 0 !important;
+  padding: clamp(22px, 3vw, 34px) !important;
+  border: 1px solid rgba(130, 216, 232, 0.18) !important;
+  border-radius: 24px !important;
+  background: rgba(5, 17, 31, 0.42) !important;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.26) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.hero.hero-fullbleed .hero-kicker {
+  width: fit-content !important;
+  margin: 0 0 18px !important;
+  padding: 8px 14px !important;
+  border: 1px solid rgba(130, 216, 232, 0.28) !important;
+  border-radius: 999px !important;
+  color: var(--celeste-suave) !important;
+  background: rgba(130, 216, 232, 0.08) !important;
+  font-size: clamp(0.68rem, 0.78vw, 0.82rem) !important;
+  line-height: 1 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+}
+
+.hero.hero-fullbleed .hero-title {
+  max-width: 9.2ch !important;
+  margin: 0 !important;
+  color: #f4f8fd !important;
+  font-size: clamp(3.1rem, 6.1vw, 6rem) !important;
+  line-height: 0.96 !important;
+  letter-spacing: -0.045em !important;
+  text-wrap: balance;
+}
+
+.hero.hero-fullbleed .hero-text {
+  max-width: 46ch !important;
+  margin: 22px 0 0 !important;
+  color: rgba(237, 244, 251, 0.88) !important;
+  font-size: clamp(1rem, 1.08vw, 1.15rem) !important;
+  line-height: 1.65 !important;
+}
+
+.hero.hero-fullbleed .hero-pills {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  justify-content: flex-start !important;
+  margin-top: 24px !important;
+}
+
+.hero.hero-fullbleed .hero-pills span {
+  min-height: 34px !important;
+  padding: 0 13px !important;
+  border-radius: 999px !important;
+  color: #eaf7fb !important;
+  background: rgba(130, 216, 232, 0.1) !important;
+  border: 1px solid rgba(130, 216, 232, 0.22) !important;
+  font-size: 0.78rem !important;
+  font-weight: 800 !important;
+}
+
+.hero.hero-fullbleed .hero-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+  justify-content: flex-start !important;
+  margin-top: 28px !important;
+}
+
+.hero.hero-fullbleed .btn {
+  width: auto !important;
+  min-height: 46px !important;
+  padding: 0 18px !important;
+  border-radius: 13px !important;
+  font-size: 0.92rem !important;
+}
+
+.os-shell {
+  position: relative !important;
+  isolation: isolate !important;
+  background:
+    linear-gradient(90deg, rgba(5, 14, 26, 0.96), rgba(5, 14, 26, 0.82)),
+    radial-gradient(circle at 76% 12%, rgba(22, 166, 207, 0.18), transparent 32%),
+    url("/hero-metamorfosis-disruptivo.png") center / cover fixed no-repeat !important;
+}
+
+.os-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(130, 216, 232, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(130, 216, 232, 0.035) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.74), transparent 92%);
+}
+
+.os-login-panel,
+.os-sidebar,
+.os-main-panel,
+.os-detail-card,
+.os-kpis article,
+.os-briefing-card,
+.os-project-card {
+  background: linear-gradient(145deg, rgba(15, 31, 52, 0.9), rgba(6, 18, 32, 0.84)) !important;
+  border-color: rgba(130, 216, 232, 0.2) !important;
+  backdrop-filter: blur(14px) !important;
+}
+
+@media (max-width: 980px) {
+  .hero.hero-fullbleed {
+    min-height: 720px !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    padding: 92px 5vw 54px !important;
+    text-align: center !important;
+    background:
+      linear-gradient(180deg, rgba(4, 13, 25, 0.22) 0%, rgba(4, 13, 25, 0.88) 68%, rgba(4, 13, 25, 0.96) 100%),
+      url("/hero-metamorfosis-portal.png") center top / cover no-repeat !important;
+  }
+
+  .hero.hero-fullbleed .hero-content.hero-content-centered {
+    width: min(640px, 100%) !important;
+    max-width: 640px !important;
+    margin: 0 auto !important;
+  }
+
+  .hero.hero-fullbleed .hero-kicker,
+  .hero.hero-fullbleed .hero-title,
+  .hero.hero-fullbleed .hero-text {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .hero.hero-fullbleed .hero-pills,
+  .hero.hero-fullbleed .hero-actions {
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .hero.hero-fullbleed {
+    min-height: 660px !important;
+    padding: 82px 5vw 42px !important;
+  }
+
+  .hero.hero-fullbleed .hero-content.hero-content-centered {
+    padding: 20px !important;
+    border-radius: 20px !important;
+  }
+
+  .hero.hero-fullbleed .hero-title {
+    max-width: 10ch !important;
+    font-size: clamp(2.45rem, 13vw, 3.6rem) !important;
+    line-height: 1 !important;
+  }
+
+  .hero.hero-fullbleed .hero-text {
+    font-size: 0.96rem !important;
+    line-height: 1.58 !important;
+  }
+
+  .hero.hero-fullbleed .hero-actions {
+    flex-direction: column !important;
+  }
+
+  .hero.hero-fullbleed .btn {
+    width: 100% !important;
+  }
+}
