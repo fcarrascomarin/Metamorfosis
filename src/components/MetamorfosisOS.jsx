@@ -1,124 +1,195 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import {
-  defaultDeliverables,
+  defaultAssets,
+  defaultDocuments,
   defaultLogEntries,
-  defaultSourceDocs,
-  defaultWeeklyTasks,
+  defaultMeasures,
   osPlatforms,
   osProjects,
 } from "../data/metamorfosisOs.js";
 
-const STORAGE_KEYS = {
-  tasks: "metamorfosis-os-tasks-v1",
-  logs: "metamorfosis-os-logs-v1",
-  sources: "metamorfosis-os-sources-v1",
-  deliverables: "metamorfosis-os-deliverables-v1",
-};
 const ACCESS_KEY = "metamorfosis";
-const PROJECT_COLORS = {
-  "consultoria-cm": "#35c7d8",
-  "sistema-cm": "#62d6a5",
-  "cm-experiencias": "#f2b35d",
-  "dona-senoraza": "#d78adf",
-  "juana-arco": "#f6d36b",
-  "red-oriente": "#89a7ff",
-  estandarizacion: "#41d9b5",
-  sustentabilidad: "#7ed27a",
-  "concriterio-minimo": "#5ba7ff",
-  "magister-uba": "#b592ff",
-  "tesis-uba": "#cf9cff",
-  "seminario-paz": "#8fd0ff",
-  catloop: "#6fd4c4",
-  aji: "#ff8a63",
+
+const STORAGE_KEYS = {
+  measures: "metamorfosis-os-measures-v2",
+  documents: "metamorfosis-os-documents-v2",
+  assets: "metamorfosis-os-assets-v2",
+  logs: "metamorfosis-os-logs-v2",
 };
-const OS_TABS = [
+
+const PROJECT_COLORS = {
+  "metamorfosis-lab": "#35c7d8",
+  "mapa-transformacion": "#62d6a5",
+  "consultoria-cm": "#5ba7ff",
+  "cm-experiencias": "#f2b35d",
+  "panel-interno": "#b592ff",
+  poiesis: "#d78adf",
+  catloop: "#6fd4c4",
+};
+
+const TABS = [
   { id: "resumen", label: "Resumen" },
-  { id: "tareas", label: "Tareas" },
-  { id: "bitacora", label: "Bitacora" },
-  { id: "fuentes", label: "Fuentes" },
-  { id: "entregables", label: "Entregables" },
-  { id: "chatgpt", label: "ChatGPT" },
+  { id: "medidas", label: "Medidas" },
+  { id: "documentos", label: "Documentos" },
+  { id: "activos", label: "Activos" },
+  { id: "bitacora", label: "Bitácora" },
+  { id: "respaldo", label: "Respaldo" },
 ];
+
+const emptyMeasure = {
+  title: "",
+  dimension: "Operación",
+  unit: "",
+  baseline: "",
+  current: "",
+  target: "",
+  direction: "up",
+  notes: "",
+};
+
+const emptyDocument = {
+  title: "",
+  category: "Documento",
+  status: "Activo",
+  location: "",
+  notes: "",
+};
+
+const emptyAsset = {
+  title: "",
+  type: "Activo intangible",
+  status: "Por evaluar",
+  owner: "Metamorfosis Lab",
+  notes: "",
+};
+
+const emptyLog = {
+  title: "",
+  note: "",
+  author: "Francisca / Benjamín",
+};
+
+function today() {
+  return new Date().toISOString().slice(0, 10);
+}
 
 function loadCollection(key, fallback) {
   try {
     const saved = window.localStorage.getItem(key);
-    if (!saved) return fallback;
-    return JSON.parse(saved);
+    return saved ? JSON.parse(saved) : fallback;
   } catch {
     return fallback;
   }
 }
 
-function saveCollection(key, items) {
-  window.localStorage.setItem(key, JSON.stringify(items));
+function saveCollection(key, value) {
+  window.localStorage.setItem(key, JSON.stringify(value));
 }
 
-function today() {
-  return new Date().toISOString().slice(0, 10);
+function toNumber(value) {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function isImproved(measure) {
+  const baseline = toNumber(measure.baseline);
+  const current = toNumber(measure.current);
+  if (measure.direction === "down") return current < baseline;
+  return current > baseline;
+}
+
+function progressToTarget(measure) {
+  const baseline = toNumber(measure.baseline);
+  const current = toNumber(measure.current);
+  const target = toNumber(measure.target);
+  if (target === baseline) return 0;
+  const ratio =
+    measure.direction === "down"
+      ? (baseline - current) / (baseline - target)
+      : (current - baseline) / (target - baseline);
+  return Math.max(0, Math.min(100, Math.round(ratio * 100)));
+}
+
+function downloadJson(filename, payload) {
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
 }
 
 export default function MetamorfosisOS() {
   const [access, setAccess] = useState(() => window.localStorage.getItem("metamorfosis-os-access") === "ok");
   const [accessValue, setAccessValue] = useState("");
   const [activePlatform, setActivePlatform] = useState("all");
-  const [activeProjectId, setActiveProjectId] = useState(osProjects[0].id);
+  const [activeProjectId, setActiveProjectId] = useState("metamorfosis-lab");
   const [activeTab, setActiveTab] = useState("resumen");
-  const [tasks, setTasks] = useState(() => loadCollection(STORAGE_KEYS.tasks, defaultWeeklyTasks));
+  const [measures, setMeasures] = useState(() => loadCollection(STORAGE_KEYS.measures, defaultMeasures));
+  const [documents, setDocuments] = useState(() => loadCollection(STORAGE_KEYS.documents, defaultDocuments));
+  const [assets, setAssets] = useState(() => loadCollection(STORAGE_KEYS.assets, defaultAssets));
   const [logs, setLogs] = useState(() => loadCollection(STORAGE_KEYS.logs, defaultLogEntries));
-  const [sources, setSources] = useState(() => loadCollection(STORAGE_KEYS.sources, defaultSourceDocs));
-  const [deliverables, setDeliverables] = useState(() =>
-    loadCollection(STORAGE_KEYS.deliverables, defaultDeliverables),
-  );
-  const [newTask, setNewTask] = useState("");
-  const [newLog, setNewLog] = useState({ title: "", note: "", author: "Francisca / Benjamin" });
-  const [newSource, setNewSource] = useState({ title: "", type: "Documento", location: "", status: "Fuente activa" });
-  const [newDeliverable, setNewDeliverable] = useState({
-    title: "",
-    type: "Documento",
-    version: "v0.1",
-    status: "Borrador",
-    location: "",
-    content: "",
-  });
-  const [copied, setCopied] = useState(false);
+  const [measureForm, setMeasureForm] = useState(emptyMeasure);
+  const [documentForm, setDocumentForm] = useState(emptyDocument);
+  const [assetForm, setAssetForm] = useState(emptyAsset);
+  const [logForm, setLogForm] = useState(emptyLog);
+  const [importMessage, setImportMessage] = useState("");
+  const importRef = useRef(null);
 
   const activeProject = osProjects.find((project) => project.id === activeProjectId) || osProjects[0];
-  const activeProjectColor = PROJECT_COLORS[activeProject.id] || "#16a6cf";
-  const activeProjectTasks = tasks.filter((task) => task.projectId === activeProject.id);
-  const activeProjectLogs = logs.filter((entry) => entry.projectId === activeProject.id);
-  const activeProjectSources = sources.filter((source) => source.projectId === activeProject.id);
-  const activeProjectDeliverables = deliverables.filter((deliverable) => deliverable.projectId === activeProject.id);
+  const activeColor = PROJECT_COLORS[activeProject.id] || "#35c7d8";
 
   const visibleProjects = useMemo(() => {
     if (activePlatform === "all") return osProjects;
     return osProjects.filter((project) => project.platform === activePlatform);
   }, [activePlatform]);
 
-  const weeklyTasks = tasks.filter((task) => task.status === "Esta semana");
-  const projectCounts = osPlatforms.map((platform) => ({
+  const projectMeasures = measures.filter((item) => item.projectId === activeProject.id);
+  const projectDocuments = documents.filter((item) => item.projectId === activeProject.id);
+  const projectAssets = assets.filter((item) => item.projectId === activeProject.id);
+  const projectLogs = logs.filter((item) => item.projectId === activeProject.id);
+
+  const stats = useMemo(() => {
+    const improved = measures.filter(isImproved).length;
+    const average =
+      measures.length === 0
+        ? 0
+        : Math.round(measures.reduce((sum, measure) => sum + progressToTarget(measure), 0) / measures.length);
+    return {
+      projects: osProjects.length,
+      measures: measures.length,
+      improved,
+      documents: documents.length,
+      assets: assets.length,
+      logs: logs.length,
+      average,
+    };
+  }, [assets.length, documents.length, logs.length, measures]);
+
+  const platformCounts = osPlatforms.map((platform) => ({
     ...platform,
     count: osProjects.filter((project) => project.platform === platform.id).length,
   }));
 
-  const updateTasks = (nextTasks) => {
-    setTasks(nextTasks);
-    saveCollection(STORAGE_KEYS.tasks, nextTasks);
+  const persistMeasures = (next) => {
+    setMeasures(next);
+    saveCollection(STORAGE_KEYS.measures, next);
   };
 
-  const updateLogs = (nextLogs) => {
-    setLogs(nextLogs);
-    saveCollection(STORAGE_KEYS.logs, nextLogs);
+  const persistDocuments = (next) => {
+    setDocuments(next);
+    saveCollection(STORAGE_KEYS.documents, next);
   };
 
-  const updateSources = (nextSources) => {
-    setSources(nextSources);
-    saveCollection(STORAGE_KEYS.sources, nextSources);
+  const persistAssets = (next) => {
+    setAssets(next);
+    saveCollection(STORAGE_KEYS.assets, next);
   };
 
-  const updateDeliverables = (nextDeliverables) => {
-    setDeliverables(nextDeliverables);
-    saveCollection(STORAGE_KEYS.deliverables, nextDeliverables);
+  const persistLogs = (next) => {
+    setLogs(next);
+    saveCollection(STORAGE_KEYS.logs, next);
   };
 
   const handleAccess = (event) => {
@@ -129,171 +200,134 @@ export default function MetamorfosisOS() {
     }
   };
 
-  const addTask = (event) => {
+  const addMeasure = (event) => {
     event.preventDefault();
-    const title = newTask.trim();
-    if (!title) return;
-    updateTasks([
-      ...tasks,
+    if (!measureForm.title.trim()) return;
+    persistMeasures([
       {
-        id: `task-${Date.now()}`,
+        ...measureForm,
+        id: `measure-${Date.now()}`,
         projectId: activeProject.id,
-        title,
-        owner: activeProject.owner.split("/")[0].trim(),
-        status: "Esta semana",
+        baseline: toNumber(measureForm.baseline),
+        current: toNumber(measureForm.current),
+        target: toNumber(measureForm.target),
+        date: today(),
       },
+      ...measures,
     ]);
-    setNewTask("");
+    setMeasureForm(emptyMeasure);
   };
 
-  const toggleTaskStatus = (taskId) => {
-    updateTasks(
-      tasks.map((task) =>
-        task.id === taskId
-          ? { ...task, status: task.status === "Cerrada" ? "Esta semana" : "Cerrada" }
-          : task,
-      ),
-    );
+  const updateMeasureCurrent = (id, value) => {
+    persistMeasures(measures.map((item) => (item.id === id ? { ...item, current: toNumber(value), date: today() } : item)));
   };
 
-  const removeTask = (taskId) => {
-    updateTasks(tasks.filter((task) => task.id !== taskId));
+  const addDocument = (event) => {
+    event.preventDefault();
+    if (!documentForm.title.trim() && !documentForm.location.trim()) return;
+    persistDocuments([
+      { ...documentForm, id: `doc-${Date.now()}`, projectId: activeProject.id, date: today() },
+      ...documents,
+    ]);
+    setDocumentForm(emptyDocument);
+  };
+
+  const addAsset = (event) => {
+    event.preventDefault();
+    if (!assetForm.title.trim()) return;
+    persistAssets([{ ...assetForm, id: `asset-${Date.now()}`, projectId: activeProject.id }, ...assets]);
+    setAssetForm(emptyAsset);
   };
 
   const addLog = (event) => {
     event.preventDefault();
-    if (!newLog.title.trim() && !newLog.note.trim()) return;
-    updateLogs([
+    if (!logForm.title.trim() && !logForm.note.trim()) return;
+    persistLogs([
       {
         id: `log-${Date.now()}`,
         projectId: activeProject.id,
         date: today(),
-        title: newLog.title.trim() || "Registro sin titulo",
-        note: newLog.note.trim(),
-        author: newLog.author.trim() || "Metamorfosis",
+        title: logForm.title.trim() || "Registro sin título",
+        note: logForm.note.trim(),
+        author: logForm.author.trim() || "Metamorfosis",
       },
       ...logs,
     ]);
-    setNewLog({ title: "", note: "", author: "Francisca / Benjamin" });
+    setLogForm(emptyLog);
   };
 
-  const addSource = (event) => {
-    event.preventDefault();
-    if (!newSource.title.trim() && !newSource.location.trim()) return;
-    updateSources([
-      {
-        id: `source-${Date.now()}`,
-        projectId: activeProject.id,
-        title: newSource.title.trim() || "Fuente sin titulo",
-        type: newSource.type.trim() || "Documento",
-        location: newSource.location.trim(),
-        status: newSource.status.trim() || "Fuente activa",
-      },
-      ...sources,
-    ]);
-    setNewSource({ title: "", type: "Documento", location: "", status: "Fuente activa" });
-  };
-
-  const addDeliverable = (event) => {
-    event.preventDefault();
-    if (!newDeliverable.title.trim() && !newDeliverable.content.trim()) return;
-    updateDeliverables([
-      {
-        id: `deliverable-${Date.now()}`,
-        projectId: activeProject.id,
-        title: newDeliverable.title.trim() || "Entregable sin titulo",
-        type: newDeliverable.type.trim() || "Documento",
-        version: newDeliverable.version.trim() || "v0.1",
-        status: newDeliverable.status.trim() || "Borrador",
-        location: newDeliverable.location.trim(),
-        content: newDeliverable.content.trim(),
-      },
-      ...deliverables,
-    ]);
-    setNewDeliverable({
-      title: "",
-      type: "Documento",
-      version: "v0.1",
-      status: "Borrador",
-      location: "",
-      content: "",
+  const exportData = () => {
+    downloadJson(`metamorfosis-os-${today()}.json`, {
+      version: 2,
+      exportedAt: new Date().toISOString(),
+      projects: osProjects,
+      measures,
+      documents,
+      assets,
+      logs,
     });
   };
 
-  const downloadDeliverable = (deliverable) => {
-    const text = [
-      deliverable.title,
-      `Proyecto: ${activeProject.title}`,
-      `Tipo: ${deliverable.type}`,
-      `Version: ${deliverable.version}`,
-      `Estado: ${deliverable.status}`,
-      "",
-      deliverable.content || deliverable.location || "Entregable registrado sin contenido interno.",
-    ].join("\n");
-    const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `${deliverable.title.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "entregable"}.txt`;
-    link.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const briefing = useMemo(() => {
-    const selectedTasks = tasks.filter((task) => task.status !== "Cerrada");
-    const selectedLogs = activeProjectLogs.slice(0, 5);
-    const selectedSources = activeProjectSources.slice(0, 5);
-    const selectedDeliverables = activeProjectDeliverables.slice(0, 5);
-    return [
-      "Briefing Metamorfosis OS",
-      "",
-      `Proyecto activo: ${activeProject.title}`,
-      `Plataforma: ${osPlatforms.find((platform) => platform.id === activeProject.platform)?.name}`,
-      `Responsable / reparto: ${activeProject.owner}`,
-      `Prioridad: ${activeProject.priority}`,
-      `Estado: ${activeProject.status}`,
-      `Proximo paso: ${activeProject.nextStep}`,
-      `Riesgo principal: ${activeProject.risk}`,
-      `Entregable esperado: ${activeProject.deliverable}`,
-      `Uso de ChatGPT: ${activeProject.aiUse}`,
-      "",
-      "Tareas abiertas:",
-      ...selectedTasks.map((task) => `- [${task.status}] ${task.title} (${task.owner})`),
-      "",
-      "Bitacora del proyecto activo:",
-      ...selectedLogs.map((entry) => `- ${entry.date}: ${entry.title} - ${entry.note}`),
-      "",
-      "Fuentes del proyecto activo:",
-      ...selectedSources.map((source) => `- ${source.title} (${source.type}): ${source.location}`),
-      "",
-      "Entregables del proyecto activo:",
-      ...selectedDeliverables.map(
-        (deliverable) => `- ${deliverable.title} (${deliverable.type}, ${deliverable.version}, ${deliverable.status})`,
-      ),
-    ].join("\n");
-  }, [activeProject, activeProjectDeliverables, activeProjectLogs, activeProjectSources, tasks]);
-
-  const copyBriefing = async () => {
-    await navigator.clipboard.writeText(briefing);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1800);
+  const importData = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(String(reader.result));
+        if (Array.isArray(parsed.measures)) persistMeasures(parsed.measures);
+        if (Array.isArray(parsed.documents)) persistDocuments(parsed.documents);
+        if (Array.isArray(parsed.assets)) persistAssets(parsed.assets);
+        if (Array.isArray(parsed.logs)) persistLogs(parsed.logs);
+        setImportMessage("Datos importados correctamente.");
+      } catch {
+        setImportMessage("No se pudo importar el archivo.");
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = "";
   };
 
   const resetBaseData = () => {
-    updateTasks(defaultWeeklyTasks);
-    updateLogs(defaultLogEntries);
-    updateSources(defaultSourceDocs);
-    updateDeliverables(defaultDeliverables);
+    persistMeasures(defaultMeasures);
+    persistDocuments(defaultDocuments);
+    persistAssets(defaultAssets);
+    persistLogs(defaultLogEntries);
   };
+
+  const briefing = [
+    "Briefing Metamorfosis OS",
+    "",
+    `Proyecto activo: ${activeProject.title}`,
+    `Estado: ${activeProject.status}`,
+    `Prioridad: ${activeProject.priority}`,
+    `Próximo paso: ${activeProject.nextStep}`,
+    `Riesgo: ${activeProject.risk}`,
+    "",
+    "Medidas:",
+    ...projectMeasures.map(
+      (item) =>
+        `- ${item.title}: base ${item.baseline} / actual ${item.current} / meta ${item.target} ${item.unit} (${progressToTarget(item)}%)`,
+    ),
+    "",
+    "Documentos:",
+    ...projectDocuments.map((item) => `- ${item.title}: ${item.status} / ${item.location}`),
+    "",
+    "Activos:",
+    ...projectAssets.map((item) => `- ${item.title}: ${item.type} / ${item.status} / ${item.owner}`),
+    "",
+    "Bitácora:",
+    ...projectLogs.slice(0, 8).map((item) => `- ${item.date}: ${item.title} - ${item.note}`),
+  ].join("\n");
 
   if (!access) {
     return (
       <main className="os-shell os-access">
         <section className="os-login-panel">
           <p className="os-eyebrow">Metamorfosis OS</p>
-          <h1>Panel interno de proyectos</h1>
+          <h1>Panel interno de transformación</h1>
           <p>
-            Acceso de trabajo para ordenar proyectos, prioridades, riesgos y entregables del laboratorio.
+            Espacio privado para registrar medidas, documentos, activos, decisiones y evidencia de Metamorfosis.
           </p>
           <form onSubmit={handleAccess} className="os-login-form">
             <label htmlFor="os-key">Clave de acceso</label>
@@ -317,10 +351,9 @@ export default function MetamorfosisOS() {
       <header className="os-header">
         <div>
           <p className="os-eyebrow">Metamorfosis OS</p>
-          <h1>Panel maestro de proyectos</h1>
+          <h1>Panel maestro interno</h1>
           <p>
-            Sistema operativo interno para ordenar Metamorfosis, ConCriterio, CM Experiencias,
-            Juana de Arco, academia e incubadora.
+            Sistema de trabajo para que Metamorfosis registre su método, mida avances, concentre documentos y no dependa de memoria, chats o carpetas dispersas.
           </p>
         </div>
         <a href="#inicio" className="os-back-link">
@@ -328,49 +361,45 @@ export default function MetamorfosisOS() {
         </a>
       </header>
 
-      <section className="os-kpis" aria-label="Resumen de plataformas">
+      <section className="os-kpis" aria-label="Resumen del sistema">
         <article>
-          <span>{osProjects.length}</span>
-          <p>proyectos y lineas</p>
+          <span>{stats.projects}</span>
+          <p>fichas estratégicas</p>
         </article>
         <article>
-          <span>{weeklyTasks.length}</span>
-          <p>tareas esta semana</p>
+          <span>{stats.measures}</span>
+          <p>medidas registradas</p>
         </article>
         <article>
-          <span>{deliverables.length}</span>
-          <p>entregables registrados</p>
+          <span>{stats.improved}</span>
+          <p>medidas con avance</p>
         </article>
         <article>
-          <span>{logs.length}</span>
-          <p>registros de bitacora</p>
+          <span>{stats.average}%</span>
+          <p>avance promedio a meta</p>
         </article>
       </section>
 
       <section className="os-layout">
         <aside className="os-sidebar">
-          <h2>Plataformas</h2>
+          <h2>Arquitectura</h2>
           <button
             type="button"
             className={activePlatform === "all" ? "os-filter is-active" : "os-filter"}
-            onClick={() => {
-              setActivePlatform("all");
-              setActiveTab("resumen");
-            }}
+            onClick={() => setActivePlatform("all")}
           >
             <span>Todas</span>
             <strong>{osProjects.length}</strong>
           </button>
-          {projectCounts.map((platform) => (
+          {platformCounts.map((platform) => (
             <button
-              key={platform.id}
               type="button"
+              key={platform.id}
               className={activePlatform === platform.id ? "os-filter is-active" : "os-filter"}
               onClick={() => {
-                const firstProject = osProjects.find((project) => project.platform === platform.id);
+                const first = osProjects.find((project) => project.platform === platform.id);
                 setActivePlatform(platform.id);
-                if (firstProject) setActiveProjectId(firstProject.id);
-                setActiveTab("resumen");
+                if (first) setActiveProjectId(first.id);
               }}
             >
               <span>{platform.name}</span>
@@ -379,10 +408,10 @@ export default function MetamorfosisOS() {
           ))}
 
           <div className="os-sidebar-note">
-            <strong>Regla del panel</strong>
-            <p>Primero plataforma, luego proyecto, despues entregables, riesgos y proximo paso.</p>
+            <strong>Regla interna</strong>
+            <p>Todo valor importante debe quedar como medida, documento, activo o decisión registrada.</p>
             <button type="button" onClick={resetBaseData}>
-              Recargar datos base
+              Recargar base
             </button>
           </div>
         </aside>
@@ -394,7 +423,7 @@ export default function MetamorfosisOS() {
                 key={project.id}
                 type="button"
                 className={project.id === activeProject.id ? "os-project-card is-active" : "os-project-card"}
-                style={{ "--project-color": PROJECT_COLORS[project.id] || "#16a6cf" }}
+                style={{ "--project-color": PROJECT_COLORS[project.id] || "#35c7d8" }}
                 onClick={() => {
                   setActiveProjectId(project.id);
                   setActiveTab("resumen");
@@ -410,9 +439,9 @@ export default function MetamorfosisOS() {
         </section>
       </section>
 
-      <section className="os-active-context" style={{ "--project-color": activeProjectColor }}>
+      <section className="os-active-context" style={{ "--project-color": activeColor }}>
         <div>
-          <p className="os-eyebrow">Proyecto activo</p>
+          <p className="os-eyebrow">Ficha activa</p>
           <h2>{activeProject.title}</h2>
           <p>{activeProject.summary}</p>
         </div>
@@ -426,15 +455,15 @@ export default function MetamorfosisOS() {
             <dd>{activeProject.priority}</dd>
           </div>
           <div>
-            <dt>Fecha</dt>
+            <dt>Plazo</dt>
             <dd>{activeProject.due}</dd>
           </div>
         </dl>
       </section>
 
-      <section className="os-workspace" style={{ "--project-color": activeProjectColor }}>
-        <nav className="os-tabs" aria-label="Informacion y edicion del proyecto activo">
-          {OS_TABS.map((tab) => (
+      <section className="os-workspace" style={{ "--project-color": activeColor }}>
+        <nav className="os-tabs" aria-label="Secciones del panel interno">
+          {TABS.map((tab) => (
             <button
               key={tab.id}
               type="button"
@@ -448,256 +477,235 @@ export default function MetamorfosisOS() {
 
         {activeTab === "resumen" && (
           <article className="os-detail-card os-project-detail">
-          <div className="os-card-heading">
-            <p className="os-eyebrow">Ficha activa</p>
-            <h2>{activeProject.title}</h2>
-          </div>
-          <dl className="os-facts">
-            <div>
-              <dt>Plataforma</dt>
-              <dd>{osPlatforms.find((platform) => platform.id === activeProject.platform)?.name}</dd>
+            <div className="os-card-heading">
+              <p className="os-eyebrow">Resumen operativo</p>
+              <h2>{activeProject.title}</h2>
             </div>
-            <div>
-              <dt>Dueno / reparto</dt>
-              <dd>{activeProject.owner}</dd>
+            <dl className="os-facts">
+              <div>
+                <dt>Responsabilidad</dt>
+                <dd>{activeProject.owner}</dd>
+              </div>
+              <div>
+                <dt>Tipo</dt>
+                <dd>{activeProject.type}</dd>
+              </div>
+              <div>
+                <dt>Medidas</dt>
+                <dd>{projectMeasures.length}</dd>
+              </div>
+              <div>
+                <dt>Documentos</dt>
+                <dd>{projectDocuments.length}</dd>
+              </div>
+            </dl>
+            <div className="os-decision-block">
+              <h3>Próximo paso</h3>
+              <p>{activeProject.nextStep}</p>
             </div>
-            <div>
-              <dt>Tipo</dt>
-              <dd>{activeProject.type}</dd>
+            <div className="os-decision-block warning">
+              <h3>Riesgo principal</h3>
+              <p>{activeProject.risk}</p>
             </div>
-            <div>
-              <dt>Fecha critica</dt>
-              <dd>{activeProject.due}</dd>
+            <div className="os-decision-block">
+              <h3>Entregable esperado</h3>
+              <p>{activeProject.deliverable}</p>
             </div>
-          </dl>
-          <div className="os-decision-block">
-            <h3>Proximo paso</h3>
-            <p>{activeProject.nextStep}</p>
-          </div>
-          <div className="os-decision-block warning">
-            <h3>Riesgo principal</h3>
-            <p>{activeProject.risk}</p>
-          </div>
-          <div className="os-decision-block">
-            <h3>Entregable esperado</h3>
-            <p>{activeProject.deliverable}</p>
-          </div>
-        </article>
+          </article>
         )}
 
-        {activeTab === "tareas" && (
-          <article className="os-detail-card">
-          <div className="os-card-heading">
-            <p className="os-eyebrow">Semana</p>
-            <h2>Tareas abiertas</h2>
-          </div>
-          <form className="os-task-form" onSubmit={addTask}>
-            <input
-              value={newTask}
-              onChange={(event) => setNewTask(event.target.value)}
-              placeholder={`Agregar tarea para ${activeProject.title}`}
-            />
-            <button type="submit">Agregar</button>
-          </form>
-          <div className="os-task-list">
-            {activeProjectTasks.length === 0 ? (
-              <p className="os-empty">Aun no hay tareas para esta ficha.</p>
-            ) : (
-              activeProjectTasks.map((task) => (
-                <div key={task.id} className={task.status === "Cerrada" ? "os-task is-done" : "os-task"}>
-                  <button type="button" onClick={() => toggleTaskStatus(task.id)}>
-                    {task.status === "Cerrada" ? "Reabrir" : "Cerrar"}
-                  </button>
-                  <div>
-                    <strong>{task.title}</strong>
-                    <span>{task.owner} - {task.status}</span>
-                  </div>
-                  <button type="button" className="os-remove" onClick={() => removeTask(task.id)}>
-                    Quitar
-                  </button>
-                </div>
-              ))
-            )}
-          </div>
-        </article>
+        {activeTab === "medidas" && (
+          <article className="os-detail-card os-wide-card">
+            <div className="os-card-heading">
+              <p className="os-eyebrow">Medidas iniciales y subsiguientes</p>
+              <h2>Indicadores del proyecto</h2>
+            </div>
+            <form className="os-stack-form os-measure-form" onSubmit={addMeasure}>
+              <input
+                value={measureForm.title}
+                onChange={(event) => setMeasureForm({ ...measureForm, title: event.target.value })}
+                placeholder="Indicador: tiempo de reservas, documentos creados, ventas, errores..."
+              />
+              <div className="os-inline-fields">
+                <input
+                  value={measureForm.dimension}
+                  onChange={(event) => setMeasureForm({ ...measureForm, dimension: event.target.value })}
+                  placeholder="Dimensión"
+                />
+                <input
+                  value={measureForm.unit}
+                  onChange={(event) => setMeasureForm({ ...measureForm, unit: event.target.value })}
+                  placeholder="Unidad"
+                />
+                <select
+                  value={measureForm.direction}
+                  onChange={(event) => setMeasureForm({ ...measureForm, direction: event.target.value })}
+                >
+                  <option value="up">Mejora si sube</option>
+                  <option value="down">Mejora si baja</option>
+                </select>
+              </div>
+              <div className="os-inline-fields">
+                <input
+                  type="number"
+                  value={measureForm.baseline}
+                  onChange={(event) => setMeasureForm({ ...measureForm, baseline: event.target.value })}
+                  placeholder="Medida inicial"
+                />
+                <input
+                  type="number"
+                  value={measureForm.current}
+                  onChange={(event) => setMeasureForm({ ...measureForm, current: event.target.value })}
+                  placeholder="Medida actual"
+                />
+                <input
+                  type="number"
+                  value={measureForm.target}
+                  onChange={(event) => setMeasureForm({ ...measureForm, target: event.target.value })}
+                  placeholder="Meta"
+                />
+              </div>
+              <textarea
+                value={measureForm.notes}
+                onChange={(event) => setMeasureForm({ ...measureForm, notes: event.target.value })}
+                placeholder="Notas, fuente de la medición o criterio usado"
+              />
+              <button type="submit">Agregar medida</button>
+            </form>
+            <div className="os-list os-measure-list">
+              {projectMeasures.length === 0 ? (
+                <p className="os-empty">Aún no hay medidas para esta ficha.</p>
+              ) : (
+                projectMeasures.map((item) => (
+                  <article key={item.id} className="os-list-item os-measure-item">
+                    <span>{item.dimension} - {item.date}</span>
+                    <strong>{item.title}</strong>
+                    <div className="os-measure-values">
+                      <p>Inicial: <b>{item.baseline}</b> {item.unit}</p>
+                      <p>Actual: <input type="number" value={item.current} onChange={(event) => updateMeasureCurrent(item.id, event.target.value)} /> {item.unit}</p>
+                      <p>Meta: <b>{item.target}</b> {item.unit}</p>
+                      <p>Avance: <b>{progressToTarget(item)}%</b></p>
+                    </div>
+                    <p>{item.notes}</p>
+                    <button type="button" onClick={() => persistMeasures(measures.filter((measure) => measure.id !== item.id))}>
+                      Quitar
+                    </button>
+                  </article>
+                ))
+              )}
+            </div>
+          </article>
+        )}
+
+        {activeTab === "documentos" && (
+          <article className="os-detail-card os-wide-card">
+            <div className="os-card-heading">
+              <p className="os-eyebrow">Documentación</p>
+              <h2>Repositorio de referencia</h2>
+            </div>
+            <form className="os-stack-form" onSubmit={addDocument}>
+              <input
+                value={documentForm.title}
+                onChange={(event) => setDocumentForm({ ...documentForm, title: event.target.value })}
+                placeholder="Nombre del documento"
+              />
+              <div className="os-inline-fields">
+                <input value={documentForm.category} onChange={(event) => setDocumentForm({ ...documentForm, category: event.target.value })} placeholder="Categoría" />
+                <input value={documentForm.status} onChange={(event) => setDocumentForm({ ...documentForm, status: event.target.value })} placeholder="Estado" />
+                <input value={documentForm.location} onChange={(event) => setDocumentForm({ ...documentForm, location: event.target.value })} placeholder="Ruta, link o ubicación" />
+              </div>
+              <textarea value={documentForm.notes} onChange={(event) => setDocumentForm({ ...documentForm, notes: event.target.value })} placeholder="Qué contiene y por qué importa" />
+              <button type="submit">Registrar documento</button>
+            </form>
+            <div className="os-list">
+              {projectDocuments.map((item) => (
+                <article key={item.id} className="os-list-item">
+                  <span>{item.category} - {item.status} - {item.date}</span>
+                  <strong>{item.title}</strong>
+                  <p>{item.location}</p>
+                  <p>{item.notes}</p>
+                  <button type="button" onClick={() => persistDocuments(documents.filter((doc) => doc.id !== item.id))}>Quitar</button>
+                </article>
+              ))}
+            </div>
+          </article>
+        )}
+
+        {activeTab === "activos" && (
+          <article className="os-detail-card os-wide-card">
+            <div className="os-card-heading">
+              <p className="os-eyebrow">Activos intangibles</p>
+              <h2>Reconocer, asignar y proteger</h2>
+            </div>
+            <form className="os-stack-form" onSubmit={addAsset}>
+              <input value={assetForm.title} onChange={(event) => setAssetForm({ ...assetForm, title: event.target.value })} placeholder="Nombre del activo" />
+              <div className="os-inline-fields">
+                <input value={assetForm.type} onChange={(event) => setAssetForm({ ...assetForm, type: event.target.value })} placeholder="Tipo" />
+                <input value={assetForm.status} onChange={(event) => setAssetForm({ ...assetForm, status: event.target.value })} placeholder="Estado" />
+                <input value={assetForm.owner} onChange={(event) => setAssetForm({ ...assetForm, owner: event.target.value })} placeholder="Titular o unidad" />
+              </div>
+              <textarea value={assetForm.notes} onChange={(event) => setAssetForm({ ...assetForm, notes: event.target.value })} placeholder="Uso, riesgo, protección o explotación posible" />
+              <button type="submit">Registrar activo</button>
+            </form>
+            <div className="os-list">
+              {projectAssets.map((item) => (
+                <article key={item.id} className="os-list-item">
+                  <span>{item.type} - {item.status}</span>
+                  <strong>{item.title}</strong>
+                  <p><b>Titularidad:</b> {item.owner}</p>
+                  <p>{item.notes}</p>
+                  <button type="button" onClick={() => persistAssets(assets.filter((asset) => asset.id !== item.id))}>Quitar</button>
+                </article>
+              ))}
+            </div>
+          </article>
         )}
 
         {activeTab === "bitacora" && (
-          <article className="os-detail-card">
-          <div className="os-card-heading">
-            <p className="os-eyebrow">Bitacora</p>
-            <h2>Decisiones y avances</h2>
-          </div>
-          <form className="os-stack-form" onSubmit={addLog}>
-            <input
-              value={newLog.title}
-              onChange={(event) => setNewLog({ ...newLog, title: event.target.value })}
-              placeholder="Titulo del registro"
-            />
-            <textarea
-              value={newLog.note}
-              onChange={(event) => setNewLog({ ...newLog, note: event.target.value })}
-              placeholder="Decision, avance, cambio o acuerdo"
-            />
-            <input
-              value={newLog.author}
-              onChange={(event) => setNewLog({ ...newLog, author: event.target.value })}
-              placeholder="Responsable"
-            />
-            <button type="submit">Registrar bitacora</button>
-          </form>
-          <div className="os-list">
-            {activeProjectLogs.length === 0 ? (
-              <p className="os-empty">Sin registros para este proyecto.</p>
-            ) : (
-              activeProjectLogs.map((entry) => (
-                <article key={entry.id} className="os-list-item">
-                  <span>{entry.date} - {entry.author}</span>
-                  <strong>{entry.title}</strong>
-                  <p>{entry.note}</p>
-                  <button type="button" onClick={() => updateLogs(logs.filter((item) => item.id !== entry.id))}>
-                    Quitar
-                  </button>
-                </article>
-              ))
-            )}
-          </div>
-        </article>
-        )}
-
-        {activeTab === "fuentes" && (
-          <article className="os-detail-card">
-          <div className="os-card-heading">
-            <p className="os-eyebrow">Fuentes</p>
-            <h2>Documentos base</h2>
-          </div>
-          <form className="os-stack-form" onSubmit={addSource}>
-            <input
-              value={newSource.title}
-              onChange={(event) => setNewSource({ ...newSource, title: event.target.value })}
-              placeholder="Nombre de la fuente"
-            />
-            <input
-              value={newSource.type}
-              onChange={(event) => setNewSource({ ...newSource, type: event.target.value })}
-              placeholder="Tipo: PDF, repo, imagen, minuta..."
-            />
-            <input
-              value={newSource.location}
-              onChange={(event) => setNewSource({ ...newSource, location: event.target.value })}
-              placeholder="Link, ruta, ubicacion o referencia"
-            />
-            <input
-              value={newSource.status}
-              onChange={(event) => setNewSource({ ...newSource, status: event.target.value })}
-              placeholder="Estado"
-            />
-            <button type="submit">Registrar fuente</button>
-          </form>
-          <div className="os-list">
-            {activeProjectSources.length === 0 ? (
-              <p className="os-empty">Sin fuentes para este proyecto.</p>
-            ) : (
-              activeProjectSources.map((source) => (
-                <article key={source.id} className="os-list-item">
-                  <span>{source.type} - {source.status}</span>
-                  <strong>{source.title}</strong>
-                  <p>{source.location}</p>
-                  <button type="button" onClick={() => updateSources(sources.filter((item) => item.id !== source.id))}>
-                    Quitar
-                  </button>
-                </article>
-              ))
-            )}
-          </div>
-        </article>
-        )}
-
-        {activeTab === "entregables" && (
           <article className="os-detail-card os-wide-card">
-          <div className="os-card-heading">
-            <p className="os-eyebrow">Entregables</p>
-            <h2>Versiones descargables</h2>
-          </div>
-          <form className="os-stack-form os-deliverable-form" onSubmit={addDeliverable}>
-            <input
-              value={newDeliverable.title}
-              onChange={(event) => setNewDeliverable({ ...newDeliverable, title: event.target.value })}
-              placeholder="Nombre del entregable"
-            />
-            <div className="os-inline-fields">
-              <input
-                value={newDeliverable.type}
-                onChange={(event) => setNewDeliverable({ ...newDeliverable, type: event.target.value })}
-                placeholder="Tipo"
-              />
-              <input
-                value={newDeliverable.version}
-                onChange={(event) => setNewDeliverable({ ...newDeliverable, version: event.target.value })}
-                placeholder="Version"
-              />
-              <input
-                value={newDeliverable.status}
-                onChange={(event) => setNewDeliverable({ ...newDeliverable, status: event.target.value })}
-                placeholder="Estado"
-              />
+            <div className="os-card-heading">
+              <p className="os-eyebrow">Bitácora</p>
+              <h2>Decisiones y evidencia narrativa</h2>
             </div>
-            <input
-              value={newDeliverable.location}
-              onChange={(event) => setNewDeliverable({ ...newDeliverable, location: event.target.value })}
-              placeholder="Link o ruta opcional"
-            />
-            <textarea
-              value={newDeliverable.content}
-              onChange={(event) => setNewDeliverable({ ...newDeliverable, content: event.target.value })}
-              placeholder="Contenido, resumen o version textual descargable"
-            />
-            <button type="submit">Registrar entregable</button>
-          </form>
-          <div className="os-list os-deliverable-list">
-            {activeProjectDeliverables.length === 0 ? (
-              <p className="os-empty">Sin entregables para este proyecto.</p>
-            ) : (
-              activeProjectDeliverables.map((deliverable) => (
-                <article key={deliverable.id} className="os-list-item">
-                  <span>{deliverable.type} - {deliverable.version} - {deliverable.status}</span>
-                  <strong>{deliverable.title}</strong>
-                  <p>{deliverable.content || deliverable.location || "Entregable registrado."}</p>
-                  <div className="os-row-actions">
-                    <button type="button" onClick={() => downloadDeliverable(deliverable)}>
-                      Descargar TXT
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => updateDeliverables(deliverables.filter((item) => item.id !== deliverable.id))}
-                    >
-                      Quitar
-                    </button>
-                  </div>
+            <form className="os-stack-form" onSubmit={addLog}>
+              <input value={logForm.title} onChange={(event) => setLogForm({ ...logForm, title: event.target.value })} placeholder="Título del registro" />
+              <textarea value={logForm.note} onChange={(event) => setLogForm({ ...logForm, note: event.target.value })} placeholder="Decisión, avance, aprendizaje o acuerdo" />
+              <input value={logForm.author} onChange={(event) => setLogForm({ ...logForm, author: event.target.value })} placeholder="Responsable" />
+              <button type="submit">Registrar bitácora</button>
+            </form>
+            <div className="os-list">
+              {projectLogs.map((item) => (
+                <article key={item.id} className="os-list-item">
+                  <span>{item.date} - {item.author}</span>
+                  <strong>{item.title}</strong>
+                  <p>{item.note}</p>
+                  <button type="button" onClick={() => persistLogs(logs.filter((log) => log.id !== item.id))}>Quitar</button>
                 </article>
-              ))
-            )}
-          </div>
-        </article>
+              ))}
+            </div>
+          </article>
         )}
 
-        {activeTab === "chatgpt" && (
-          <article className="os-detail-card os-briefing-card">
+        {activeTab === "respaldo" && (
+          <article className="os-detail-card os-wide-card os-briefing-card">
             <div className="os-card-heading">
-              <p className="os-eyebrow">ChatGPT</p>
-              <h2>Briefing exportable</h2>
+              <p className="os-eyebrow">Respaldo y continuidad</p>
+              <h2>Exportar, importar y usar briefing</h2>
             </div>
             <div className="os-decision-block">
-              <h3>Automatizacion asistida</h3>
+              <h3>Fuente de verdad del MVP</h3>
               <p>
-                Este briefing no reemplaza la revision humana. Sirve para traer contexto a ChatGPT,
-                trabajar el entregable y luego registrar manualmente la version validada en el panel.
+                Esta versión guarda datos en el navegador. Exporta JSON periódicamente para respaldar.
+                La siguiente etapa natural es conectar esta estructura a una base de datos.
               </p>
             </div>
+            <div className="os-row-actions os-backup-actions">
+              <button type="button" onClick={exportData}>Exportar JSON</button>
+              <button type="button" onClick={() => importRef.current?.click()}>Importar JSON</button>
+              <input ref={importRef} type="file" accept="application/json" onChange={importData} hidden />
+            </div>
+            {importMessage ? <p className="form-status">{importMessage}</p> : null}
             <textarea readOnly value={briefing} />
-            <button type="button" onClick={copyBriefing}>
-              {copied ? "Copiado" : "Copiar briefing"}
-            </button>
           </article>
         )}
       </section>

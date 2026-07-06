@@ -4,32 +4,32 @@ import { transformationCases } from "../data/cases.js";
 
 const news = [
   {
-    date: "Actualidad",
-    title: "CM como caso activo principal",
-    text: "La Consultoría Consolidación CM ordena operación, identidad, gestión, herramientas digitales y proyección comercial desde Metamorfosis Lab.",
+    date: "Observar",
+    title: "Primero leer el valor real",
+    text: "Antes de proponer web, marca o sistema, entendemos qué funciona, qué se improvisa y qué depende de memoria o intuición.",
   },
   {
-    date: "Método",
-    title: "Del diagnóstico al sistema",
-    text: "El Sistema Interno CM no es un proyecto suelto: es un entregable tecnológico dentro de la consultoría de consolidación.",
+    date: "Ordenar",
+    title: "Convertir informalidad en sistema",
+    text: "El Mapa de Transformación y Activos traduce operación, identidad, caja, datos, circularidad y activos intangibles en ruta concreta.",
   },
   {
-    date: "Proyección",
-    title: "Producto pyme estandarizable",
-    text: "El aprendizaje con CM permite diseñar una metodología replicable para ordenar y digitalizar otras pymes.",
+    date: "Proyectar",
+    title: "Dejar capacidad instalada",
+    text: "La transformación debe terminar en documentos, indicadores, acuerdos, paneles, activos reconocidos y decisiones sostenibles.",
   },
 ];
 
 export default function Noticias() {
   return (
-    <section id="noticias" className="section section-light work-hub-section">
+    <section id="metodo" className="section section-light work-hub-section">
       <Reveal>
         <div className="section-heading">
-          <p className="eyebrow dark">Ecosistema en movimiento</p>
-          <h2>Una plataforma, varias líneas, una misma metodología.</h2>
+          <p className="eyebrow dark">Método</p>
+          <h2>Más que asesoría: una herramienta para que el valor sobreviva a la improvisación.</h2>
           <p>
-            Metamorfosis Lab integra consultoría, diseño, tecnología, productos territoriales y
-            experiencias para transformar negocios reales en sistemas mas claros y proyectables.
+            Trabajamos donde muchas pymes quedan atrapadas: negocios que funcionan, pero todavía
+            no tienen suficiente sistema, evidencia, protección o forma para sostener lo que han creado.
           </p>
         </div>
       </Reveal>
@@ -38,9 +38,9 @@ export default function Noticias() {
         <Reveal direction="left">
           <article className="work-panel news-panel">
             <div className="panel-heading">
-              <span>Foco actual</span>
-              <h3>Consolidación empresarial desde casos reales</h3>
-              <p>CM funciona como prioridad máxima y laboratorio aplicado para crear metodología.</p>
+              <span>Forma de trabajo</span>
+              <h3>Observar, ordenar, sistematizar, proteger y proyectar</h3>
+              <p>El centro no es entregar piezas sueltas, sino transformar valor informal en operación medible.</p>
             </div>
 
             <div className="news-stack">
@@ -58,11 +58,11 @@ export default function Noticias() {
         </Reveal>
 
         <Reveal direction="right">
-          <article id="casos" className="work-panel cases-panel">
+          <article className="work-panel cases-panel">
             <div className="panel-heading">
               <span>Capacidades</span>
-              <h3>Transformación aplicada</h3>
-              <p>Proyectos reales donde una idea se convirtió en marca, sistema, canal digital o experiencia.</p>
+              <h3>Identidad, economía y operación en una sola lectura</h3>
+              <p>El método conecta relato, caja, procesos, datos, circularidad y activos intangibles.</p>
             </div>
 
             <div className="case-mini-grid">

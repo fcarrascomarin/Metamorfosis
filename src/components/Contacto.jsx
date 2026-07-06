@@ -35,10 +35,11 @@ export default function Contacto() {
       <Reveal direction="left">
         <div className="contact-copy">
           <p className="eyebrow">Contacto</p>
-          <h2>Conversemos sobre la transformación de tu proyecto.</h2>
+          <h2>Conversemos si tu proyecto ya tiene valor, pero necesita forma para sostenerlo.</h2>
           <p>
-            Cuéntanos qué necesitas ordenar, consolidar, diseñar o digitalizar. Podemos ayudarte a
-            convertir un negocio real en una operación más clara, sostenible y escalable.
+            Cuéntanos qué depende hoy de memoria, intuición, cuadernos, archivos dispersos o
+            decisiones urgentes. Desde ahí evaluamos si corresponde iniciar con un Mapa de
+            Transformación y Activos.
           </p>
         </div>
       </Reveal>
@@ -66,7 +67,7 @@ export default function Contacto() {
             name="topic"
             value={form.topic}
             onChange={handleChange}
-            placeholder="Consultoría, sistema interno, identidad, experiencia, web..."
+            placeholder="Mapa, sistema interno, identidad, activos, operación..."
             required
           />
 

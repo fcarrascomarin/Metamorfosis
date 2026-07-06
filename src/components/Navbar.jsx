@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 
 const navItems = [
-  { href: "#plataforma", label: "Plataforma" },
+  { href: "#metodo", label: "Método" },
+  { href: "#plataforma", label: "Mapa" },
   { href: "#casos", label: "Casos" },
-  { href: "#trayectoria", label: "Lineas" },
+  { href: "#trayectoria", label: "Arquitectura" },
   { href: "#contacto", label: "Contacto" },
   { href: "#/os", label: "OS" },
 ];

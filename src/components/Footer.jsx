@@ -21,16 +21,18 @@ export default function Footer() {
             <img src="/logo-1.png" alt="Logo Metamorfosis" className="footer-logo-img" />
             <div>
               <h2>METAMORFOSIS LAB</h2>
-              <p>Plataforma de consultoría, diseño, tecnología e innovación aplicada para pymes y proyectos territoriales.</p>
+              <p>Laboratorio de transformación aplicada para que lo valioso sobreviva a la improvisación.</p>
             </div>
           </a>
         </div>
 
         <div className="footer-column">
           <h3>Navegación</h3>
-          <a href="#plataforma">Plataforma</a>
+          <a href="#metodo">Método</a>
+          <a href="#plataforma">Mapa</a>
           <a href="#casos">Casos y entregables</a>
-          <a href="#trayectoria">Líneas de desarrollo</a>
+          <a href="#trayectoria">Arquitectura</a>
+          <a href="#/os">Panel interno</a>
           <a href="#contacto">Contacto</a>
         </div>
 
@@ -61,7 +63,7 @@ export default function Footer() {
             ))}
           </div>
           <p className="footer-small-text">
-            Transformamos negocios reales en sistemas claros, útiles y proyectables.
+            Convertimos valor informal en sistema, evidencia, activos y decisiones.
           </p>
         </div>
       </div>

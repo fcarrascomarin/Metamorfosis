@@ -70,9 +70,10 @@ export default function CasosTransformacion({ compact = false }) {
       <Reveal>
         <div className={`section-heading ${compact ? "split-heading" : "narrow centered"}`}>
           <p className="eyebrow">Casos de transformación</p>
-          <h2>{compact ? "Capacidades aplicadas" : "Metamorfosis Laboratorio de Innovación"}</h2>
+          <h2>{compact ? "Capacidades aplicadas" : "Casos, productos y herramientas al servicio de una misma prueba."}</h2>
           <p>
-            La consultoría de consolidación tiene como objetivo proyectar mejoras en las brechas operacionales que permitan estandarizar y mejorar las capacidades comerciales de empresas.
+            Metamorfosis debe demostrar que puede ordenar operación, identidad, datos, activos y caja.
+            Cada caso existe para producir evidencia, no solo presencia visual.
           </p>
         </div>
       </Reveal>
@@ -99,7 +100,8 @@ export default function CasosTransformacion({ compact = false }) {
         <Reveal>
           <div className="section-remate">
             <p>
-              Cada caso muestra una necesidad distinta, pero todos se vinculan en lo mismo: falta de herramientas actualizadas que faciliten las decisiones empresariales.
+              Cada caso muestra una capacidad distinta, pero todos responden a la misma base:
+              diagnosticar, ordenar, diseñar, implementar y convertir aprendizajes en herramientas útiles.
             </p>
             <a href="#contacto" className="btn btn-primary">
               Quiero transformar mi proyecto
@@ -115,7 +117,7 @@ export default function CasosTransformacion({ compact = false }) {
   }
 
   return (
-    <section className="section section-dark cases-section">
+    <section id="casos" className="section section-dark cases-section">
       {content}
     </section>
   );

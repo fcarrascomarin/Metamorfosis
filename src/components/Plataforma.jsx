@@ -11,11 +11,12 @@ export default function Plataforma({ compact = false }) {
           <h2>
             {compact
               ? "Proyectos y líneas activas"
-              : "Metamorfosis Lab organiza proyectos, productos y experiencias bajo una misma arquitectura."}
+              : "El Mapa ordena lo que el negocio ya tiene, pero todavía no puede sostener solo."}
           </h2>
           <p>
-            CM Banquetería es hoy el caso activo principal: desde ahí desarrollamos consultoría,
-            herramientas internas, aprendizajes replicables y nuevas líneas comerciales con identidad territorial.
+            Metamorfosis articula identidad, economía y operación para que cada proyecto pueda
+            convertirse en sistema, evidencia, activo y decisión. No partimos por vender piezas:
+            partimos por leer qué valor existe y qué necesita forma.
           </p>
         </div>
       </Reveal>

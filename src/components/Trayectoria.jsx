@@ -7,11 +7,11 @@ export default function Trayectoria() {
     <section id="trayectoria" className="section section-light">
       <Reveal>
         <div className="section-heading">
-          <p className="eyebrow dark">Lineas de desarrollo</p>
-          <h2>La empresa se consolida desde una plataforma comun.</h2>
+          <p className="eyebrow dark">Arquitectura</p>
+          <h2>La empresa se funda con límites claros: matriz, casos, unidades y proyectos pausados.</h2>
           <p>
-            Metamorfosis Lab articula consultoría, sistema interno, producto pyme, merchandising
-            territorial y diseño de experiencias sin separar artificialmente lo que nace de una misma metodología.
+            Metamorfosis es la matriz. CM es el caso activo. CM Experiencias es una unidad compartida.
+            Poiesis espera. Con Criterio puede colaborar, pero no forma parte de Metamorfosis.
           </p>
         </div>
       </Reveal>
@@ -22,8 +22,8 @@ export default function Trayectoria() {
             <span>Metamorfosis Lab</span>
             <h3>Plataforma principal</h3>
             <p>
-              Diagnóstico, estrategia, identidad, herramientas digitales y experiencias conectadas
-              en una sola arquitectura de trabajo.
+              Identidad, economía, operación, documentos, medidas y activos conectados en una sola
+              arquitectura de trabajo.
             </p>
           </article>
         </Reveal>
