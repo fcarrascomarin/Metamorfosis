@@ -1,52 +1,52 @@
 export const transformationCases = [
   {
     name: "Consultoría Consolidación CM",
-    eyebrow: "Proyecto destacado",
-    summary: "Proyecto activo desarrollado por Metamorfosis Lab para consolidar CM.",
+    eyebrow: "Caso activo principal",
+    summary: "Transformación aplicada para ordenar operación, identidad, web, logística y sistema interno de CM.",
     description:
-      "Consultoría integral para ordenar la operación, identidad, estructura comercial, gestión documental, menús, proveedores, eventos y proyección de CM Banquetería. Este caso funciona como prioridad máxima de Metamorfosis y como base metodológica para futuros servicios estandarizables para pymes.",
-    tags: ["Consultoría", "Operación", "Gestión", "Identidad", "Pyme"],
+      "Metamorfosis trabaja CM como caso demostrativo: no solo crea piezas visibles, sino que ordena reservas, documentos, proveedores, stock, web, identidad, logística, datos y decisiones para convertir valor informal en sistema medible.",
+    tags: ["Operación", "Identidad", "Sistema interno", "Datos", "Caso piloto"],
     image: "/cmbanqueteria.png",
     logo: "/logo-cmbanqueteria.png",
     url: "https://cmbanqueteria.cl/",
     featured: true,
   },
   {
-    name: "Sistema Interno CM",
-    summary: "Entregable tecnológico dentro de la Consultoría Consolidación CM.",
+    name: "Mapa de Transformación y Activos",
+    summary: "Producto de entrada para diagnosticar, ordenar y proyectar proyectos con valor real.",
     description:
-      "Herramienta interna en desarrollo para ordenar menús, reservas, pedidos, proveedores, stock, gastos, documentos del personal, minutas, cotizaciones e informes. No se presenta como proyecto independiente: es un entregable de la consultoría y un prototipo para futuras soluciones pyme.",
-    tags: ["Entregable", "Sistema interno", "Panel", "Gestión", "CM"],
-    image: "/cmbanqueteria.png",
-    logo: "/logo-cmbanqueteria.png",
-    url: "https://cmbanqueteria.cl/",
-  },
-  {
-    name: "Producto Pyme Estandarizable",
-    summary: "Servicio futuro nacido desde el aprendizaje aplicado en CM.",
-    description:
-      "Línea en diseño para transformar la metodología de diagnóstico, ordenamiento y digitalización usada en CM en un producto replicable para otras pymes: formularios, matriz de brechas, panel operativo, reportes y acompañamiento.",
-    tags: ["Producto", "Pyme", "Metodología", "SaaS", "Escalable"],
+      "El Mapa revisa identidad, operación, caja, datos, circularidad, activos intangibles, riesgos y oportunidades. Es la herramienta que permite cobrar por pensar antes de ejecutar y convertir una primera lectura en ruta concreta.",
+    tags: ["Diagnóstico", "Activos", "Circularidad", "Ruta", "Modelo"],
     image: "/hero-metamorfosis-ai-brote.png",
     logo: "/logo-metamorfosis-transparente.png",
     url: "#contacto",
   },
   {
-    name: "Doña Señoraza Merch",
-    summary: "Línea exclusiva de Metamorfosis con identidad territorial.",
+    name: "Panel Interno Metamorfosis",
+    summary: "Sistema propio para registrar medidas, documentos, activos, evidencia y decisiones.",
     description:
-      "Línea activa de merchandising, relato local y diseño de productos inspirada en símbolos territoriales. Funciona como capacidad comercial propia de Metamorfosis para crear objetos, experiencias y marcas con identidad.",
-    tags: ["Merch", "Territorio", "Diseño", "Producto", "Experiencia"],
+      "La plataforma interna evita que Metamorfosis dependa de memoria. Permite incorporar mediciones iniciales y posteriores, documentos, bitácora, activos, estadísticas, respaldo e información suficiente para trabajar desde un solo lugar.",
+    tags: ["Medidas", "Documentos", "Estadísticas", "Evidencia", "OS"],
+    image: "/hero-metamorfosis-tech-organico-v3.png",
+    logo: "/logo-metamorfosis-transparente.png",
+    url: "#/os",
+  },
+  {
+    name: "CM Experiencias",
+    summary: "Unidad compartida para experiencias y activos derivados desde CM.",
+    description:
+      "CM Experiencias no es la consultoría a CM. Es una unidad colaborativa donde CM participa con 50%, Metamorfosis con 40% y Martín con 10%. Doña Señoraza queda integrada como activo derivado de esa unidad.",
+    tags: ["Experiencias", "Territorio", "Activos", "CM", "Colaboración"],
     image: "/hero-metamorfosis-disruptivo.png",
     logo: "/logo-metamorfosis-transparente.png",
     url: "#contacto",
   },
   {
-    name: "Diseño de Experiencias",
-    summary: "Servicio transversal para activar identidad, relato y operación.",
+    name: "Poiesis",
+    summary: "Proyecto propio de Metamorfosis en pausa estratégica.",
     description:
-      "Capacidad activa de Metamorfosis Lab para diseñar experiencias comerciales, gastronómicas y territoriales: activaciones, eventos controlados, packaging narrativo, recorridos, lanzamientos y formatos que conectan marca, usuario y operación.",
-    tags: ["Experiencias", "Activaciones", "Marca", "Territorio", "Servicio"],
+      "Poiesis pertenece a Metamorfosis, pero se mantiene en pausa hasta que exista razón operativa, cliente asociado o oportunidad real. La ambición no se abandona: se secuencia para no distraer el método, CM y la caja.",
+    tags: ["Proyecto propio", "Creación", "Pausa", "Método", "Futuro"],
     image: "/hero-metamorfosis-portal.png",
     logo: "/logo-metamorfosis-transparente.png",
     url: "#contacto",
@@ -55,62 +55,88 @@ export const transformationCases = [
 
 export const trajectoryItems = [
   {
+    company: "Metamorfosis Lab",
+    projects: [
+      "Matriz del método, la identidad y la operación",
+      "Francisca 90% / Benjamín 10%",
+      "Laboratorio de transformación aplicada",
+      "Foco en Biobío y Concepción",
+    ],
+  },
+  {
+    company: "Mapa de Transformación y Activos",
+    projects: [
+      "Producto central de entrada",
+      "Diagnóstico pagado",
+      "Identidad, operación, caja, datos y activos",
+      "Puente hacia proyectos mayores",
+    ],
+  },
+  {
     company: "Consultoría Consolidación CM",
-    projects: ["Proyecto activo desarrollado por Metamorfosis", "Prioridad máxima", "Orden operativo y comercial", "Base metodológica"],
+    projects: [
+      "Caso activo principal",
+      "Sistema interno, web, identidad y logística",
+      "Medición antes/después",
+      "Prueba comercial del método",
+    ],
   },
   {
-    company: "Sistema Interno CM",
-    projects: ["Entregable de la consultoría", "Panel administrativo", "Gestión diaria", "Prototipo replicable"],
+    company: "CM Experiencias",
+    projects: [
+      "CM 50% / Metamorfosis 40% / Martín 10%",
+      "Unidad compartida, no consultoría",
+      "Doña Señoraza integrada",
+      "Experiencias y activos derivados",
+    ],
   },
   {
-    company: "Producto Pyme Estandarizable",
-    projects: ["Servicio futuro", "Diagnóstico y digitalización", "Herramientas modulares", "Acompañamiento pyme"],
-  },
-  {
-    company: "Doña Señoraza Merch",
-    projects: ["Línea exclusiva", "Identidad territorial", "Merchandising", "Diseño de productos"],
-  },
-  {
-    company: "Diseño de Experiencias",
-    projects: ["Servicio activo", "Activaciones", "Experiencias gastronómicas", "Relato y operación"],
+    company: "Con Criterio y Poiesis",
+    projects: [
+      "Con Criterio puede colaborar, pero no es parte de Metamorfosis",
+      "Poiesis pertenece a Metamorfosis",
+      "Poiesis queda pausado",
+      "Nada nuevo debe competir con CM y el Mapa",
+    ],
   },
 ];
 
 export const platformLines = [
   {
-    name: "Consultoría Consolidación CM",
-    type: "Proyecto activo desarrollado por Metamorfosis",
-    status: "Prioridad máxima",
+    name: "Mapa de Transformación y Activos",
+    type: "Producto central de entrada",
+    status: "Diseño v1",
     description:
-      "Caso principal de trabajo para consolidar CM Banquetería desde una mirada operativa, comercial, documental, digital y territorial.",
+      "Diagnóstico pagado para transformar valor informal en ruta operativa, económica, documental y protegible.",
     priority: true,
   },
   {
-    name: "Sistema Interno CM",
-    type: "Entregable dentro de la consultoría",
-    status: "En desarrollo",
+    name: "Consultoría Consolidación CM",
+    type: "Caso activo desarrollado por Metamorfosis",
+    status: "Prioridad máxima",
     description:
-      "Panel privado para ordenar gestión diaria, menús, pedidos, proveedores, stock, gastos, documentos, minutas y cotizaciones.",
+      "Ordena sistema interno, identidad, web, logística, documentos, proveedores, stock y métricas de CM.",
+    priority: true,
   },
   {
-    name: "Producto Pyme Estandarizable",
-    type: "Futuro servicio o producto nacido desde el caso CM",
+    name: "Panel Interno Metamorfosis",
+    type: "Sistema propio de gestión",
+    status: "MVP",
+    description:
+      "Registra proyectos, medidas, documentos, activos, bitácora, estadísticas, evidencia y respaldos.",
+  },
+  {
+    name: "CM Experiencias",
+    type: "Unidad compartida",
     status: "En diseño",
     description:
-      "Metodología y sistema modular para diagnosticar, ordenar y digitalizar otras pymes desde el aprendizaje práctico de CM.",
+      "Línea colaborativa para experiencias, activos derivados y Doña Señoraza dentro de CM Experiencias.",
   },
   {
-    name: "Doña Señoraza Merch",
-    type: "Línea exclusiva de Metamorfosis",
-    status: "Activa",
+    name: "Poiesis",
+    type: "Proyecto propio pausado",
+    status: "Pausa estratégica",
     description:
-      "Línea comercial propia que cruza relato territorial, diseño de producto, merchandising y nuevas experiencias de marca.",
-  },
-  {
-    name: "Diseño de Experiencias",
-    type: "Capacidad y servicio de Metamorfosis",
-    status: "Activa",
-    description:
-      "Servicio transversal para crear experiencias gastronómicas, comerciales y territoriales conectadas con identidad y operación.",
+      "Se mantiene como proyecto de Metamorfosis, sin abrir frente operativo hasta validar método, CM y caja.",
   },
 ];
