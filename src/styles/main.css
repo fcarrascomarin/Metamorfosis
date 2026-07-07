@@ -248,7 +248,7 @@ a {
   background:
     linear-gradient(90deg, rgba(6, 17, 31, 0.94) 0%, rgba(6, 17, 31, 0.84) 34%, rgba(6, 17, 31, 0.38) 63%, rgba(6, 17, 31, 0.2) 100%),
     linear-gradient(180deg, rgba(6, 17, 31, 0.18) 0%, rgba(6, 17, 31, 0.48) 100%),
-    url("/hero-metamorfosis-tech-organico-v3.png") center right / cover no-repeat;
+    url("/hero-metamorfosis-portal.png") center right / cover no-repeat;
 }
 
 .hero::before {
@@ -1963,5 +1963,322 @@ a {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+/* === Ajuste vitrina publica + OS interno, julio 2026 === */
+
+body {
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+a,
+button,
+li,
+span,
+strong,
+dd {
+  overflow-wrap: break-word;
+}
+
+.section-heading,
+.case-content,
+.platform-card,
+.trajectory-card,
+.trajectory-core,
+.work-panel,
+.contact-copy,
+.form,
+.os-project-card,
+.os-detail-card,
+.os-active-context {
+  min-width: 0;
+}
+
+.hero.hero-fullbleed {
+  position: relative;
+  isolation: isolate;
+  min-height: clamp(620px, calc(100vh - 78px), 820px);
+  display: flex;
+  align-items: center;
+  padding: clamp(82px, 8vw, 124px) 7vw;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, rgba(4, 13, 25, 0.94) 0%, rgba(4, 13, 25, 0.78) 34%, rgba(4, 13, 25, 0.26) 66%, rgba(4, 13, 25, 0.34) 100%),
+    linear-gradient(180deg, rgba(4, 13, 25, 0.18) 0%, rgba(4, 13, 25, 0.62) 100%),
+    url("/hero-metamorfosis-portal.png") center right / cover no-repeat;
+}
+
+.hero.hero-fullbleed::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 74% 42%, rgba(22, 166, 207, 0.16), transparent 30%),
+    linear-gradient(rgba(130, 216, 232, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(130, 216, 232, 0.025) 1px, transparent 1px);
+  background-size: auto, 54px 54px, 54px 54px;
+}
+
+.hero.hero-fullbleed::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  z-index: -1;
+  height: 36%;
+  background: linear-gradient(180deg, transparent, rgba(5, 14, 26, 0.94));
+}
+
+.hero.hero-fullbleed .hero-content {
+  width: min(610px, 100%);
+  max-width: 610px;
+  padding: clamp(24px, 3vw, 38px);
+  border: 1px solid rgba(130, 216, 232, 0.2);
+  border-radius: 24px;
+  background: rgba(5, 17, 31, 0.5);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(12px);
+}
+
+.hero-title {
+  max-width: 100%;
+  font-size: clamp(3rem, 4.8vw, 5rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+.hero-title span {
+  display: block;
+  max-width: 100%;
+}
+
+.hero-text {
+  max-width: 48ch;
+}
+
+.hero-pills {
+  max-width: 100%;
+}
+
+.hero-pills span {
+  white-space: normal;
+}
+
+.section-heading h2 {
+  max-width: 14ch;
+  font-size: clamp(2.2rem, 4.1vw, 4.25rem);
+  line-height: 1.04;
+}
+
+.section-heading.narrow h2,
+.section-heading.centered h2 {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-heading p {
+  max-width: 780px;
+}
+
+.platform-grid {
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+
+.platform-card {
+  min-height: 300px;
+}
+
+.platform-card h3 {
+  font-size: clamp(1.28rem, 1.8vw, 1.75rem);
+}
+
+.case-card {
+  align-items: stretch;
+}
+
+.case-card h3,
+.trajectory-card h3 {
+  font-size: clamp(1.55rem, 2.4vw, 2.35rem);
+  line-height: 1.08;
+}
+
+.case-card h4 {
+  font-size: clamp(1.02rem, 1.35vw, 1.18rem);
+}
+
+.case-card strong {
+  overflow-wrap: anywhere;
+}
+
+.case-mini-card {
+  min-width: 0;
+}
+
+.trajectory-map {
+  gap: 20px;
+}
+
+.trajectory-card li {
+  padding-left: 2px;
+}
+
+.section-contact {
+  background:
+    linear-gradient(90deg, rgba(5, 14, 26, 0.94), rgba(5, 14, 26, 0.72)),
+    url("/hero-metamorfosis-disruptivo.png") center / cover no-repeat;
+}
+
+.form,
+.contact-copy {
+  background: rgba(5, 17, 31, 0.58);
+  border: 1px solid rgba(130, 216, 232, 0.18);
+  border-radius: 22px;
+  padding: clamp(22px, 3vw, 34px);
+  backdrop-filter: blur(12px);
+}
+
+.os-shell {
+  background:
+    linear-gradient(90deg, rgba(5, 14, 26, 0.96), rgba(5, 14, 26, 0.82)),
+    radial-gradient(circle at 74% 10%, rgba(22, 166, 207, 0.18), transparent 34%),
+    url("/hero-metamorfosis-disruptivo.png") center / cover fixed no-repeat;
+}
+
+.os-card-heading p {
+  max-width: 760px;
+  margin: -8px 0 16px;
+  color: var(--texto-muted);
+}
+
+.os-active-help {
+  margin-top: 10px !important;
+  color: color-mix(in srgb, var(--project-color, var(--celeste)) 80%, white 20%) !important;
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.os-workspace-guide {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--project-color, var(--celeste)) 42%, transparent);
+  border-radius: 14px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--project-color, var(--celeste)) 16%, transparent), rgba(255, 255, 255, 0.03));
+}
+
+.os-workspace-guide strong {
+  color: #fff;
+}
+
+.os-workspace-guide span {
+  color: var(--texto-muted);
+}
+
+.os-project-card {
+  border-color: rgba(130, 216, 232, 0.12);
+}
+
+.os-project-card::before {
+  background: rgba(130, 216, 232, 0.18);
+}
+
+.os-project-card span {
+  background: rgba(130, 216, 232, 0.08);
+  color: var(--texto-muted);
+}
+
+.os-project-card strong {
+  color: var(--celeste-suave);
+}
+
+.os-project-card.is-active {
+  border-color: color-mix(in srgb, var(--project-color, var(--celeste)) 72%, white 8%);
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.24),
+    0 0 0 1px color-mix(in srgb, var(--project-color, var(--celeste)) 28%, transparent);
+}
+
+.os-project-card.is-active::before {
+  background: var(--project-color, var(--celeste));
+}
+
+.os-project-card.is-active span {
+  background: color-mix(in srgb, var(--project-color, var(--celeste)) 26%, transparent);
+  color: #fff;
+}
+
+.os-project-card.is-active strong {
+  color: var(--project-color, var(--celeste));
+}
+
+@media (max-width: 920px) {
+  .hero.hero-fullbleed {
+    align-items: flex-end;
+    min-height: 720px;
+    padding: 96px 5vw 56px;
+    text-align: center;
+    background:
+      linear-gradient(180deg, rgba(4, 13, 25, 0.18) 0%, rgba(4, 13, 25, 0.88) 66%, rgba(4, 13, 25, 0.96) 100%),
+      url("/hero-metamorfosis-portal.png") center top / cover no-repeat;
+  }
+
+  .hero.hero-fullbleed .hero-content {
+    margin: 0 auto;
+  }
+
+  .section-heading h2 {
+    max-width: 100%;
+  }
+
+  .work-hub-grid,
+  .case-card,
+  .section-contact {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .brand span {
+    font-size: clamp(1.05rem, 7vw, 1.32rem);
+  }
+
+  .hero.hero-fullbleed {
+    min-height: 660px;
+    padding: 86px 5vw 42px;
+  }
+
+  .hero.hero-fullbleed .hero-content {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .hero-title {
+    font-size: clamp(2.45rem, 11.2vw, 3.45rem);
+    line-height: 1.03;
+  }
+
+  .hero-text {
+    font-size: 0.96rem;
+  }
+
+  .section-heading h2 {
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
+
+  .platform-card,
+  .work-panel,
+  .trajectory-core,
+  .trajectory-card,
+  .case-card {
+    border-radius: 20px;
   }
 }
