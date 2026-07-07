@@ -55,7 +55,7 @@ h3,
 }
 
 h1 {
-  font-size: clamp(3.2rem, 7vw, 6.8rem);
+  font-size: clamp(2.4rem, 5vw, 5.2rem);
   line-height: 0.92;
   margin: 0;
 }
