@@ -31,7 +31,7 @@ export const transformationCases = [
     tags: ["Corporativo", "Servicios", "Confianza", "Contacto"],
     image: "/redoriente.png",
     logo: "/logo-redoriente.PNG",
-    url: "#contacto",
+    url: "https://www.redoriente.cl/",
   },
   {
     name: "Joyas Juana de Arco",
@@ -42,7 +42,7 @@ export const transformationCases = [
     tags: ["E-commerce", "Marca", "Catalogo", "WhatsApp"],
     image: "/joyas.png",
     logo: "/logo-joyas.JPG",
-    url: "#contacto",
+    url: "https://www.joyasjuanadearco.cl/",
   },
 ];
 
