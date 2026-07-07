@@ -35,11 +35,10 @@ export default function Contacto() {
       <Reveal direction="left">
         <div className="contact-copy">
           <p className="eyebrow">Contacto</p>
-          <h2>Conversemos si tu proyecto ya tiene valor, pero necesita forma para sostenerlo.</h2>
+          <h2>Conversemos si necesitas una web o sistema que explique mejor tu negocio.</h2>
           <p>
-            Cuéntanos qué depende hoy de memoria, intuición, cuadernos, archivos dispersos o
-            decisiones urgentes. Desde ahí evaluamos si corresponde iniciar con un Mapa de
-            Transformación y Activos.
+            Puedes escribirnos si necesitas crear una pagina, ordenar servicios, mejorar tu identidad
+            digital, implementar formularios o construir una herramienta interna para administrar mejor.
           </p>
         </div>
       </Reveal>
@@ -61,13 +60,13 @@ export default function Contacto() {
             <option value="Organización">Organización</option>
           </select>
 
-          <label htmlFor="topic">Temática o necesidad</label>
+          <label htmlFor="topic">Necesidad principal</label>
           <input
             id="topic"
             name="topic"
             value={form.topic}
             onChange={handleChange}
-            placeholder="Mapa, sistema interno, identidad, activos, operación..."
+            placeholder="Pagina web, sistema interno, identidad, catalogo, formulario..."
             required
           />
 
@@ -75,7 +74,7 @@ export default function Contacto() {
           <textarea id="message" name="message" value={form.message} onChange={handleChange} required />
 
           <button className="btn btn-primary" type="submit">
-            Enviar propuesta
+            Enviar solicitud
           </button>
 
           {sent && <p className="form-status">Se abrirá tu correo para enviar la propuesta.</p>}

@@ -4,19 +4,19 @@ import { transformationCases } from "../data/cases.js";
 
 const news = [
   {
-    date: "Observar",
-    title: "Primero leer el valor real",
-    text: "Antes de proponer web, marca o sistema, entendemos qué funciona, qué se improvisa y qué depende de memoria o intuición.",
+    date: "01",
+    title: "Entendemos el negocio",
+    text: "Antes de diseñar, levantamos que vendes, como trabajas, que necesita saber tu cliente y que informacion debe quedar privada.",
   },
   {
-    date: "Ordenar",
-    title: "Convertir informalidad en sistema",
-    text: "El Mapa de Transformación y Activos traduce operación, identidad, caja, datos, circularidad y activos intangibles en ruta concreta.",
+    date: "02",
+    title: "Ordenamos el mensaje",
+    text: "Convertimos servicios, procesos, imagenes y documentos dispersos en una estructura simple para web, contacto y gestion.",
   },
   {
-    date: "Proyectar",
-    title: "Dejar capacidad instalada",
-    text: "La transformación debe terminar en documentos, indicadores, acuerdos, paneles, activos reconocidos y decisiones sostenibles.",
+    date: "03",
+    title: "Construimos la herramienta",
+    text: "Desarrollamos la pagina, formularios, paneles o piezas necesarias para que la empresa pueda mostrar, operar y actualizar mejor.",
   },
 ];
 
@@ -25,11 +25,11 @@ export default function Noticias() {
     <section id="metodo" className="section section-light work-hub-section">
       <Reveal>
         <div className="section-heading">
-          <p className="eyebrow dark">Método</p>
-          <h2>Más que asesoría: una herramienta para que el valor sobreviva a la improvisación.</h2>
+          <p className="eyebrow dark">Metodo</p>
+          <h2>Diseñamos presencia digital que se entiende y se puede usar.</h2>
           <p>
-            Trabajamos donde muchas pymes quedan atrapadas: negocios que funcionan, pero todavía
-            no tienen suficiente sistema, evidencia, protección o forma para sostener lo que han creado.
+            Una buena pagina no solo se ve bien. Debe explicar la empresa, ordenar sus servicios,
+            facilitar el contacto y dejar una base clara para seguir creciendo.
           </p>
         </div>
       </Reveal>
@@ -39,8 +39,8 @@ export default function Noticias() {
           <article className="work-panel news-panel">
             <div className="panel-heading">
               <span>Forma de trabajo</span>
-              <h3>Observar, ordenar, sistematizar, proteger y proyectar</h3>
-              <p>El centro no es entregar piezas sueltas, sino transformar valor informal en operación medible.</p>
+              <h3>De la idea dispersa a una herramienta digital clara</h3>
+              <p>Trabajamos con una ruta corta: entender, ordenar, diseñar e implementar.</p>
             </div>
 
             <div className="news-stack">
@@ -61,18 +61,27 @@ export default function Noticias() {
           <article className="work-panel cases-panel">
             <div className="panel-heading">
               <span>Capacidades</span>
-              <h3>Identidad, economía y operación en una sola lectura</h3>
-              <p>El método conecta relato, caja, procesos, datos, circularidad y activos intangibles.</p>
+              <h3>Web, identidad, contenido y gestion interna</h3>
+              <p>Combinamos diseño, estrategia y tecnologia para que la empresa no dependa de explicaciones improvisadas.</p>
             </div>
 
             <div className="case-mini-grid">
-              {transformationCases.map((item) => (
-                <a key={item.name} href={item.url} target="_blank" rel="noopener noreferrer" className="case-mini-card">
-                  <img src={item.logo} alt={`Marca ${item.name}`} />
-                  <strong>{item.name}</strong>
-                  <span>{item.tags.slice(0, 2).join(" · ")}</span>
-                </a>
-              ))}
+              {transformationCases.map((item) => {
+                const isExternal = item.url.startsWith("http");
+                return (
+                  <a
+                    key={item.name}
+                    href={item.url}
+                    target={isExternal ? "_blank" : undefined}
+                    rel={isExternal ? "noopener noreferrer" : undefined}
+                    className="case-mini-card"
+                  >
+                    <img src={item.logo} alt={`Marca ${item.name}`} />
+                    <strong>{item.name}</strong>
+                    <span>{item.tags.slice(0, 2).join(" · ")}</span>
+                  </a>
+                );
+              })}
             </div>
           </article>
         </Reveal>

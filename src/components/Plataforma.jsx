@@ -7,16 +7,16 @@ export default function Plataforma({ compact = false }) {
     <>
       <Reveal>
         <div className={`section-heading ${compact ? "split-heading" : "centered narrow"}`}>
-          <p className="eyebrow dark">Plataforma de proyectos</p>
+          <p className="eyebrow dark">Servicios</p>
           <h2>
             {compact
-              ? "Proyectos y líneas activas"
-              : "El Mapa ordena lo que el negocio ya tiene, pero todavía no puede sostener solo."}
+              ? "Servicios digitales"
+              : "Una web puede ser vitrina, sistema y punto de partida para ordenar el negocio."}
           </h2>
           <p>
-            Metamorfosis articula identidad, economía y operación para que cada proyecto pueda
-            convertirse en sistema, evidencia, activo y decisión. No partimos por vender piezas:
-            partimos por leer qué valor existe y qué necesita forma.
+            Metamorfosis Lab ayuda a empresas, pymes y proyectos a pasar de ideas dispersas a
+            herramientas digitales concretas: paginas claras, sistemas internos, contenido ordenado
+            y canales de contacto que funcionan.
           </p>
         </div>
       </Reveal>

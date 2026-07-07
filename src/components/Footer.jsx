@@ -21,18 +21,17 @@ export default function Footer() {
             <img src="/logo-1.png" alt="Logo Metamorfosis" className="footer-logo-img" />
             <div>
               <h2>METAMORFOSIS LAB</h2>
-              <p>Laboratorio de transformación aplicada para que lo valioso sobreviva a la improvisación.</p>
+              <p>Webs, identidad digital y sistemas internos para empresas que necesitan ordenar y crecer.</p>
             </div>
           </a>
         </div>
 
         <div className="footer-column">
           <h3>Navegación</h3>
-          <a href="#metodo">Método</a>
-          <a href="#plataforma">Mapa</a>
-          <a href="#casos">Casos y entregables</a>
-          <a href="#trayectoria">Arquitectura</a>
-          <a href="#/os">Panel interno</a>
+          <a href="#metodo">Metodo</a>
+          <a href="#plataforma">Servicios</a>
+          <a href="#casos">Casos</a>
+          <a href="#trayectoria">Proceso</a>
           <a href="#contacto">Contacto</a>
         </div>
 
@@ -63,7 +62,7 @@ export default function Footer() {
             ))}
           </div>
           <p className="footer-small-text">
-            Convertimos valor informal en sistema, evidencia, activos y decisiones.
+            Convertimos ideas, servicios y procesos dispersos en herramientas digitales claras.
           </p>
         </div>
       </div>

@@ -325,9 +325,10 @@ export default function MetamorfosisOS() {
       <main className="os-shell os-access">
         <section className="os-login-panel">
           <p className="os-eyebrow">Metamorfosis OS</p>
-          <h1>Panel interno de transformación</h1>
+          <h1>Panel interno de trabajo</h1>
           <p>
-            Espacio privado para registrar medidas, documentos, activos, decisiones y evidencia de Metamorfosis.
+            Espacio privado para Francisca y Benjamin. Aqui se registran prioridades, medidas,
+            documentos, activos, decisiones y respaldo de cada proyecto.
           </p>
           <form onSubmit={handleAccess} className="os-login-form">
             <label htmlFor="os-key">Clave de acceso</label>
@@ -353,7 +354,8 @@ export default function MetamorfosisOS() {
           <p className="os-eyebrow">Metamorfosis OS</p>
           <h1>Panel maestro interno</h1>
           <p>
-            Sistema de trabajo para que Metamorfosis registre su método, mida avances, concentre documentos y no dependa de memoria, chats o carpetas dispersas.
+            Pizarra interactiva para saber que proyecto esta activo, que se debe hacer ahora,
+            que documentos existen, que medidas se estan registrando y que decisiones ya fueron tomadas.
           </p>
         </div>
         <a href="#inicio" className="os-back-link">
@@ -408,8 +410,11 @@ export default function MetamorfosisOS() {
           ))}
 
           <div className="os-sidebar-note">
-            <strong>Regla interna</strong>
-            <p>Todo valor importante debe quedar como medida, documento, activo o decisión registrada.</p>
+            <strong>Regla de uso</strong>
+            <p>
+              Primero selecciona proyecto. Todo lo que agregues se guarda asociado a esa ficha:
+              medidas, documentos, activos o bitacora.
+            </p>
             <button type="button" onClick={resetBaseData}>
               Recargar base
             </button>
@@ -444,6 +449,9 @@ export default function MetamorfosisOS() {
           <p className="os-eyebrow">Ficha activa</p>
           <h2>{activeProject.title}</h2>
           <p>{activeProject.summary}</p>
+          <p className="os-active-help">
+            Estas agregando informacion a esta ficha. El color indica el proyecto seleccionado.
+          </p>
         </div>
         <dl>
           <div>
@@ -462,6 +470,11 @@ export default function MetamorfosisOS() {
       </section>
 
       <section className="os-workspace" style={{ "--project-color": activeColor }}>
+        <div className="os-workspace-guide">
+          <strong>Proyecto seleccionado: {activeProject.title}</strong>
+          <span>Usa las pestanas para actualizar medidas, documentos, activos, decisiones y respaldos.</span>
+        </div>
+
         <nav className="os-tabs" aria-label="Secciones del panel interno">
           {TABS.map((tab) => (
             <button
@@ -519,6 +532,7 @@ export default function MetamorfosisOS() {
             <div className="os-card-heading">
               <p className="os-eyebrow">Medidas iniciales y subsiguientes</p>
               <h2>Indicadores del proyecto</h2>
+              <p>Registra una linea base, el valor actual y la meta. Esto permite ver si el proyecto avanza.</p>
             </div>
             <form className="os-stack-form os-measure-form" onSubmit={addMeasure}>
               <input
@@ -602,6 +616,7 @@ export default function MetamorfosisOS() {
             <div className="os-card-heading">
               <p className="os-eyebrow">Documentación</p>
               <h2>Repositorio de referencia</h2>
+              <p>Guarda aqui donde esta cada documento y por que importa para este proyecto.</p>
             </div>
             <form className="os-stack-form" onSubmit={addDocument}>
               <input
@@ -636,6 +651,7 @@ export default function MetamorfosisOS() {
             <div className="os-card-heading">
               <p className="os-eyebrow">Activos intangibles</p>
               <h2>Reconocer, asignar y proteger</h2>
+              <p>Registra nombres, metodologias, marcas, contenidos o elementos que tengan valor propio.</p>
             </div>
             <form className="os-stack-form" onSubmit={addAsset}>
               <input value={assetForm.title} onChange={(event) => setAssetForm({ ...assetForm, title: event.target.value })} placeholder="Nombre del activo" />
@@ -666,6 +682,7 @@ export default function MetamorfosisOS() {
             <div className="os-card-heading">
               <p className="os-eyebrow">Bitácora</p>
               <h2>Decisiones y evidencia narrativa</h2>
+              <p>Anota acuerdos, cambios de criterio, aprendizajes y proximos pasos para no depender del chat.</p>
             </div>
             <form className="os-stack-form" onSubmit={addLog}>
               <input value={logForm.title} onChange={(event) => setLogForm({ ...logForm, title: event.target.value })} placeholder="Título del registro" />

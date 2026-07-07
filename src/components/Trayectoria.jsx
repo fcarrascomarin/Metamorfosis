@@ -7,11 +7,11 @@ export default function Trayectoria() {
     <section id="trayectoria" className="section section-light">
       <Reveal>
         <div className="section-heading">
-          <p className="eyebrow dark">Arquitectura</p>
-          <h2>La empresa se funda con límites claros: matriz, casos, unidades y proyectos pausados.</h2>
+          <p className="eyebrow dark">Proceso</p>
+          <h2>Una ruta simple para transformar una empresa en una presencia digital coherente.</h2>
           <p>
-            Metamorfosis es la matriz. CM es el caso activo. CM Experiencias es una unidad compartida.
-            Poiesis espera. Con Criterio puede colaborar, pero no forma parte de Metamorfosis.
+            El trabajo no parte por llenar una pagina. Parte por entender que debe saber el cliente,
+            que debe administrar la empresa y que informacion conviene mantener dentro del equipo.
           </p>
         </div>
       </Reveal>
@@ -20,10 +20,10 @@ export default function Trayectoria() {
         <Reveal className="trajectory-slot trajectory-slot-core">
           <article className="trajectory-core">
             <span>Metamorfosis Lab</span>
-            <h3>Plataforma principal</h3>
+            <h3>De idea a sistema</h3>
             <p>
-              Identidad, economía, operación, documentos, medidas y activos conectados en una sola
-              arquitectura de trabajo.
+              Unimos estrategia, diseno y tecnologia para que la empresa tenga una vitrina publica
+              clara y, cuando corresponde, una herramienta interna para administrar mejor.
             </p>
           </article>
         </Reveal>
@@ -35,7 +35,7 @@ export default function Trayectoria() {
             className={`trajectory-slot trajectory-slot-${index + 1}`}
           >
             <article className="trajectory-card">
-              <span>Proyecto</span>
+              <span>Etapa</span>
               <h3>{item.company}</h3>
               <ul>
                 {item.projects.map((project) => (

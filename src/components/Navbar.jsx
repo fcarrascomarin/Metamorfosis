@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 
 const navItems = [
-  { href: "#metodo", label: "Método" },
-  { href: "#plataforma", label: "Mapa" },
+  { href: "#metodo", label: "Metodo" },
+  { href: "#plataforma", label: "Servicios" },
   { href: "#casos", label: "Casos" },
-  { href: "#trayectoria", label: "Arquitectura" },
+  { href: "#trayectoria", label: "Proceso" },
   { href: "#contacto", label: "Contacto" },
-  { href: "#/os", label: "OS" },
 ];
 
 export default function Navbar() {

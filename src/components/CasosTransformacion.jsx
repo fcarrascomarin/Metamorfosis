@@ -69,11 +69,11 @@ export default function CasosTransformacion({ compact = false }) {
     <>
       <Reveal>
         <div className={`section-heading ${compact ? "split-heading" : "narrow centered"}`}>
-          <p className="eyebrow">Casos de transformación</p>
-          <h2>{compact ? "Capacidades aplicadas" : "Casos, productos y herramientas al servicio de una misma prueba."}</h2>
+          <p className="eyebrow">Casos de transformacion</p>
+          <h2>{compact ? "Trabajos aplicados" : "Cada proyecto muestra una forma distinta de ordenar valor digital."}</h2>
           <p>
-            Metamorfosis debe demostrar que puede ordenar operación, identidad, datos, activos y caja.
-            Cada caso existe para producir evidencia, no solo presencia visual.
+            Hemos trabajado vitrinas, sistemas, contenidos, catalogos y estructuras institucionales.
+            La meta es que cada empresa pueda explicarse mejor y operar con mas claridad.
           </p>
         </div>
       </Reveal>
@@ -100,11 +100,11 @@ export default function CasosTransformacion({ compact = false }) {
         <Reveal>
           <div className="section-remate">
             <p>
-              Cada caso muestra una capacidad distinta, pero todos responden a la misma base:
-              diagnosticar, ordenar, diseñar, implementar y convertir aprendizajes en herramientas útiles.
+              Si tu negocio tiene valor, pero todavia depende de mensajes largos, archivos dispersos
+              o procesos informales, podemos ayudarte a transformarlo en una herramienta digital clara.
             </p>
             <a href="#contacto" className="btn btn-primary">
-              Quiero transformar mi proyecto
+              Quiero una web asi
             </a>
           </div>
         </Reveal>
