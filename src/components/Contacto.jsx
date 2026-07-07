@@ -35,10 +35,9 @@ export default function Contacto() {
       <Reveal direction="left">
         <div className="contact-copy">
           <p className="eyebrow">Contacto</p>
-          <h2>Conversemos si necesitas una web o sistema que explique mejor tu negocio.</h2>
+          <h2>¿Quiéres pasar de la improvisación a la desición basada en datos?</h2>
           <p>
-            Puedes escribirnos si necesitas crear una pagina, ordenar servicios, mejorar tu identidad
-            digital, implementar formularios o construir una herramienta interna para administrar mejor.
+            Conversemos y avancemos en las construcción de herramientas internas para administrar mejor.
           </p>
         </div>
       </Reveal>
