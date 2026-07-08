@@ -20,17 +20,17 @@ export default function Footer() {
           <a href="#inicio" className="footer-logo-wrap" aria-label="Ir al inicio">
             <img src="/logo-1.png" alt="Logo Metamorfosis" className="footer-logo-img" />
             <div>
-              <h2>METAMORFOSIS</h2>
-              <p>LABORATORIO DE INNOVACIÓN Y DESARROLLO DIGITAL</p>
+              <h2>METAMORFOSIS LAB</h2>
+              <p>Webs, identidad digital y sistemas internos para empresas que necesitan ordenar y crecer.</p>
             </div>
           </a>
         </div>
 
         <div className="footer-column">
           <h3>Navegación</h3>
-          <a href="#metodo">¿Cómo Trabajamos?</a>
+          <a href="#metodo">Metodo</a>
           <a href="#plataforma">Servicios</a>
-          <a href="#casos">Casos de Transformación</a>
+          <a href="#casos">Casos</a>
           <a href="#trayectoria">Proceso</a>
           <a href="#contacto">Contacto</a>
         </div>

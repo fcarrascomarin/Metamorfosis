@@ -1,4 +1,5 @@
 import React, { useMemo, useRef, useState } from "react";
+import DocumentosProyecto from "./DocumentosProyecto.jsx";
 import {
   defaultAssets,
   defaultDocuments,
@@ -30,7 +31,7 @@ const PROJECT_COLORS = {
 const TABS = [
   { id: "resumen", label: "Resumen" },
   { id: "medidas", label: "Medidas" },
-  { id: "documentos", label: "Documentos" },
+  { id: "documentos", label: "Documentos por Proyecto" },
   { id: "activos", label: "Activos" },
   { id: "bitacora", label: "Bitácora" },
   { id: "respaldo", label: "Respaldo" },
@@ -612,38 +613,7 @@ export default function MetamorfosisOS() {
         )}
 
         {activeTab === "documentos" && (
-          <article className="os-detail-card os-wide-card">
-            <div className="os-card-heading">
-              <p className="os-eyebrow">Documentación</p>
-              <h2>Repositorio de referencia</h2>
-              <p>Guarda aqui donde esta cada documento y por que importa para este proyecto.</p>
-            </div>
-            <form className="os-stack-form" onSubmit={addDocument}>
-              <input
-                value={documentForm.title}
-                onChange={(event) => setDocumentForm({ ...documentForm, title: event.target.value })}
-                placeholder="Nombre del documento"
-              />
-              <div className="os-inline-fields">
-                <input value={documentForm.category} onChange={(event) => setDocumentForm({ ...documentForm, category: event.target.value })} placeholder="Categoría" />
-                <input value={documentForm.status} onChange={(event) => setDocumentForm({ ...documentForm, status: event.target.value })} placeholder="Estado" />
-                <input value={documentForm.location} onChange={(event) => setDocumentForm({ ...documentForm, location: event.target.value })} placeholder="Ruta, link o ubicación" />
-              </div>
-              <textarea value={documentForm.notes} onChange={(event) => setDocumentForm({ ...documentForm, notes: event.target.value })} placeholder="Qué contiene y por qué importa" />
-              <button type="submit">Registrar documento</button>
-            </form>
-            <div className="os-list">
-              {projectDocuments.map((item) => (
-                <article key={item.id} className="os-list-item">
-                  <span>{item.category} - {item.status} - {item.date}</span>
-                  <strong>{item.title}</strong>
-                  <p>{item.location}</p>
-                  <p>{item.notes}</p>
-                  <button type="button" onClick={() => persistDocuments(documents.filter((doc) => doc.id !== item.id))}>Quitar</button>
-                </article>
-              ))}
-            </div>
-          </article>
+          <DocumentosProyecto projects={osProjects} activeProject={activeProject} activeColor={activeColor} />
         )}
 
         {activeTab === "activos" && (
