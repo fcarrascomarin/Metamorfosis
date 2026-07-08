@@ -30,8 +30,16 @@ export default function App() {
       <main>
         <Hero />
         <Noticias />
-        <Plataforma />
-        <CasosTransformacion />
+
+        <section id="plataforma" className="section section-platform project-split-section">
+          <div className="project-split-grid">
+            <Plataforma compact />
+            <div id="casos" className="split-anchor">
+              <CasosTransformacion compact />
+            </div>
+          </div>
+        </section>
+
         <Trayectoria />
         <Contacto />
       </main>
