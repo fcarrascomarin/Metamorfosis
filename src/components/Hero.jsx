@@ -8,12 +8,12 @@ export default function Hero() {
 
         <h1 className="hero-title">
           <span>Lo valioso</span>
-          <span>necesita sistema.</span>
+          <span>Necesita sistema</span>
         </h1>
 
         <p className="hero-text">
-          Creamos paginas web, identidad digital y herramientas internas para que negocios con valor real
-          se expliquen mejor, trabajen con mas orden y puedan crecer sin depender de la improvisacion.
+          Creamos identidad digital y herramientas internas para que negocios con valor real
+          se expliquen mejor, trabajen con mas orden y puedan crecer sin depender de la improvisación
         </p>
 
         <div className="hero-pills" aria-label="Servicios principales">
