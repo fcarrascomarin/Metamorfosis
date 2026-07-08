@@ -331,6 +331,10 @@ export default function MetamorfosisOS() {
             Espacio privado para Francisca y Benjamin. Aqui se registran prioridades, medidas,
             documentos, activos, decisiones y respaldo de cada proyecto.
           </p>
+          <a href="#inicio" className="os-home-button os-home-button-access">
+            Volver al home
+          </a>
+
           <form onSubmit={handleAccess} className="os-login-form">
             <label htmlFor="os-key">Clave de acceso</label>
             <input
@@ -349,7 +353,26 @@ export default function MetamorfosisOS() {
   }
 
   return (
-    <main className="os-shell">
+    <main className="os-shell os-admin-shell" style={{ "--project-color": activeColor }}>
+      <header className="os-admin-topbar">
+        <a href="#inicio" className="os-admin-brand" aria-label="Volver al home de Metamorfosis">
+          <img src="/logo-1.png" alt="Logo Metamorfosis" />
+          <span>Metamorfosis OS</span>
+        </a>
+        <nav className="os-admin-actions" aria-label="Acciones del panel interno">
+          <a href="#inicio">Inicio</a>
+          <a href="#contacto">Ver web</a>
+          <button
+            type="button"
+            onClick={() => {
+              window.localStorage.removeItem("metamorfosis-os-access");
+              setAccess(false);
+            }}
+          >
+            Cerrar sesión
+          </button>
+        </nav>
+      </header>
       <header className="os-header">
         <div>
           <p className="os-eyebrow">Metamorfosis OS</p>
@@ -359,9 +382,10 @@ export default function MetamorfosisOS() {
             que documentos existen, que medidas se estan registrando y que decisiones ya fueron tomadas.
           </p>
         </div>
-        <a href="#inicio" className="os-back-link">
-          Volver a la web
-        </a>
+        <div className="os-header-actions">
+          <a href="#inicio" className="os-back-link">Inicio</a>
+          <a href="#contacto" className="os-back-link">Ver web pública</a>
+        </div>
       </header>
 
       <section className="os-kpis" aria-label="Resumen del sistema">
