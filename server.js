@@ -25,8 +25,8 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+      scriptSrc: ["'self'", "'sha256-GypvWo9kvH0GqwrdM6SQjd010VPtdbMjoBARL+kC7bA='"],
+      styleSrc: ["'self'", 'https://fonts.googleapis.com'],
       fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
       imgSrc: ["'self'", 'data:'],
       connectSrc: ["'self'"],
@@ -67,17 +67,13 @@ async function ensureSchema() {
       email TEXT,
       phone TEXT NOT NULL,
       preferred_contact TEXT,
+      consent BOOLEAN NOT NULL DEFAULT TRUE,
       source TEXT DEFAULT 'web',
       status TEXT DEFAULT 'nueva',
       created_at TIMESTAMPTZ DEFAULT NOW()
     );
   `);
-}
-
-if (pool) {
-  ensureSchema().catch((error) => {
-    console.error('No fue posible preparar la base de datos:', error.message);
-  });
+  await pool.query('ALTER TABLE metamorfosis_quotes ADD COLUMN IF NOT EXISTS consent BOOLEAN NOT NULL DEFAULT TRUE');
 }
 
 const PgSession = connectPgSimple(session);
@@ -143,7 +139,7 @@ app.get('/api/health', (_req, res) => {
 });
 
 app.get('/api/session', (req, res) => {
-  res.json({ ok: true, authenticated: Boolean(req.session?.isAdmin), email: req.session?.email || null });
+  res.json({ ok: true, authenticated: Boolean(req.session?.isAdmin), email: req.session?.email || null, demo: Boolean(req.session?.demo) });
 });
 
 app.post('/api/login', loginLimiter, async (req, res) => {
@@ -154,6 +150,7 @@ app.post('/api/login', loginLimiter, async (req, res) => {
   if (demoEnabled && email && password) {
     req.session.isAdmin = true;
     req.session.email = email;
+    req.session.demo = true;
     return res.json({ ok: true, authenticated: true, demo: true });
   }
 
@@ -174,7 +171,8 @@ app.post('/api/login', loginLimiter, async (req, res) => {
 
   req.session.isAdmin = true;
   req.session.email = configuredEmail;
-  return res.json({ ok: true, authenticated: true });
+  req.session.demo = false;
+  return res.json({ ok: true, authenticated: true, demo: false });
 });
 
 app.post('/api/logout', (req, res) => {
@@ -197,11 +195,19 @@ app.post('/api/quotes', publicLimiter, async (req, res) => {
     city: clean(req.body?.city, 140),
     email: clean(req.body?.email, 180),
     phone: clean(req.body?.phone, 80),
-    preferredContact: clean(req.body?.preferredContact, 60)
+    preferredContact: clean(req.body?.preferredContact, 60),
+    consent: req.body?.consent === true,
+    website: clean(req.body?.website, 200)
   };
 
-  if (!quote.serviceType || !quote.details || !quote.contactName || !quote.phone) {
-    return res.status(400).json({ ok: false, message: 'Faltan datos obligatorios para registrar la solicitud.' });
+  if (quote.website) {
+    return res.status(201).json({ ok: true, saved: false, id: quote.id });
+  }
+
+  const phoneDigits = quote.phone.replace(/\D/g, '');
+  const validEmail = !quote.email || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(quote.email);
+  if (!quote.serviceType || !quote.details || !quote.contactName || phoneDigits.length < 8 || !quote.consent || !validEmail) {
+    return res.status(400).json({ ok: false, message: 'Revisa los datos obligatorios, el teléfono, el correo y la autorización de contacto.' });
   }
 
   if (!pool) {
@@ -216,9 +222,9 @@ app.post('/api/quotes', publicLimiter, async (req, res) => {
   try {
     await pool.query(
       `INSERT INTO metamorfosis_quotes
-      (id, service_type, project_stage, desired_date, team_size, details, contact_name, company, city, email, phone, preferred_contact)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)`,
-      [quote.id, quote.serviceType, quote.projectStage, quote.desiredDate, quote.teamSize, quote.details, quote.contactName, quote.company, quote.city, quote.email, quote.phone, quote.preferredContact]
+      (id, service_type, project_stage, desired_date, team_size, details, contact_name, company, city, email, phone, preferred_contact, consent)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)`,
+      [quote.id, quote.serviceType, quote.projectStage, quote.desiredDate, quote.teamSize, quote.details, quote.contactName, quote.company, quote.city, quote.email, quote.phone, quote.preferredContact, quote.consent]
     );
     return res.status(201).json({ ok: true, saved: true, id: quote.id });
   } catch (error) {
@@ -249,9 +255,26 @@ app.patch('/api/quotes/:id/status', requireAdmin, async (req, res) => {
   const id = clean(req.params.id, 80);
   const status = clean(req.body?.status, 40);
   const allowed = new Set(['nueva', 'contactada', 'evaluacion', 'propuesta', 'cerrada', 'descartada']);
-  if (!allowed.has(status)) return res.status(400).json({ ok: false, message: 'Estado no válido.' });
-  await pool.query('UPDATE metamorfosis_quotes SET status = $1 WHERE id = $2', [status, id]);
-  res.json({ ok: true });
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id) || !allowed.has(status)) {
+    return res.status(400).json({ ok: false, message: 'Solicitud o estado no válido.' });
+  }
+  try {
+    const result = await pool.query('UPDATE metamorfosis_quotes SET status = $1 WHERE id = $2', [status, id]);
+    if (result.rowCount === 0) return res.status(404).json({ ok: false, message: 'Solicitud no encontrada.' });
+    return res.json({ ok: true });
+  } catch (error) {
+    console.error('Error al actualizar cotización:', error.message);
+    return res.status(500).json({ ok: false, message: 'No fue posible actualizar el estado.' });
+  }
+});
+
+app.use('/admin', (_req, res, next) => {
+  res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  next();
+});
+
+app.use('/api', (_req, res) => {
+  res.status(404).json({ ok: false, message: 'Endpoint no encontrado.' });
 });
 
 app.use(express.static(path.join(__dirname, 'dist'), {
@@ -266,6 +289,26 @@ app.get('*', (_req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
-app.listen(port, () => {
-  console.log(`Metamorfosis Lab disponible en http://localhost:${port}`);
+async function startServer() {
+  if (pool) {
+    await ensureSchema();
+    pool.on('error', (error) => console.error('Error inesperado de PostgreSQL:', error.message));
+  }
+  const server = app.listen(port, () => {
+    console.log(`Metamorfosis Lab disponible en http://localhost:${port}`);
+  });
+
+  const shutdown = async () => {
+    server.close(async () => {
+      if (pool) await pool.end();
+      process.exit(0);
+    });
+  };
+  process.once('SIGTERM', shutdown);
+  process.once('SIGINT', shutdown);
+}
+
+startServer().catch((error) => {
+  console.error('No fue posible iniciar Metamorfosis Lab:', error.message);
+  process.exit(1);
 });

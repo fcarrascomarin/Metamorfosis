@@ -1,41 +1,49 @@
-# Informe de verificación · Metamorfosis Lab v2.0
+# Informe de verificación · Metamorfosis Lab v2.2
 
 Fecha: 16 de julio de 2026
 
-## Verificaciones superadas
+## Verificaciones ejecutadas sobre el archivo final
 
-- `npm run check`: compilación de producción exitosa.
+- `npm ci`: instalación reproducible correcta.
+- `npm run build`: compilación de producción exitosa.
 - `npm audit --audit-level=low`: 0 vulnerabilidades reportadas.
+- Build total aproximado: 0,72 MiB.
 - Endpoint `/api/health`: respuesta correcta.
-- Formulario público `/api/quotes`: validación y respuesta correcta sin base conectada.
-- Login de desarrollo: creación de sesión correcta.
+- Formulario `/api/quotes`: rechazo de datos inválidos y respuesta honesta cuando no hay base conectada.
+- Login de desarrollo explícitamente habilitado: correcto.
 - `/api/session`: lectura de sesión correcta.
-- `/api/quotes`: protección por sesión administrativa correcta.
+- `/api/quotes`: protección por sesión correcta.
 - `/api/logout`: cierre de sesión correcto.
-- Activos de producción versionados mediante hashes de Vite.
-- Imágenes optimizadas en WebP; hero aproximado 205 KB y fotografías secundarias bajo 60 KB.
+- Endpoint API inexistente: HTTP 404 JSON.
+- Ruta `/admin`: `X-Robots-Tag` y CSP correctas.
+- Producción sin `DATABASE_URL`: el servidor se niega a iniciar.
+- No existen importaciones de activos rotas ni referencias públicas a archivos ausentes.
 
 ## Criterios implementados
 
 - Header sticky con compensación de anclas.
+- Navegación móvil simplificada con `aria-expanded` y `aria-controls`.
 - Secciones públicas compactas y jerarquizadas.
-- Menú móvil simplificado.
-- WhatsApp flotante accesible y alcanzable en móvil.
-- Formulario por pasos y mensaje de WhatsApp generado con los datos ingresados.
-- Componentización para video diferido con `poster`, `data-src` y `preload="none"`.
-- Panel administrativo ordenado por frecuencia de uso.
+- Logo oficial, favicon y tarjeta social coherentes.
+- Iconos SVG internos sin dependencia de una fuente de iconos remota.
+- WhatsApp flotante accesible.
+- Formulario por pasos con consentimiento, validación y honeypot.
+- Caso CM presentado como demostrativo y en ejecución.
+- Panel ordenado por frecuencia real de uso.
+- Oportunidades reales sin relleno ficticio y con detalle expandible.
+- Cambio de estado conectado a la API y mensaje de resultado accesible.
 - Tablas sin scroll vertical interno.
-- Repositorio documental separado por origen.
-- Botones de icono con nombre accesible.
-- Foco visible, enlace para saltar contenido y soporte de `prefers-reduced-motion`.
-- Sesiones PostgreSQL en producción y prohibición explícita de MemoryStore.
-- Sin contraseñas en código o documentación.
+- Documentos separados por origen.
+- Sesiones PostgreSQL obligatorias en producción.
+- CSP sin `unsafe-inline` para scripts o estilos.
+- Material anterior fuera del paquete productivo.
 
 ## Antes de publicar definitivamente
 
-- Sustituir el monograma temporal por el logo oficial SVG.
-- Confirmar que `contacto@metamorfosislab.cl` esté operativo.
 - Configurar Neon/PostgreSQL y variables de entorno en Render.
-- Crear el hash bcrypt de la contraseña administrativa.
-- Reemplazar fotografías de apoyo por fotografías propias cuando exista material institucional suficiente.
-- Validar el dominio con y sin `www` en Cloudflare.
+- Generar `ADMIN_PASSWORD_HASH` y usar un secreto de sesión robusto.
+- Confirmar que `contacto@metamorfosislab.cl` recibe mensajes.
+- Validar dominio con y sin `www` en Cloudflare.
+- Sustituir fotografías de apoyo por material propio cuando esté disponible.
+- Realizar validación visual final en dispositivos físicos.
+- Implementar los módulos internos pendientes antes de presentar Metamorfosis OS como sistema integral.

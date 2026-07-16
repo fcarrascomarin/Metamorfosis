@@ -10,3 +10,5 @@ Las fotografías incluidas se incorporan como imágenes reales de apoyo visual y
   - Fuente original: https://cdn.pixabay.com/photo/2021/06/15/18/57/team-6339362_1280.jpg
 
 Licencia y condiciones vigentes deben verificarse antes de una publicación comercial definitiva. Se recomienda priorizar fotografías propias del equipo, los proyectos y el territorio.
+
+- `caso-cm.webp`: captura real del panel interno de CM incluida en el proyecto aportado por el usuario.
