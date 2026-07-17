@@ -2,8 +2,6 @@ import React, { useMemo, useState } from 'react';
 import Icon from './components/Icon.jsx';
 import AdminApp from './AdminApp.jsx';
 import heroImage from './assets/images/hero-proyectos.webp';
-import systemImage from './assets/images/sistema-digital.webp';
-import methodImage from './assets/images/trabajo-metodo.webp';
 import caseImage from './assets/images/caso-cm.webp';
 import { contact, services, methodSteps } from './data.js';
 
@@ -12,10 +10,10 @@ const waBase = `https://wa.me/${contact.phoneDigits}`;
 function Brand({ compact = false }) {
   return (
     <a className={`brand ${compact ? 'brand--compact' : ''}`} href="/" aria-label="Metamorfosis Lab, ir al inicio">
-      <img className="brand-logo" src="/logo-metamorfosis-transparente.png" alt="" width="48" height="48" />
+      <img className="brand-logo" src="/logo-metamorfosis-transparente.png" alt="Isotipo de Metamorfosis Lab" width="44" height="44" />
       <span className="brand-copy">
-        <strong>Metamorfosis</strong>
-        <small>LAB</small>
+        <strong>METAMORFOSIS LAB</strong>
+        <small>tecnología · estructura · criterio</small>
       </span>
     </a>
   );
@@ -32,10 +30,8 @@ function IconButton({ label, icon, onClick, className = '', type = 'button', dis
 function PublicHeader() {
   const [open, setOpen] = useState(false);
   const links = [
-    ['servicios', 'Qué hacemos'],
-    ['trayectoria', 'Trayectoria'],
-    ['mapa', 'El Mapa'],
-    ['metodo', 'Cómo trabajamos'],
+    ['plataforma', 'Plataforma'],
+    ['mapa', 'Mapa'],
     ['caso-cm', 'Caso CM'],
     ['contacto', 'Contacto']
   ];
@@ -53,7 +49,8 @@ function PublicHeader() {
           {links.map(([id, label]) => (
             <button type="button" key={id} onClick={() => goTo(id)}>{label}</button>
           ))}
-          <a className="button button--small" href="#contacto" onClick={() => setOpen(false)}>Conversar</a>
+          <a className="site-nav__os" href="/admin">Acceso OS</a>
+          <a className="button button--small" href="#contacto" onClick={() => setOpen(false)}>Conversemos</a>
         </nav>
         <IconButton
           className="menu-button"
@@ -240,50 +237,44 @@ function QuoteWizard() {
               </select>
             </label>
             <label>
-              Plazo o fecha esperada
-              <input type="text" name="desiredDate" value={form.desiredDate} onChange={update} placeholder="Ej.: durante agosto" />
+              Plazo esperado
+              <input type="text" name="desiredDate" value={form.desiredDate} onChange={update} placeholder="Ej. este mes, agosto, sin urgencia" />
             </label>
             <label>
-              Personas involucradas
-              <select name="teamSize" value={form.teamSize} onChange={update}>
-                <option value="">Seleccionar</option>
-                <option>Trabajo individual</option>
-                <option>2 a 5 personas</option>
-                <option>6 a 15 personas</option>
-                <option>Más de 15 personas</option>
-              </select>
+              Tamaño del equipo
+              <input type="text" name="teamSize" value={form.teamSize} onChange={update} placeholder="Ej. 2 personas, 8 trabajadores" />
             </label>
-            <label className="form-field--wide">
-              ¿Qué está ocurriendo y qué necesitas resolver?
-              <textarea name="details" value={form.details} onChange={update} rows="5" required maxLength="1800" placeholder="Describe brevemente el desorden, oportunidad o decisión que necesitas abordar." />
+            <label>
+              Comuna o ciudad
+              <input type="text" name="city" value={form.city} onChange={update} placeholder="Ej. Concepción" />
             </label>
           </div>
+          <label>
+            ¿Qué está ocurriendo actualmente?
+            <textarea name="details" value={form.details} onChange={update} rows="5" placeholder="Describe brevemente qué problema estás enfrentando, qué valor ya existe y qué quisieras ordenar o transformar." />
+          </label>
         </fieldset>
       )}
 
       {step === 3 && (
         <fieldset className="wizard-step">
-          <legend>Datos para continuar la conversación</legend>
+          <legend>Datos de contacto</legend>
           <div className="form-grid form-grid--two">
             <label>
-              Nombre
-              <input type="text" name="contactName" value={form.contactName} onChange={update} required autoComplete="name" />
+              Nombre y apellido
+              <input type="text" name="contactName" value={form.contactName} onChange={update} required />
             </label>
             <label>
               Empresa o proyecto
-              <input type="text" name="company" value={form.company} onChange={update} autoComplete="organization" />
+              <input type="text" name="company" value={form.company} onChange={update} />
             </label>
             <label>
-              Ciudad o comuna
-              <input type="text" name="city" value={form.city} onChange={update} autoComplete="address-level2" />
+              Teléfono o WhatsApp
+              <input type="tel" name="phone" value={form.phone} onChange={update} placeholder="Ej. +56 9..." required />
             </label>
             <label>
-              WhatsApp o teléfono
-              <input type="tel" name="phone" value={form.phone} onChange={update} required autoComplete="tel" placeholder="+56 9…" />
-            </label>
-            <label>
-              Correo
-              <input type="email" name="email" value={form.email} onChange={update} autoComplete="email" />
+              Correo electrónico
+              <input type="email" name="email" value={form.email} onChange={update} placeholder="Ej. contacto@proyecto.cl" />
             </label>
             <label>
               Medio preferido
@@ -294,9 +285,9 @@ function QuoteWizard() {
               </select>
             </label>
           </div>
-          <label className="consent-field">
-            <input type="checkbox" name="consent" checked={form.consent} onChange={update} required />
-            <span>Autorizo a Metamorfosis Lab a usar estos datos únicamente para responder y dar seguimiento a esta solicitud.</span>
+          <label className="checkbox-field">
+            <input type="checkbox" name="consent" checked={form.consent} onChange={update} />
+            <span>Autorizo a Metamorfosis Lab a utilizar estos datos para contactarme sobre mi solicitud.</span>
           </label>
           <label className="honeypot" aria-hidden="true">Sitio web<input type="text" name="website" value={form.website} onChange={update} tabIndex="-1" autoComplete="off" /></label>
         </fieldset>
@@ -325,160 +316,153 @@ function PublicSite() {
       <a className="skip-link" href="#contenido">Saltar al contenido principal</a>
       <PublicHeader />
       <main id="contenido">
-        <section id="inicio" className="hero section-anchor">
-          <div className="shell hero__grid">
-            <div className="hero__copy">
-              <span className="kicker">Laboratorio de transformación aplicada · Biobío</span>
-              <h1>Hacemos que lo valioso sobreviva a la improvisación.</h1>
-              <p>Ayudamos a proyectos y pymes con valor real a convertir conocimiento disperso en sistemas, activos y decisiones que puedan sostenerse.</p>
+        <section id="inicio" className="hero hero--immersive section-anchor">
+          <div className="hero__backdrop" aria-hidden="true">
+            <img src={heroImage} alt="" width="1600" height="900" fetchPriority="high" />
+          </div>
+          <div className="hero__overlay" aria-hidden="true" />
+          <div className="shell hero__stage">
+            <div className="hero__panel">
+              <span className="hero__eyebrow">Metamorfosis Lab</span>
+              <h1>Tecnología con criterio para proyectos que necesitan estructura.</h1>
+              <p>Integramos estrategia, diseño y sistemas para transformar valor disperso en presencia digital clara, operación trazable y decisiones sostenibles.</p>
+              <div className="hero__tags" aria-label="Enfoques principales">
+                <span>Estrategia</span>
+                <span>Diseño</span>
+                <span>Tecnología útil</span>
+              </div>
               <div className="hero__actions">
-                <a className="button" href="#contacto">Solicitar conversación inicial</a>
-                <a className="button button--ghost" href="#mapa">Conocer el Mapa</a>
-              </div>
-              <div className="hero__proof" aria-label="Principales resultados del proceso">
-                <span><Icon name="description" /> Documentación útil</span>
-                <span><Icon name="schema" /> Procesos claros</span>
-                <span><Icon name="query_stats" /> Decisiones con evidencia</span>
+                <a className="button" href="#plataforma">Ver plataforma</a>
+                <a className="button button--ghost-light" href="#contacto">Conversemos</a>
               </div>
             </div>
-            <figure className="hero__media">
-              <img
-                src={heroImage}
-                alt="Equipo de trabajo revisando planos y documentos alrededor de una mesa"
-                width="1280"
-                height="800"
-                fetchPriority="high"
-              />
-              <figcaption>
-                <span>De la intuición a la forma</span>
-                <strong>Observar · ordenar · sistematizar</strong>
-              </figcaption>
-            </figure>
+            <aside className="hero__floating">
+              <div>
+                <span className="kicker">Qué deja Metamorfosis</span>
+                <strong>Una web pública comprensible y un sistema interno utilizable.</strong>
+              </div>
+              <ul>
+                <li><Icon name="description" /> Documentación útil</li>
+                <li><Icon name="schema" /> Procesos claros</li>
+                <li><Icon name="query_stats" /> Decisiones con evidencia</li>
+              </ul>
+            </aside>
           </div>
         </section>
 
-        <section id="servicios" className="section section-screen section-anchor">
-          <div className="shell">
-            <SectionHeading
-              kicker="Qué hacemos"
-              title="Convertimos valor disperso en una estructura que puede sostenerse."
-              description="Integramos estrategia, operación, identidad y tecnología según lo que el proyecto realmente necesita, evitando soluciones desconectadas."
-            />
-            <div className="service-grid">
-              {services.map((service) => (
-                <article className="service-card" key={service.title}>
-                  <span className="service-card__icon"><Icon name={service.icon} /></span>
-                  <h3>{service.title}</h3>
-                  <p>{service.text}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="trayectoria" className="section section-screen section-anchor section--tint">
-          <div className="shell split-layout">
-            <div className="split-layout__media">
-              <img src={systemImage} alt="Profesionales trabajando con computadores y revisando información de un proyecto" width="1280" height="853" loading="lazy" />
-            </div>
-            <div className="split-layout__copy">
-              <SectionHeading
-                kicker="Experiencia aplicada"
-                title="Metamorfosis nace desde operaciones reales y problemas que necesitan estructura."
-              />
-              <p>El laboratorio integra experiencia en control de gestión, planificación, operación, documentación técnica, diseño de sistemas y desarrollo digital aplicado a pymes.</p>
-              <div className="timeline-mini">
-                <div><b>01</b><span><strong>Experiencia operacional</strong>Control, procesos, indicadores y mejora.</span></div>
-                <div><b>02</b><span><strong>Primer caso vivo</strong>Consolidación de CM Banquetería como prueba aplicada.</span></div>
-                <div><b>03</b><span><strong>Método propio</strong>Herramientas replicables para comprender, ejecutar y medir.</span></div>
-              </div>
-              <p className="callout">CM se comunica como un caso en construcción: muestra el recorrido y las herramientas creadas, sin inflar resultados todavía no medidos.</p>
-            </div>
-          </div>
-        </section>
-
-        <section id="mapa" className="section section-screen section-anchor section--dark">
-          <div className="shell map-layout">
+        <section id="plataforma" className="site-section section-anchor">
+          <div className="shell site-section__grid">
             <div>
               <SectionHeading
-                kicker="Puerta de entrada"
-                title="Mapa de Transformación y Activos"
-                description="Un diagnóstico accionable para entender qué existe, qué está en riesgo, qué valor permanece oculto y qué conviene hacer primero."
+                kicker="Plataforma de trabajo"
+                title="Una sola lógica para comprender, ordenar y proyectar proyectos con sentido."
+                description="Metamorfosis no vende piezas sueltas. Conecta el problema real, la presencia pública, la operación y la información que permite sostener el crecimiento."
               />
-              <a className="button button--light" href="#contacto">Evaluar mi proyecto</a>
-            </div>
-            <div className="map-board" role="list" aria-label="Dimensiones del Mapa de Transformación y Activos">
-              {[
-                ['storefront', 'Proyecto e identidad'],
-                ['settings', 'Operación y roles'],
-                ['payments', 'Economía y caja'],
-                ['database', 'Datos y tecnología útil'],
-                ['recycling', 'Recursos y circularidad'],
-                ['copyright', 'Activos intangibles'],
-                ['warning', 'Riesgos y dependencias'],
-                ['route', 'Ruta de transformación']
-              ].map(([icon, label]) => (
-                <div key={label} role="listitem">
-                  <Icon name={icon} />
-                  <span>{label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="metodo" className="section section-screen section-anchor">
-          <div className="shell method-layout">
-            <div className="method-layout__copy">
-              <SectionHeading
-                kicker="Cómo trabajamos"
-                title="Un método visible, trazable y adaptable."
-                description="Cada etapa debe dejar una decisión, una herramienta, una evidencia o una capacidad instalada."
-              />
-              <div className="method-steps">
-                {methodSteps.map(([icon, title, text], index) => (
-                  <article key={title}>
-                    <span className="method-number">{String(index + 1).padStart(2, '0')}</span>
-                    <Icon name={icon} />
-                    <div><h3>{title}</h3><p>{text}</p></div>
+              <div className="service-grid">
+                {services.map((service) => (
+                  <article className="service-card" key={service.title}>
+                    <span className="service-card__icon"><Icon name={service.icon} /></span>
+                    <h3>{service.title}</h3>
+                    <p>{service.text}</p>
                   </article>
                 ))}
               </div>
             </div>
-            <figure className="method-layout__media">
-              <img src={methodImage} alt="Personas tomando notas y revisando documentos durante una sesión de trabajo" width="1280" height="857" loading="lazy" />
-              <figcaption>Comprensión antes que tecnología. Criterio antes que automatización.</figcaption>
-            </figure>
+            <aside className="site-section__panel story-panel">
+              <span className="kicker">Trayectoria y enfoque</span>
+              <h3>Metamorfosis surge desde la operación real, no desde promesas abstractas.</h3>
+              <div className="story-list">
+                <div className="story-step"><b>01</b><div><strong>Experiencia aplicada</strong><p>Planificación, control, documentación, orden y mejora desde problemas concretos.</p></div></div>
+                <div className="story-step"><b>02</b><div><strong>Caso demostrativo vivo</strong><p>CM permite probar, ajustar y evidenciar el método sin fingir resultados todavía no medidos.</p></div></div>
+                <div className="story-step"><b>03</b><div><strong>Método propio</strong><p>Herramientas replicables para transformar intuición dispersa en decisiones visibles.</p></div></div>
+              </div>
+            </aside>
           </div>
         </section>
 
-        <section id="caso-cm" className="section section-screen section-anchor section--tint">
-          <div className="shell case-layout">
-            <div className="case-layout__copy">
+        <section id="mapa" className="site-section site-section--tint section-anchor">
+          <div className="shell site-section__grid site-section__grid--mapa">
+            <div className="site-section__panel map-panel">
               <SectionHeading
-                kicker="Caso demostrativo en desarrollo"
+                kicker="Producto de entrada"
+                title="Mapa de Transformación y Activos"
+                description="La puerta de entrada para entender el estado actual, las dependencias del proyecto y la ruta que conviene priorizar."
+              />
+              <div className="map-board" role="list" aria-label="Dimensiones del mapa">
+                {[
+                  ['storefront', 'Proyecto e identidad'],
+                  ['settings', 'Operación y roles'],
+                  ['database', 'Datos y tecnología útil'],
+                  ['copyright', 'Activos intangibles'],
+                  ['warning', 'Riesgos y dependencias'],
+                  ['route', 'Ruta priorizada']
+                ].map(([icon, label]) => (
+                  <div className="map-dimension" key={label} role="listitem">
+                    <Icon name={icon} />
+                    <span>{label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="site-section__panel method-panel">
+              <span className="kicker">Método visible</span>
+              <h3>Cómo se mueve el proceso</h3>
+              <div className="method-mini">
+                {methodSteps.map(([icon, title, text], index) => (
+                  <article key={title}>
+                    <span>{String(index + 1).padStart(2, '0')}</span>
+                    <Icon name={icon} />
+                    <div>
+                      <strong>{title}</strong>
+                      <p>{text}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="caso-cm" className="site-section section-anchor">
+          <div className="shell site-section__grid site-section__grid--case">
+            <div className="site-section__panel case-panel">
+              <SectionHeading
+                kicker="Caso demostrativo"
                 title="CM: ordenar la operación para que el crecimiento no dependa de la memoria."
-                description="La consultoría de consolidación de CM integra documentación, control operativo, presencia pública y un sistema interno construido desde necesidades reales."
+                description="La Consultoría de Consolidación CM integra documentación, control operativo, vitrina pública y sistema interno construido desde necesidades reales."
               />
               <ul className="case-points">
-                <li><Icon name="check_circle" /> Procesos y documentos vinculados a etapas e hitos.</li>
-                <li><Icon name="check_circle" /> Panel operativo para cotizaciones, stock, gastos y seguimiento.</li>
-                <li><Icon name="check_circle" /> Separación entre vitrina pública y gestión interna.</li>
+                <li><Icon name="check_circle" /> Procesos, hitos y documentos vinculados.</li>
+                <li><Icon name="check_circle" /> Separación entre información pública y gestión privada.</li>
+                <li><Icon name="check_circle" /> Uso de tecnología solo donde mejora claridad y control.</li>
               </ul>
-              <p className="callout"><strong>Estado:</strong> caso vivo en ejecución. Se muestran herramientas construidas, sin atribuir resultados que todavía no han sido medidos.</p>
+              <figure className="case-thumb">
+                <img src={caseImage} alt="Vista del sistema interno desarrollado para CM Banquetería" width="1400" height="700" loading="lazy" />
+              </figure>
             </div>
-            <figure className="case-layout__media">
-              <img src={caseImage} alt="Vista del panel interno desarrollado para CM Banquetería" width="1400" height="700" loading="lazy" />
-              <figcaption>Entregable dentro de la Consultoría de Consolidación CM, desarrollada por Metamorfosis Lab.</figcaption>
-            </figure>
+            <div className="site-section__panel os-panel">
+              <span className="kicker">Metamorfosis OS</span>
+              <h3>La plataforma interna existe y tiene acceso real.</h3>
+              <p>El panel interno no es un adorno. Ordena oportunidades, tareas, proyectos, decisiones, documentos y respaldos en una sola interfaz privada.</p>
+              <div className="platform-tiles">
+                <article className="platform-tile"><Icon name="today" /><strong>Panel diario</strong><p>Prioridades concretas, avances y próximos pasos.</p></article>
+                <article className="platform-tile"><Icon name="request_quote" /><strong>Comercial</strong><p>Consultas recibidas desde la web y seguimiento interno.</p></article>
+                <article className="platform-tile"><Icon name="folder_open" /><strong>Documentos</strong><p>Repositorio, biblioteca y respaldos del sistema.</p></article>
+                <article className="platform-tile"><Icon name="account_tree" /><strong>Proyectos</strong><p>Frentes activos, límites y decisiones vigentes.</p></article>
+              </div>
+              <div className="os-panel__actions">
+                <a className="button" href="/admin">Ingresar al panel</a>
+                <a className="button button--ghost" href="#contacto">Solicitar implementación</a>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section id="contacto" className="section section-anchor contact-section">
+        <section id="contacto" className="site-section site-section--contact section-anchor">
           <div className="shell contact-layout">
             <div className="contact-intro">
               <SectionHeading
-                kicker="Conversación inicial"
+                kicker="Cotización y contacto"
                 title="Cuéntanos qué valor existe y qué necesita forma."
                 description="La primera conversación busca comprender el problema, evaluar encaje y definir si corresponde comenzar por un Mapa o por una intervención acotada."
               />
@@ -495,34 +479,35 @@ function PublicSite() {
                   <Icon name="location_on" />
                   <span><small>Territorio</small><strong>{contact.coverage}</strong></span>
                 </div>
+                <a href="/admin">
+                  <Icon name="dashboard" />
+                  <span><small>Acceso interno</small><strong>Metamorfosis OS</strong></span>
+                </a>
               </div>
             </div>
             <QuoteWizard />
-          </div>
-        </section>
-
-        <section id="ubicacion" className="location-strip section-anchor">
-          <div className="shell location-strip__inner">
-            <div>
-              <span className="kicker">Cómo trabajamos territorialmente</span>
-              <h2>Desde Biobío, con atención presencial coordinada y trabajo remoto.</h2>
-            </div>
-            <div className="location-details">
-              <span><Icon name="public" /> {contact.location}</span>
-              <span><Icon name="schedule" /> Reuniones con coordinación previa</span>
-              <span><Icon name="videocam" /> Atención remota disponible</span>
-            </div>
           </div>
         </section>
       </main>
 
       <footer className="site-footer">
         <div className="shell site-footer__grid">
-          <div><Brand /><p>Dar forma y proyección a proyectos con sentido.</p></div>
-          <div><span className="footer-title">Contacto</span><a href={`mailto:${contact.email}`}>{contact.email}</a><a href={`${waBase}`}>{contact.phoneDisplay}</a></div>
-          <div><span className="footer-title">Ubicación</span><p>Región del Biobío · Chile</p><p>Atención presencial y remota.</p></div>
+          <div>
+            <Brand />
+            <p>Dar forma y proyección a proyectos con sentido, sin perder claridad operativa ni identidad.</p>
+          </div>
+          <div>
+            <span className="footer-title">Contacto</span>
+            <a href={`mailto:${contact.email}`}>{contact.email}</a>
+            <a href={`${waBase}`}>{contact.phoneDisplay}</a>
+          </div>
+          <div>
+            <span className="footer-title">Territorio y acceso</span>
+            <p>Biobío, Chile · atención presencial y remota.</p>
+            <a href="/admin">Ingresar a Metamorfosis OS</a>
+          </div>
         </div>
-        <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis Lab</span><span>Transformación aplicada con criterio humano.</span></div>
+        <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis Lab</span><span>Tecnología, estructura y criterio para pymes y proyectos.</span></div>
       </footer>
       <WhatsappFloating />
     </div>
