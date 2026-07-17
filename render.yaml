@@ -2,12 +2,16 @@ services:
   - type: web
     name: metamorfosislab
     runtime: node
-    buildCommand: npm ci && npm run build
+    plan: free
+    buildCommand: npm ci --registry=https://registry.npmjs.org/ --no-audit --no-fund && npm run build
     startCommand: npm start
     healthCheckPath: /api/health
+    autoDeploy: true
     envVars:
       - key: NODE_VERSION
         value: 20.19.0
+      - key: NPM_CONFIG_REGISTRY
+        value: https://registry.npmjs.org/
       - key: NODE_ENV
         value: production
       - key: SESSION_SECRET

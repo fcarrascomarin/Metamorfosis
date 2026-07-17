@@ -1,49 +1,28 @@
-# Informe de verificación · Metamorfosis Lab v2.2
+# Informe de revisión técnica · Metamorfosis v3.0.0
 
-Fecha: 16 de julio de 2026
+## Verificaciones realizadas
 
-## Verificaciones ejecutadas sobre el archivo final
+- Sintaxis JSX/JavaScript validada con TypeScript en modo `noEmit`.
+- Sintaxis de `server.js`, `data.js` y `osSeed.js` validada con Node.
+- Imports relativos revisados: no existen rutas faltantes.
+- Activos públicos revisados: logo, favicon, tarjeta social e icono de WhatsApp disponibles.
+- `package-lock.json` revisado: 148 URLs resueltas y todas apuntan a `registry.npmjs.org`.
+- No quedan referencias a registros internos de OpenAI.
+- No se incluyen contraseñas ni `.env` productivo.
+- Rutas privadas protegidas por sesión.
+- Sesión regenerada al iniciar acceso para reducir fijación de sesión.
+- Persistencia productiva exige PostgreSQL.
+- API de Metamorfosis OS limitada por tamaño y estructura.
+- Acciones administrativas mutables validan origen cuando el navegador envía `Origin`.
 
-- `npm ci`: instalación reproducible correcta.
-- `npm run build`: compilación de producción exitosa.
-- `npm audit --audit-level=low`: 0 vulnerabilidades reportadas.
-- Build total aproximado: 0,72 MiB.
-- Endpoint `/api/health`: respuesta correcta.
-- Formulario `/api/quotes`: rechazo de datos inválidos y respuesta honesta cuando no hay base conectada.
-- Login de desarrollo explícitamente habilitado: correcto.
-- `/api/session`: lectura de sesión correcta.
-- `/api/quotes`: protección por sesión correcta.
-- `/api/logout`: cierre de sesión correcto.
-- Endpoint API inexistente: HTTP 404 JSON.
-- Ruta `/admin`: `X-Robots-Tag` y CSP correctas.
-- Producción sin `DATABASE_URL`: el servidor se niega a iniciar.
-- No existen importaciones de activos rotas ni referencias públicas a archivos ausentes.
+## Limitación de la revisión local
 
-## Criterios implementados
+El entorno de construcción utilizado para preparar el ZIP no tiene resolución DNS hacia npm, por lo que no fue posible ejecutar `npm ci` ni producir un `dist` nuevo dentro de este entorno. El problema original de Render fue corregido en el lock y la configuración; la compilación debe ejecutarse en Render o en un equipo con acceso a `registry.npmjs.org`.
 
-- Header sticky con compensación de anclas.
-- Navegación móvil simplificada con `aria-expanded` y `aria-controls`.
-- Secciones públicas compactas y jerarquizadas.
-- Logo oficial, favicon y tarjeta social coherentes.
-- Iconos SVG internos sin dependencia de una fuente de iconos remota.
-- WhatsApp flotante accesible.
-- Formulario por pasos con consentimiento, validación y honeypot.
-- Caso CM presentado como demostrativo y en ejecución.
-- Panel ordenado por frecuencia real de uso.
-- Oportunidades reales sin relleno ficticio y con detalle expandible.
-- Cambio de estado conectado a la API y mensaje de resultado accesible.
-- Tablas sin scroll vertical interno.
-- Documentos separados por origen.
-- Sesiones PostgreSQL obligatorias en producción.
-- CSP sin `unsafe-inline` para scripts o estilos.
-- Material anterior fuera del paquete productivo.
+## Resultado esperado en Render
 
-## Antes de publicar definitivamente
-
-- Configurar Neon/PostgreSQL y variables de entorno en Render.
-- Generar `ADMIN_PASSWORD_HASH` y usar un secreto de sesión robusto.
-- Confirmar que `contacto@metamorfosislab.cl` recibe mensajes.
-- Validar dominio con y sin `www` en Cloudflare.
-- Sustituir fotografías de apoyo por material propio cuando esté disponible.
-- Realizar validación visual final en dispositivos físicos.
-- Implementar los módulos internos pendientes antes de presentar Metamorfosis OS como sistema integral.
+```text
+npm ci --registry=https://registry.npmjs.org/ --no-audit --no-fund
+npm run build
+npm start
+```

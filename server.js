@@ -38,7 +38,7 @@ app.use(helmet({
   strictTransportSecurity: isProduction ? undefined : false
 }));
 app.use(compression());
-app.use(express.json({ limit: '250kb' }));
+app.use(express.json({ limit: '800kb' }));
 app.use(express.urlencoded({ extended: false, limit: '250kb' }));
 
 let pool = null;
@@ -74,6 +74,14 @@ async function ensureSchema() {
     );
   `);
   await pool.query('ALTER TABLE metamorfosis_quotes ADD COLUMN IF NOT EXISTS consent BOOLEAN NOT NULL DEFAULT TRUE');
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS metamorfosis_os_state (
+      workspace_key TEXT PRIMARY KEY,
+      data JSONB NOT NULL,
+      updated_by TEXT,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+  `);
 }
 
 const PgSession = connectPgSimple(session);
@@ -134,6 +142,27 @@ function requireAdmin(req, res, next) {
   return res.status(401).json({ ok: false, message: 'Sesión no autorizada.' });
 }
 
+function requireSameOrigin(req, res, next) {
+  const origin = req.get('origin');
+  if (!origin) return next();
+  try {
+    const requestOrigin = new URL(origin);
+    const host = req.get('host');
+    if (requestOrigin.host === host) return next();
+  } catch {
+    // Continúa al rechazo uniforme.
+  }
+  return res.status(403).json({ ok: false, message: 'Origen de solicitud no autorizado.' });
+}
+
+async function establishSession(req, email, demo) {
+  await new Promise((resolve, reject) => req.session.regenerate((error) => error ? reject(error) : resolve()));
+  req.session.isAdmin = true;
+  req.session.email = email;
+  req.session.demo = demo;
+  await new Promise((resolve, reject) => req.session.save((error) => error ? reject(error) : resolve()));
+}
+
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true, database: hasDatabase ? 'configured' : 'development-only' });
 });
@@ -148,10 +177,8 @@ app.post('/api/login', loginLimiter, async (req, res) => {
   const demoEnabled = !isProduction && process.env.DEMO_ADMIN === 'true';
 
   if (demoEnabled && email && password) {
-    req.session.isAdmin = true;
-    req.session.email = email;
-    req.session.demo = true;
-    return res.json({ ok: true, authenticated: true, demo: true });
+    await establishSession(req, email, true);
+    return res.json({ ok: true, authenticated: true, email, demo: true });
   }
 
   const configuredEmail = clean(process.env.ADMIN_EMAIL || '', 160).toLowerCase();
@@ -169,10 +196,8 @@ app.post('/api/login', loginLimiter, async (req, res) => {
     return res.status(401).json({ ok: false, message: 'Credenciales incorrectas.' });
   }
 
-  req.session.isAdmin = true;
-  req.session.email = configuredEmail;
-  req.session.demo = false;
-  return res.json({ ok: true, authenticated: true, demo: false });
+  await establishSession(req, configuredEmail, false);
+  return res.json({ ok: true, authenticated: true, email: configuredEmail, demo: false });
 });
 
 app.post('/api/logout', (req, res) => {
@@ -250,7 +275,7 @@ app.get('/api/quotes', requireAdmin, async (_req, res) => {
   }
 });
 
-app.patch('/api/quotes/:id/status', requireAdmin, async (req, res) => {
+app.patch('/api/quotes/:id/status', requireAdmin, requireSameOrigin, async (req, res) => {
   if (!pool) return res.status(503).json({ ok: false, message: 'Base de datos no conectada.' });
   const id = clean(req.params.id, 80);
   const status = clean(req.body?.status, 40);
@@ -265,6 +290,52 @@ app.patch('/api/quotes/:id/status', requireAdmin, async (req, res) => {
   } catch (error) {
     console.error('Error al actualizar cotización:', error.message);
     return res.status(500).json({ ok: false, message: 'No fue posible actualizar el estado.' });
+  }
+});
+
+app.get('/api/os-state', requireAdmin, async (_req, res) => {
+  if (!pool) return res.json({ ok: true, state: null, saved: false });
+  try {
+    const result = await pool.query(
+      'SELECT data, updated_at, updated_by FROM metamorfosis_os_state WHERE workspace_key = $1',
+      ['principal']
+    );
+    const row = result.rows[0];
+    return res.json({ ok: true, state: row?.data || null, updatedAt: row?.updated_at || null, updatedBy: row?.updated_by || null, saved: Boolean(row) });
+  } catch (error) {
+    console.error('Error al consultar Metamorfosis OS:', error.message);
+    return res.status(500).json({ ok: false, message: 'No fue posible cargar el sistema operativo.' });
+  }
+});
+
+app.put('/api/os-state', requireAdmin, requireSameOrigin, async (req, res) => {
+  const state = req.body?.state;
+  if (!state || typeof state !== 'object' || Array.isArray(state)) {
+    return res.status(400).json({ ok: false, message: 'El estado del sistema no es válido.' });
+  }
+  if (!Array.isArray(state.tasks) || !Array.isArray(state.fronts) || !Array.isArray(state.inbox) || !Array.isArray(state.decisions)) {
+    return res.status(400).json({ ok: false, message: 'El respaldo no contiene la estructura mínima esperada.' });
+  }
+  if (state.tasks.length > 5000 || state.fronts.length > 500 || state.inbox.length > 1000 || state.decisions.length > 500) {
+    return res.status(413).json({ ok: false, message: 'El respaldo supera los límites operativos permitidos.' });
+  }
+  const serialized = JSON.stringify(state);
+  if (Buffer.byteLength(serialized, 'utf8') > 700_000) {
+    return res.status(413).json({ ok: false, message: 'El respaldo es demasiado grande.' });
+  }
+  if (!pool) return res.status(202).json({ ok: true, saved: false, message: 'Borrador local: conecta DATABASE_URL para persistencia compartida.' });
+  try {
+    await pool.query(
+      `INSERT INTO metamorfosis_os_state (workspace_key, data, updated_by, updated_at)
+       VALUES ($1, $2::jsonb, $3, NOW())
+       ON CONFLICT (workspace_key)
+       DO UPDATE SET data = EXCLUDED.data, updated_by = EXCLUDED.updated_by, updated_at = NOW()`,
+      ['principal', serialized, req.session.email || 'administración']
+    );
+    return res.json({ ok: true, saved: true });
+  } catch (error) {
+    console.error('Error al guardar Metamorfosis OS:', error.message);
+    return res.status(500).json({ ok: false, message: 'No fue posible guardar el sistema operativo.' });
   }
 });
 

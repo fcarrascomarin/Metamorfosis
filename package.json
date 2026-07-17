@@ -1,11 +1,11 @@
 {
   "name": "metamorfosis-web",
-  "version": "2.2.0",
+  "version": "3.0.0",
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=20.19.0",
-    "npm": ">=10.0.0"
+    "node": "20.19.0",
+    "npm": ">=10.0.0 <11"
   },
   "scripts": {
     "dev": "vite",
