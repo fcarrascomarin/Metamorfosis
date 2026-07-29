@@ -33,6 +33,7 @@ export const methodSteps = [
   ['visibility', 'Observar', 'Leer la realidad antes de proponer soluciones.'],
   ['sort', 'Ordenar', 'Distinguir problemas, prioridades y dependencias.'],
   ['architecture', 'Dar forma', 'Diseñar una solución comprensible y habitable.'],
+  ['science', 'Experimentar', 'Probar con propósito, medir y aprender antes de escalar.'],
   ['schema', 'Sistematizar', 'Convertir decisiones en procesos, datos y herramientas.'],
   ['shield', 'Proteger', 'Documentar acuerdos, activos y conocimientos valiosos.'],
   ['trending_up', 'Proyectar', 'Preparar el siguiente estado sin perder identidad.']

@@ -1,7 +1,11 @@
 import React, { useMemo, useState } from 'react';
 import Icon from './components/Icon.jsx';
 import AdminApp from './AdminApp.jsx';
-import heroImage from './assets/images/hero-proyectos.webp';
+import heroImage from './assets/images/jardin/hero-jardin.webp';
+import gardenImage from './assets/images/jardin/jardin-terrazas.webp';
+import mapImage from './assets/images/jardin/mapa-transformacion.webp';
+import projectsImage from './assets/images/jardin/proyectos-vivos.webp';
+import contactImage from './assets/images/jardin/contacto-jardin.webp';
 import caseImage from './assets/images/caso-cm.webp';
 import { contact, services, methodSteps } from './data.js';
 
@@ -13,7 +17,7 @@ function Brand({ compact = false }) {
       <img className="brand-logo" src="/logo-metamorfosis-transparente.png" alt="Isotipo de Metamorfosis Lab" width="44" height="44" />
       <span className="brand-copy">
         <strong>METAMORFOSIS LAB</strong>
-        <small>tecnología · estructura · criterio</small>
+        <small>jardín de innovación aplicada</small>
       </span>
     </a>
   );
@@ -30,9 +34,9 @@ function IconButton({ label, icon, onClick, className = '', type = 'button', dis
 function PublicHeader() {
   const [open, setOpen] = useState(false);
   const links = [
-    ['plataforma', 'Plataforma'],
-    ['mapa', 'Mapa'],
-    ['caso-cm', 'Caso CM'],
+    ['jardin', 'El jardín'],
+    ['mapa', 'Método'],
+    ['caso-cm', 'Proyectos'],
     ['contacto', 'Contacto']
   ];
 
@@ -317,204 +321,110 @@ function PublicSite() {
       <PublicHeader />
       <main id="contenido">
         <section id="inicio" className="hero hero--immersive section-anchor">
-          <div className="hero__backdrop" aria-hidden="true">
-            <img src={heroImage} alt="" width="1600" height="900" fetchPriority="high" />
-          </div>
+          <div className="hero__backdrop" aria-hidden="true"><img src={heroImage} alt="" width="1672" height="941" fetchPriority="high" /></div>
           <div className="hero__overlay" aria-hidden="true" />
           <div className="shell hero__stage">
-            <div className="hero__panel">
+            <div className="hero__panel hero__panel--open">
               <span className="hero__eyebrow">Metamorfosis Lab</span>
-              <h1>Tecnología con criterio para proyectos que necesitan estructura.</h1>
-              <p>Integramos estrategia, diseño y sistemas para transformar valor disperso en presencia digital clara, operación trazable y decisiones sostenibles.</p>
-              <div className="hero__tags" aria-label="Enfoques principales">
-                <span>Estrategia</span>
-                <span>Diseño</span>
-                <span>Tecnología útil</span>
-              </div>
-              <div className="hero__actions">
-                <a className="button" href="#plataforma">Ver plataforma</a>
-                <a className="button button--ghost-light" href="#contacto">Conversemos</a>
-              </div>
+              <h1>El jardín de innovación aplicada.</h1>
+              <p>Comprendemos lo que ya tiene valor, creamos mejores condiciones y acompañamos su transformación en sistemas, experiencias y capacidades que pueden sostenerse.</p>
+              <div className="hero__tags" aria-label="Enfoques principales"><span>Observar</span><span>Cultivar</span><span>Experimentar</span><span>Proyectar</span></div>
+              <div className="hero__actions"><a className="button" href="#jardin">Recorrer el jardín</a><a className="button button--ghost-light" href="#contacto">Traer un desafío</a></div>
             </div>
             <aside className="hero__floating">
-              <div>
-                <span className="kicker">Qué deja Metamorfosis</span>
-                <strong>Una web pública comprensible y un sistema interno utilizable.</strong>
-              </div>
-              <ul>
-                <li><Icon name="description" /> Documentación útil</li>
-                <li><Icon name="schema" /> Procesos claros</li>
-                <li><Icon name="query_stats" /> Decisiones con evidencia</li>
-              </ul>
+              <span className="kicker">Nuestra convicción</span>
+              <strong>Muchas cosas valiosas no necesitan ser reemplazadas. Necesitan encontrar las condiciones adecuadas para desarrollarse.</strong>
             </aside>
           </div>
         </section>
 
-        <section id="plataforma" className="site-section section-anchor">
-          <div className="shell site-section__grid">
-            <div>
-              <SectionHeading
-                kicker="Plataforma de trabajo"
-                title="Una sola lógica para comprender, ordenar y proyectar proyectos con sentido."
-                description="Metamorfosis no vende piezas sueltas. Conecta el problema real, la presencia pública, la operación y la información que permite sostener el crecimiento."
-              />
-              <div className="service-grid">
-                {services.map((service) => (
-                  <article className="service-card" key={service.title}>
-                    <span className="service-card__icon"><Icon name={service.icon} /></span>
-                    <h3>{service.title}</h3>
-                    <p>{service.text}</p>
-                  </article>
-                ))}
-              </div>
-            </div>
-            <aside className="site-section__panel story-panel">
-              <span className="kicker">Trayectoria y enfoque</span>
-              <h3>Metamorfosis surge desde la operación real, no desde promesas abstractas.</h3>
-              <div className="story-list">
-                <div className="story-step"><b>01</b><div><strong>Experiencia aplicada</strong><p>Planificación, control, documentación, orden y mejora desde problemas concretos.</p></div></div>
-                <div className="story-step"><b>02</b><div><strong>Caso demostrativo vivo</strong><p>CM permite probar, ajustar y evidenciar el método sin fingir resultados todavía no medidos.</p></div></div>
-                <div className="story-step"><b>03</b><div><strong>Método propio</strong><p>Herramientas replicables para transformar intuición dispersa en decisiones visibles.</p></div></div>
-              </div>
-            </aside>
-          </div>
-        </section>
-
-        <section id="mapa" className="site-section site-section--tint section-anchor">
-          <div className="shell site-section__grid site-section__grid--mapa">
-            <div className="site-section__panel map-panel">
-              <SectionHeading
-                kicker="Producto de entrada"
-                title="Mapa de Transformación y Activos"
-                description="La puerta de entrada para entender el estado actual, las dependencias del proyecto y la ruta que conviene priorizar."
-              />
-              <div className="map-board" role="list" aria-label="Dimensiones del mapa">
-                {[
-                  ['storefront', 'Proyecto e identidad'],
-                  ['settings', 'Operación y roles'],
-                  ['database', 'Datos y tecnología útil'],
-                  ['copyright', 'Activos intangibles'],
-                  ['warning', 'Riesgos y dependencias'],
-                  ['route', 'Ruta priorizada']
-                ].map(([icon, label]) => (
-                  <div className="map-dimension" key={label} role="listitem">
-                    <Icon name={icon} />
-                    <span>{label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="site-section__panel method-panel">
-              <span className="kicker">Método visible</span>
-              <h3>Cómo se mueve el proceso</h3>
-              <div className="method-mini">
-                {methodSteps.map(([icon, title, text], index) => (
-                  <article key={title}>
-                    <span>{String(index + 1).padStart(2, '0')}</span>
-                    <Icon name={icon} />
-                    <div>
-                      <strong>{title}</strong>
-                      <p>{text}</p>
-                    </div>
-                  </article>
-                ))}
+        <section id="jardin" className="story-section section-anchor" style={{'--section-image': `url(${gardenImage})`}}>
+          <div className="story-section__shade" aria-hidden="true" />
+          <div className="shell story-section__content story-section__content--right">
+            <div className="story-copy">
+              <SectionHeading kicker="El jardín" title="Un laboratorio que cultiva condiciones, no fórmulas." description="El laboratorio explica cómo trabajamos; el jardín explica por qué. Observamos organizaciones, ideas, recursos e historias como sistemas vivos: cada uno posee identidad, límites y necesidades propias." />
+              <div className="principle-grid">
+                <article><Icon name="visibility"/><strong>Observar antes de intervenir</strong><p>La comprensión precede a la solución.</p></article>
+                <article><Icon name="eco"/><strong>Cultivar antes que sustituir</strong><p>Conservamos aquello que merece permanecer.</p></article>
+                <article><Icon name="science"/><strong>Experimentar con propósito</strong><p>Cada prueba debe responder una pregunta.</p></article>
+                <article><Icon name="recycling"/><strong>Diseñar con lo disponible</strong><p>Personas, datos, espacios, residuos y saberes también son activos.</p></article>
               </div>
             </div>
           </div>
         </section>
 
-        <section id="caso-cm" className="site-section section-anchor">
-          <div className="shell site-section__grid site-section__grid--case">
-            <div className="site-section__panel case-panel">
-              <SectionHeading
-                kicker="Caso demostrativo"
-                title="CM: ordenar la operación para que el crecimiento no dependa de la memoria."
-                description="La Consultoría de Consolidación CM integra documentación, control operativo, vitrina pública y sistema interno construido desde necesidades reales."
-              />
-              <ul className="case-points">
-                <li><Icon name="check_circle" /> Procesos, hitos y documentos vinculados.</li>
-                <li><Icon name="check_circle" /> Separación entre información pública y gestión privada.</li>
-                <li><Icon name="check_circle" /> Uso de tecnología solo donde mejora claridad y control.</li>
-              </ul>
-              <figure className="case-thumb">
-                <img src={caseImage} alt="Vista del sistema interno desarrollado para CM Banquetería" width="1400" height="700" loading="lazy" />
-              </figure>
-            </div>
-            <div className="site-section__panel os-panel">
-              <span className="kicker">Metamorfosis OS</span>
-              <h3>La plataforma interna existe y tiene acceso real.</h3>
-              <p>El panel interno no es un adorno. Ordena oportunidades, tareas, proyectos, decisiones, documentos y respaldos en una sola interfaz privada.</p>
-              <div className="platform-tiles">
-                <article className="platform-tile"><Icon name="today" /><strong>Panel diario</strong><p>Prioridades concretas, avances y próximos pasos.</p></article>
-                <article className="platform-tile"><Icon name="request_quote" /><strong>Comercial</strong><p>Consultas recibidas desde la web y seguimiento interno.</p></article>
-                <article className="platform-tile"><Icon name="folder_open" /><strong>Documentos</strong><p>Repositorio, biblioteca y respaldos del sistema.</p></article>
-                <article className="platform-tile"><Icon name="account_tree" /><strong>Proyectos</strong><p>Frentes activos, límites y decisiones vigentes.</p></article>
+        <section id="mapa" className="story-section section-anchor" style={{'--section-image': `url(${mapImage})`}}>
+          <div className="story-section__shade story-section__shade--left" aria-hidden="true" />
+          <div className="shell story-section__content">
+            <div className="story-copy">
+              <SectionHeading kicker="Método Metamorfosis" title="De valor disperso a una transformación que deja capacidad." description="No vendemos piezas aisladas. Conectamos realidad, operación, identidad, tecnología y aprendizaje en una ruta visible." />
+              <div className="method-flow">
+                {methodSteps.map(([icon, title, text], index) => <article key={title}><span>{String(index + 1).padStart(2,'0')}</span><Icon name={icon}/><div><strong>{title}</strong><p>{text}</p></div></article>)}
               </div>
-              <div className="os-panel__actions">
-                <a className="button" href="/admin">Ingresar al panel</a>
-                <a className="button button--ghost" href="#contacto">Solicitar implementación</a>
+              <div className="compact-actions"><a className="button" href="#contacto">Solicitar un Mapa inicial</a><p>La tecnología entra cuando mejora una capacidad real. Nunca es el destino.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="caso-cm" className="story-section section-anchor" style={{'--section-image': `url(${projectsImage})`}}>
+          <div className="story-section__shade" aria-hidden="true" />
+          <div className="shell story-section__content story-section__content--right">
+            <div className="story-copy story-copy--wide">
+              <SectionHeading kicker="Lo que cultivamos" title="Proyectos reales, experimentos responsables y conocimiento reutilizable." description="Cada intervención debe dejar algo creciendo: capacidad, conocimiento, sistema, activo, autonomía o una nueva posibilidad." />
+              <div className="project-cards">
+                <article><span>Caso vivo</span><h3>Consolidación CM</h3><p>Operación, regularización, documentación, web pública y sistema interno construidos desde necesidades reales.</p><img src={caseImage} alt="Vista del sistema interno de CM" loading="lazy" /></article>
+                <article><span>Capacidad propia</span><h3>Metamorfosis OS</h3><p>Una plataforma para proyectos, decisiones, documentos, medidas e indicadores. El conocimiento del jardín no se pierde.</p><a href="/admin" className="text-link">Ingresar al sistema interno <Icon name="arrow_forward"/></a></article>
+                <article><span>Criterio de entrada</span><h3>No innovamos por novedad.</h3><p>Trabajamos donde exista algo valioso que comprender, conservar, desarrollar o transformar.</p><a href="#contacto" className="text-link">Evaluar encaje <Icon name="arrow_forward"/></a></article>
               </div>
             </div>
           </div>
         </section>
 
-        <section id="contacto" className="site-section site-section--contact section-anchor">
-          <div className="shell contact-layout">
+        <section id="contacto" className="story-section story-section--contact section-anchor" style={{'--section-image': `url(${contactImage})`}}>
+          <div className="story-section__shade story-section__shade--left" aria-hidden="true" />
+          <div className="shell contact-layout contact-layout--immersive">
             <div className="contact-intro">
-              <SectionHeading
-                kicker="Cotización y contacto"
-                title="Cuéntanos qué valor existe y qué necesita forma."
-                description="La primera conversación busca comprender el problema, evaluar encaje y definir si corresponde comenzar por un Mapa o por una intervención acotada."
-              />
-              <div className="contact-links">
-                <a href={`${waBase}?text=${encodeURIComponent('Hola, quisiera solicitar una conversación inicial con Metamorfosis Lab.')}`} target="_blank" rel="noreferrer">
-                  <img src="/assets/icons/whatsapp.svg" alt="" width="22" height="22" />
-                  <span><small>WhatsApp</small><strong>{contact.phoneDisplay}</strong></span>
-                </a>
-                <a href={`mailto:${contact.email}`}>
-                  <Icon name="mail" />
-                  <span><small>Correo</small><strong>{contact.email}</strong></span>
-                </a>
-                <div>
-                  <Icon name="location_on" />
-                  <span><small>Territorio</small><strong>{contact.coverage}</strong></span>
-                </div>
-                <a href="/admin">
-                  <Icon name="dashboard" />
-                  <span><small>Acceso interno</small><strong>Metamorfosis OS</strong></span>
-                </a>
+              <SectionHeading kicker="Conversemos" title="Cuéntanos qué valor existe y qué condiciones necesita." description="La conversación inicial busca entender el problema, reconocer el potencial y decidir si corresponde investigar, mapear o intervenir." />
+              <div className="contact-links contact-links--compact">
+                <a href={`${waBase}?text=${encodeURIComponent('Hola, quisiera solicitar una conversación inicial con Metamorfosis Lab.')}`} target="_blank" rel="noreferrer"><img src="/assets/icons/whatsapp.svg" alt="" width="22" height="22"/><span><small>WhatsApp</small><strong>{contact.phoneDisplay}</strong></span></a>
+                <a href={`mailto:${contact.email}`}><Icon name="mail"/><span><small>Correo</small><strong>{contact.email}</strong></span></a>
               </div>
             </div>
             <QuoteWizard />
           </div>
         </section>
       </main>
-
-      <footer className="site-footer">
-        <div className="shell site-footer__grid">
-          <div>
-            <Brand />
-            <p>Dar forma y proyección a proyectos con sentido, sin perder claridad operativa ni identidad.</p>
-          </div>
-          <div>
-            <span className="footer-title">Contacto</span>
-            <a href={`mailto:${contact.email}`}>{contact.email}</a>
-            <a href={`${waBase}`}>{contact.phoneDisplay}</a>
-          </div>
-          <div>
-            <span className="footer-title">Territorio y acceso</span>
-            <p>Biobío, Chile · atención presencial y remota.</p>
-            <a href="/admin">Ingresar a Metamorfosis OS</a>
-          </div>
-        </div>
-        <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis Lab</span><span>Tecnología, estructura y criterio para pymes y proyectos.</span></div>
-      </footer>
+      <footer className="site-footer"><div className="shell site-footer__grid"><div><Brand/><p>Crear condiciones para que lo valioso pueda transformarse sin perder su identidad.</p></div><div><span className="footer-title">Contacto</span><a href={`mailto:${contact.email}`}>{contact.email}</a><a href={waBase}>{contact.phoneDisplay}</a></div><div><span className="footer-title">Territorio y acceso</span><p>Biobío, Chile · atención presencial y remota.</p><a href="/admin">Ingresar a Metamorfosis OS</a></div></div><div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis Lab</span><span>Jardín de innovación aplicada.</span></div></footer>
       <WhatsappFloating />
     </div>
   );
 }
 
+function AdminEntry() {
+  const [state, setState] = useState('checking');
+  const [attempt, setAttempt] = useState(0);
+  React.useEffect(() => {
+    let cancelled = false;
+    const check = async () => {
+      try {
+        const response = await fetch('/api/health', { cache: 'no-store' });
+        if (!cancelled && response.ok) setState('ready');
+        else throw new Error('not ready');
+      } catch {
+        if (!cancelled) {
+          setState('waiting');
+          setTimeout(() => setAttempt((value) => value + 1), 3500);
+        }
+      }
+    };
+    check();
+    return () => { cancelled = true; };
+  }, [attempt]);
+  if (state === 'ready') return <AdminApp />;
+  return <div className="render-wait"><img src="/logo-metamorfosis-transparente.png" alt="Metamorfosis Lab"/><span className="render-wait__pulse"/><p className="kicker">Metamorfosis OS</p><h1>{state === 'checking' ? 'Conectando con el sistema…' : 'El servidor está despertando.'}</h1><p>Render puede tardar unos segundos en activar el servicio privado. Esta pantalla se actualizará automáticamente.</p><button className="button" type="button" onClick={() => setAttempt((value) => value + 1)}>Reintentar ahora</button><a href="/">Volver a la web pública</a></div>;
+}
+
 export default function App() {
   const isAdmin = window.location.pathname.startsWith('/admin');
-  return isAdmin ? <AdminApp /> : <PublicSite />;
+  return isAdmin ? <AdminEntry /> : <PublicSite />;
 }
