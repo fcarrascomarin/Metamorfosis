@@ -18,6 +18,12 @@ const app = express();
 const port = Number(process.env.PORT || 4173);
 const isProduction = process.env.NODE_ENV === 'production';
 const hasDatabase = Boolean(process.env.DATABASE_URL);
+const publicOrigins = new Set(
+  String(process.env.PUBLIC_ORIGINS || '')
+    .split(',')
+    .map((value) => value.trim().replace(/\/$/, ''))
+    .filter(Boolean)
+);
 
 app.set('trust proxy', 1);
 app.disable('x-powered-by');
@@ -38,7 +44,7 @@ app.use(helmet({
   strictTransportSecurity: isProduction ? undefined : false
 }));
 app.use(compression());
-app.use(express.json({ limit: '800kb' }));
+app.use(express.json({ limit: '1.5mb' }));
 app.use(express.urlencoded({ extended: false, limit: '250kb' }));
 
 let pool = null;
@@ -115,6 +121,18 @@ if (pool) {
 }
 
 app.use(session(sessionOptions));
+
+app.use('/api', (req, res, next) => {
+  const origin = req.get('origin');
+  if (origin && publicOrigins.has(origin.replace(/\/$/, ''))) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,PUT,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  }
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
+  return next();
+});
 
 const publicLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -319,8 +337,13 @@ app.put('/api/os-state', requireAdmin, requireSameOrigin, async (req, res) => {
   if (state.tasks.length > 5000 || state.fronts.length > 500 || state.inbox.length > 1000 || state.decisions.length > 500) {
     return res.status(413).json({ ok: false, message: 'El respaldo supera los límites operativos permitidos.' });
   }
+  const trackingProjects = Array.isArray(state.timeTracking?.projects) ? state.timeTracking.projects : [];
+  const trackingEntries = Array.isArray(state.timeTracking?.entries) ? state.timeTracking.entries : [];
+  if (trackingProjects.length > 500 || trackingEntries.length > 20_000) {
+    return res.status(413).json({ ok: false, message: 'El registro de proyectos u horas supera los límites operativos permitidos.' });
+  }
   const serialized = JSON.stringify(state);
-  if (Buffer.byteLength(serialized, 'utf8') > 700_000) {
+  if (Buffer.byteLength(serialized, 'utf8') > 1_200_000) {
     return res.status(413).json({ ok: false, message: 'El respaldo es demasiado grande.' });
   }
   if (!pool) return res.status(202).json({ ok: true, saved: false, message: 'Borrador local: conecta DATABASE_URL para persistencia compartida.' });
@@ -339,25 +362,26 @@ app.put('/api/os-state', requireAdmin, requireSameOrigin, async (req, res) => {
   }
 });
 
-app.use('/admin', (_req, res, next) => {
-  res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
-  next();
-});
-
 app.use('/api', (_req, res) => {
   res.status(404).json({ ok: false, message: 'Endpoint no encontrado.' });
 });
 
-app.use(express.static(path.join(__dirname, 'dist'), {
+app.use((_req, res, next) => {
+  res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  next();
+});
+
+app.use(express.static(path.join(__dirname, 'dist-admin'), {
   maxAge: isProduction ? '7d' : 0,
+  index: false,
   setHeaders(res, filePath) {
-    if (filePath.endsWith('index.html')) res.setHeader('Cache-Control', 'no-store');
+    if (filePath.endsWith('.html')) res.setHeader('Cache-Control', 'no-store');
   }
 }));
 
 app.get('*', (_req, res) => {
   res.setHeader('Cache-Control', 'no-store');
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'dist-admin', 'admin.html'));
 });
 
 async function startServer() {

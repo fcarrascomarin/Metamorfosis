@@ -1,9 +1,9 @@
 services:
   - type: web
-    name: metamorfosislab
+    name: metamorfosis-os
     runtime: node
     plan: free
-    buildCommand: npm ci --registry=https://registry.npmjs.org/ --no-audit --no-fund && npm run build
+    buildCommand: npm ci --registry=https://registry.npmjs.org/ --no-audit --no-fund && npm run build:admin
     startCommand: npm start
     healthCheckPath: /api/health
     autoDeploy: true
@@ -22,3 +22,7 @@ services:
         sync: false
       - key: ADMIN_PASSWORD_HASH
         sync: false
+      - key: PUBLIC_ORIGINS
+        value: https://metamorfosislab.cl,https://www.metamorfosislab.cl
+      - key: VITE_PUBLIC_SITE_URL
+        value: https://www.metamorfosislab.cl

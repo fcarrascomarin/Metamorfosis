@@ -1,109 +1,106 @@
-# Metamorfosis Lab · Web pública + Metamorfosis OS
+# Metamorfosis Lab · Web pública estática + Metamorfosis OS
 
-Versión 3.0.0.
+Versión 4.0.0.
 
-Este proyecto integra:
+La arquitectura quedó separada para evitar que la vitrina pública dependa del encendido de Render:
 
-- Web pública de Metamorfosis Lab.
-- Formulario comercial por pasos con preparación de mensaje para WhatsApp.
-- Panel privado en `/admin`.
-- Registro de oportunidades desde la web.
-- Sistema operativo interno con vista mensual, día seleccionado, tareas por responsable, bandeja de entrada, frentes, decisiones y finanzas del negocio.
-- Persistencia en PostgreSQL/Neon para sesiones, oportunidades y estado general de Metamorfosis OS.
-- Importación y exportación de respaldos JSON.
+- **Web pública estática:** compilación `dist-public`, preparada para Cloudflare Pages.
+- **Panel privado y API:** compilación `dist-admin`, servida por Express en Render.
+- **Base de datos:** PostgreSQL/Neon para sesiones, oportunidades y estado general de Metamorfosis OS.
 
-## Corrección del error de Render
+## Actualizaciones públicas
 
-El `package-lock.json` recibido contenía URLs resueltas hacia un registro interno de OpenAI:
+La web incorpora:
 
-`packages.applied-caas-gateway1.internal.api.openai.org`
+- Mercado, marca y comercialización como capacidad integral.
+- Ergonomía y diseño sostenible del trabajo.
+- Operación, documentación e indicadores.
+- Sistemas y presencia digital.
+- Caso público Juana de Arco: posicionamiento, propuesta de valor, packaging, catálogo digital y experiencia de compra.
+- Caso vivo CM Banquetería & Restaurant.
+- Formulario comercial estático que registra la oportunidad en la API privada y prepara el contacto por WhatsApp.
 
-Render no puede acceder a ese host. El proyecto actualizado reemplaza todas las URLs por `https://registry.npmjs.org/`, fija Node.js 20.19.0 e incluye reintentos de descarga en `.npmrc`.
+## Indicadores internos
 
-## Instalación local
+Metamorfosis OS incluye el módulo **Tiempo y rentabilidad**, con:
+
+- Proyectos económicos editables.
+- Honorario acordado, costos directos y horas presupuestadas.
+- Costos internos por hora y responsable.
+- Registro diario de horas facturables y no facturables.
+- Tipo de actividad, responsable y resultado del trabajo.
+- Horas consumidas, costo laboral, ingreso real por hora, margen y porcentaje de margen por proyecto.
+- Trazabilidad completa de registros editables.
+
+Los datos se guardan dentro del estado JSONB de Metamorfosis OS. No se crearon tablas prematuras adicionales.
+
+## Comandos
 
 ```bash
-npm ci
-npm run build
-npm start
-```
+npm ci --registry=https://registry.npmjs.org/ --no-audit --no-fund
 
-En desarrollo visual:
+# Web pública
+npm run dev:public
+npm run build:public
 
-```bash
-npm run dev
-```
+# Compilación del panel
+npm run dev:admin
+npm run build:admin
 
-Para probar también la API, compila primero y ejecuta:
-
-```bash
-npm run build
+# Panel + API en desarrollo
+npm run build:admin
 npm run dev:server
+
+# Compilar todo
+npm run build
 ```
 
 ## Variables de entorno
 
-Copia `.env.example` a `.env` y configura:
+### Render / panel privado
 
 - `DATABASE_URL`: conexión PostgreSQL/Neon.
 - `SESSION_SECRET`: secreto largo y aleatorio.
 - `ADMIN_EMAIL`: correo autorizado.
 - `ADMIN_PASSWORD_HASH`: contraseña cifrada con bcrypt.
+- `PUBLIC_ORIGINS`: orígenes públicos autorizados para enviar solicitudes.
+- `VITE_PUBLIC_SITE_URL`: URL de regreso a la web pública.
 
-Generar hash:
+Generar el hash de una contraseña:
 
 ```bash
 node -e "console.log(require('bcryptjs').hashSync('TU_CLAVE', 12))"
 ```
 
-En producción `DATABASE_URL` es obligatorio. El servidor se niega a iniciar sin una base de datos para evitar sesiones en MemoryStore.
+Nunca se debe guardar la contraseña ni su hash dentro del repositorio público. El hash se pega solamente como variable secreta en Render.
 
-## Despliegue en Render
+### Cloudflare Pages / web pública
 
-El archivo `render.yaml` ya define:
+- `VITE_ADMIN_URL`: URL pública del panel privado.
+- `VITE_API_BASE`: URL de la API privada.
+- `NODE_VERSION`: `20.19.0`.
 
-- Node 20.19.0.
-- Registro npm público.
-- `npm ci --no-audit --no-fund`.
-- Compilación con Vite.
-- Inicio con Express.
-- Health check en `/api/health`.
-
-Después de subir el proyecto a GitHub:
-
-1. Conecta el repositorio a Render.
-2. Crea o vincula una base PostgreSQL/Neon.
-3. Configura `DATABASE_URL`, `ADMIN_EMAIL` y `ADMIN_PASSWORD_HASH`.
-4. Render genera `SESSION_SECRET` desde el blueprint.
-5. Ejecuta un despliegue limpio sin caché si el servicio había intentado instalar el lock defectuoso.
-
-## Metamorfosis OS
-
-La distribución del panel conserva la lógica visual solicitada:
-
-- Encabezado superior con accesos al sitio público, respaldo, guardado y cierre de sesión.
-- Menú lateral agrupado y desplegable.
-- Panel diario antes de módulos de menor frecuencia.
-- Sistema operativo mensual y diario.
-- Comercial, gestión interna y documentos separados.
-- Consultoría/consolidación al final por ser un proceso temporal.
-
-El estado operativo se guarda en la tabla `metamorfosis_os_state` como JSONB. Esto permite evolucionar la estructura sin crear datos ficticios ni múltiples tablas prematuras.
-
-## Privacidad
-
-El código fuente no incorpora las tareas personales, familiares ni cifras privadas contenidas en el antiguo sistema dual. El panel permite importar un respaldo JSON desde una sesión privada. Esto evita exponer información sensible si el repositorio de GitHub es público.
-
-## Estructura
+## Estructura de compilación
 
 ```text
-src/
-  AdminApp.jsx
-  App.jsx
-  components/Icon.jsx
-  osSeed.js
-  data.js
-  styles.css
-server.js
-render.yaml
+index.html                 -> entrada pública
+admin.html                 -> entrada privada
+src/PublicApp.jsx          -> vitrina pública
+src/AdminApp.jsx           -> Metamorfosis OS
+src/public-main.jsx        -> montaje público
+src/admin-main.jsx         -> montaje privado
+vite.public.config.js      -> dist-public
+vite.admin.config.js       -> dist-admin
+server.js                  -> API, sesiones y panel privado
+render.yaml                -> servicio web privado en Render
+DEPLOYMENT.md              -> instrucciones completas
 ```
+
+## Seguridad
+
+- El panel usa sesiones persistentes en PostgreSQL.
+- Las cookies son `httpOnly`, `secure` en producción y `sameSite=lax`.
+- El acceso se valida con correo y hash bcrypt.
+- El panel y sus rutas envían `X-Robots-Tag: noindex, nofollow, noarchive`.
+- La API pública solo habilita CORS para los dominios definidos en `PUBLIC_ORIGINS`.
+- El formulario incluye limitación de solicitudes y campo señuelo antispam.

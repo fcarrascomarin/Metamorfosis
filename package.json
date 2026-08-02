@@ -1,6 +1,6 @@
 {
   "name": "metamorfosis-web",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -8,10 +8,14 @@
     "npm": ">=10.0.0 <11"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --config vite.public.config.js",
+    "dev:public": "vite --config vite.public.config.js",
+    "dev:admin": "vite --config vite.admin.config.js",
     "dev:server": "NODE_ENV=development node server.js",
-    "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0 --port ${PORT:-4173}",
+    "build": "npm run build:public && npm run build:admin",
+    "build:public": "vite build --config vite.public.config.js",
+    "build:admin": "vite build --config vite.admin.config.js",
+    "preview:public": "vite preview --config vite.public.config.js --host 0.0.0.0 --port ${PORT:-4173}",
     "start": "NODE_ENV=production node server.js",
     "check": "npm run build"
   },

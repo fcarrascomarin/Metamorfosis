@@ -1,8 +1,9 @@
 node_modules/
 dist/
+dist-public/
+dist-admin/
 .env
 .env.*
 !.env.example
-npm-debug.log*
+*.log
 .DS_Store
-*.local
