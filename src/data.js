@@ -69,6 +69,6 @@ export const initialProjects = [
 export const documents = {
   Operativos: ['Pauta de conversación inicial', 'Minuta de reunión', 'Plan de trabajo', 'Informe de avance'],
   Administrativos: ['Propuesta comercial', 'Cotización', 'Acuerdo de confidencialidad', 'Acta de cierre'],
-  Metodológicos: ['Ficha de oportunidad', 'Investigación previa', 'Mapa de Transformación y Activos', 'Matriz de riesgos'],
+  Metodológicos: ['Ficha de oportunidad', 'Investigación previa', 'Mapa de Transformación y Activos', 'Matriz de riesgos', 'Mapa de mercado y clientes', 'Propuesta de valor y posicionamiento', 'Ficha de levantamiento ergonómico inicial', 'Registro de tiempo y rentabilidad'],
   'Consultoría / consolidación': ['Diagnóstico CM', 'Matriz de medidas', 'Registro de hitos', 'Documento de entrega']
 };

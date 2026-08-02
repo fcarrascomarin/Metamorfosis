@@ -7,8 +7,12 @@ const addDays = (base, days) => {
 
 export function createDefaultOsState() {
   const today = iso(new Date());
+  const projectMetamorfosis = crypto.randomUUID();
+  const projectCm = crypto.randomUUID();
+  const projectJuana = crypto.randomUUID();
+  const projectExperiencias = crypto.randomUUID();
   return {
-    version: '5.0',
+    version: '6.0',
     selectedDate: today,
     tasks: [
       {
@@ -93,6 +97,54 @@ export function createDefaultOsState() {
       availableCash: 0,
       committedPayments: 0,
       notes: 'Registrar únicamente montos del negocio. No incorporar información personal o familiar en un repositorio compartido.'
+    },
+    timeTracking: {
+      rates: {
+        Francisca: 0,
+        'Benjamín': 0,
+        Ambos: 0,
+        Externo: 0
+      },
+      projects: [
+        {
+          id: projectMetamorfosis,
+          name: 'Metamorfosis Lab',
+          client: 'Proyecto propio',
+          fee: 0,
+          directCosts: 0,
+          targetHours: 0,
+          status: 'Activo'
+        },
+        {
+          id: projectCm,
+          name: 'Consultoría de Consolidación CM',
+          client: 'CM Banquetería & Restaurant',
+          fee: 0,
+          directCosts: 0,
+          targetHours: 0,
+          status: 'Activo'
+        },
+        {
+          id: projectJuana,
+          name: 'Juana de Arco',
+          client: 'Francisca Carrasco',
+          fee: 0,
+          directCosts: 0,
+          targetHours: 0,
+          status: 'Desarrollo'
+        },
+        {
+          id: projectExperiencias,
+          name: 'Experiencias',
+          client: 'Proyecto asociado',
+          fee: 0,
+          directCosts: 0,
+          targetHours: 0,
+          status: 'Validación'
+        }
+      ],
+      entries: [],
+      note: 'Registrar tiempo real, incluso cuando no sea facturable. Las tarifas internas representan costo de trabajo, no precio de venta.'
     },
     fronts: [
       {

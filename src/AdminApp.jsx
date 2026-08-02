@@ -3,7 +3,8 @@ import Icon from './components/Icon.jsx';
 import { documents, initialProjects } from './data.js';
 import { createDefaultOsState, OWNERS, TOPICS } from './osSeed.js';
 
-const STORAGE_KEY = 'metamorfosis-os-draft-v5';
+const STORAGE_KEY = 'metamorfosis-os-draft-v6';
+const PUBLIC_SITE_URL = String(import.meta.env.VITE_PUBLIC_SITE_URL || 'https://www.metamorfosislab.cl').replace(/\/$/, '');
 const STATUS_OPTIONS = ['nueva', 'contactada', 'evaluacion', 'propuesta', 'cerrada', 'descartada'];
 
 const menuGroups = [
@@ -37,7 +38,7 @@ const menuGroups = [
     icon: 'briefcase',
     items: [
       ['projects', 'Proyectos', 'account_tree'],
-      ['metrics', 'Medidas e indicadores', 'query_stats'],
+      ['metrics', 'Tiempo y rentabilidad', 'query_stats'],
       ['assets', 'Activos intangibles', 'copyright']
     ]
   },
@@ -60,7 +61,7 @@ const menuGroups = [
 
 function Brand({ compact = false }) {
   return (
-    <a className={`admin-brand ${compact ? 'admin-brand--compact' : ''}`} href="/" aria-label="Metamorfosis Lab, ir al sitio público">
+    <a className={`admin-brand ${compact ? 'admin-brand--compact' : ''}`} href={PUBLIC_SITE_URL} aria-label="Metamorfosis Lab, ir al sitio público">
       <img src="/logo-metamorfosis-transparente.png" alt="" width="46" height="46" />
       <span><strong>Panel interno</strong><small>Metamorfosis OS</small></span>
     </a>
@@ -91,6 +92,13 @@ function hydrateState(candidate) {
     tasks: (Array.isArray(candidate.tasks) ? candidate.tasks : fallback.tasks).map(normalizeId),
     guides: candidate.guides && typeof candidate.guides === 'object' ? candidate.guides : fallback.guides,
     finance: { ...fallback.finance, ...(candidate.finance || {}) },
+    timeTracking: {
+      ...fallback.timeTracking,
+      ...(candidate.timeTracking || {}),
+      rates: { ...fallback.timeTracking.rates, ...(candidate.timeTracking?.rates || {}) },
+      projects: (Array.isArray(candidate.timeTracking?.projects) ? candidate.timeTracking.projects : fallback.timeTracking.projects).map(normalizeId),
+      entries: (Array.isArray(candidate.timeTracking?.entries) ? candidate.timeTracking.entries : fallback.timeTracking.entries).map(normalizeId)
+    },
     fronts: (Array.isArray(candidate.fronts) ? candidate.fronts : fallback.fronts).map(normalizeId),
     decisions: Array.isArray(candidate.decisions) ? candidate.decisions : fallback.decisions,
     inbox: (Array.isArray(candidate.inbox) ? candidate.inbox : fallback.inbox).map(normalizeId)
@@ -126,7 +134,7 @@ function AdminLogin({ onLogin }) {
           {status.message && <p className="admin-notice admin-notice--error" role="alert">{status.message}</p>}
           <button className="button button--full" type="submit" disabled={status.loading}><Icon name="login" /> {status.loading ? 'Ingresando…' : 'Ingresar'}</button>
         </form>
-        <a className="admin-login__back" href="/"><Icon name="arrow_back" /> Volver al sitio público</a>
+        <a className="admin-login__back" href={PUBLIC_SITE_URL}><Icon name="arrow_back" /> Volver al sitio público</a>
       </div>
     </div>
   );
@@ -156,6 +164,7 @@ function DashboardView({ osState, quotes, dirty, onNavigate, onAddTask }) {
         <button type="button" onClick={() => onNavigate('day')}><Icon name="today" />Agenda de hoy</button>
         <button type="button" onClick={() => onNavigate('quotes')}><Icon name="request_quote" />Oportunidades</button>
         <button type="button" onClick={() => onNavigate('projects')}><Icon name="account_tree" />Proyectos</button>
+        <button type="button" onClick={() => onNavigate('metrics')}><Icon name="query_stats" />Tiempo y rentabilidad</button>
         <button type="button" onClick={() => onNavigate('documents')}><Icon name="folder_open" />Documentos</button>
       </div>
       <div className="metrics-grid">
@@ -295,6 +304,173 @@ function FinanceView({ osState, setOsState }) {
   return <div className="admin-view"><ViewHeading kicker="Finanzas del negocio" title="Caja y compromisos visibles" description="Esta vista registra únicamente información de Metamorfosis. No debe almacenar finanzas personales o familiares en un repositorio compartido." /><div className="finance-metrics"><MetricCard icon="payments" label="Costos registrados" value={formatMoney(totalCosts)} note="Fijos, variables y comprometidos" /><MetricCard icon="trending_up" label="Ingreso proyectado" value={formatMoney(projectedIncome)} note="Recurrente más esperado" tone="accent" /><MetricCard icon={balance >= 0 ? 'check_circle' : 'warning'} label="Resultado proyectado" value={formatMoney(balance)} note={balance >= 0 ? 'Cobertura estimada positiva' : 'Brecha por cubrir'} tone={balance < 0 ? 'danger' : ''} /><MetricCard icon="savings" label="Caja disponible" value={formatMoney(finance.availableCash)} note={totalCosts ? `${coverage.toFixed(1)} meses de costos` : 'Sin costos base cargados'} /></div><div className="finance-layout"><section className="panel-card"><div className="panel-card__heading"><div><span className="kicker">Supuestos editables</span><h2>Montos del negocio</h2></div></div><div className="compact-form"><label>Costos fijos mensuales<input type="number" min="0" value={finance.fixedCosts} onChange={(event) => update('fixedCosts', event.target.value)} /></label><label>Costos variables estimados<input type="number" min="0" value={finance.variableCosts} onChange={(event) => update('variableCosts', event.target.value)} /></label><label>Ingresos recurrentes<input type="number" min="0" value={finance.recurringIncome} onChange={(event) => update('recurringIncome', event.target.value)} /></label><label>Ingresos esperados<input type="number" min="0" value={finance.expectedIncome} onChange={(event) => update('expectedIncome', event.target.value)} /></label><label>Caja disponible<input type="number" min="0" value={finance.availableCash} onChange={(event) => update('availableCash', event.target.value)} /></label><label>Pagos ya comprometidos<input type="number" min="0" value={finance.committedPayments} onChange={(event) => update('committedPayments', event.target.value)} /></label><label className="field-full">Notas y verificaciones<textarea value={finance.notes} onChange={(event) => update('notes', event.target.value)} /></label></div></section><section className="panel-card finance-reading"><div className="panel-card__heading"><div><span className="kicker">Lectura operativa</span><h2>Qué indican los datos</h2></div></div><p>Con los supuestos actuales, los costos registrados alcanzan <b>{formatMoney(totalCosts)}</b> y el ingreso proyectado alcanza <b>{formatMoney(projectedIncome)}</b>.</p><div className={`finance-result ${balance >= 0 ? 'is-positive' : 'is-negative'}`}><span>{balance >= 0 ? 'Margen proyectado' : 'Brecha proyectada'}</span><strong>{formatMoney(Math.abs(balance))}</strong></div><div className="rule-box"><Icon name="rule" /><div><strong>Regla de caja</strong><p>No comprometer nuevas inversiones sin costo total, responsable, fuente de pago y condición de suspensión definidos.</p></div></div></section></div></div>;
 }
 
+
+function TimeTrackingView({ osState, setOsState }) {
+  const tracking = osState.timeTracking;
+  const emptyProject = { id: '', name: '', client: '', fee: '', directCosts: '', targetHours: '', status: 'Activo' };
+  const emptyEntry = { id: '', date: new Date().toISOString().slice(0, 10), projectId: tracking.projects[0]?.id || '', owner: 'Francisca', category: 'Ejecución', hours: '', billable: true, note: '' };
+  const [projectForm, setProjectForm] = useState(emptyProject);
+  const [entryForm, setEntryForm] = useState(emptyEntry);
+
+  const number = (value) => Number(value || 0);
+  const updateTracking = (next) => setOsState((current) => ({
+    ...current,
+    timeTracking: typeof next === 'function' ? next(current.timeTracking) : next
+  }));
+
+  const summaries = useMemo(() => tracking.projects.map((project) => {
+    const entries = tracking.entries.filter((entry) => entry.projectId === project.id);
+    const hours = entries.reduce((sum, entry) => sum + number(entry.hours), 0);
+    const billableHours = entries.filter((entry) => entry.billable).reduce((sum, entry) => sum + number(entry.hours), 0);
+    const laborCost = entries.reduce((sum, entry) => sum + number(entry.hours) * number(tracking.rates[entry.owner]), 0);
+    const fee = number(project.fee);
+    const directCosts = number(project.directCosts);
+    const margin = fee - laborCost - directCosts;
+    const targetHours = number(project.targetHours);
+    return {
+      ...project,
+      hours,
+      billableHours,
+      laborCost,
+      margin,
+      targetHours,
+      effectiveRate: hours > 0 ? fee / hours : 0,
+      progress: targetHours > 0 ? (hours / targetHours) * 100 : 0,
+      marginPct: fee > 0 ? (margin / fee) * 100 : 0
+    };
+  }), [tracking]);
+
+  const totalHours = summaries.reduce((sum, project) => sum + project.hours, 0);
+  const totalFees = summaries.reduce((sum, project) => sum + number(project.fee), 0);
+  const totalLabor = summaries.reduce((sum, project) => sum + project.laborCost, 0);
+  const totalDirect = summaries.reduce((sum, project) => sum + number(project.directCosts), 0);
+  const totalMargin = totalFees - totalLabor - totalDirect;
+  const billableHours = tracking.entries.filter((entry) => entry.billable).reduce((sum, entry) => sum + number(entry.hours), 0);
+  const billableRatio = totalHours > 0 ? (billableHours / totalHours) * 100 : 0;
+
+  const saveProject = (event) => {
+    event.preventDefault();
+    if (!projectForm.name.trim()) return;
+    const project = {
+      ...projectForm,
+      id: projectForm.id || crypto.randomUUID(),
+      name: projectForm.name.trim(),
+      client: projectForm.client.trim(),
+      fee: number(projectForm.fee),
+      directCosts: number(projectForm.directCosts),
+      targetHours: number(projectForm.targetHours)
+    };
+    updateTracking((current) => ({
+      ...current,
+      projects: current.projects.some((item) => item.id === project.id)
+        ? current.projects.map((item) => item.id === project.id ? project : item)
+        : [...current.projects, project]
+    }));
+    setProjectForm(emptyProject);
+    setEntryForm((current) => ({ ...current, projectId: current.projectId || project.id }));
+  };
+
+  const removeProject = (project) => {
+    const related = tracking.entries.filter((entry) => entry.projectId === project.id).length;
+    if (!window.confirm(related ? `Este proyecto tiene ${related} registros de tiempo. ¿Eliminar el proyecto y sus registros?` : `¿Eliminar ${project.name}?`)) return;
+    updateTracking((current) => ({
+      ...current,
+      projects: current.projects.filter((item) => item.id !== project.id),
+      entries: current.entries.filter((entry) => entry.projectId !== project.id)
+    }));
+    if (entryForm.projectId === project.id) setEntryForm((current) => ({ ...current, projectId: '' }));
+  };
+
+  const saveEntry = (event) => {
+    event.preventDefault();
+    if (!entryForm.projectId || !entryForm.date || number(entryForm.hours) <= 0) return;
+    const entry = {
+      ...entryForm,
+      id: entryForm.id || crypto.randomUUID(),
+      hours: number(entryForm.hours),
+      note: entryForm.note.trim(),
+      billable: Boolean(entryForm.billable)
+    };
+    updateTracking((current) => ({
+      ...current,
+      entries: current.entries.some((item) => item.id === entry.id)
+        ? current.entries.map((item) => item.id === entry.id ? entry : item)
+        : [entry, ...current.entries]
+    }));
+    setEntryForm({ ...emptyEntry, projectId: entry.projectId, owner: entry.owner, date: entry.date });
+  };
+
+  const removeEntry = (id) => updateTracking((current) => ({ ...current, entries: current.entries.filter((entry) => entry.id !== id) }));
+
+  return (
+    <div className="admin-view time-view">
+      <ViewHeading kicker="Indicadores de servicio" title="Tiempo, costo y rentabilidad por proyecto" description="Registra todas las horas reales —facturables y no facturables— para conocer el costo del trabajo intangible, revisar presupuestos y construir precios con evidencia." />
+
+      <div className="finance-metrics time-metrics">
+        <MetricCard icon="schedule" label="Horas registradas" value={`${totalHours.toFixed(1)} h`} note={`${billableRatio.toFixed(0)}% facturable`} />
+        <MetricCard icon="payments" label="Costo de trabajo" value={formatMoney(totalLabor)} note="Horas × costo interno" />
+        <MetricCard icon="receipt_long" label="Honorarios registrados" value={formatMoney(totalFees)} note="Precio acordado por proyecto" tone="accent" />
+        <MetricCard icon={totalMargin >= 0 ? 'trending_up' : 'warning'} label="Margen estimado" value={formatMoney(totalMargin)} note={`Después de ${formatMoney(totalDirect)} en costos directos`} tone={totalMargin < 0 ? 'danger' : ''} />
+      </div>
+
+      <div className="time-layout">
+        <section className="panel-card">
+          <div className="panel-card__heading"><div><span className="kicker">Costos internos</span><h2>Valor de una hora de trabajo</h2></div></div>
+          <p className="form-help">No es la tarifa que se cobra al cliente. Es el costo mínimo que Metamorfosis asigna al tiempo de cada responsable para calcular rentabilidad.</p>
+          <div className="rate-grid">
+            {OWNERS.map((owner) => <label key={owner}>{owner}<input type="number" min="0" step="1000" value={tracking.rates[owner] || ''} onChange={(event) => updateTracking((current) => ({ ...current, rates: { ...current.rates, [owner]: event.target.value } }))} placeholder="$ por hora" /></label>)}
+          </div>
+          <label className="time-note">Criterio de registro<textarea value={tracking.note || ''} onChange={(event) => updateTracking((current) => ({ ...current, note: event.target.value }))} /></label>
+        </section>
+
+        <section className="panel-card">
+          <div className="panel-card__heading"><div><span className="kicker">Registro diario</span><h2>{entryForm.id ? 'Editar tiempo' : 'Agregar tiempo trabajado'}</h2></div></div>
+          <form className="compact-form" onSubmit={saveEntry}>
+            <label>Fecha<input type="date" value={entryForm.date} onChange={(event) => setEntryForm({ ...entryForm, date: event.target.value })} required /></label>
+            <label>Proyecto<select value={entryForm.projectId} onChange={(event) => setEntryForm({ ...entryForm, projectId: event.target.value })} required><option value="">Seleccionar</option>{tracking.projects.map((project) => <option key={project.id} value={project.id}>{project.name}</option>)}</select></label>
+            <label>Responsable<select value={entryForm.owner} onChange={(event) => setEntryForm({ ...entryForm, owner: event.target.value })}>{OWNERS.map((owner) => <option key={owner}>{owner}</option>)}</select></label>
+            <label>Tipo de trabajo<select value={entryForm.category} onChange={(event) => setEntryForm({ ...entryForm, category: event.target.value })}><option>Diagnóstico</option><option>Diseño</option><option>Ejecución</option><option>Reunión</option><option>Gestión</option><option>Traslado</option><option>Administración</option><option>Corrección / retrabajo</option><option>Otro</option></select></label>
+            <label>Horas<input type="number" min="0.25" step="0.25" value={entryForm.hours} onChange={(event) => setEntryForm({ ...entryForm, hours: event.target.value })} placeholder="Ej. 1,5" required /></label>
+            <label>Tratamiento<select value={entryForm.billable ? 'Sí' : 'No'} onChange={(event) => setEntryForm({ ...entryForm, billable: event.target.value === 'Sí' })}><option>Sí</option><option>No</option></select><small>¿La hora forma parte del servicio cobrado?</small></label>
+            <label className="field-full">Actividad o resultado<textarea value={entryForm.note} onChange={(event) => setEntryForm({ ...entryForm, note: event.target.value })} placeholder="Qué se hizo y qué resultado dejó." /></label>
+            <div className="modal-actions field-full">{entryForm.id && <button type="button" className="button button--ghost" onClick={() => setEntryForm(emptyEntry)}>Cancelar edición</button>}<button type="submit" className="button"><Icon name="save" /> Guardar tiempo</button></div>
+          </form>
+        </section>
+      </div>
+
+      <section className="panel-card time-projects-panel">
+        <div className="panel-card__heading"><div><span className="kicker">Lectura por servicio</span><h2>Proyectos y márgenes</h2></div><span className="count-pill">{tracking.projects.length}</span></div>
+        <div className="time-project-grid">
+          {summaries.map((project) => (
+            <article className="time-project-card" key={project.id}>
+              <div className="time-project-card__top"><span className="status-badge">{project.status}</span><div><IconButton icon="edit" label={`Editar ${project.name}`} onClick={() => setProjectForm(project)} /><IconButton icon="delete" label={`Eliminar ${project.name}`} className="icon-button--danger" onClick={() => removeProject(project)} /></div></div>
+              <small>{project.client || 'Sin cliente indicado'}</small><h3>{project.name}</h3>
+              <div className="time-project-stats"><span><small>Horas</small><strong>{project.hours.toFixed(1)} h</strong></span><span><small>Costo trabajo</small><strong>{formatMoney(project.laborCost)}</strong></span><span><small>Ingreso/hora real</small><strong>{formatMoney(project.effectiveRate)}</strong></span><span><small>Margen</small><strong className={project.margin < 0 ? 'is-negative' : ''}>{formatMoney(project.margin)}</strong></span></div>
+              {project.targetHours > 0 && <div className="time-budget"><div><span>Horas usadas</span><b>{project.progress.toFixed(0)}%</b></div><div className="progress-track"><span style={{ width: `${Math.min(project.progress, 100)}%` }} /></div><small>{project.hours.toFixed(1)} de {project.targetHours.toFixed(1)} horas presupuestadas</small></div>}
+              <footer><span>{project.marginPct.toFixed(0)}% de margen estimado</span><span>{project.billableHours.toFixed(1)} h facturables</span></footer>
+            </article>
+          ))}
+        </div>
+        <form className="compact-form time-project-form" onSubmit={saveProject}>
+          <div className="field-full form-subheading"><strong>{projectForm.id ? 'Editar proyecto económico' : 'Agregar proyecto económico'}</strong><span>El honorario es el monto neto acordado para comparar, no una factura.</span></div>
+          <label>Proyecto<input value={projectForm.name} onChange={(event) => setProjectForm({ ...projectForm, name: event.target.value })} required /></label>
+          <label>Cliente<input value={projectForm.client} onChange={(event) => setProjectForm({ ...projectForm, client: event.target.value })} /></label>
+          <label>Honorario acordado<input type="number" min="0" step="1000" value={projectForm.fee} onChange={(event) => setProjectForm({ ...projectForm, fee: event.target.value })} /></label>
+          <label>Costos directos<input type="number" min="0" step="1000" value={projectForm.directCosts} onChange={(event) => setProjectForm({ ...projectForm, directCosts: event.target.value })} /></label>
+          <label>Horas presupuestadas<input type="number" min="0" step="0.5" value={projectForm.targetHours} onChange={(event) => setProjectForm({ ...projectForm, targetHours: event.target.value })} /></label>
+          <label>Estado<select value={projectForm.status} onChange={(event) => setProjectForm({ ...projectForm, status: event.target.value })}><option>Propuesta</option><option>Activo</option><option>Desarrollo</option><option>Validación</option><option>Pausado</option><option>Cerrado</option></select></label>
+          <div className="modal-actions field-full">{projectForm.id && <button type="button" className="button button--ghost" onClick={() => setProjectForm(emptyProject)}>Cancelar edición</button>}<button type="submit" className="button"><Icon name="add" /> {projectForm.id ? 'Guardar cambios' : 'Agregar proyecto'}</button></div>
+        </form>
+      </section>
+
+      <section className="panel-card">
+        <div className="panel-card__heading"><div><span className="kicker">Trazabilidad</span><h2>Registros de tiempo</h2></div><span className="count-pill">{tracking.entries.length}</span></div>
+        <div className="table-page"><table className="time-table"><thead><tr><th>Fecha</th><th>Proyecto</th><th>Responsable</th><th>Trabajo</th><th>Horas</th><th>Costo</th><th>Facturable</th><th><span className="sr-only">Acciones</span></th></tr></thead><tbody>{tracking.entries.map((entry) => { const project = tracking.projects.find((item) => item.id === entry.projectId); return <tr key={entry.id}><td>{formatDate(entry.date, { day: '2-digit', month: 'short' })}</td><td><strong>{project?.name || 'Proyecto eliminado'}</strong></td><td>{entry.owner}</td><td><strong>{entry.category}</strong><small>{entry.note || 'Sin detalle'}</small></td><td>{number(entry.hours).toFixed(2)}</td><td>{formatMoney(number(entry.hours) * number(tracking.rates[entry.owner]))}</td><td>{entry.billable ? 'Sí' : 'No'}</td><td className="table-actions"><IconButton icon="edit" label="Editar registro" onClick={() => setEntryForm(entry)} /><IconButton icon="delete" label="Eliminar registro" className="icon-button--danger" onClick={() => removeEntry(entry.id)} /></td></tr>; })}{!tracking.entries.length && <tr><td colSpan="8"><div className="empty-state-inline"><Icon name="schedule" /><p>Aún no hay horas registradas.</p></div></td></tr>}</tbody></table></div>
+      </section>
+    </div>
+  );
+}
+
 function QuotesView({ quotes, loading, onStatusChange, notice }) {
   return <div className="admin-view"><ViewHeading kicker="Comercial" title="Oportunidades y cotizaciones" description="Consultas de la web convertidas en registros trazables, con estado y contacto directo." />{notice && <p className={`admin-notice ${notice.type === 'error' ? 'admin-notice--error' : ''}`} role="status">{notice.message}</p>}<section className="panel-card"><div className="table-page"><table><thead><tr><th>Fecha</th><th>Contacto</th><th>Necesidad</th><th>Ciudad</th><th>Estado</th><th><span className="sr-only">Acciones</span></th></tr></thead><tbody>{quotes.map((quote) => <tr key={quote.id}><td>{new Intl.DateTimeFormat('es-CL', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(quote.created_at))}</td><td><strong>{quote.contact_name}</strong><small>{quote.company || quote.phone}</small></td><td><details><summary>{quote.service_type}</summary><p>{quote.details}</p>{(quote.project_stage || quote.team_size || quote.desired_date) && <small>{[quote.project_stage, quote.team_size, quote.desired_date].filter(Boolean).join(' · ')}</small>}</details></td><td>{quote.city || 'Sin indicar'}</td><td><select className="status-select" aria-label={`Cambiar estado de ${quote.contact_name}`} value={quote.status || 'nueva'} onChange={(event) => onStatusChange(quote.id, event.target.value)}>{STATUS_OPTIONS.map((status) => <option key={status} value={status}>{status === 'evaluacion' ? 'En evaluación' : status.charAt(0).toUpperCase() + status.slice(1)}</option>)}</select></td><td className="table-actions"><a className="icon-button" aria-label={`Contactar a ${quote.contact_name} por WhatsApp`} title="WhatsApp" href={`https://wa.me/${String(quote.phone || '').replace(/\D/g, '')}`} target="_blank" rel="noreferrer"><img src="/assets/icons/whatsapp.svg" alt="" width="18" height="18" /></a>{quote.email && <a className="icon-button" aria-label={`Enviar correo a ${quote.contact_name}`} title="Correo" href={`mailto:${quote.email}`}><Icon name="mail" /></a>}</td></tr>)}{!loading && !quotes.length && <tr><td colSpan="6"><div className="empty-state-inline"><Icon name="request_quote" /><p>No hay oportunidades registradas.</p></div></td></tr>}</tbody></table>{loading && <p className="loading-line">Cargando oportunidades…</p>}</div></section></div>;
 }
@@ -309,7 +485,6 @@ function DocumentsView() {
 
 function GenericView({ active }) {
   const content = {
-    metrics: ['Medidas e indicadores', 'Línea base, meta, fórmula, fuente, frecuencia y resultado por proyecto.'],
     assets: ['Activos intangibles', 'Marcas, métodos, diseños, experiencias, software, bases de datos y know-how.'],
     library: ['Biblioteca metodológica', 'Herramientas oficiales, versiones, instrucciones de uso y aprendizajes.'],
     consulting: ['Consultoría y consolidación', 'Proceso temporal ubicado al final del menú para no desplazar la operación permanente.']
@@ -411,12 +586,13 @@ function AdminShell({ session, onLogout }) {
             : active === 'finance' ? <FinanceView osState={osState} setOsState={setOsState} />
               : active === 'quotes' ? <QuotesView quotes={quotes} loading={loadingQuotes} onStatusChange={updateQuoteStatus} notice={notice} />
                 : active === 'projects' ? <ProjectsView />
+                  : active === 'metrics' ? <TimeTrackingView osState={osState} setOsState={setOsState} />
                   : active === 'documents' ? <DocumentsView />
                     : <GenericView active={active} />;
 
   if (loadingState) return <div className="app-loading"><Brand /><span>Cargando sistema operativo…</span></div>;
 
-  return <div className="admin-frame"><a className="skip-link" href="#admin-main">Saltar al contenido del panel</a><header className="admin-header"><div className="admin-header__brand"><IconButton icon="menu" label="Abrir menú" className="admin-menu-button" onClick={() => setMenuOpen(true)} /><Brand /></div><div className="admin-header__actions"><a className="admin-action-button admin-action-button--public" href="/" target="_blank" rel="noreferrer"><Icon name="public" /><span>Sitio público</span></a><IconButton icon="upload" label="Importar respaldo JSON" onClick={() => importRef.current?.click()} /><input ref={importRef} type="file" accept="application/json,.json" hidden onChange={importBackup} /><IconButton icon="download" label="Descargar respaldo JSON" onClick={exportBackup} /><button type="button" className={`admin-action-button ${dirty ? 'is-dirty' : ''}`} onClick={saveState} disabled={saving}><Icon name="save" /><span>{saving ? 'Guardando…' : dirty ? 'Guardar cambios' : 'Guardado'}</span></button><button type="button" className="admin-action-button admin-action-button--exit" onClick={onLogout}><Icon name="logout" /><span>Salir</span></button></div></header><div className="admin-body"><aside className={`admin-sidebar ${menuOpen ? 'is-open' : ''}`} aria-label="Módulos del panel"><div className="sidebar-heading"><strong>Módulos</strong><IconButton icon="close" label="Cerrar menú" className="sidebar-close" onClick={() => setMenuOpen(false)} /></div><nav>{menuGroups.map((group) => { const expanded = openGroups.has(group.id); const containsActive = group.items.some(([key]) => key === active); return <section className="sidebar-group" key={group.id}><button type="button" className={`sidebar-group__toggle ${containsActive ? 'has-active' : ''}`} onClick={() => toggleGroup(group.id)} aria-expanded={expanded}><Icon name={group.icon} /><span>{group.label}</span><Icon name={expanded ? 'expand_less' : 'expand_more'} /></button>{expanded && <div className="sidebar-submenu">{group.items.map(([key, label, icon]) => <button type="button" key={key} className={active === key ? 'is-active' : ''} onClick={() => navigate(key)} aria-current={active === key ? 'page' : undefined}><Icon name={icon} /><span>{label}</span></button>)}</div>}</section>; })}</nav><div className="sidebar-footer"><div className="admin-user"><span>ML</span><div><strong>Administración</strong><small>{session.demo ? 'Modo demostración' : session.email}</small></div></div></div></aside>{menuOpen && <button type="button" className="sidebar-backdrop" aria-label="Cerrar menú" onClick={() => setMenuOpen(false)} />}<main id="admin-main" className="admin-main"><div className="admin-breadcrumb"><span>{currentItem?.[1] || 'Panel diario'}</span>{notice && active !== 'quotes' && <p className={`save-notice ${notice.type === 'error' ? 'is-error' : ''}`} role="status">{notice.message}</p>}</div>{view}</main></div>{taskDraft && <TaskModal draft={taskDraft} onClose={() => setTaskDraft(null)} onSave={saveTask} />}</div>;
+  return <div className="admin-frame"><a className="skip-link" href="#admin-main">Saltar al contenido del panel</a><header className="admin-header"><div className="admin-header__brand"><IconButton icon="menu" label="Abrir menú" className="admin-menu-button" onClick={() => setMenuOpen(true)} /><Brand /></div><div className="admin-header__actions"><a className="admin-action-button admin-action-button--public" href={PUBLIC_SITE_URL} target="_blank" rel="noreferrer"><Icon name="public" /><span>Sitio público</span></a><IconButton icon="upload" label="Importar respaldo JSON" onClick={() => importRef.current?.click()} /><input ref={importRef} type="file" accept="application/json,.json" hidden onChange={importBackup} /><IconButton icon="download" label="Descargar respaldo JSON" onClick={exportBackup} /><button type="button" className={`admin-action-button ${dirty ? 'is-dirty' : ''}`} onClick={saveState} disabled={saving}><Icon name="save" /><span>{saving ? 'Guardando…' : dirty ? 'Guardar cambios' : 'Guardado'}</span></button><button type="button" className="admin-action-button admin-action-button--exit" onClick={onLogout}><Icon name="logout" /><span>Salir</span></button></div></header><div className="admin-body"><aside className={`admin-sidebar ${menuOpen ? 'is-open' : ''}`} aria-label="Módulos del panel"><div className="sidebar-heading"><strong>Módulos</strong><IconButton icon="close" label="Cerrar menú" className="sidebar-close" onClick={() => setMenuOpen(false)} /></div><nav>{menuGroups.map((group) => { const expanded = openGroups.has(group.id); const containsActive = group.items.some(([key]) => key === active); return <section className="sidebar-group" key={group.id}><button type="button" className={`sidebar-group__toggle ${containsActive ? 'has-active' : ''}`} onClick={() => toggleGroup(group.id)} aria-expanded={expanded}><Icon name={group.icon} /><span>{group.label}</span><Icon name={expanded ? 'expand_less' : 'expand_more'} /></button>{expanded && <div className="sidebar-submenu">{group.items.map(([key, label, icon]) => <button type="button" key={key} className={active === key ? 'is-active' : ''} onClick={() => navigate(key)} aria-current={active === key ? 'page' : undefined}><Icon name={icon} /><span>{label}</span></button>)}</div>}</section>; })}</nav><div className="sidebar-footer"><div className="admin-user"><span>ML</span><div><strong>Administración</strong><small>{session.demo ? 'Modo demostración' : session.email}</small></div></div></div></aside>{menuOpen && <button type="button" className="sidebar-backdrop" aria-label="Cerrar menú" onClick={() => setMenuOpen(false)} />}<main id="admin-main" className="admin-main"><div className="admin-breadcrumb"><span>{currentItem?.[1] || 'Panel diario'}</span>{notice && active !== 'quotes' && <p className={`save-notice ${notice.type === 'error' ? 'is-error' : ''}`} role="status">{notice.message}</p>}</div>{view}</main></div>{taskDraft && <TaskModal draft={taskDraft} onClose={() => setTaskDraft(null)} onSave={saveTask} />}</div>;
 }
 
 export default function AdminApp() {
