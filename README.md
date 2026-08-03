@@ -1,6 +1,6 @@
 # Metamorfosis Lab · Web pública estática + Metamorfosis OS
 
-Versión 4.0.0.
+Versión 4.2.0.
 
 La arquitectura quedó separada para evitar que la vitrina pública dependa del encendido de Render:
 
@@ -33,6 +33,20 @@ Metamorfosis OS incluye el módulo **Tiempo y rentabilidad**, con:
 - Trazabilidad completa de registros editables.
 
 Los datos se guardan dentro del estado JSONB de Metamorfosis OS. No se crearon tablas prematuras adicionales.
+
+## Vida familiar
+
+El panel privado incorpora la pestaña **Vida familiar**, integrada al mismo guardado y respaldo de Metamorfosis OS, pero separada de las finanzas comerciales. Incluye:
+
+- Estado de Benjamín, Francisca, pareja y familia, con carga y alertas editables.
+- Acciones semanales por responsable, carga estimada y cierre con un clic.
+- Frentes de trabajo vigentes, liderazgo, próximo movimiento y límites.
+- Fase actual del hogar, presupuesto y microintervenciones cerrables.
+- Ciclos de caja familiar con ingresos probables o confirmados, pagos, protección y disponible para decidir.
+- Inventario completo con estados Activo, Próximo, Esperando condición, Pausado y Futuro.
+- Registro explícito de lo que no cabe ahora.
+
+La pantalla responde a la lógica: **¿Dónde estamos? → ¿Qué importa ahora? → ¿Qué hacemos esta semana? → ¿Cómo estamos de dinero? → ¿Qué está esperando?**
 
 ## Comandos
 
@@ -104,3 +118,7 @@ DEPLOYMENT.md              -> instrucciones completas
 - El panel y sus rutas envían `X-Robots-Tag: noindex, nofollow, noarchive`.
 - La API pública solo habilita CORS para los dominios definidos en `PUBLIC_ORIGINS`.
 - El formulario incluye limitación de solicitudes y campo señuelo antispam.
+
+### 4.2.0 — accesibilidad visual del panel
+
+El panel privado utiliza ahora un sistema visual de alto contraste: navegación y encabezado oscuros, superficies de trabajo claras, estados activos inequívocos y formularios consistentes. La pestaña **Vida familiar** se mantiene integrada en Metamorfosis OS.

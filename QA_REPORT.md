@@ -1,10 +1,13 @@
-# Informe de revisión técnica · Metamorfosis v3.0.0
+# Informe de revisión técnica · Metamorfosis v4.2.0
 
 ## Verificaciones realizadas
 
-- Sintaxis JSX/JavaScript validada con TypeScript en modo `noEmit`.
-- Sintaxis de `server.js`, `data.js` y `osSeed.js` validada con Node.
+- Estructura JSX y sintaxis JavaScript circundante validadas con un analizador estático local; `osSeed.js` y `server.js` validados directamente con Node.
+- CSS completo analizado sin errores de parseo y reglas responsive revisadas para escritorio, tablet y móvil.
 - Imports relativos revisados: no existen rutas faltantes.
+- La nueva pestaña Vida familiar está conectada al menú, panel diario, hidratación de datos antiguos, guardado compartido y respaldo JSON.
+- La caja familiar se mantiene separada del módulo Finanzas del negocio.
+- Los estados previos que no contienen `family` se completan automáticamente con la estructura V1.0 sin perder tareas, proyectos ni registros existentes.
 - Activos públicos revisados: logo, favicon, tarjeta social e icono de WhatsApp disponibles.
 - `package-lock.json` revisado: 148 URLs resueltas y todas apuntan a `registry.npmjs.org`.
 - No quedan referencias a registros internos de OpenAI.
@@ -26,3 +29,12 @@ npm ci --registry=https://registry.npmjs.org/ --no-audit --no-fund
 npm run build
 npm start
 ```
+
+## Versión 4.2.0 — contraste, legibilidad y navegación
+
+- Se consolidó una arquitectura visual coherente para el panel privado: marco oscuro y contenido claro.
+- Se corrigieron textos blancos o grises sobre tarjetas claras, especialmente en “Frentes y límites”.
+- Se reforzó la diferenciación semántica entre “Ahora” y “Límite” mediante fondo, borde, etiqueta y texto legible.
+- Se mejoraron estados activos del menú lateral, foco de teclado, formularios, tablas, calendario, tarjetas y botones.
+- Se verificó que Vida familiar permanezca integrada y separada de las finanzas comerciales.
+- Se mantuvo el alcance de los cambios dentro de `.admin-frame` para no alterar el sitio público.
