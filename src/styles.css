@@ -2285,3 +2285,278 @@ textarea::placeholder { color: #7f98ac; }
   .admin-menu-button,
   .sidebar-close { display: inline-grid; }
 }
+
+
+/* ========================================================================== 
+   Metamorfosis OS · ajuste de contraste y jerarquía visual
+   Agosto 2026
+   Mantiene la paleta actual y corrige textos claros sobre superficies claras.
+   ========================================================================== */
+.admin-frame {
+  --admin-text-strong: #173247;
+  --admin-text-body: #4e6475;
+  --admin-text-muted: #718493;
+  --admin-surface-light: #fffdf8;
+  --admin-surface-soft: #f2f5f6;
+  --admin-border-light: #d7e0e6;
+  --admin-card-dark: #45535f;
+  --admin-card-dark-strong: #3d4b56;
+  --admin-text-on-dark: #ffffff;
+  --admin-text-on-dark-soft: #e0eaf0;
+  --admin-text-on-dark-muted: #c1d0da;
+  --admin-accent: #46d1c0;
+  --admin-accent-strong: #21b8b2;
+}
+
+/* Fondo operativo claro para mejorar lectura y separar el contenido del marco. */
+.admin-frame .admin-main {
+  background:
+    radial-gradient(circle at 72% 2%, rgba(255,255,255,.82), transparent 30%),
+    linear-gradient(180deg, #eef0ef 0%, #e9eceb 100%);
+  color: var(--admin-text-strong);
+}
+
+/* Encabezado principal de cada vista: superficie clara = tipografía oscura. */
+.admin-frame .admin-view__heading {
+  border-color: rgba(23, 50, 71, .11);
+  background: rgba(255, 253, 248, .97);
+  box-shadow: 0 12px 30px rgba(7, 24, 36, .08);
+}
+.admin-frame .admin-view__heading .kicker {
+  color: var(--admin-accent-strong);
+  font-weight: 900;
+}
+.admin-frame .admin-view__heading h1,
+.admin-frame .admin-view__heading h2,
+.admin-frame .admin-view__heading h3 {
+  color: var(--admin-text-strong);
+  text-shadow: none;
+}
+.admin-frame .admin-view__heading p {
+  color: var(--admin-text-body);
+  font-weight: 500;
+}
+
+/* Franja superior del contenido. */
+.admin-frame .admin-breadcrumb {
+  border-color: rgba(255,255,255,.10);
+  background: #5a6570;
+  box-shadow: 0 8px 22px rgba(7, 24, 36, .10);
+}
+.admin-frame .admin-breadcrumb > span {
+  color: #dbe7ee;
+  font-weight: 900;
+}
+.admin-frame .admin-breadcrumb .save-notice {
+  border-color: rgba(70, 209, 192, .24);
+  background: #24515d;
+  color: #f2fffd;
+}
+.admin-frame .admin-breadcrumb .save-notice.is-error {
+  border-color: rgba(255, 124, 124, .34);
+  background: #713f42;
+  color: #fff2f2;
+}
+
+/* Accesos rápidos: estados activos, normales y deshabilitados legibles. */
+.admin-frame .quick-actions button {
+  border-color: var(--admin-border-light);
+  background: #ffffff;
+  color: var(--admin-text-strong);
+  box-shadow: 0 4px 12px rgba(7, 24, 36, .04);
+}
+.admin-frame .quick-actions button:hover:not(:disabled) {
+  border-color: var(--admin-accent-strong);
+  background: #f4fffd;
+  color: #0d4f55;
+}
+.admin-frame .quick-actions button:first-child,
+.admin-frame .quick-actions button:nth-child(2) {
+  border-color: transparent;
+  background: linear-gradient(135deg, #38bdf8, var(--admin-accent));
+  color: #082330;
+  box-shadow: 0 8px 18px rgba(56, 189, 248, .17);
+}
+.admin-frame .quick-actions button:disabled {
+  opacity: 1;
+  border-color: #dce3e7;
+  background: #edf1f3;
+  color: #81929e;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Indicadores: conservar tarjetas oscuras, elevar contraste de textos secundarios. */
+.admin-frame .metric-card {
+  border-color: rgba(255,255,255,.10);
+  background: linear-gradient(180deg, var(--admin-card-dark), var(--admin-card-dark-strong));
+  box-shadow: 0 10px 24px rgba(7, 24, 36, .12);
+}
+.admin-frame .metric-card__icon {
+  background: rgba(70, 209, 192, .14);
+  color: #bafbf3;
+}
+.admin-frame .metric-card > div small,
+.admin-frame .metric-card small {
+  color: var(--admin-text-on-dark-soft);
+  font-weight: 900;
+}
+.admin-frame .metric-card > div strong,
+.admin-frame .metric-card strong {
+  color: var(--admin-text-on-dark);
+  font-weight: 850;
+}
+.admin-frame .metric-card > div span,
+.admin-frame .metric-card span {
+  color: var(--admin-text-on-dark-muted);
+  font-weight: 600;
+}
+.admin-frame .metric-card--accent .metric-card__icon {
+  background: rgba(70, 209, 192, .18);
+  color: #c9fff8;
+}
+.admin-frame .metric-card--warning .metric-card__icon {
+  background: rgba(239, 181, 84, .18);
+  color: #ffe0a3;
+}
+.admin-frame .metric-card--danger .metric-card__icon {
+  background: rgba(255, 124, 124, .18);
+  color: #ffd1d1;
+}
+
+/* Paneles operativos oscuros: títulos blancos y texto auxiliar más luminoso. */
+.admin-frame .panel-card,
+.admin-frame .guide-card,
+.admin-frame .calendar-panel {
+  border-color: rgba(255,255,255,.10);
+  background: linear-gradient(180deg, var(--admin-card-dark), var(--admin-card-dark-strong));
+  box-shadow: 0 12px 28px rgba(7, 24, 36, .13);
+}
+.admin-frame .panel-card__heading .kicker,
+.admin-frame .guide-card .kicker {
+  color: #79eee1;
+  font-weight: 900;
+}
+.admin-frame .panel-card__heading h2,
+.admin-frame .panel-card__heading h3,
+.admin-frame .guide-card h2,
+.admin-frame .guide-card h3,
+.admin-frame .panel-card h2,
+.admin-frame .panel-card h3 {
+  color: var(--admin-text-on-dark);
+  text-shadow: none;
+}
+.admin-frame .panel-card p,
+.admin-frame .guide-card p,
+.admin-frame .calendar-panel p {
+  color: var(--admin-text-on-dark-soft);
+}
+.admin-frame .panel-card small,
+.admin-frame .panel-card .muted,
+.admin-frame .guide-card small,
+.admin-frame .calendar-panel small,
+.admin-frame .empty-state-inline,
+.admin-frame .empty-state-inline p {
+  color: var(--admin-text-on-dark-muted);
+}
+.admin-frame .panel-card a,
+.admin-frame .panel-card .text-button {
+  color: #82f1e5;
+}
+
+/* Listas y tareas dentro de paneles oscuros. */
+.admin-frame .compact-task,
+.admin-frame .project-line,
+.admin-frame .inbox-preview,
+.admin-frame .os-task,
+.admin-frame .document-item,
+.admin-frame .library-card,
+.admin-frame .asset-card,
+.admin-frame .front-card {
+  border-color: rgba(255,255,255,.11);
+  background: rgba(255,255,255,.045);
+}
+.admin-frame .compact-task strong,
+.admin-frame .project-line strong,
+.admin-frame .inbox-preview strong,
+.admin-frame .os-task h3,
+.admin-frame .document-item strong,
+.admin-frame .library-card h3,
+.admin-frame .asset-card h3,
+.admin-frame .front-card h2,
+.admin-frame .front-card h3 {
+  color: #ffffff;
+}
+.admin-frame .compact-task small,
+.admin-frame .project-line small,
+.admin-frame .inbox-preview small,
+.admin-frame .os-task p,
+.admin-frame .os-task small,
+.admin-frame .document-item small,
+.admin-frame .library-card p,
+.admin-frame .asset-card p,
+.admin-frame .front-card p,
+.admin-frame .front-card > small {
+  color: var(--admin-text-on-dark-muted);
+}
+
+/* Formularios contenidos en paneles oscuros. */
+.admin-frame .panel-card .compact-form label,
+.admin-frame .panel-card .decision-form label,
+.admin-frame .panel-card label {
+  color: #dce8ef;
+}
+.admin-frame .panel-card input,
+.admin-frame .panel-card select,
+.admin-frame .panel-card textarea,
+.admin-frame .modal-card input,
+.admin-frame .modal-card select,
+.admin-frame .modal-card textarea {
+  border-color: rgba(255,255,255,.15);
+  background: rgba(4, 16, 27, .42);
+  color: #ffffff;
+}
+.admin-frame .panel-card input::placeholder,
+.admin-frame .panel-card textarea::placeholder,
+.admin-frame .modal-card input::placeholder,
+.admin-frame .modal-card textarea::placeholder {
+  color: #aebfca;
+  opacity: 1;
+}
+.admin-frame .panel-card select option,
+.admin-frame .modal-card select option {
+  background: #102433;
+  color: #ffffff;
+}
+
+/* Tablas y estados auxiliares. */
+.admin-frame .table-page th {
+  color: #c6d5de;
+  border-bottom-color: rgba(255,255,255,.13);
+}
+.admin-frame .table-page td {
+  color: #e1eaf0;
+  border-bottom-color: rgba(255,255,255,.10);
+}
+.admin-frame .table-page td > small,
+.admin-frame .table-page details p {
+  color: #b9cad4;
+}
+.admin-frame .count-pill {
+  background: #163b48;
+  color: #ffffff;
+}
+
+/* Foco visible y accesible dentro del panel. */
+.admin-frame :focus-visible {
+  outline-color: rgba(56, 189, 248, .78);
+}
+
+@media (max-width: 720px) {
+  .admin-frame .admin-view__heading h1 {
+    color: var(--admin-text-strong);
+  }
+  .admin-frame .metric-card {
+    min-height: 132px;
+  }
+}
