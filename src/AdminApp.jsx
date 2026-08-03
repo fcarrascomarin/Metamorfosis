@@ -15,6 +15,12 @@ const menuGroups = [
     items: [['dashboard', 'Panel diario', 'dashboard']]
   },
   {
+    id: 'familia',
+    label: 'Vida familiar',
+    icon: 'home',
+    items: [['family', 'Sistema familiar', 'home']]
+  },
+  {
     id: 'operacion',
     label: 'Sistema operativo',
     icon: 'calendar_month',
@@ -101,7 +107,22 @@ function hydrateState(candidate) {
     },
     fronts: (Array.isArray(candidate.fronts) ? candidate.fronts : fallback.fronts).map(normalizeId),
     decisions: Array.isArray(candidate.decisions) ? candidate.decisions : fallback.decisions,
-    inbox: (Array.isArray(candidate.inbox) ? candidate.inbox : fallback.inbox).map(normalizeId)
+    inbox: (Array.isArray(candidate.inbox) ? candidate.inbox : fallback.inbox).map(normalizeId),
+    family: {
+      ...fallback.family,
+      ...(candidate.family || {}),
+      wellbeing: (Array.isArray(candidate.family?.wellbeing) ? candidate.family.wellbeing : fallback.family.wellbeing).map(normalizeId),
+      weeklyActions: (Array.isArray(candidate.family?.weeklyActions) ? candidate.family.weeklyActions : fallback.family.weeklyActions).map(normalizeId),
+      workFronts: (Array.isArray(candidate.family?.workFronts) ? candidate.family.workFronts : fallback.family.workFronts).map(normalizeId),
+      cycle: { ...fallback.family.cycle, ...(candidate.family?.cycle || {}) },
+      home: {
+        ...fallback.family.home,
+        ...(candidate.family?.home || {}),
+        checklist: (Array.isArray(candidate.family?.home?.checklist) ? candidate.family.home.checklist : fallback.family.home.checklist).map(normalizeId)
+      },
+      inventory: (Array.isArray(candidate.family?.inventory) ? candidate.family.inventory : fallback.family.inventory).map(normalizeId),
+      exclusions: Array.isArray(candidate.family?.exclusions) ? candidate.family.exclusions : fallback.family.exclusions
+    }
   };
 }
 
@@ -127,7 +148,7 @@ function AdminLogin({ onLogin }) {
       <a className="skip-link" href="#login-form">Saltar al formulario</a>
       <div className="admin-login__card">
         <Brand />
-        <div className="admin-login__heading"><span className="kicker">Acceso privado</span><h1>Administración</h1><p>Proyectos, oportunidades, sistema operativo, documentos y seguimiento interno.</p></div>
+        <div className="admin-login__heading"><span className="kicker">Acceso privado</span><h1>Administración</h1><p>Proyectos, oportunidades, vida familiar, documentos y seguimiento interno.</p></div>
         <form id="login-form" onSubmit={submit}>
           <label>Correo institucional<input type="email" autoComplete="username" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} required /></label>
           <label>Contraseña<input type="password" autoComplete="current-password" value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} required /></label>
@@ -162,6 +183,7 @@ function DashboardView({ osState, quotes, dirty, onNavigate, onAddTask }) {
       <ViewHeading kicker="Panel diario" title="Panel de control Metamorfosis" description="Accesos rápidos y señales que requieren una decisión concreta hoy." action={<button type="button" className="button button--small" onClick={() => onAddTask({ date: today })}><Icon name="add" /> Nueva tarea</button>} />
       <div className="quick-actions" aria-label="Acciones frecuentes">
         <button type="button" onClick={() => onNavigate('day')}><Icon name="today" />Agenda de hoy</button>
+        <button type="button" onClick={() => onNavigate('family')}><Icon name="home" />Vida familiar</button>
         <button type="button" onClick={() => onNavigate('quotes')}><Icon name="request_quote" />Oportunidades</button>
         <button type="button" onClick={() => onNavigate('projects')}><Icon name="account_tree" />Proyectos</button>
         <button type="button" onClick={() => onNavigate('metrics')}><Icon name="query_stats" />Tiempo y rentabilidad</button>
@@ -301,9 +323,224 @@ function FinanceView({ osState, setOsState }) {
   const projectedIncome = Number(finance.recurringIncome || 0) + Number(finance.expectedIncome || 0);
   const balance = projectedIncome - totalCosts;
   const coverage = totalCosts > 0 ? Number(finance.availableCash || 0) / totalCosts : 0;
-  return <div className="admin-view"><ViewHeading kicker="Finanzas del negocio" title="Caja y compromisos visibles" description="Esta vista registra únicamente información de Metamorfosis. No debe almacenar finanzas personales o familiares en un repositorio compartido." /><div className="finance-metrics"><MetricCard icon="payments" label="Costos registrados" value={formatMoney(totalCosts)} note="Fijos, variables y comprometidos" /><MetricCard icon="trending_up" label="Ingreso proyectado" value={formatMoney(projectedIncome)} note="Recurrente más esperado" tone="accent" /><MetricCard icon={balance >= 0 ? 'check_circle' : 'warning'} label="Resultado proyectado" value={formatMoney(balance)} note={balance >= 0 ? 'Cobertura estimada positiva' : 'Brecha por cubrir'} tone={balance < 0 ? 'danger' : ''} /><MetricCard icon="savings" label="Caja disponible" value={formatMoney(finance.availableCash)} note={totalCosts ? `${coverage.toFixed(1)} meses de costos` : 'Sin costos base cargados'} /></div><div className="finance-layout"><section className="panel-card"><div className="panel-card__heading"><div><span className="kicker">Supuestos editables</span><h2>Montos del negocio</h2></div></div><div className="compact-form"><label>Costos fijos mensuales<input type="number" min="0" value={finance.fixedCosts} onChange={(event) => update('fixedCosts', event.target.value)} /></label><label>Costos variables estimados<input type="number" min="0" value={finance.variableCosts} onChange={(event) => update('variableCosts', event.target.value)} /></label><label>Ingresos recurrentes<input type="number" min="0" value={finance.recurringIncome} onChange={(event) => update('recurringIncome', event.target.value)} /></label><label>Ingresos esperados<input type="number" min="0" value={finance.expectedIncome} onChange={(event) => update('expectedIncome', event.target.value)} /></label><label>Caja disponible<input type="number" min="0" value={finance.availableCash} onChange={(event) => update('availableCash', event.target.value)} /></label><label>Pagos ya comprometidos<input type="number" min="0" value={finance.committedPayments} onChange={(event) => update('committedPayments', event.target.value)} /></label><label className="field-full">Notas y verificaciones<textarea value={finance.notes} onChange={(event) => update('notes', event.target.value)} /></label></div></section><section className="panel-card finance-reading"><div className="panel-card__heading"><div><span className="kicker">Lectura operativa</span><h2>Qué indican los datos</h2></div></div><p>Con los supuestos actuales, los costos registrados alcanzan <b>{formatMoney(totalCosts)}</b> y el ingreso proyectado alcanza <b>{formatMoney(projectedIncome)}</b>.</p><div className={`finance-result ${balance >= 0 ? 'is-positive' : 'is-negative'}`}><span>{balance >= 0 ? 'Margen proyectado' : 'Brecha proyectada'}</span><strong>{formatMoney(Math.abs(balance))}</strong></div><div className="rule-box"><Icon name="rule" /><div><strong>Regla de caja</strong><p>No comprometer nuevas inversiones sin costo total, responsable, fuente de pago y condición de suspensión definidos.</p></div></div></section></div></div>;
+  return <div className="admin-view"><ViewHeading kicker="Finanzas del negocio" title="Caja y compromisos visibles" description="Esta vista registra únicamente información de Metamorfosis. La caja personal y familiar se administra por separado en Vida familiar." /><div className="finance-metrics"><MetricCard icon="payments" label="Costos registrados" value={formatMoney(totalCosts)} note="Fijos, variables y comprometidos" /><MetricCard icon="trending_up" label="Ingreso proyectado" value={formatMoney(projectedIncome)} note="Recurrente más esperado" tone="accent" /><MetricCard icon={balance >= 0 ? 'check_circle' : 'warning'} label="Resultado proyectado" value={formatMoney(balance)} note={balance >= 0 ? 'Cobertura estimada positiva' : 'Brecha por cubrir'} tone={balance < 0 ? 'danger' : ''} /><MetricCard icon="savings" label="Caja disponible" value={formatMoney(finance.availableCash)} note={totalCosts ? `${coverage.toFixed(1)} meses de costos` : 'Sin costos base cargados'} /></div><div className="finance-layout"><section className="panel-card"><div className="panel-card__heading"><div><span className="kicker">Supuestos editables</span><h2>Montos del negocio</h2></div></div><div className="compact-form"><label>Costos fijos mensuales<input type="number" min="0" value={finance.fixedCosts} onChange={(event) => update('fixedCosts', event.target.value)} /></label><label>Costos variables estimados<input type="number" min="0" value={finance.variableCosts} onChange={(event) => update('variableCosts', event.target.value)} /></label><label>Ingresos recurrentes<input type="number" min="0" value={finance.recurringIncome} onChange={(event) => update('recurringIncome', event.target.value)} /></label><label>Ingresos esperados<input type="number" min="0" value={finance.expectedIncome} onChange={(event) => update('expectedIncome', event.target.value)} /></label><label>Caja disponible<input type="number" min="0" value={finance.availableCash} onChange={(event) => update('availableCash', event.target.value)} /></label><label>Pagos ya comprometidos<input type="number" min="0" value={finance.committedPayments} onChange={(event) => update('committedPayments', event.target.value)} /></label><label className="field-full">Notas y verificaciones<textarea value={finance.notes} onChange={(event) => update('notes', event.target.value)} /></label></div></section><section className="panel-card finance-reading"><div className="panel-card__heading"><div><span className="kicker">Lectura operativa</span><h2>Qué indican los datos</h2></div></div><p>Con los supuestos actuales, los costos registrados alcanzan <b>{formatMoney(totalCosts)}</b> y el ingreso proyectado alcanza <b>{formatMoney(projectedIncome)}</b>.</p><div className={`finance-result ${balance >= 0 ? 'is-positive' : 'is-negative'}`}><span>{balance >= 0 ? 'Margen proyectado' : 'Brecha proyectada'}</span><strong>{formatMoney(Math.abs(balance))}</strong></div><div className="rule-box"><Icon name="rule" /><div><strong>Regla de caja</strong><p>No comprometer nuevas inversiones sin costo total, responsable, fuente de pago y condición de suspensión definidos.</p></div></div></section></div></div>;
 }
 
+
+
+const FAMILY_STATUSES = ['Bien', 'Atención', 'Intervenir'];
+const FAMILY_LOADS = ['Ligera', 'Media', 'Alta'];
+const FAMILY_INVENTORY_STATES = ['Activo', 'Próximo', 'Esperando condición', 'Pausado', 'Futuro'];
+const FAMILY_FRONT_STATES = ['Activo', 'Preparar', 'Cierre', 'Validación', 'Esperando', 'Pausado'];
+
+function FamilyView({ osState, setOsState }) {
+  const family = osState.family;
+  const [actionForm, setActionForm] = useState({ owner: 'Benjamín', title: '', load: 'Media' });
+  const [homeItem, setHomeItem] = useState('');
+  const [captureForm, setCaptureForm] = useState({ title: '', area: 'Familia', status: 'Próximo' });
+  const [frontForm, setFrontForm] = useState({ name: '', leader: 'Francisca', state: 'Activo', next: '', limit: '' });
+  const [exclusion, setExclusion] = useState('');
+
+  const updateFamily = (updater) => setOsState((current) => {
+    const nextFamily = typeof updater === 'function' ? updater(current.family) : { ...current.family, ...updater };
+    return { ...current, family: nextFamily };
+  });
+
+  const updateWellbeing = (id, patch) => updateFamily((current) => ({
+    ...current,
+    wellbeing: current.wellbeing.map((item) => item.id === id ? { ...item, ...patch } : item)
+  }));
+  const toggleWeekly = (id) => updateFamily((current) => ({
+    ...current,
+    weeklyActions: current.weeklyActions.map((item) => item.id === id ? { ...item, status: item.status === 'done' ? 'pending' : 'done' } : item)
+  }));
+  const removeWeekly = (id) => updateFamily((current) => ({ ...current, weeklyActions: current.weeklyActions.filter((item) => item.id !== id) }));
+  const addWeekly = (event) => {
+    event.preventDefault();
+    if (!actionForm.title.trim()) return;
+    updateFamily((current) => ({
+      ...current,
+      weeklyActions: [...current.weeklyActions, { ...actionForm, title: actionForm.title.trim(), id: crypto.randomUUID(), status: 'pending' }]
+    }));
+    setActionForm((current) => ({ ...current, title: '' }));
+  };
+
+  const updateFront = (id, patch) => updateFamily((current) => ({
+    ...current,
+    workFronts: current.workFronts.map((item) => item.id === id ? { ...item, ...patch } : item)
+  }));
+  const addFront = (event) => {
+    event.preventDefault();
+    if (!frontForm.name.trim()) return;
+    updateFamily((current) => ({ ...current, workFronts: [...current.workFronts, { ...frontForm, name: frontForm.name.trim(), id: crypto.randomUUID() }] }));
+    setFrontForm({ name: '', leader: 'Francisca', state: 'Activo', next: '', limit: '' });
+  };
+  const removeFront = (id) => {
+    if (window.confirm('¿Quitar este frente del sistema familiar?')) updateFamily((current) => ({ ...current, workFronts: current.workFronts.filter((item) => item.id !== id) }));
+  };
+
+  const updateCycle = (patch) => updateFamily((current) => ({ ...current, cycle: { ...current.cycle, ...patch } }));
+  const updateHome = (patch) => updateFamily((current) => ({ ...current, home: { ...current.home, ...patch } }));
+  const toggleHome = (id) => updateFamily((current) => ({
+    ...current,
+    home: { ...current.home, checklist: current.home.checklist.map((item) => item.id === id ? { ...item, status: item.status === 'done' ? 'pending' : 'done' } : item) }
+  }));
+  const addHomeItem = (event) => {
+    event.preventDefault();
+    if (!homeItem.trim()) return;
+    updateFamily((current) => ({
+      ...current,
+      home: { ...current.home, checklist: [...current.home.checklist, { id: crypto.randomUUID(), title: homeItem.trim(), status: 'pending' }] }
+    }));
+    setHomeItem('');
+  };
+  const removeHome = (id) => updateFamily((current) => ({
+    ...current,
+    home: { ...current.home, checklist: current.home.checklist.filter((item) => item.id !== id) }
+  }));
+
+  const addCapture = (event) => {
+    event.preventDefault();
+    if (!captureForm.title.trim()) return;
+    updateFamily((current) => ({
+      ...current,
+      inventory: [...current.inventory, { ...captureForm, title: captureForm.title.trim(), id: crypto.randomUUID() }]
+    }));
+    setCaptureForm((current) => ({ ...current, title: '' }));
+  };
+  const updateInventory = (id, patch) => updateFamily((current) => ({
+    ...current,
+    inventory: current.inventory.map((item) => item.id === id ? { ...item, ...patch } : item)
+  }));
+  const removeInventory = (id) => updateFamily((current) => ({ ...current, inventory: current.inventory.filter((item) => item.id !== id) }));
+
+  const addExclusion = (event) => {
+    event.preventDefault();
+    if (!exclusion.trim()) return;
+    updateFamily((current) => ({ ...current, exclusions: [...current.exclusions, exclusion.trim()] }));
+    setExclusion('');
+  };
+
+  const number = (value) => Number(value || 0);
+  const availableToDecide = number(family.cycle.availableCash) + number(family.cycle.nextIncomeAmount) - number(family.cycle.mandatoryPayments) - number(family.cycle.protectedAmount);
+  const completedWeekly = family.weeklyActions.filter((item) => item.status === 'done').length;
+  const completedHome = family.home.checklist.filter((item) => item.status === 'done').length;
+  const homeProgress = family.home.checklist.length ? Math.round((completedHome / family.home.checklist.length) * 100) : 0;
+  const loadPoints = { Ligera: 1, Media: 2, Exigente: 3 };
+  const ownerLoad = (owner) => family.weeklyActions.filter((item) => item.owner === owner && item.status !== 'done').reduce((sum, item) => sum + (loadPoints[item.load] || 1), 0);
+
+  return (
+    <div className="admin-view family-view">
+      <ViewHeading
+        kicker="Vida familiar"
+        title="Sistema Familiar de Transición"
+        description="Una sola vista para comprender cómo están, qué importa esta semana, cómo está la caja y qué puede esperar."
+        action={<div className="family-phase-control"><label>Verbo actual<select value={family.phase} onChange={(event) => updateFamily({ phase: event.target.value })}><option>PREPARAR</option><option>MERCADO</option><option>ESTABILIZAR</option></select></label></div>}
+      />
+
+      <section className="family-command-bar">
+        <div><span className="kicker">Frontera vigente</span><strong>{family.phase}</strong><p>{family.phaseNote}</p></div>
+        <label>Nombre de la semana<input value={family.weekLabel || ''} onChange={(event) => updateFamily({ weekLabel: event.target.value })} /></label>
+        <div className="family-command-stat"><small>Semana</small><strong>{completedWeekly}/{family.weeklyActions.length}</strong><span>acciones cerradas</span></div>
+        <div className="family-command-stat"><small>Casa</small><strong>{homeProgress}%</strong><span>intervención actual</span></div>
+      </section>
+
+      <section className="family-section">
+        <div className="family-section__heading"><div><span className="kicker">¿Dónde estamos?</span><h2>Nosotros</h2></div><p>La carga se evalúa por energía y responsabilidad, no por cantidad bruta de tareas.</p></div>
+        <div className="family-wellbeing-grid">
+          {family.wellbeing.map((item) => <article className={`family-person family-person--${item.status.toLowerCase().replace('ó', 'o')}`} key={item.id}>
+            <div className="family-person__top"><div><strong>{item.name}</strong><span>{item.area}</span></div><span className="family-status-dot" aria-label={item.status} /></div>
+            <div className="family-inline-fields"><label>Estado<select value={item.status} onChange={(event) => updateWellbeing(item.id, { status: event.target.value })}>{FAMILY_STATUSES.map((status) => <option key={status}>{status}</option>)}</select></label><label>Carga<select value={item.load} onChange={(event) => updateWellbeing(item.id, { load: event.target.value })}>{FAMILY_LOADS.map((load) => <option key={load}>{load}</option>)}</select></label></div>
+            <textarea aria-label={`Nota de ${item.name}`} value={item.note || ''} onChange={(event) => updateWellbeing(item.id, { note: event.target.value })} />
+          </article>)}
+        </div>
+      </section>
+
+      <section className="family-section">
+        <div className="family-section__heading"><div><span className="kicker">¿Qué hacemos?</span><h2>Esta semana</h2></div><p>Máximo una tarea central y una secundaria por persona al día.</p></div>
+        <div className="family-week-grid">
+          {['Benjamín', 'Francisca', 'Compartido'].map((owner) => <section className="family-week-lane" key={owner}>
+            <header><div><span>{owner.charAt(0)}</span><div><h3>{owner}</h3><small>{ownerLoad(owner)} puntos de carga pendientes</small></div></div></header>
+            <div className="family-check-list">
+              {family.weeklyActions.filter((item) => item.owner === owner).map((item) => <article className={item.status === 'done' ? 'is-done' : ''} key={item.id}>
+                <button type="button" className="family-check" onClick={() => toggleWeekly(item.id)} aria-label={item.status === 'done' ? 'Reabrir acción' : 'Completar acción'}><Icon name={item.status === 'done' ? 'check_circle' : 'task_alt'} /></button>
+                <div><strong>{item.title}</strong><span>{item.load}</span></div>
+                <IconButton icon="delete" label={`Eliminar ${item.title}`} className="icon-button--danger" onClick={() => removeWeekly(item.id)} />
+              </article>)}
+              {!family.weeklyActions.some((item) => item.owner === owner) && <p className="empty-copy">Sin acciones cargadas.</p>}
+            </div>
+          </section>)}
+        </div>
+        <form className="family-add-row" onSubmit={addWeekly}>
+          <label>Responsable<select value={actionForm.owner} onChange={(event) => setActionForm({ ...actionForm, owner: event.target.value })}><option>Benjamín</option><option>Francisca</option><option>Compartido</option></select></label>
+          <label className="family-grow">Nueva acción<input value={actionForm.title} onChange={(event) => setActionForm({ ...actionForm, title: event.target.value })} placeholder="Resultado concreto de esta semana" /></label>
+          <label>Carga<select value={actionForm.load} onChange={(event) => setActionForm({ ...actionForm, load: event.target.value })}><option>Ligera</option><option>Media</option><option>Exigente</option></select></label>
+          <button className="button button--small" type="submit"><Icon name="add" /> Agregar</button>
+        </form>
+      </section>
+
+      <div className="family-two-columns">
+        <section className="family-section">
+          <div className="family-section__heading"><div><span className="kicker">Trabajo</span><h2>Frentes realmente activos</h2></div><p>Preparar no es lo mismo que vender.</p></div>
+          <div className="family-front-list">
+            {family.workFronts.map((front) => <article key={front.id}>
+              <div className="family-front__top"><input className="family-front__name" value={front.name} onChange={(event) => updateFront(front.id, { name: event.target.value })} aria-label="Nombre del frente" /><IconButton icon="delete" label={`Quitar ${front.name}`} className="icon-button--danger" onClick={() => removeFront(front.id)} /></div>
+              <div className="family-inline-fields"><label>Lidera<input value={front.leader} onChange={(event) => updateFront(front.id, { leader: event.target.value })} /></label><label>Estado<select value={front.state} onChange={(event) => updateFront(front.id, { state: event.target.value })}>{FAMILY_FRONT_STATES.map((state) => <option key={state}>{state}</option>)}</select></label></div>
+              <label>Próximo movimiento<textarea value={front.next || ''} onChange={(event) => updateFront(front.id, { next: event.target.value })} /></label>
+              <label>Límite<textarea value={front.limit || ''} onChange={(event) => updateFront(front.id, { limit: event.target.value })} /></label>
+            </article>)}
+          </div>
+          <details className="family-details"><summary><Icon name="add" /> Agregar frente</summary><form className="compact-form" onSubmit={addFront}><label>Nombre<input value={frontForm.name} onChange={(event) => setFrontForm({ ...frontForm, name: event.target.value })} /></label><label>Lidera<input value={frontForm.leader} onChange={(event) => setFrontForm({ ...frontForm, leader: event.target.value })} /></label><label>Estado<select value={frontForm.state} onChange={(event) => setFrontForm({ ...frontForm, state: event.target.value })}>{FAMILY_FRONT_STATES.map((state) => <option key={state}>{state}</option>)}</select></label><label className="field-full">Próximo movimiento<input value={frontForm.next} onChange={(event) => setFrontForm({ ...frontForm, next: event.target.value })} /></label><label className="field-full">Límite<input value={frontForm.limit} onChange={(event) => setFrontForm({ ...frontForm, limit: event.target.value })} /></label><button className="button button--small field-full" type="submit">Guardar frente</button></form></details>
+        </section>
+
+        <section className="family-section family-home">
+          <div className="family-section__heading"><div><span className="kicker">Casa</span><h2>Una intervención cerrable</h2></div><span className="family-progress-number">{homeProgress}%</span></div>
+          <div className="family-progress"><span style={{ width: `${homeProgress}%` }} /></div>
+          <label>Fase<input value={family.home.phase || ''} onChange={(event) => updateHome({ phase: event.target.value })} /></label>
+          <label>Intervención actual<textarea value={family.home.intervention || ''} onChange={(event) => updateHome({ intervention: event.target.value })} /></label>
+          <label>Presupuesto disponible<input type="number" min="0" step="1000" value={family.home.budget || ''} onChange={(event) => updateHome({ budget: event.target.value })} /></label>
+          <label>Regla de la fase<textarea value={family.home.rule || ''} onChange={(event) => updateHome({ rule: event.target.value })} /></label>
+          <div className="family-check-list family-check-list--home">
+            {family.home.checklist.map((item) => <article className={item.status === 'done' ? 'is-done' : ''} key={item.id}><button type="button" className="family-check" onClick={() => toggleHome(item.id)}><Icon name={item.status === 'done' ? 'check_circle' : 'construction'} /></button><div><strong>{item.title}</strong></div><IconButton icon="delete" label={`Eliminar ${item.title}`} className="icon-button--danger" onClick={() => removeHome(item.id)} /></article>)}
+          </div>
+          <form className="family-add-row family-add-row--simple" onSubmit={addHomeItem}><label className="family-grow">Nueva microacción<input value={homeItem} onChange={(event) => setHomeItem(event.target.value)} placeholder="Algo pequeño y cerrable" /></label><button className="button button--small" type="submit"><Icon name="add" /> Agregar</button></form>
+        </section>
+      </div>
+
+      <section className="family-section family-money">
+        <div className="family-section__heading"><div><span className="kicker">Dinero familiar</span><h2>{family.cycle.name}</h2></div><span className={`family-income-status ${family.cycle.nextIncomeStatus?.toLowerCase().includes('confirmado') && !family.cycle.nextIncomeStatus?.toLowerCase().includes('no confirmado') ? 'is-confirmed' : ''}`}>{family.cycle.nextIncomeStatus}</span></div>
+        <div className="family-money-grid">
+          <label>Inicio del ciclo<input type="date" value={family.cycle.startDate || ''} onChange={(event) => updateCycle({ startDate: event.target.value })} /></label>
+          <label>Fin / próxima entrada<input type="date" value={family.cycle.endDate || ''} onChange={(event) => updateCycle({ endDate: event.target.value })} /></label>
+          <label>Caja disponible<input type="number" step="1000" value={family.cycle.availableCash || ''} onChange={(event) => updateCycle({ availableCash: event.target.value })} /></label>
+          <label>Próximo ingreso<input value={family.cycle.nextIncomeLabel || ''} onChange={(event) => updateCycle({ nextIncomeLabel: event.target.value })} /></label>
+          <label>Monto próximo ingreso<input type="number" step="1000" value={family.cycle.nextIncomeAmount || ''} onChange={(event) => updateCycle({ nextIncomeAmount: event.target.value })} /></label>
+          <label>Fecha estimada<input type="date" value={family.cycle.nextIncomeDate || ''} onChange={(event) => updateCycle({ nextIncomeDate: event.target.value, endDate: event.target.value })} /></label>
+          <label>Estado del ingreso<select value={family.cycle.nextIncomeStatus || ''} onChange={(event) => updateCycle({ nextIncomeStatus: event.target.value })}><option>Probable, no confirmado</option><option>Confirmado, pendiente de abono</option><option>Abonado</option><option>Retrasado</option></select></label>
+          <label>Pagos obligatorios<input type="number" step="1000" value={family.cycle.mandatoryPayments || ''} onChange={(event) => updateCycle({ mandatoryPayments: event.target.value })} /></label>
+          <label>Monto protegido<input type="number" step="1000" value={family.cycle.protectedAmount || ''} onChange={(event) => updateCycle({ protectedAmount: event.target.value })} /></label>
+          <label>Base mensual familiar<input type="number" step="1000" value={family.cycle.monthlyBase || ''} onChange={(event) => updateCycle({ monthlyBase: event.target.value })} /></label>
+          <label className="family-money-result"><span>Disponible para decidir</span><strong>{formatMoney(availableToDecide)}</strong><small>Incluye el ingreso esperado; no usar hasta confirmarlo.</small></label>
+        </div>
+        <label>Notas del ciclo<textarea value={family.cycle.notes || ''} onChange={(event) => updateCycle({ notes: event.target.value })} /></label>
+      </section>
+
+      <section className="family-section">
+        <div className="family-section__heading"><div><span className="kicker">¿Qué está esperando?</span><h2>Inventario completo</h2></div><p>Recordar todo sin sentir que hay que hacer todo.</p></div>
+        <form className="family-capture" onSubmit={addCapture}><label className="family-grow">Capturar<input value={captureForm.title} onChange={(event) => setCaptureForm({ ...captureForm, title: event.target.value })} placeholder="Idea, proyecto, compra, trámite o meta" /></label><label>Área<input value={captureForm.area} onChange={(event) => setCaptureForm({ ...captureForm, area: event.target.value })} /></label><label>Estado<select value={captureForm.status} onChange={(event) => setCaptureForm({ ...captureForm, status: event.target.value })}>{FAMILY_INVENTORY_STATES.map((status) => <option key={status}>{status}</option>)}</select></label><button className="button button--small" type="submit"><Icon name="add" /> Guardar</button></form>
+        <div className="family-inventory-grid">
+          {FAMILY_INVENTORY_STATES.map((status) => <section key={status}><header><h3>{status}</h3><span>{family.inventory.filter((item) => item.status === status).length}</span></header><div>{family.inventory.filter((item) => item.status === status).map((item) => <article key={item.id}><div><strong>{item.title}</strong><small>{item.area}</small></div><select aria-label={`Estado de ${item.title}`} value={item.status} onChange={(event) => updateInventory(item.id, { status: event.target.value })}>{FAMILY_INVENTORY_STATES.map((option) => <option key={option}>{option}</option>)}</select><IconButton icon="delete" label={`Eliminar ${item.title}`} className="icon-button--danger" onClick={() => removeInventory(item.id)} /></article>)}</div></section>)}
+        </div>
+      </section>
+
+      <section className="family-section family-exclusions">
+        <div className="family-section__heading"><div><span className="kicker">Poda</span><h2>Qué no cabe ahora</h2></div><p>La exclusión deliberada también es una decisión operativa.</p></div>
+        <div className="family-exclusion-list">{family.exclusions.map((item, index) => <article key={`${item}-${index}`}><Icon name="rule" /><span>{item}</span><IconButton icon="delete" label={`Eliminar exclusión ${index + 1}`} className="icon-button--danger" onClick={() => updateFamily((current) => ({ ...current, exclusions: current.exclusions.filter((_, itemIndex) => itemIndex !== index) }))} /></article>)}</div>
+        <form className="family-add-row family-add-row--simple" onSubmit={addExclusion}><label className="family-grow">Nueva exclusión<input value={exclusion} onChange={(event) => setExclusion(event.target.value)} placeholder="Esto existe, pero no se hará ahora" /></label><button className="button button--small" type="submit"><Icon name="add" /> Agregar</button></form>
+      </section>
+    </div>
+  );
+}
 
 function TimeTrackingView({ osState, setOsState }) {
   const tracking = osState.timeTracking;
@@ -579,7 +816,8 @@ function AdminShell({ session, onLogout }) {
 
   const currentItem = menuGroups.flatMap((group) => group.items).find(([key]) => key === active);
   const view = active === 'dashboard' ? <DashboardView osState={osState} quotes={quotes} dirty={dirty} onNavigate={navigate} onAddTask={openTask} />
-    : active === 'month' ? <MonthView osState={osState} setOsState={setOsState} onNavigate={navigate} onAddTask={openTask} />
+    : active === 'family' ? <FamilyView osState={osState} setOsState={setOsState} />
+      : active === 'month' ? <MonthView osState={osState} setOsState={setOsState} onNavigate={navigate} onAddTask={openTask} />
       : active === 'day' ? <DayView osState={osState} setOsState={setOsState} onAddTask={openTask} onEditTask={setTaskDraft} />
         : active === 'inbox' ? <InboxView osState={osState} setOsState={setOsState} onEditTask={setTaskDraft} />
           : active === 'fronts' ? <FrontsView osState={osState} setOsState={setOsState} />
