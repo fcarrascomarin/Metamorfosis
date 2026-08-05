@@ -20,7 +20,7 @@ function Brand({ compact = false }) {
       <img className="brand-logo" src="/logo-metamorfosis-transparente.png" alt="Isotipo de Metamorfosis Lab" width="44" height="44" />
       <span className="brand-copy">
         <strong>METAMORFOSIS LAB</strong>
-        <small>jardín de innovación aplicada</small>
+        <small>Jardín de innovación aplicada</small>
       </span>
     </a>
   );
@@ -277,7 +277,7 @@ export default function PublicApp() {
           <div className="shell hero__stage">
             <div className="hero__panel hero__panel--open">
               <span className="hero__eyebrow">Metamorfosis Lab</span>
-              <h1>Lo valioso no debería depender de la improvisación.</h1>
+              <h1>No dejes que lo valioso dependa de la improvisación</h1>
               <p>Comprendemos proyectos y pymes como sistemas vivos. Ordenamos su operación, diseñamos mejores condiciones de trabajo y convertimos sus capacidades en propuestas que puedan sostenerse, comunicarse y crecer.</p>
               <div className="hero__tags" aria-label="Enfoques principales"><span>Operación</span><span>Personas y espacios</span><span>Mercado y marca</span><span>Sistemas</span></div>
               <div className="hero__actions"><a className="button" href="#capacidades">Ver capacidades</a><a className="button button--ghost-light" href="#contacto">Traer un desafío</a></div>
@@ -293,7 +293,7 @@ export default function PublicApp() {
           <div className="story-section__shade" aria-hidden="true" />
           <div className="shell story-section__content story-section__content--right">
             <div className="story-copy">
-              <SectionHeading kicker="El jardín" title="Un laboratorio que cultiva condiciones, no fórmulas." description="Observamos organizaciones, ideas, recursos e historias como sistemas vivos. Cada uno posee identidad, límites, capacidades y necesidades propias." />
+              <SectionHeading kicker="Jardín de innovación" title="Un laboratorio que cultiva condiciones, no fórmulas." description="Observamos organizaciones, ideas, recursos e historias como sistemas vivos. Cada uno posee identidad, límites, capacidades y necesidades propias." />
               <div className="principle-grid">
                 <article><Icon name="visibility" /><strong>Observar antes de intervenir</strong><p>La comprensión precede a la solución.</p></article>
                 <article><Icon name="eco" /><strong>Cultivar antes que sustituir</strong><p>Conservamos aquello que merece permanecer.</p></article>
