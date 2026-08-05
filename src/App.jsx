@@ -326,7 +326,7 @@ function PublicSite() {
           <div className="shell hero__stage">
             <div className="hero__panel hero__panel--open">
               <span className="hero__eyebrow">Metamorfosis Lab</span>
-              <h1>Laboratorio de innovación aplicada</h1>
+              <h1>El jardín de innovación aplicada.</h1>
               <p>Comprendemos lo que ya tiene valor, creamos mejores condiciones y acompañamos su transformación en sistemas, experiencias y capacidades que pueden sostenerse.</p>
               <div className="hero__tags" aria-label="Enfoques principales"><span>Observar</span><span>Cultivar</span><span>Experimentar</span><span>Proyectar</span></div>
               <div className="hero__actions"><a className="button" href="#jardin">Recorrer el jardín</a><a className="button button--ghost-light" href="#contacto">Traer un desafío</a></div>

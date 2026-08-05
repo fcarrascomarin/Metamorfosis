@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Icon from './components/Icon.jsx';
 import heroImage from './assets/images/jardin/hero-jardin.webp';
 import gardenImage from './assets/images/jardin/jardin-terrazas.webp';
@@ -6,21 +6,49 @@ import mapImage from './assets/images/jardin/mapa-transformacion.webp';
 import projectsImage from './assets/images/jardin/proyectos-vivos.webp';
 import workImage from './assets/images/jardin/trabajo-metodo.webp';
 import contactImage from './assets/images/jardin/contacto-jardin.webp';
-import caseImage from './assets/images/caso-cm.webp';
 import { contact, methodSteps } from './data.js';
+import { gardenPrinciples, publicCapabilities, publicCases, publicNavigation } from './publicContent.js';
 
 const waBase = `https://wa.me/${contact.phoneDigits}`;
 const defaultAdminUrl = 'https://os.metamorfosislab.cl';
 const adminUrl = String(import.meta.env.VITE_ADMIN_URL || defaultAdminUrl).replace(/\/$/, '');
 const apiBase = String(import.meta.env.VITE_API_BASE || (import.meta.env.DEV ? '' : adminUrl)).replace(/\/$/, '');
 
+
+function scrollToPublicSection(id, { smooth = true, updateHash = true } = {}) {
+  const target = document.getElementById(id);
+  if (!target) return;
+
+  const header = document.querySelector('.site-header');
+  const headerHeight = header?.getBoundingClientRect().height || 0;
+  const targetTop = target.getBoundingClientRect().top + window.scrollY - headerHeight;
+
+  if (updateHash) window.history.replaceState(null, '', `#${id}`);
+  window.scrollTo({ top: Math.max(0, targetTop), behavior: smooth ? 'smooth' : 'auto' });
+}
+
+function SectionLink({ id, className = '', children }) {
+  return (
+    <a
+      className={className}
+      href={`#${id}`}
+      onClick={(event) => {
+        event.preventDefault();
+        scrollToPublicSection(id);
+      }}
+    >
+      {children}
+    </a>
+  );
+}
+
 function Brand({ compact = false }) {
   return (
-    <a className={`brand ${compact ? 'brand--compact' : ''}`} href="#inicio" aria-label="Metamorfosis Lab, ir al inicio">
+    <a className={`brand ${compact ? 'brand--compact' : ''}`} href="#inicio" aria-label="Metamorfosis Lab, ir al inicio" onClick={(event) => { event.preventDefault(); scrollToPublicSection('inicio'); }}>
       <img className="brand-logo" src="/logo-metamorfosis-transparente.png" alt="Isotipo de Metamorfosis Lab" width="44" height="44" />
       <span className="brand-copy">
         <strong>METAMORFOSIS LAB</strong>
-        <small>Jardín de innovación aplicada</small>
+        <small>jardín de innovación aplicada</small>
       </span>
     </a>
   );
@@ -36,17 +64,17 @@ function IconButton({ label, icon, onClick, className = '', type = 'button', dis
 
 function PublicHeader() {
   const [open, setOpen] = useState(false);
-  const links = [
-    ['jardin', 'El jardín'],
-    ['capacidades', 'Capacidades'],
-    ['mapa', 'Método'],
-    ['proyectos', 'Casos'],
-    ['contacto', 'Contacto']
-  ];
+
+  useEffect(() => {
+    const id = window.location.hash.replace('#', '');
+    if (!id) return;
+    const timer = window.setTimeout(() => scrollToPublicSection(id, { smooth: false, updateHash: false }), 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const goTo = (id) => {
     setOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    scrollToPublicSection(id);
   };
 
   return (
@@ -54,11 +82,11 @@ function PublicHeader() {
       <div className="site-header__inner shell">
         <Brand />
         <nav id="site-navigation" className={`site-nav ${open ? 'is-open' : ''}`} aria-label="Navegación principal">
-          {links.map(([id, label]) => (
+          {publicNavigation.map(({ id, label }) => (
             <button type="button" key={id} onClick={() => goTo(id)}>{label}</button>
           ))}
           <a className="site-nav__os" href={adminUrl}>Acceso OS</a>
-          <a className="button button--small" href="#contacto" onClick={() => setOpen(false)}>Conversemos</a>
+          <button className="button button--small" type="button" onClick={() => goTo('contacto')}>Conversemos</button>
         </nav>
         <IconButton
           className="menu-button"
@@ -95,6 +123,34 @@ function SectionHeading({ kicker, title, description, align = 'left' }) {
       <span className="kicker">{kicker}</span>
       <h2>{title}</h2>
       {description && <p>{description}</p>}
+    </div>
+  );
+}
+
+
+function CaseBrand({ brand, name }) {
+  if (brand === 'metamorfosis') {
+    return (
+      <div className="case-brand case-brand--metamorfosis" role="img" aria-label={`Logo de ${name}`}>
+        <img src="/logo-metamorfosis-transparente.png" alt="" width="72" height="72" />
+        <span><strong>METAMORFOSIS</strong><small>OS · sistema interno</small></span>
+      </div>
+    );
+  }
+
+  if (brand === 'cm') {
+    return (
+      <div className="case-brand case-brand--cm" role="img" aria-label={`Logo de ${name}`}>
+        <img className="case-brand__logo case-brand__logo--cm" src="/assets/brand/logo-cm-banqueteria.png" alt="" width="96" height="96" />
+        <span><strong>CM</strong><small>Banquetería & Restaurant</small></span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="case-brand case-brand--juana" role="img" aria-label={`Logo de ${name}`}>
+      <img className="case-brand__logo case-brand__logo--juana" src="/assets/brand/logo-juana-de-arco.png" alt="" width="156" height="90" />
+      <span><strong>JUANA DE ARCO</strong><small>joyas con significado</small></span>
     </div>
   );
 }
@@ -277,10 +333,10 @@ export default function PublicApp() {
           <div className="shell hero__stage">
             <div className="hero__panel hero__panel--open">
               <span className="hero__eyebrow">Metamorfosis Lab</span>
-              <h1>No dejes que lo valioso dependa de la improvisación</h1>
+              <h1>Lo valioso no debería depender de la improvisación.</h1>
               <p>Comprendemos proyectos y pymes como sistemas vivos. Ordenamos su operación, diseñamos mejores condiciones de trabajo y convertimos sus capacidades en propuestas que puedan sostenerse, comunicarse y crecer.</p>
               <div className="hero__tags" aria-label="Enfoques principales"><span>Operación</span><span>Personas y espacios</span><span>Mercado y marca</span><span>Sistemas</span></div>
-              <div className="hero__actions"><a className="button" href="#capacidades">Ver capacidades</a><a className="button button--ghost-light" href="#contacto">Traer un desafío</a></div>
+              <div className="hero__actions"><SectionLink className="button" id="capacidades">Ver capacidades</SectionLink><SectionLink className="button button--ghost-light" id="contacto">Traer un desafío</SectionLink></div>
             </div>
             <aside className="hero__floating">
               <span className="kicker">Nuestra diferencia</span>
@@ -293,12 +349,11 @@ export default function PublicApp() {
           <div className="story-section__shade" aria-hidden="true" />
           <div className="shell story-section__content story-section__content--right">
             <div className="story-copy">
-              <SectionHeading kicker="Jardín de innovación" title="Un laboratorio que cultiva condiciones, no fórmulas." description="Observamos organizaciones, ideas, recursos e historias como sistemas vivos. Cada uno posee identidad, límites, capacidades y necesidades propias." />
+              <SectionHeading kicker="El jardín" title="Un laboratorio que cultiva condiciones, no fórmulas." description="Observamos organizaciones, ideas, recursos e historias como sistemas vivos. Cada uno posee identidad, límites, capacidades y necesidades propias." />
               <div className="principle-grid">
-                <article><Icon name="visibility" /><strong>Observar antes de intervenir</strong><p>La comprensión precede a la solución.</p></article>
-                <article><Icon name="eco" /><strong>Cultivar antes que sustituir</strong><p>Conservamos aquello que merece permanecer.</p></article>
-                <article><Icon name="science" /><strong>Experimentar con propósito</strong><p>Cada prueba debe responder una pregunta.</p></article>
-                <article><Icon name="query_stats" /><strong>Medir para aprender</strong><p>La transformación debe dejar evidencia y capacidad.</p></article>
+                {gardenPrinciples.map(({ icon, title, text }) => (
+                  <article key={title}><Icon name={icon} /><strong>{title}</strong><p>{text}</p></article>
+                ))}
               </div>
             </div>
           </div>
@@ -310,36 +365,26 @@ export default function PublicApp() {
             <div className="story-copy story-copy--wide">
               <SectionHeading kicker="Capacidades integradas" title="La empresa completa: cómo trabaja y cómo crea valor." description="Metamorfosis conecta dimensiones que suelen abordarse por separado. Así evitamos que una mejora comercial contradiga la operación o que una nueva tecnología reproduzca un mal proceso." />
               <div className="capability-grid">
-                <article>
-                  <span className="capability-icon"><Icon name="campaign" /></span>
-                  <div><strong>Mercado, marca y comercialización</strong><p>Investigación, públicos, propuesta de valor, posicionamiento, oferta, precio, canales, comunicación y experiencia de compra.</p><small>Comprender antes de promocionar.</small></div>
-                </article>
-                <article>
-                  <span className="capability-icon"><Icon name="accessibility_new" /></span>
-                  <div><strong>Ergonomía y diseño sostenible del trabajo</strong><p>Tareas, posturas, cargas, repetitividad, puestos, herramientas, iluminación, ruido, organización y participación de quienes realizan el trabajo.</p><small>Rediseñar el sistema antes de responsabilizar a la persona.</small></div>
-                </article>
-                <article>
-                  <span className="capability-icon"><Icon name="account_tree" /></span>
-                  <div><strong>Operación, documentación e indicadores</strong><p>Procesos, roles, registros, hitos, evidencia, costos, tiempos y rutinas para sostener decisiones y aprender de cada proyecto.</p><small>Lo que no se registra no puede mejorarse.</small></div>
-                </article>
-                <article>
-                  <span className="capability-icon"><Icon name="devices" /></span>
-                  <div><strong>Sistemas y presencia digital</strong><p>Web pública, plataformas internas y automatizaciones diseñadas desde una necesidad operativa real, no desde la novedad tecnológica.</p><small>La tecnología entra cuando mejora una capacidad.</small></div>
-                </article>
+                {publicCapabilities.map(({ icon, title, text, principle }) => (
+                  <article key={title}>
+                    <span className="capability-icon"><Icon name={icon} /></span>
+                    <div><strong>{title}</strong><p>{text}</p><small>{principle}</small></div>
+                  </article>
+                ))}
               </div>
             </div>
           </div>
         </section>
 
-        <section id="mapa" className="story-section section-anchor" style={{ '--section-image': `url(${mapImage})` }}>
-          <div className="story-section__shade" aria-hidden="true" />
-          <div className="shell story-section__content story-section__content--right">
-            <div className="story-copy">
+        <section id="mapa" className="story-section story-section--method section-anchor" style={{ '--section-image': `url(${mapImage})` }}>
+          <div className="story-section__shade story-section__shade--method" aria-hidden="true" />
+          <div className="shell story-section__content story-section__content--method">
+            <div className="story-copy story-copy--method">
               <SectionHeading kicker="Método Metamorfosis" title="De valor disperso a una transformación que deja capacidad." description="No vendemos diagnósticos que terminan en un informe. Conectamos realidad, operación, personas, mercado, identidad, tecnología y aprendizaje en una ruta visible." />
-              <div className="method-flow">
+              <div className="method-flow" aria-label="Etapas del método Metamorfosis">
                 {methodSteps.map(([icon, title, text], index) => <article key={title}><span>{String(index + 1).padStart(2, '0')}</span><Icon name={icon} /><div><strong>{title}</strong><p>{text}</p></div></article>)}
               </div>
-              <div className="compact-actions"><a className="button" href="#contacto">Solicitar un Mapa inicial</a><p>Primero definimos qué problema merece ser resuelto, con qué evidencia y para qué resultado.</p></div>
+              <div className="compact-actions"><SectionLink className="button" id="contacto">Solicitar un Mapa inicial</SectionLink><p>Primero definimos qué problema merece ser resuelto, con qué evidencia y para qué resultado.</p></div>
             </div>
           </div>
         </section>
@@ -350,25 +395,17 @@ export default function PublicApp() {
             <div className="story-copy story-copy--case">
               <SectionHeading kicker="Casos y sistemas vivos" title="El método se demuestra en trabajo real." description="Mostramos decisiones y capacidades construidas, sin atribuir resultados comerciales que todavía no han sido medidos." />
               <div className="case-grid">
-                <article className="case-card case-card--featured">
-                  <div className="case-card__label">Caso de marca y comercialización</div>
-                  <h3>Juana de Arco</h3>
-                  <p>Una colección de joyas de plata con una identidad poderosa, pero presentada como un producto genérico. Desarrollamos su posicionamiento, relato, packaging, catálogo digital y experiencia de compra.</p>
-                  <div className="case-tags"><span>Estrategia de marca</span><span>Propuesta de valor</span><span>Packaging</span><span>E-commerce</span></div>
-                  <blockquote>“No es solamente una joya. Es un símbolo.”</blockquote>
-                </article>
-                <article className="case-card">
-                  <div className="case-card__label">Caso vivo de consolidación</div>
-                  <h3>CM Banquetería & Restaurant</h3>
-                  <p>Operación, regularización, documentación, condiciones de trabajo, web pública y sistema interno construidos desde necesidades reales.</p>
-                  <img src={caseImage} alt="Vista del sistema interno de CM" loading="lazy" />
-                </article>
-                <article className="case-card">
-                  <div className="case-card__label">Capacidad propia</div>
-                  <h3>Metamorfosis OS</h3>
-                  <p>Una plataforma privada para proyectos, decisiones, documentos, tiempos, costos e indicadores. El conocimiento generado no se pierde.</p>
-                  <a href={adminUrl} className="text-link">Ingresar al sistema interno <Icon name="arrow_forward" /></a>
-                </article>
+                {publicCases.map((caseItem) => (
+                  <article key={caseItem.id} className={`case-card ${caseItem.featured ? 'case-card--featured' : ''}`}>
+                    <CaseBrand brand={caseItem.brand} name={caseItem.name} />
+                    <div className="case-card__label">{caseItem.label}</div>
+                    <h3>{caseItem.name}</h3>
+                    <p>{caseItem.text}</p>
+                    <div className="case-tags">{caseItem.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+                    {caseItem.quote && <blockquote>“{caseItem.quote}”</blockquote>}
+                    {caseItem.action && <a href={adminUrl} className="text-link">{caseItem.action} <Icon name="arrow_forward" /></a>}
+                  </article>
+                ))}
               </div>
             </div>
           </div>
@@ -388,7 +425,14 @@ export default function PublicApp() {
           </div>
         </section>
       </main>
-      <footer className="site-footer"><div className="shell site-footer__grid"><div><Brand compact /><p>Crear condiciones para que lo valioso pueda transformarse sin perder su identidad.</p></div><div><span className="footer-title">Contacto</span><a href={`mailto:${contact.email}`}>{contact.email}</a><a href={waBase}>{contact.phoneDisplay}</a></div><div><span className="footer-title">Territorio y acceso</span><p>Biobío, Chile · atención presencial y remota.</p><a href={adminUrl}>Ingresar a Metamorfosis OS</a></div></div><div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis Lab</span><span>Jardín de innovación aplicada.</span></div></footer>
+      <footer className="site-footer">
+        <div className="shell site-footer__grid">
+          <div className="site-footer__brand"><Brand /><p>Crear condiciones para que lo valioso pueda transformarse sin perder su identidad.</p></div>
+          <div><span className="footer-title">Contacto</span><a href={`mailto:${contact.email}`}>{contact.email}</a><a href={waBase}>{contact.phoneDisplay}</a></div>
+          <div><span className="footer-title">Territorio y acceso</span><p>Biobío, Chile · atención presencial y remota.</p><a href={adminUrl}>Ingresar a Metamorfosis OS</a></div>
+        </div>
+        <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis Lab</span><span>Jardín de innovación aplicada.</span></div>
+      </footer>
       <WhatsappFloating />
     </div>
   );
