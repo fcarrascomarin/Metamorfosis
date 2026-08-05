@@ -86,7 +86,7 @@ function PublicHeader() {
             <button type="button" key={id} onClick={() => goTo(id)}>{label}</button>
           ))}
           <a className="site-nav__os" href={adminUrl}>Acceso OS</a>
-          <button className="button button--small" type="button" onClick={() => goTo('contacto')}>Conversemos</button>
+          <button className="button button--small site-nav__conversation" type="button" onClick={() => goTo('contacto')}>Conversemos</button>
         </nav>
         <IconButton
           className="menu-button"
@@ -333,7 +333,7 @@ export default function PublicApp() {
           <div className="shell hero__stage">
             <div className="hero__panel hero__panel--open">
               <span className="hero__eyebrow">Metamorfosis Lab</span>
-              <h1>Lo valioso no debería depender de la improvisación.</h1>
+              <h1>Lo valioso no debería depender de la improvisación</h1>
               <p>Comprendemos proyectos y pymes como sistemas vivos. Ordenamos su operación, diseñamos mejores condiciones de trabajo y convertimos sus capacidades en propuestas que puedan sostenerse, comunicarse y crecer.</p>
               <div className="hero__tags" aria-label="Enfoques principales"><span>Operación</span><span>Personas y espacios</span><span>Mercado y marca</span><span>Sistemas</span></div>
               <div className="hero__actions"><SectionLink className="button" id="capacidades">Ver capacidades</SectionLink><SectionLink className="button button--ghost-light" id="contacto">Traer un desafío</SectionLink></div>
@@ -349,7 +349,7 @@ export default function PublicApp() {
           <div className="story-section__shade" aria-hidden="true" />
           <div className="shell story-section__content story-section__content--right">
             <div className="story-copy">
-              <SectionHeading kicker="El jardín" title="Un laboratorio que cultiva condiciones, no fórmulas." description="Observamos organizaciones, ideas, recursos e historias como sistemas vivos. Cada uno posee identidad, límites, capacidades y necesidades propias." />
+              <SectionHeading kicker="El jardín" title="Un laboratorio que cultiva condiciones, no fórmulas" description="Observamos organizaciones, ideas, recursos e historias como sistemas vivos. Cada uno posee identidad, límites, capacidades y necesidades propias." />
               <div className="principle-grid">
                 {gardenPrinciples.map(({ icon, title, text }) => (
                   <article key={title}><Icon name={icon} /><strong>{title}</strong><p>{text}</p></article>
@@ -363,7 +363,7 @@ export default function PublicApp() {
           <div className="story-section__shade story-section__shade--left" aria-hidden="true" />
           <div className="shell story-section__content">
             <div className="story-copy story-copy--wide">
-              <SectionHeading kicker="Capacidades integradas" title="La empresa completa: cómo trabaja y cómo crea valor." description="Metamorfosis conecta dimensiones que suelen abordarse por separado. Así evitamos que una mejora comercial contradiga la operación o que una nueva tecnología reproduzca un mal proceso." />
+              <SectionHeading kicker="Capacidades integradas" title="La empresa completa: cómo trabaja y cómo crea valor" description="Metamorfosis conecta dimensiones que suelen abordarse por separado. Así evitamos que una mejora comercial contradiga la operación o que una nueva tecnología reproduzca un mal proceso." />
               <div className="capability-grid">
                 {publicCapabilities.map(({ icon, title, text, principle }) => (
                   <article key={title}>
@@ -380,7 +380,7 @@ export default function PublicApp() {
           <div className="story-section__shade story-section__shade--method" aria-hidden="true" />
           <div className="shell story-section__content story-section__content--method">
             <div className="story-copy story-copy--method">
-              <SectionHeading kicker="Método Metamorfosis" title="De valor disperso a una transformación que deja capacidad." description="No vendemos diagnósticos que terminan en un informe. Conectamos realidad, operación, personas, mercado, identidad, tecnología y aprendizaje en una ruta visible." />
+              <SectionHeading kicker="Método Metamorfosis" title="De valor disperso a una transformación que deja capacidad" description="No vendemos diagnósticos que terminan en un informe. Conectamos realidad, operación, personas, mercado, identidad, tecnología y aprendizaje en una ruta visible." />
               <div className="method-flow" aria-label="Etapas del método Metamorfosis">
                 {methodSteps.map(([icon, title, text], index) => <article key={title}><span>{String(index + 1).padStart(2, '0')}</span><Icon name={icon} /><div><strong>{title}</strong><p>{text}</p></div></article>)}
               </div>
@@ -393,7 +393,7 @@ export default function PublicApp() {
           <div className="story-section__shade story-section__shade--left" aria-hidden="true" />
           <div className="shell story-section__content">
             <div className="story-copy story-copy--case">
-              <SectionHeading kicker="Casos y sistemas vivos" title="El método se demuestra en trabajo real." description="Mostramos decisiones y capacidades construidas, sin atribuir resultados comerciales que todavía no han sido medidos." />
+              <SectionHeading kicker="Casos y sistemas vivos" title="El método se demuestra en trabajo real" description="Mostramos decisiones y capacidades construidas, sin atribuir resultados comerciales que todavía no han sido medidos." />
               <div className="case-grid">
                 {publicCases.map((caseItem) => (
                   <article key={caseItem.id} className={`case-card ${caseItem.featured ? 'case-card--featured' : ''}`}>
@@ -415,7 +415,7 @@ export default function PublicApp() {
           <div className="story-section__shade" aria-hidden="true" />
           <div className="shell contact-layout contact-layout--immersive">
             <div className="contact-intro">
-              <SectionHeading kicker="Conversemos" title="Cuéntanos qué valor existe y qué condiciones necesita." description="La conversación inicial busca comprender el problema, reconocer el potencial y decidir si corresponde investigar, mapear o intervenir." />
+              <SectionHeading kicker="Conversemos" title="Cuéntanos qué valor existe y qué condiciones necesita" description="La conversación inicial busca comprender el problema, reconocer el potencial y decidir si corresponde investigar, mapear o intervenir." />
               <div className="contact-links contact-links--compact">
                 <a href={`${waBase}?text=${encodeURIComponent('Hola, quisiera solicitar una conversación inicial con Metamorfosis Lab.')}`} target="_blank" rel="noreferrer"><img src="/assets/icons/whatsapp.svg" alt="" width="22" height="22" /><span><small>WhatsApp</small><strong>{contact.phoneDisplay}</strong></span></a>
                 <a href={`mailto:${contact.email}`}><Icon name="mail" /><span><small>Correo</small><strong>{contact.email}</strong></span></a>
@@ -431,7 +431,7 @@ export default function PublicApp() {
           <div><span className="footer-title">Contacto</span><a href={`mailto:${contact.email}`}>{contact.email}</a><a href={waBase}>{contact.phoneDisplay}</a></div>
           <div><span className="footer-title">Territorio y acceso</span><p>Biobío, Chile · atención presencial y remota.</p><a href={adminUrl}>Ingresar a Metamorfosis OS</a></div>
         </div>
-        <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis Lab</span><span>Jardín de innovación aplicada.</span></div>
+        <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis Lab</span><span>Jardín de innovación aplicada</span></div>
       </footer>
       <WhatsappFloating />
     </div>

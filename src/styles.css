@@ -3433,3 +3433,162 @@ textarea::placeholder { color: #7f98ac; }
 .public-site .case-brand--metamorfosis small {
   color: #556b78;
 }
+
+/* ========================================================================== 
+   Ajuste hero y navegación pública · v4.4 · 2026-08
+   - Hero visible completo dentro de una pantalla de escritorio
+   - Navegación reducida a Método, Casos, OS y Conversemos
+   - Conversemos recupera el acento visual principal
+   ========================================================================== */
+.public-site .site-nav__conversation {
+  margin-left: 4px;
+  border: 1px solid rgba(106, 239, 226, .58);
+  background: linear-gradient(135deg, #49c8ef, #55dfcf);
+  color: #03111c;
+  box-shadow: 0 10px 24px rgba(51, 201, 211, .20);
+}
+
+.public-site .site-nav__conversation:hover {
+  border-color: rgba(149, 251, 241, .88);
+  background: linear-gradient(135deg, #67d7fa, #74eadc);
+  color: #03111c;
+  transform: translateY(-1px);
+}
+
+@media (min-width: 901px) {
+  .public-site .hero {
+    height: calc(100svh - var(--header-height));
+    min-height: 620px;
+  }
+
+  .public-site .hero__stage {
+    height: 100%;
+    min-height: 0;
+    grid-template-columns: minmax(0, 600px) minmax(260px, 350px);
+    align-items: center;
+    gap: clamp(28px, 4vw, 58px);
+    padding-top: clamp(20px, 3vh, 34px);
+    padding-bottom: clamp(20px, 3vh, 34px);
+  }
+
+  .public-site .hero__panel {
+    max-width: 590px;
+    padding: clamp(22px, 2.15vw, 30px);
+  }
+
+  .public-site .hero__eyebrow {
+    margin-bottom: 11px;
+    padding: 6px 13px;
+    font-size: .78rem;
+  }
+
+  .public-site .hero__panel h1,
+  .public-site .hero__panel--open h1 {
+    max-width: 13ch;
+    margin-bottom: 14px;
+    font-size: clamp(2.75rem, 4.15vw, 4.35rem);
+    line-height: .95;
+    letter-spacing: -.045em;
+    text-wrap: balance;
+  }
+
+  .public-site .hero__panel p {
+    max-width: 48ch;
+    margin-bottom: 18px;
+    font-size: clamp(.96rem, 1.05vw, 1.08rem);
+    line-height: 1.48;
+  }
+
+  .public-site .hero__tags {
+    gap: 7px;
+    margin-bottom: 20px;
+  }
+
+  .public-site .hero__tags span {
+    padding: 6px 10px;
+    font-size: .79rem;
+  }
+
+  .public-site .hero__actions {
+    gap: 10px;
+  }
+
+  .public-site .hero__actions .button {
+    min-height: 40px;
+    padding: 9px 15px;
+    font-size: .88rem;
+  }
+
+  .public-site .hero__floating {
+    align-self: center;
+    margin-bottom: 0;
+    padding: 18px;
+  }
+
+  .public-site .hero__floating strong {
+    font-size: .94rem;
+    line-height: 1.4;
+  }
+}
+
+@media (max-height: 820px) and (min-width: 901px) {
+  .public-site .hero {
+    min-height: 560px;
+  }
+
+  .public-site .hero__stage {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+
+  .public-site .hero__panel {
+    padding: 20px 24px;
+    border-radius: 22px;
+  }
+
+  .public-site .hero__eyebrow {
+    margin-bottom: 8px;
+  }
+
+  .public-site .hero__panel h1,
+  .public-site .hero__panel--open h1 {
+    margin-bottom: 10px;
+    font-size: clamp(2.45rem, 3.75vw, 3.55rem);
+  }
+
+  .public-site .hero__panel p {
+    margin-bottom: 13px;
+    font-size: .92rem;
+    line-height: 1.42;
+  }
+
+  .public-site .hero__tags {
+    margin-bottom: 14px;
+  }
+
+  .public-site .hero__tags span {
+    padding: 5px 9px;
+    font-size: .74rem;
+  }
+
+  .public-site .hero__actions .button {
+    min-height: 36px;
+    padding: 7px 13px;
+    font-size: .82rem;
+  }
+
+  .public-site .hero__floating {
+    padding: 15px 17px;
+    border-radius: 20px;
+  }
+
+  .public-site .hero__floating strong {
+    font-size: .86rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .public-site .site-nav__conversation {
+    margin-left: 0;
+  }
+}

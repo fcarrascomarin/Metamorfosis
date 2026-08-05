@@ -1,9 +1,6 @@
 export const publicNavigation = [
-  { id: 'jardin', label: 'El jardín' },
-  { id: 'capacidades', label: 'Capacidades' },
   { id: 'mapa', label: 'Método' },
-  { id: 'proyectos', label: 'Casos' },
-  { id: 'contacto', label: 'Contacto' }
+  { id: 'proyectos', label: 'Casos' }
 ];
 
 export const gardenPrinciples = [
