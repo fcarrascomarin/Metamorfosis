@@ -124,7 +124,7 @@ function WhatsappFloating() {
   );
 }
 
-function SectionHeading({ kicker, title, description, align = 'left' }) {
+function SectionHeading({ kicker, title, description, align = 'center' }) {
   return (
     <div className={`section-heading section-heading--${align}`}>
       <span className="kicker">{kicker}</span>
@@ -291,16 +291,16 @@ function PublicSite() {
           <div className="shell tpr-hero__grid">
             <div className="tpr-hero__copy">
               <span className="kicker">Transformación Productiva Responsable</span>
-              <h1>Transformación Productiva Responsable para Organizaciones que Generan Valor Interconectado.</h1>
-              <p>Analizamos cómo tu organización genera valor y te acompañamos en el diseño e implementación de mejores formas de operar. Unimos procesos, personas, recursos, tecnología y entorno en operaciones eficientes, humanas y sostenibles.</p>
+              <h1>Operar mejor, con sentido.</h1>
+              <p>Integramos procesos, personas, tecnología y entorno para que tu organización mejore su forma de trabajar, medir y sostener valor.</p>
               <div className="hero__actions">
-                <SectionLink className="button" id="contacto">Diagnostica tu operación</SectionLink>
-                <SectionLink className="button button--ghost-light" id="transformacion">Conversemos sobre tu transformación</SectionLink>
+                <SectionLink className="button" id="contacto">Evaluar mi operación</SectionLink>
+                <SectionLink className="button button--ghost-light" id="transformacion">Ver enfoque</SectionLink>
               </div>
             </div>
             <aside className="tpr-hero__card">
-              <strong>Campo de acción inmediato</strong>
-              <p>Empresas, pymes y proyectos que necesitan ordenar su operación, mejorar desempeño, cuidar condiciones humanas e integrar sostenibilidad desde el negocio real.</p>
+              <strong>Para empresas que necesitan claridad</strong>
+              <p>Orden, desempeño, condiciones humanas y sostenibilidad aplicados a operaciones reales.</p>
               <div><span>Procesos</span><span>Personas</span><span>Recursos</span><span>Tecnología</span><span>Entorno</span></div>
             </aside>
           </div>
@@ -311,8 +311,8 @@ function PublicSite() {
             <SectionHeading
               align="center"
               kicker="La tríada fundamental"
-              title="Eficiencia, condiciones humanas y sistemas vivos en una misma decisión"
-              description="La transformación productiva responsable no separa operación, personas y entorno. Los integra para que cada mejora sea técnicamente viable, humanamente sostenible y coherente con el sistema donde ocurre."
+              title="Tres ejes para transformar sin improvisar"
+              description="Mejorar una organización exige mirar operación, personas y entorno como partes de un mismo sistema."
             />
             <div className="tpr-pillar-grid">
               {transformationPillars.map((item) => (
@@ -331,13 +331,13 @@ function PublicSite() {
           <div className="shell tpr-split-grid">
             <div className="tpr-panel">
               <span className="kicker">Punto de entrada</span>
-              <h2>La oferta activa: transformar cómo se produce, se sirve y se sostiene el valor</h2>
-              <p>Entramos por una necesidad concreta: mejorar la forma en que una organización produce, presta servicios, usa recursos, coordina equipos o comunica su valor. Desde ahí diseñamos soluciones aplicables, no discursos abstractos.</p>
+              <h2>Entrada concreta: mejorar la operación</h2>
+              <p>Partimos desde una necesidad real: producir, servir, coordinar, documentar o comunicar mejor.</p>
             </div>
             <div className="tpr-panel tpr-panel--accent">
               <span className="kicker">ADN Metamorfosis</span>
-              <h2>La visión completa: personas, tecnología, recursos y entorno</h2>
-              <p>La transformación productiva no ocurre en el vacío. Cada cambio modifica rutinas, información, vínculos, capacidades, residuos, costos, experiencia y relación con el entorno. Por eso trabajamos con perspectiva sistémica.</p>
+              <h2>ADN Metamorfosis: mirada sistémica</h2>
+              <p>Cada cambio toca rutinas, información, vínculos, costos, experiencia e impacto. Por eso diseñamos con el sistema completo a la vista.</p>
             </div>
           </div>
           <div className="shell tpr-usecase-grid">
@@ -355,8 +355,8 @@ function PublicSite() {
           <div className="shell">
             <SectionHeading
               kicker="Servicios y soluciones"
-              title="Soluciones para operar mejor, trabajar mejor y sostener mejor"
-              description="Cada servicio puede contratarse como entrada específica o integrarse en una ruta de transformación más amplia. El foco siempre es dejar claridad, capacidad y próximos pasos ejecutables."
+              title="Servicios para pasar del desorden a la capacidad"
+              description="Puedes partir por un diagnóstico o avanzar hacia rediseño, implementación y seguimiento."
             />
             <div className="tpr-solutions-grid">
               {solutions.map((item) => (
@@ -374,7 +374,7 @@ function PublicSite() {
           <div className="tpr-method-section__shade" aria-hidden="true" />
           <div className="shell tpr-method-grid">
             <div className="tpr-panel tpr-panel--wide">
-              <SectionHeading kicker="Cómo lo hacemos" title="Observable, medible y sostenible" description="No basta con proponer cambios. La organización necesita comprenderlos, medirlos y sostenerlos. Por eso cada intervención debe dejar instrumentos, acuerdos, evidencia y memoria de trabajo." />
+              <SectionHeading kicker="Cómo lo hacemos" title="Observar, medir y sostener" description="Cada intervención deja criterios, instrumentos y próximos pasos para que la mejora no dependa de la memoria." />
               <div className="tpr-method-cards">
                 {methodPrinciples.map((item) => (
                   <article key={item.title}>
@@ -397,8 +397,8 @@ function PublicSite() {
             <SectionHeading
               align="center"
               kicker="Resultados e impacto"
-              title="Lo que prometemos debe poder observarse, medirse y sostenerse"
-              description="Trabajamos con indicadores operacionales, humanos y sistémicos. No prometemos magia: construimos condiciones para tomar mejores decisiones y verificar avances."
+              title="Resultados que se pueden verificar"
+              description="Medimos avances operacionales, humanos y sistémicos con indicadores simples y útiles."
             />
             <div className="tpr-indicators">
               {resultIndicators.map((item) => <span key={item}>{item}</span>)}
@@ -423,8 +423,8 @@ function PublicSite() {
           <div className="shell">
             <SectionHeading
               kicker="Prueba social y proyectos"
-              title="Proyectos que muestran distintas capacidades"
-              description="Los casos públicos muestran formas distintas de valor: operación, documentación, identidad, presencia digital, sistema interno y experiencia comercial."
+              title="Casos que muestran método aplicado"
+              description="Cada proyecto evidencia una capacidad distinta: ordenar, comunicar, digitalizar o sostener."
             />
             <div className="case-grid tpr-case-grid">
               {publicCases.map((caseItem) => (
@@ -445,9 +445,9 @@ function PublicSite() {
           <div className="shell tpr-manifesto__grid">
             <div>
               <span className="kicker">Nosotros / Manifiesto</span>
-              <h2>Entendemos las organizaciones como sistemas vivos</h2>
+              <h2>Las organizaciones son sistemas vivos</h2>
             </div>
-            <p>Una organización no es solo una estructura de procesos ni una suma de personas. Es una red de decisiones, recursos, vínculos, información, cultura, territorio e impacto. Metamorfosis Lab existe para ayudar a que lo valioso sobreviva a la improvisación y se convierta en una forma de operar más clara, responsable y proyectable.</p>
+            <p>Una empresa es una red de decisiones, recursos, personas, cultura, territorio e impacto. Metamorfosis Lab ayuda a que lo valioso deje de depender de la improvisación y se convierta en una forma clara de operar.</p>
           </div>
         </section>
 
@@ -455,7 +455,7 @@ function PublicSite() {
           <div className="story-section__shade" aria-hidden="true" />
           <div className="shell contact-layout contact-layout--immersive">
             <div className="contact-intro">
-              <SectionHeading kicker="Conversemos" title="Diagnostica tu operación o cuéntanos tu transformación" description="La conversación inicial busca entender el problema, reconocer el potencial y decidir si corresponde observar, medir, rediseñar o implementar." />
+              <SectionHeading kicker="Conversemos" title="Evaluemos qué necesita tu operación" description="Primero entendemos el problema. Luego definimos si corresponde diagnosticar, rediseñar o implementar." />
               <div className="contact-links contact-links--compact">
                 <a href={`${waBase}?text=${encodeURIComponent('Hola, quisiera solicitar una conversación inicial con Metamorfosis Lab sobre Transformación Productiva Responsable.')}`} target="_blank" rel="noreferrer"><img src="/assets/icons/whatsapp.svg" alt="" width="22" height="22" /><span><small>WhatsApp</small><strong>{contact.phoneDisplay}</strong></span></a>
                 <a href={`mailto:${contact.email}`}><Icon name="mail" /><span><small>Correo</small><strong>{contact.email}</strong></span></a>
@@ -467,9 +467,9 @@ function PublicSite() {
       </main>
       <footer className="site-footer">
         <div className="shell site-footer__grid">
-          <div className="site-footer__brand"><Brand /><p>Transformación productiva responsable para organizaciones que necesitan operar mejor, trabajar mejor y sostener mejor.</p></div>
+          <div className="site-footer__brand"><Brand /><p>Consultoría para operar mejor, cuidar equipos y sostener valor con responsabilidad.</p></div>
           <div><span className="footer-title">Navegación</span><SectionLink id="pilares">Tres ejes</SectionLink><SectionLink id="soluciones">Soluciones</SectionLink><SectionLink id="resultados">Resultados</SectionLink><SectionLink id="contacto">Contacto</SectionLink></div>
-          <div><span className="footer-title">Contacto</span><a href={`mailto:${contact.email}`}>{contact.email}</a><a href={waBase}>{contact.phoneDisplay}</a><p>{contact.coverage}</p></div>
+          <div><span className="footer-title">Contacto</span><a className="footer-icon-link" href={`mailto:${contact.email}`}><Icon name="mail" /><span>{contact.email}</span></a><a className="footer-icon-link" href={waBase} target="_blank" rel="noreferrer"><img src="/assets/icons/whatsapp.svg" alt="" width="18" height="18" /><span>{contact.phoneDisplay}</span></a><p>{contact.coverage}</p></div>
           <div><span className="footer-title">Acceso interno</span><p>El seguimiento de prioridades, documentos y decisiones vive en Metamorfosis OS.</p><a href={adminUrl}>Ingresar a Metamorfosis OS</a></div>
         </div>
         <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis Lab</span><span>Transformación productiva responsable</span></div>
