@@ -3,10 +3,6 @@
   "version": "4.4.0",
   "private": true,
   "type": "module",
-  "engines": {
-    "node": "20.19.0",
-    "npm": ">=10.0.0 <11"
-  },
   "scripts": {
     "dev": "vite --config vite.public.config.js",
     "dev:public": "vite --config vite.public.config.js",
