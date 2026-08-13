@@ -1,28 +1,33 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Icon from './components/Icon.jsx';
 import heroImage from './assets/images/jardin/hero-jardin.webp';
-import gardenImage from './assets/images/jardin/jardin-terrazas.webp';
+import workImage from './assets/images/jardin/trabajo-metodo.webp';
 import mapImage from './assets/images/jardin/mapa-transformacion.webp';
 import projectsImage from './assets/images/jardin/proyectos-vivos.webp';
-import workImage from './assets/images/jardin/trabajo-metodo.webp';
 import contactImage from './assets/images/jardin/contacto-jardin.webp';
-import { contact, methodSteps } from './data.js';
-import { gardenPrinciples, publicCapabilities, publicCases, publicNavigation } from './publicContent.js';
+import systemImage from './assets/images/sistema-digital.webp';
+import { contact } from './data.js';
+import {
+  activeOfferUseCases,
+  impactCases,
+  methodPrinciples,
+  publicCases,
+  publicNavigation,
+  resultIndicators,
+  solutions,
+  transformationPillars
+} from './publicContent.js';
 
 const waBase = `https://wa.me/${contact.phoneDigits}`;
-const defaultAdminUrl = 'https://os.metamorfosislab.cl';
+const defaultAdminUrl = '/admin';
 const adminUrl = String(import.meta.env.VITE_ADMIN_URL || defaultAdminUrl).replace(/\/$/, '');
-const apiBase = String(import.meta.env.VITE_API_BASE || (import.meta.env.DEV ? '' : adminUrl)).replace(/\/$/, '');
-
 
 function scrollToPublicSection(id, { smooth = true, updateHash = true } = {}) {
   const target = document.getElementById(id);
   if (!target) return;
-
   const header = document.querySelector('.site-header');
   const headerHeight = header?.getBoundingClientRect().height || 0;
   const targetTop = target.getBoundingClientRect().top + window.scrollY - headerHeight;
-
   if (updateHash) window.history.replaceState(null, '', `#${id}`);
   window.scrollTo({ top: Math.max(0, targetTop), behavior: smooth ? 'smooth' : 'auto' });
 }
@@ -44,19 +49,27 @@ function SectionLink({ id, className = '', children }) {
 
 function Brand({ compact = false }) {
   return (
-    <a className={`brand ${compact ? 'brand--compact' : ''}`} href="#inicio" aria-label="Metamorfosis Lab, ir al inicio" onClick={(event) => { event.preventDefault(); scrollToPublicSection('inicio'); }}>
+    <a
+      className={`brand ${compact ? 'brand--compact' : ''}`}
+      href="#inicio"
+      aria-label="Metamorfosis Lab, ir al inicio"
+      onClick={(event) => {
+        event.preventDefault();
+        scrollToPublicSection('inicio');
+      }}
+    >
       <img className="brand-logo" src="/logo-metamorfosis-transparente.png" alt="Isotipo de Metamorfosis Lab" width="44" height="44" />
       <span className="brand-copy">
         <strong>METAMORFOSIS LAB</strong>
-        <small>jardín de innovación aplicada</small>
+        <small>transformación productiva responsable</small>
       </span>
     </a>
   );
 }
 
-function IconButton({ label, icon, onClick, className = '', type = 'button', disabled = false, ariaExpanded, ariaControls }) {
+function IconButton({ label, icon, onClick, className = '', type = 'button', ariaExpanded, ariaControls }) {
   return (
-    <button type={type} className={`icon-button ${className}`} onClick={onClick} aria-label={label} title={label} disabled={disabled} aria-expanded={ariaExpanded} aria-controls={ariaControls}>
+    <button type={type} className={`icon-button ${className}`} onClick={onClick} aria-label={label} title={label} aria-expanded={ariaExpanded} aria-controls={ariaControls}>
       <Icon name={icon} />
     </button>
   );
@@ -67,7 +80,7 @@ function PublicHeader() {
 
   useEffect(() => {
     const id = window.location.hash.replace('#', '');
-    if (!id) return;
+    if (!id) return undefined;
     const timer = window.setTimeout(() => scrollToPublicSection(id, { smooth: false, updateHash: false }), 0);
     return () => window.clearTimeout(timer);
   }, []);
@@ -102,15 +115,9 @@ function PublicHeader() {
 }
 
 function WhatsappFloating() {
-  const message = encodeURIComponent('Hola, conocí Metamorfosis Lab a través de su página. Tengo un proyecto o pyme que necesito ordenar y quisiera solicitar una conversación inicial.');
+  const message = encodeURIComponent('Hola, conocí Metamorfosis Lab a través de su página. Quiero conversar sobre Transformación Productiva Responsable para mi organización.');
   return (
-    <a
-      className="whatsapp-floating"
-      href={`${waBase}?text=${message}`}
-      target="_blank"
-      rel="noreferrer"
-      aria-label={`Conversar con Metamorfosis Lab por WhatsApp al ${contact.phoneDisplay}`}
-    >
+    <a className="whatsapp-floating" href={`${waBase}?text=${message}`} target="_blank" rel="noreferrer" aria-label={`Conversar con Metamorfosis Lab por WhatsApp al ${contact.phoneDisplay}`}>
       <img src="/assets/icons/whatsapp.svg" alt="" width="28" height="28" />
       <span>WhatsApp</span>
     </a>
@@ -126,7 +133,6 @@ function SectionHeading({ kicker, title, description, align = 'left' }) {
     </div>
   );
 }
-
 
 function CaseBrand({ brand, name }) {
   if (brand === 'metamorfosis') {
@@ -155,285 +161,322 @@ function CaseBrand({ brand, name }) {
   );
 }
 
-function QuoteWizard() {
+function QuoteForm() {
   const empty = {
-    serviceType: '',
+    serviceType: 'Diagnóstico Operacional Integral',
     projectStage: '',
-    desiredDate: '',
-    teamSize: '',
     details: '',
     contactName: '',
     company: '',
     city: '',
     email: '',
     phone: '',
-    preferredContact: 'WhatsApp',
-    consent: false,
-    website: ''
+    consent: false
   };
-  const [step, setStep] = useState(1);
   const [form, setForm] = useState(empty);
-  const [status, setStatus] = useState({ type: 'idle', message: '', waUrl: '' });
+  const [status, setStatus] = useState('idle');
 
   const update = (event) => {
     const { name, value, type, checked } = event.target;
     setForm((current) => ({ ...current, [name]: type === 'checkbox' ? checked : value }));
   };
 
-  const stepValid = useMemo(() => {
-    if (step === 1) return Boolean(form.serviceType);
-    if (step === 2) return Boolean(form.details.trim());
-    return Boolean(form.contactName.trim() && /[0-9]{8,}/.test(form.phone.replace(/\D/g, '')) && (!form.email || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) && form.consent);
-  }, [form, step]);
+  const isValid = form.contactName.trim() && form.company.trim() && form.details.trim() && /[0-9]{8,}/.test(form.phone.replace(/\D/g, '')) && form.consent;
 
-  const whatsappMessage = useMemo(() => {
+  const whatsappUrl = useMemo(() => {
     const lines = [
-      'Hola, quiero conversar con Metamorfosis Lab.',
+      'Hola, quiero conversar con Metamorfosis Lab sobre Transformación Productiva Responsable.',
       '',
-      `Tipo de apoyo: ${form.serviceType || 'Por definir'}`,
-      `Etapa del proyecto: ${form.projectStage || 'No indicada'}`,
-      `Plazo esperado: ${form.desiredDate || 'Por conversar'}`,
-      `Equipo: ${form.teamSize || 'No indicado'}`,
-      `Proyecto o empresa: ${form.company || 'No indicado'}`,
+      `Servicio de interés: ${form.serviceType}`,
+      `Etapa del proyecto: ${form.projectStage || 'Por conversar'}`,
+      `Organización: ${form.company || 'No indicada'}`,
       `Ciudad: ${form.city || 'No indicada'}`,
-      `Necesidad principal: ${form.details || 'Por explicar'}`,
+      `Necesidad: ${form.details || 'Por explicar'}`,
       '',
-      `Contacto: ${form.contactName}`,
-      `Teléfono: ${form.phone}`,
+      `Contacto: ${form.contactName || 'No indicado'}`,
+      `Teléfono: ${form.phone || 'No indicado'}`,
       `Correo: ${form.email || 'No indicado'}`
     ];
-    return encodeURIComponent(lines.join('\n'));
+    return `${waBase}?text=${encodeURIComponent(lines.join('\n'))}`;
   }, [form]);
 
-  const submit = async (event) => {
+  const submit = (event) => {
     event.preventDefault();
-    if (!stepValid) return;
-    setStatus({ type: 'loading', message: 'Preparando tu solicitud…', waUrl: '' });
-    let saved = false;
-    try {
-      const response = await fetch(`${apiBase}/api/quotes`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
-      });
-      const payload = await response.json();
-      saved = response.ok && payload.saved !== false;
-    } catch {
-      saved = false;
-    }
-    const waUrl = `${waBase}?text=${whatsappMessage}`;
-    setStatus({
-      type: 'success',
-      message: saved
-        ? 'La solicitud quedó registrada. Completa el contacto enviando el mensaje por WhatsApp.'
-        : 'La solicitud quedó preparada. Envía el mensaje por WhatsApp para completar el contacto.',
-      waUrl
-    });
+    if (!isValid) return;
+    setStatus('ready');
   };
 
-  if (status.type === 'success') {
+  if (status === 'ready') {
     return (
       <div className="quote-confirmation" role="status" aria-live="polite">
         <span className="confirmation-icon"><Icon name="check_circle" /></span>
         <h3>Solicitud preparada</h3>
-        <p>{status.message}</p>
-        <a className="button" href={status.waUrl} target="_blank" rel="noreferrer">
+        <p>Abre WhatsApp para enviar la información y agendar una conversación inicial.</p>
+        <a className="button" href={whatsappUrl} target="_blank" rel="noreferrer">
           <img src="/assets/icons/whatsapp.svg" alt="" width="20" height="20" />
           Abrir WhatsApp
         </a>
-        <button type="button" className="text-button" onClick={() => { setStatus({ type: 'idle', message: '', waUrl: '' }); setStep(1); setForm(empty); }}>
-          Ingresar otra solicitud
+        <button type="button" className="text-button" onClick={() => { setStatus('idle'); setForm(empty); }}>
+          Preparar otra solicitud
         </button>
       </div>
     );
   }
 
   return (
-    <form className="quote-wizard" onSubmit={submit} noValidate>
-      <div className="wizard-progress" aria-label={`Paso ${step} de 3`}>
-        {[1, 2, 3].map((number) => (
-          <span key={number} className={number <= step ? 'is-active' : ''}>
-            <b>{number}</b>
-            <small>{number === 1 ? 'Necesidad' : number === 2 ? 'Contexto' : 'Contacto'}</small>
-          </span>
-        ))}
+    <form className="quote-wizard tpr-form" onSubmit={submit} noValidate>
+      <div className="wizard-progress" aria-label="Solicitud de diagnóstico">
+        <span className="is-active"><b>1</b><small>Operación</small></span>
+        <span className="is-active"><b>2</b><small>Contexto</small></span>
+        <span className="is-active"><b>3</b><small>Contacto</small></span>
       </div>
 
-      {step === 1 && (
-        <fieldset className="wizard-step">
-          <legend>¿Qué necesitas ordenar o transformar?</legend>
-          <div className="choice-grid">
-            {[
-              ['Mapa de Transformación y Activos', 'Comprender el estado actual y priorizar una ruta.'],
-              ['Operación y sistema', 'Ordenar procesos, roles, documentos, registros e indicadores.'],
-              ['Mercado, marca y comercialización', 'Transformar una capacidad o producto en una propuesta comprensible y vendible.'],
-              ['Ergonomía y diseño del trabajo', 'Mejorar tareas, puestos, espacios, herramientas y condiciones de trabajo.'],
-              ['Aún no lo sé', 'Necesito explicar el problema antes de elegir una ruta.']
-            ].map(([title, text]) => (
-              <label key={title} className={`choice-card ${form.serviceType === title ? 'is-selected' : ''}`}>
-                <input type="radio" name="serviceType" value={title} checked={form.serviceType === title} onChange={update} />
-                <span className="choice-indicator" aria-hidden="true" />
-                <strong>{title}</strong>
-                <small>{text}</small>
-              </label>
-            ))}
-          </div>
-        </fieldset>
-      )}
-
-      {step === 2 && (
-        <fieldset className="wizard-step">
-          <legend>Cuéntanos el contexto esencial</legend>
-          <div className="form-grid form-grid--two">
-            <label>Etapa del proyecto<select name="projectStage" value={form.projectStage} onChange={update}><option value="">Seleccionar</option><option>Idea en definición</option><option>Proyecto iniciando</option><option>Negocio funcionando</option><option>Proceso de crecimiento</option><option>Necesita reorganización</option></select></label>
-            <label>Plazo esperado<input type="text" name="desiredDate" value={form.desiredDate} onChange={update} placeholder="Ej. este mes, agosto, sin urgencia" /></label>
-            <label>Tamaño del equipo<input type="text" name="teamSize" value={form.teamSize} onChange={update} placeholder="Ej. 2 personas, 8 trabajadores" /></label>
-            <label>Comuna o ciudad<input type="text" name="city" value={form.city} onChange={update} placeholder="Ej. Concepción" /></label>
-          </div>
-          <label>¿Qué está ocurriendo actualmente?<textarea name="details" value={form.details} onChange={update} rows="5" placeholder="Describe brevemente qué problema estás enfrentando, qué valor ya existe y qué quisieras ordenar o transformar." /></label>
-        </fieldset>
-      )}
-
-      {step === 3 && (
-        <fieldset className="wizard-step">
-          <legend>Datos de contacto</legend>
-          <div className="form-grid form-grid--two">
-            <label>Nombre y apellido<input type="text" name="contactName" value={form.contactName} onChange={update} required /></label>
-            <label>Empresa o proyecto<input type="text" name="company" value={form.company} onChange={update} /></label>
-            <label>Teléfono o WhatsApp<input type="tel" name="phone" value={form.phone} onChange={update} placeholder="Ej. +56 9..." required /></label>
-            <label>Correo electrónico<input type="email" name="email" value={form.email} onChange={update} placeholder="Ej. contacto@proyecto.cl" /></label>
-            <label>Medio preferido<select name="preferredContact" value={form.preferredContact} onChange={update}><option>WhatsApp</option><option>Correo</option><option>Llamada</option></select></label>
-          </div>
-          <label className="checkbox-field"><input type="checkbox" name="consent" checked={form.consent} onChange={update} /><span>Autorizo a Metamorfosis Lab a utilizar estos datos para contactarme sobre mi solicitud.</span></label>
-          <label className="honeypot" aria-hidden="true">Sitio web<input type="text" name="website" value={form.website} onChange={update} tabIndex="-1" autoComplete="off" /></label>
-        </fieldset>
-      )}
+      <fieldset className="wizard-step">
+        <legend>Evalúa tu operación</legend>
+        <label>Servicio de interés
+          <select name="serviceType" value={form.serviceType} onChange={update}>
+            {solutions.map((item) => <option key={item.title} value={item.title}>{item.title}</option>)}
+            <option value="Aún no lo tengo claro">Aún no lo tengo claro</option>
+          </select>
+        </label>
+        <label>Etapa actual
+          <select name="projectStage" value={form.projectStage} onChange={update}>
+            <option value="">Seleccionar</option>
+            <option>Idea o diagnóstico inicial</option>
+            <option>Empresa funcionando con desorden operativo</option>
+            <option>Proyecto en crecimiento</option>
+            <option>Necesidad de sostenibilidad o eficiencia</option>
+            <option>Necesidad de sistema interno o web pública</option>
+          </select>
+        </label>
+        <label>¿Qué quieres mejorar?
+          <textarea name="details" value={form.details} onChange={update} placeholder="Ej.: reducir desorden operativo, ordenar roles, mejorar uso de recursos, diseñar sistema interno, comunicar mejor la oferta…" required />
+        </label>
+        <div className="form-grid form-grid--two">
+          <label>Nombre
+            <input name="contactName" value={form.contactName} onChange={update} required />
+          </label>
+          <label>Organización
+            <input name="company" value={form.company} onChange={update} required />
+          </label>
+          <label>Ciudad
+            <input name="city" value={form.city} onChange={update} />
+          </label>
+          <label>Teléfono
+            <input name="phone" inputMode="tel" value={form.phone} onChange={update} required />
+          </label>
+          <label>Correo
+            <input name="email" type="email" value={form.email} onChange={update} />
+          </label>
+        </div>
+        <label className="check-line"><input type="checkbox" name="consent" checked={form.consent} onChange={update} /> Acepto que Metamorfosis Lab use esta información para responder mi solicitud.</label>
+      </fieldset>
 
       <div className="wizard-actions">
-        {step > 1 && <button type="button" className="button button--ghost" onClick={() => setStep((value) => value - 1)}>Atrás</button>}
-        {step < 3 ? (
-          <button type="button" className="button" disabled={!stepValid} onClick={() => setStep((value) => value + 1)}>Continuar <Icon name="arrow_forward" /></button>
-        ) : (
-          <button type="submit" className="button" disabled={!stepValid || status.type === 'loading'}>{status.type === 'loading' ? 'Preparando…' : 'Preparar solicitud'}<Icon name="send" /></button>
-        )}
+        <button className="button" type="submit" disabled={!isValid}>Preparar diagnóstico <Icon name="send" /></button>
       </div>
     </form>
   );
 }
 
-export default function PublicApp() {
+function PublicSite() {
   return (
-    <div className="public-site">
+    <div className="public-site public-site--tpr">
       <a className="skip-link" href="#contenido">Saltar al contenido principal</a>
       <PublicHeader />
       <main id="contenido">
-        <section id="inicio" className="hero hero--immersive section-anchor">
-          <div className="hero__backdrop" aria-hidden="true"><img src={heroImage} alt="" width="1672" height="941" fetchPriority="high" /></div>
-          <div className="hero__overlay" aria-hidden="true" />
-          <div className="shell hero__stage">
-            <div className="hero__panel hero__panel--open">
-              <span className="hero__eyebrow">Metamorfosis Lab</span>
-              <h1>Lo valioso no debería depender de la improvisación</h1>
-              <p>Comprendemos proyectos y pymes como sistemas vivos. Ordenamos su operación, diseñamos mejores condiciones de trabajo y convertimos sus capacidades en propuestas que puedan sostenerse, comunicarse y crecer.</p>
-              <div className="hero__tags" aria-label="Enfoques principales"><span>Operación</span><span>Personas y espacios</span><span>Mercado y marca</span><span>Sistemas</span></div>
-              <div className="hero__actions"><SectionLink className="button" id="capacidades">Ver capacidades</SectionLink><SectionLink className="button button--ghost-light" id="contacto">Traer un desafío</SectionLink></div>
+        <section id="inicio" className="tpr-hero section-anchor">
+          <div className="tpr-hero__image" aria-hidden="true"><img src={heroImage} alt="" fetchPriority="high" /></div>
+          <div className="tpr-hero__shade" aria-hidden="true" />
+          <div className="shell tpr-hero__grid">
+            <div className="tpr-hero__copy">
+              <span className="kicker">Transformación Productiva Responsable</span>
+              <h1>Transformación Productiva Responsable para Organizaciones que Generan Valor Interconectado.</h1>
+              <p>Analizamos cómo tu organización genera valor y te acompañamos en el diseño e implementación de mejores formas de operar. Unimos procesos, personas, recursos, tecnología y entorno en operaciones eficientes, humanas y sostenibles.</p>
+              <div className="hero__actions">
+                <SectionLink className="button" id="contacto">Diagnostica tu operación</SectionLink>
+                <SectionLink className="button button--ghost-light" id="transformacion">Conversemos sobre tu transformación</SectionLink>
+              </div>
             </div>
-            <aside className="hero__floating">
-              <span className="kicker">Nuestra diferencia</span>
-              <strong>No entregamos piezas aisladas. Conectamos diagnóstico, diseño, ejecución, evidencia y aprendizaje para dejar capacidad instalada.</strong>
+            <aside className="tpr-hero__card">
+              <strong>Campo de acción inmediato</strong>
+              <p>Empresas, pymes y proyectos que necesitan ordenar su operación, mejorar desempeño, cuidar condiciones humanas e integrar sostenibilidad desde el negocio real.</p>
+              <div><span>Procesos</span><span>Personas</span><span>Recursos</span><span>Tecnología</span><span>Entorno</span></div>
             </aside>
           </div>
         </section>
 
-        <section id="jardin" className="story-section section-anchor" style={{ '--section-image': `url(${gardenImage})` }}>
-          <div className="story-section__shade" aria-hidden="true" />
-          <div className="shell story-section__content story-section__content--right">
-            <div className="story-copy">
-              <SectionHeading kicker="El jardín" title="Un laboratorio que cultiva condiciones, no fórmulas" description="Observamos organizaciones, ideas, recursos e historias como sistemas vivos. Cada uno posee identidad, límites, capacidades y necesidades propias." />
-              <div className="principle-grid">
-                {gardenPrinciples.map(({ icon, title, text }) => (
-                  <article key={title}><Icon name={icon} /><strong>{title}</strong><p>{text}</p></article>
-                ))}
-              </div>
+        <section id="pilares" className="section section-anchor tpr-section tpr-section--intro">
+          <div className="shell">
+            <SectionHeading
+              align="center"
+              kicker="La tríada fundamental"
+              title="Eficiencia, condiciones humanas y sistemas vivos en una misma decisión"
+              description="La transformación productiva responsable no separa operación, personas y entorno. Los integra para que cada mejora sea técnicamente viable, humanamente sostenible y coherente con el sistema donde ocurre."
+            />
+            <div className="tpr-pillar-grid">
+              {transformationPillars.map((item) => (
+                <article key={item.title} className="tpr-card tpr-pillar-card">
+                  <span className="tpr-icon"><Icon name={item.icon} /></span>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                </article>
+              ))}
             </div>
           </div>
         </section>
 
-        <section id="capacidades" className="story-section story-section--capabilities section-anchor" style={{ '--section-image': `url(${workImage})` }}>
-          <div className="story-section__shade story-section__shade--left" aria-hidden="true" />
-          <div className="shell story-section__content">
-            <div className="story-copy story-copy--wide">
-              <SectionHeading kicker="Capacidades integradas" title="La empresa completa: cómo trabaja y cómo crea valor" description="Metamorfosis conecta dimensiones que suelen abordarse por separado. Así evitamos que una mejora comercial contradiga la operación o que una nueva tecnología reproduzca un mal proceso." />
-              <div className="capability-grid">
-                {publicCapabilities.map(({ icon, title, text, principle }) => (
-                  <article key={title}>
-                    <span className="capability-icon"><Icon name={icon} /></span>
-                    <div><strong>{title}</strong><p>{text}</p><small>{principle}</small></div>
+        <section id="transformacion" className="tpr-split-section section-anchor" style={{ '--section-image': `url(${workImage})` }}>
+          <div className="tpr-split-section__shade" aria-hidden="true" />
+          <div className="shell tpr-split-grid">
+            <div className="tpr-panel">
+              <span className="kicker">Punto de entrada</span>
+              <h2>La oferta activa: transformar cómo se produce, se sirve y se sostiene el valor</h2>
+              <p>Entramos por una necesidad concreta: mejorar la forma en que una organización produce, presta servicios, usa recursos, coordina equipos o comunica su valor. Desde ahí diseñamos soluciones aplicables, no discursos abstractos.</p>
+            </div>
+            <div className="tpr-panel tpr-panel--accent">
+              <span className="kicker">ADN Metamorfosis</span>
+              <h2>La visión completa: personas, tecnología, recursos y entorno</h2>
+              <p>La transformación productiva no ocurre en el vacío. Cada cambio modifica rutinas, información, vínculos, capacidades, residuos, costos, experiencia y relación con el entorno. Por eso trabajamos con perspectiva sistémica.</p>
+            </div>
+          </div>
+          <div className="shell tpr-usecase-grid">
+            {activeOfferUseCases.map((item, index) => (
+              <article key={item.title} className="tpr-usecase">
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="soluciones" className="section section-anchor tpr-section">
+          <div className="shell">
+            <SectionHeading
+              kicker="Servicios y soluciones"
+              title="Soluciones para operar mejor, trabajar mejor y sostener mejor"
+              description="Cada servicio puede contratarse como entrada específica o integrarse en una ruta de transformación más amplia. El foco siempre es dejar claridad, capacidad y próximos pasos ejecutables."
+            />
+            <div className="tpr-solutions-grid">
+              {solutions.map((item) => (
+                <article key={item.title} className="tpr-card tpr-solution-card">
+                  <span className="tpr-icon"><Icon name={item.icon} /></span>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="metodo" className="tpr-method-section section-anchor" style={{ '--section-image': `url(${mapImage})` }}>
+          <div className="tpr-method-section__shade" aria-hidden="true" />
+          <div className="shell tpr-method-grid">
+            <div className="tpr-panel tpr-panel--wide">
+              <SectionHeading kicker="Cómo lo hacemos" title="Observable, medible y sostenible" description="No basta con proponer cambios. La organización necesita comprenderlos, medirlos y sostenerlos. Por eso cada intervención debe dejar instrumentos, acuerdos, evidencia y memoria de trabajo." />
+              <div className="tpr-method-cards">
+                {methodPrinciples.map((item) => (
+                  <article key={item.title}>
+                    <Icon name={item.icon} />
+                    <strong>{item.title}</strong>
+                    <p>{item.text}</p>
                   </article>
                 ))}
               </div>
             </div>
+            <figure className="tpr-method-visual">
+              <img src={systemImage} alt="Sistema digital de organización y datos" loading="lazy" />
+              <figcaption>La tecnología entra cuando mejora una capacidad real.</figcaption>
+            </figure>
           </div>
         </section>
 
-        <section id="mapa" className="story-section story-section--method section-anchor" style={{ '--section-image': `url(${mapImage})` }}>
-          <div className="story-section__shade story-section__shade--method" aria-hidden="true" />
-          <div className="shell story-section__content story-section__content--method">
-            <div className="story-copy story-copy--method">
-              <SectionHeading kicker="Método Metamorfosis" title="De valor disperso a una transformación que deja capacidad" description="No vendemos diagnósticos que terminan en un informe. Conectamos realidad, operación, personas, mercado, identidad, tecnología y aprendizaje en una ruta visible." />
-              <div className="method-flow" aria-label="Etapas del método Metamorfosis">
-                {methodSteps.map(([icon, title, text], index) => <article key={title}><span>{String(index + 1).padStart(2, '0')}</span><Icon name={icon} /><div><strong>{title}</strong><p>{text}</p></div></article>)}
-              </div>
-              <div className="compact-actions"><SectionLink className="button" id="contacto">Solicitar un Mapa inicial</SectionLink><p>Primero definimos qué problema merece ser resuelto, con qué evidencia y para qué resultado.</p></div>
+        <section id="resultados" className="section section-anchor tpr-section tpr-section--results">
+          <div className="shell">
+            <SectionHeading
+              align="center"
+              kicker="Resultados e impacto"
+              title="Lo que prometemos debe poder observarse, medirse y sostenerse"
+              description="Trabajamos con indicadores operacionales, humanos y sistémicos. No prometemos magia: construimos condiciones para tomar mejores decisiones y verificar avances."
+            />
+            <div className="tpr-indicators">
+              {resultIndicators.map((item) => <span key={item}>{item}</span>)}
+            </div>
+            <div className="tpr-impact-grid">
+              {impactCases.map((item) => (
+                <article key={item.title} className="tpr-impact-card">
+                  <h3>{item.title}</h3>
+                  <dl>
+                    <div><dt>Desafío operativo</dt><dd>{item.challenge}</dd></div>
+                    <div><dt>Intervención integral</dt><dd>{item.intervention}</dd></div>
+                    <div><dt>Resultado medible</dt><dd>{item.result}</dd></div>
+                  </dl>
+                </article>
+              ))}
             </div>
           </div>
         </section>
 
-        <section id="proyectos" className="story-section section-anchor" style={{ '--section-image': `url(${projectsImage})` }}>
-          <div className="story-section__shade story-section__shade--left" aria-hidden="true" />
-          <div className="shell story-section__content">
-            <div className="story-copy story-copy--case">
-              <SectionHeading kicker="Casos y sistemas vivos" title="El método se demuestra en trabajo real" description="Mostramos decisiones y capacidades construidas, sin atribuir resultados comerciales que todavía no han sido medidos." />
-              <div className="case-grid">
-                {publicCases.map((caseItem) => (
-                  <article key={caseItem.id} className={`case-card ${caseItem.featured ? 'case-card--featured' : ''}`}>
-                    <CaseBrand brand={caseItem.brand} name={caseItem.name} />
-                    <div className="case-card__label">{caseItem.label}</div>
-                    <h3>{caseItem.name}</h3>
-                    <p>{caseItem.text}</p>
-                    <div className="case-tags">{caseItem.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
-                    {caseItem.quote && <blockquote>“{caseItem.quote}”</blockquote>}
-                    {caseItem.action && <a href={adminUrl} className="text-link">{caseItem.action} <Icon name="arrow_forward" /></a>}
-                  </article>
-                ))}
-              </div>
+        <section id="casos" className="tpr-cases-section section-anchor" style={{ '--section-image': `url(${projectsImage})` }}>
+          <div className="tpr-cases-section__shade" aria-hidden="true" />
+          <div className="shell">
+            <SectionHeading
+              kicker="Prueba social y proyectos"
+              title="Proyectos que muestran distintas capacidades"
+              description="Los casos públicos muestran formas distintas de valor: operación, documentación, identidad, presencia digital, sistema interno y experiencia comercial."
+            />
+            <div className="case-grid tpr-case-grid">
+              {publicCases.map((caseItem) => (
+                <article key={caseItem.id} className={`case-card ${caseItem.id === 'cm-banqueteria' ? 'case-card--featured' : ''}`}>
+                  <CaseBrand brand={caseItem.brand} name={caseItem.name} />
+                  <div className="case-card__label">{caseItem.label}</div>
+                  <h3>{caseItem.name}</h3>
+                  <p>{caseItem.text}</p>
+                  <div className="case-tags">{caseItem.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+                  {caseItem.action && <a href={adminUrl} className="text-link">{caseItem.action} <Icon name="arrow_forward" /></a>}
+                </article>
+              ))}
             </div>
           </div>
         </section>
 
-        <section id="contacto" className="story-section story-section--contact section-anchor" style={{ '--section-image': `url(${contactImage})` }}>
+        <section id="nosotros" className="section section-anchor tpr-manifesto">
+          <div className="shell tpr-manifesto__grid">
+            <div>
+              <span className="kicker">Nosotros / Manifiesto</span>
+              <h2>Entendemos las organizaciones como sistemas vivos</h2>
+            </div>
+            <p>Una organización no es solo una estructura de procesos ni una suma de personas. Es una red de decisiones, recursos, vínculos, información, cultura, territorio e impacto. Metamorfosis Lab existe para ayudar a que lo valioso sobreviva a la improvisación y se convierta en una forma de operar más clara, responsable y proyectable.</p>
+          </div>
+        </section>
+
+        <section id="contacto" className="story-section story-section--contact section-anchor tpr-contact" style={{ '--section-image': `url(${contactImage})` }}>
           <div className="story-section__shade" aria-hidden="true" />
           <div className="shell contact-layout contact-layout--immersive">
             <div className="contact-intro">
-              <SectionHeading kicker="Conversemos" title="Cuéntanos qué valor existe y qué condiciones necesita" description="La conversación inicial busca comprender el problema, reconocer el potencial y decidir si corresponde investigar, mapear o intervenir." />
+              <SectionHeading kicker="Conversemos" title="Diagnostica tu operación o cuéntanos tu transformación" description="La conversación inicial busca entender el problema, reconocer el potencial y decidir si corresponde observar, medir, rediseñar o implementar." />
               <div className="contact-links contact-links--compact">
-                <a href={`${waBase}?text=${encodeURIComponent('Hola, quisiera solicitar una conversación inicial con Metamorfosis Lab.')}`} target="_blank" rel="noreferrer"><img src="/assets/icons/whatsapp.svg" alt="" width="22" height="22" /><span><small>WhatsApp</small><strong>{contact.phoneDisplay}</strong></span></a>
+                <a href={`${waBase}?text=${encodeURIComponent('Hola, quisiera solicitar una conversación inicial con Metamorfosis Lab sobre Transformación Productiva Responsable.')}`} target="_blank" rel="noreferrer"><img src="/assets/icons/whatsapp.svg" alt="" width="22" height="22" /><span><small>WhatsApp</small><strong>{contact.phoneDisplay}</strong></span></a>
                 <a href={`mailto:${contact.email}`}><Icon name="mail" /><span><small>Correo</small><strong>{contact.email}</strong></span></a>
               </div>
             </div>
-            <QuoteWizard />
+            <QuoteForm />
           </div>
         </section>
       </main>
       <footer className="site-footer">
         <div className="shell site-footer__grid">
-          <div className="site-footer__brand"><Brand /><p>Crear condiciones para que lo valioso pueda transformarse sin perder su identidad.</p></div>
-          <div><span className="footer-title">Contacto</span><a href={`mailto:${contact.email}`}>{contact.email}</a><a href={waBase}>{contact.phoneDisplay}</a></div>
-          <div><span className="footer-title">Territorio y acceso</span><p>Biobío, Chile · atención presencial y remota.</p><a href={adminUrl}>Ingresar a Metamorfosis OS</a></div>
+          <div className="site-footer__brand"><Brand /><p>Transformación productiva responsable para organizaciones que necesitan operar mejor, trabajar mejor y sostener mejor.</p></div>
+          <div><span className="footer-title">Navegación</span><SectionLink id="pilares">Tres ejes</SectionLink><SectionLink id="soluciones">Soluciones</SectionLink><SectionLink id="resultados">Resultados</SectionLink><SectionLink id="contacto">Contacto</SectionLink></div>
+          <div><span className="footer-title">Contacto</span><a href={`mailto:${contact.email}`}>{contact.email}</a><a href={waBase}>{contact.phoneDisplay}</a><p>{contact.coverage}</p></div>
+          <div><span className="footer-title">Acceso interno</span><p>El seguimiento de prioridades, documentos y decisiones vive en Metamorfosis OS.</p><a href={adminUrl}>Ingresar a Metamorfosis OS</a></div>
         </div>
-        <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis Lab</span><span>Jardín de innovación aplicada</span></div>
+        <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis Lab</span><span>Transformación productiva responsable</span></div>
       </footer>
       <WhatsappFloating />
     </div>
   );
 }
+
+export default PublicSite;
