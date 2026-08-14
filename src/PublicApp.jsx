@@ -163,13 +163,10 @@ function CaseBrand({ brand, name }) {
 
 function QuoteForm() {
   const empty = {
-    serviceType: 'Diagnóstico Operacional Integral',
-    projectStage: '',
+    serviceType: 'Diagnóstico integral',
     details: '',
     contactName: '',
     company: '',
-    city: '',
-    email: '',
     phone: '',
     consent: false
   };
@@ -185,17 +182,13 @@ function QuoteForm() {
 
   const whatsappUrl = useMemo(() => {
     const lines = [
-      'Hola, quiero conversar con Metamorfosis Lab sobre Transformación Productiva Responsable.',
+      'Hola, quiero conversar con Metamorfosis Lab.',
       '',
-      `Servicio de interés: ${form.serviceType}`,
-      `Etapa del proyecto: ${form.projectStage || 'Por conversar'}`,
+      `Interés: ${form.serviceType}`,
       `Organización: ${form.company || 'No indicada'}`,
-      `Ciudad: ${form.city || 'No indicada'}`,
       `Necesidad: ${form.details || 'Por explicar'}`,
-      '',
       `Contacto: ${form.contactName || 'No indicado'}`,
-      `Teléfono: ${form.phone || 'No indicado'}`,
-      `Correo: ${form.email || 'No indicado'}`
+      `Teléfono: ${form.phone || 'No indicado'}`
     ];
     return `${waBase}?text=${encodeURIComponent(lines.join('\n'))}`;
   }, [form]);
@@ -210,71 +203,56 @@ function QuoteForm() {
     return (
       <div className="quote-confirmation" role="status" aria-live="polite">
         <span className="confirmation-icon"><Icon name="check_circle" /></span>
-        <h3>Solicitud preparada</h3>
-        <p>Abre WhatsApp para enviar la información y agendar una conversación inicial.</p>
+        <h3>Solicitud lista</h3>
+        <p>Abre WhatsApp para enviarla y coordinar una conversación inicial.</p>
         <a className="button" href={whatsappUrl} target="_blank" rel="noreferrer">
           <img src="/assets/icons/whatsapp.svg" alt="" width="20" height="20" />
-          Abrir WhatsApp
+          WhatsApp
         </a>
         <button type="button" className="text-button" onClick={() => { setStatus('idle'); setForm(empty); }}>
-          Preparar otra solicitud
+          Nueva solicitud
         </button>
       </div>
     );
   }
 
   return (
-    <form className="quote-wizard tpr-form" onSubmit={submit} noValidate>
-      <div className="wizard-progress" aria-label="Solicitud de diagnóstico">
-        <span className="is-active"><b>1</b><small>Operación</small></span>
-        <span className="is-active"><b>2</b><small>Contexto</small></span>
-        <span className="is-active"><b>3</b><small>Contacto</small></span>
+    <form className="quote-wizard tpr-form tpr-form--compact" onSubmit={submit} noValidate>
+      <div className="form-headline">
+        <span><Icon name="query_stats" /> Diagnóstico inicial</span>
+        <strong>Cuéntanos lo esencial</strong>
       </div>
 
-      <fieldset className="wizard-step">
-        <legend>Evalúa tu operación</legend>
-        <label>Servicio de interés
+      <div className="form-grid form-grid--two tpr-form-grid">
+        <label className="field-label"><span><Icon name="schema" /> Servicio</span>
           <select name="serviceType" value={form.serviceType} onChange={update}>
-            {solutions.map((item) => <option key={item.title} value={item.title}>{item.title}</option>)}
-            <option value="Aún no lo tengo claro">Aún no lo tengo claro</option>
+            <option>Diagnóstico integral</option>
+            <option>Rediseño de procesos</option>
+            <option>Sistema interno o web</option>
+            <option>Sostenibilidad operativa</option>
+            <option>Aún no está claro</option>
           </select>
         </label>
-        <label>Etapa actual
-          <select name="projectStage" value={form.projectStage} onChange={update}>
-            <option value="">Seleccionar</option>
-            <option>Idea o diagnóstico inicial</option>
-            <option>Empresa funcionando con desorden operativo</option>
-            <option>Proyecto en crecimiento</option>
-            <option>Necesidad de sostenibilidad o eficiencia</option>
-            <option>Necesidad de sistema interno o web pública</option>
-          </select>
+        <label className="field-label"><span><Icon name="briefcase" /> Organización</span>
+          <input name="company" value={form.company} onChange={update} required />
         </label>
-        <label>¿Qué quieres mejorar?
-          <textarea name="details" value={form.details} onChange={update} placeholder="Ej.: reducir desorden operativo, ordenar roles, mejorar uso de recursos, diseñar sistema interno, comunicar mejor la oferta…" required />
+        <label className="field-label"><span><Icon name="group" /> Nombre</span>
+          <input name="contactName" value={form.contactName} onChange={update} required />
         </label>
-        <div className="form-grid form-grid--two">
-          <label>Nombre
-            <input name="contactName" value={form.contactName} onChange={update} required />
-          </label>
-          <label>Organización
-            <input name="company" value={form.company} onChange={update} required />
-          </label>
-          <label>Ciudad
-            <input name="city" value={form.city} onChange={update} />
-          </label>
-          <label>Teléfono
-            <input name="phone" inputMode="tel" value={form.phone} onChange={update} required />
-          </label>
-          <label>Correo
-            <input name="email" type="email" value={form.email} onChange={update} />
-          </label>
-        </div>
-        <label className="check-line"><input type="checkbox" name="consent" checked={form.consent} onChange={update} /> Acepto que Metamorfosis Lab use esta información para responder mi solicitud.</label>
-      </fieldset>
-
-      <div className="wizard-actions">
-        <button className="button" type="submit" disabled={!isValid}>Preparar diagnóstico <Icon name="send" /></button>
+        <label className="field-label"><span><Icon name="phone" /> Teléfono</span>
+          <input name="phone" inputMode="tel" value={form.phone} onChange={update} required />
+        </label>
       </div>
+
+      <label className="field-label field-label--full"><span><Icon name="edit" /> Necesidad principal</span>
+        <textarea name="details" value={form.details} onChange={update} placeholder="Ej.: ordenar roles, reducir mermas, documentar procesos, mejorar coordinación o explicar mejor la oferta." required />
+      </label>
+
+      <label className="check-line tpr-check"><input type="checkbox" name="consent" checked={form.consent} onChange={update} /> <span>Acepto ser contactado para responder esta solicitud.</span></label>
+
+      <button className="button button--full form-submit" type="submit" disabled={!isValid}>
+        Enviar por WhatsApp <Icon name="send" />
+      </button>
     </form>
   );
 }
@@ -292,15 +270,15 @@ function PublicSite() {
             <div className="tpr-hero__copy">
               <span className="kicker">Transformación Productiva Responsable</span>
               <h1>Operar mejor, con sentido.</h1>
-              <p>Integramos procesos, personas, tecnología y entorno para que tu organización mejore su forma de trabajar, medir y sostener valor.</p>
+              <p>Integramos procesos, personas, tecnología y entorno para mejorar cómo tu organización opera y sostiene valor.</p>
               <div className="hero__actions">
                 <SectionLink className="button" id="contacto">Evaluar mi operación</SectionLink>
                 <SectionLink className="button button--ghost-light" id="transformacion">Ver enfoque</SectionLink>
               </div>
             </div>
             <aside className="tpr-hero__card">
-              <strong>Para empresas que necesitan claridad</strong>
-              <p>Orden, desempeño, condiciones humanas y sostenibilidad aplicados a operaciones reales.</p>
+              <strong>Claridad para decidir</strong>
+              <p>Diagnóstico, rediseño y herramientas para operar mejor.</p>
               <div><span>Procesos</span><span>Personas</span><span>Recursos</span><span>Tecnología</span><span>Entorno</span></div>
             </aside>
           </div>
@@ -311,8 +289,8 @@ function PublicSite() {
             <SectionHeading
               align="center"
               kicker="La tríada fundamental"
-              title="Tres ejes para transformar sin improvisar"
-              description="Mejorar una organización exige mirar operación, personas y entorno como partes de un mismo sistema."
+              title="Tres ejes para operar mejor"
+              description="Operación, personas y entorno deben diseñarse como un mismo sistema."
             />
             <div className="tpr-pillar-grid">
               {transformationPillars.map((item) => (
@@ -331,13 +309,13 @@ function PublicSite() {
           <div className="shell tpr-split-grid">
             <div className="tpr-panel">
               <span className="kicker">Punto de entrada</span>
-              <h2>Entrada concreta: mejorar la operación</h2>
-              <p>Partimos desde una necesidad real: producir, servir, coordinar, documentar o comunicar mejor.</p>
+              <h2>Entrada concreta: la operación</h2>
+              <p>Partimos por lo que hoy cuesta: producir, coordinar, documentar o vender mejor.</p>
             </div>
             <div className="tpr-panel tpr-panel--accent">
               <span className="kicker">ADN Metamorfosis</span>
-              <h2>ADN Metamorfosis: mirada sistémica</h2>
-              <p>Cada cambio toca rutinas, información, vínculos, costos, experiencia e impacto. Por eso diseñamos con el sistema completo a la vista.</p>
+              <h2>ADN: mirada sistémica</h2>
+              <p>Cada cambio afecta rutinas, información, costos, experiencia e impacto. Diseñamos con el sistema completo a la vista.</p>
             </div>
           </div>
           <div className="shell tpr-usecase-grid">
@@ -355,8 +333,8 @@ function PublicSite() {
           <div className="shell">
             <SectionHeading
               kicker="Servicios y soluciones"
-              title="Servicios para pasar del desorden a la capacidad"
-              description="Puedes partir por un diagnóstico o avanzar hacia rediseño, implementación y seguimiento."
+              title="Servicios para convertir desorden en capacidad"
+              description="Partimos con diagnóstico y avanzamos hacia implementación cuando agrega valor."
             />
             <div className="tpr-solutions-grid">
               {solutions.map((item) => (
@@ -374,7 +352,7 @@ function PublicSite() {
           <div className="tpr-method-section__shade" aria-hidden="true" />
           <div className="shell tpr-method-grid">
             <div className="tpr-panel tpr-panel--wide">
-              <SectionHeading kicker="Cómo lo hacemos" title="Observar, medir y sostener" description="Cada intervención deja criterios, instrumentos y próximos pasos para que la mejora no dependa de la memoria." />
+              <SectionHeading kicker="Cómo lo hacemos" title="Observar, medir, sostener" description="Cada intervención deja criterios, instrumentos y próximos pasos." />
               <div className="tpr-method-cards">
                 {methodPrinciples.map((item) => (
                   <article key={item.title}>
@@ -397,8 +375,8 @@ function PublicSite() {
             <SectionHeading
               align="center"
               kicker="Resultados e impacto"
-              title="Resultados que se pueden verificar"
-              description="Medimos avances operacionales, humanos y sistémicos con indicadores simples y útiles."
+              title="Resultados verificables"
+              description="Usamos indicadores simples para mostrar avances reales."
             />
             <div className="tpr-indicators">
               {resultIndicators.map((item) => <span key={item}>{item}</span>)}
@@ -423,8 +401,8 @@ function PublicSite() {
           <div className="shell">
             <SectionHeading
               kicker="Prueba social y proyectos"
-              title="Casos que muestran método aplicado"
-              description="Cada proyecto evidencia una capacidad distinta: ordenar, comunicar, digitalizar o sostener."
+              title="Método aplicado en casos reales"
+              description="Ordenar, comunicar, digitalizar y sostener en contextos reales."
             />
             <div className="case-grid tpr-case-grid">
               {publicCases.map((caseItem) => (
@@ -445,9 +423,9 @@ function PublicSite() {
           <div className="shell tpr-manifesto__grid">
             <div>
               <span className="kicker">Nosotros / Manifiesto</span>
-              <h2>Las organizaciones son sistemas vivos</h2>
+              <h2>Organizaciones como sistemas vivos</h2>
             </div>
-            <p>Una empresa es una red de decisiones, recursos, personas, cultura, territorio e impacto. Metamorfosis Lab ayuda a que lo valioso deje de depender de la improvisación y se convierta en una forma clara de operar.</p>
+            <p>Una empresa es una red de decisiones, personas, recursos e impactos. Ayudamos a convertir lo valioso en una forma clara, ética y sostenible de operar.</p>
           </div>
         </section>
 
@@ -455,7 +433,7 @@ function PublicSite() {
           <div className="story-section__shade" aria-hidden="true" />
           <div className="shell contact-layout contact-layout--immersive">
             <div className="contact-intro">
-              <SectionHeading kicker="Conversemos" title="Evaluemos qué necesita tu operación" description="Primero entendemos el problema. Luego definimos si corresponde diagnosticar, rediseñar o implementar." />
+              <SectionHeading kicker="Conversemos" title="Evaluemos tu operación" description="Primero entendemos el problema. Luego definimos el siguiente paso útil." />
               <div className="contact-links contact-links--compact">
                 <a href={`${waBase}?text=${encodeURIComponent('Hola, quisiera solicitar una conversación inicial con Metamorfosis Lab sobre Transformación Productiva Responsable.')}`} target="_blank" rel="noreferrer"><img src="/assets/icons/whatsapp.svg" alt="" width="22" height="22" /><span><small>WhatsApp</small><strong>{contact.phoneDisplay}</strong></span></a>
                 <a href={`mailto:${contact.email}`}><Icon name="mail" /><span><small>Correo</small><strong>{contact.email}</strong></span></a>

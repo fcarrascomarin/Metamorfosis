@@ -4659,3 +4659,420 @@ textarea::placeholder { color: #7f98ac; }
     display: none;
   }
 }
+
+/* ==========================================================================
+   2026-08 · Corrección de lectura real + formulario compacto
+   ========================================================================== */
+.public-site {
+  --safe-dark: #071521;
+  --safe-text: #f7fbff;
+  --safe-muted: rgba(238, 247, 255, .84);
+  --safe-light-title: #102521;
+  --safe-light-copy: #314640;
+}
+
+.public-site .tpr-section,
+.public-site .tpr-section--intro,
+.public-site .tpr-section--results {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(70, 209, 192, .10), transparent 26%),
+    linear-gradient(180deg, #fffdf8 0%, #f3eee5 100%);
+}
+
+.public-site .tpr-section .section-heading h2,
+.public-site .tpr-section--results .section-heading h2,
+.public-site .tpr-section .section-heading p,
+.public-site .tpr-section--results .section-heading p {
+  color: var(--safe-light-title);
+  text-shadow: none;
+}
+
+.public-site .tpr-section .section-heading p,
+.public-site .tpr-section--results .section-heading p {
+  color: var(--safe-light-copy);
+}
+
+.public-site .tpr-section .kicker,
+.public-site .tpr-section--results .kicker {
+  color: #167d72;
+}
+
+.public-site .section,
+.public-site .tpr-split-section,
+.public-site .tpr-method-section,
+.public-site .tpr-cases-section,
+.public-site .tpr-manifesto,
+.public-site .story-section--contact {
+  padding-block: clamp(34px, 4.8svh, 56px);
+}
+
+.public-site .section-heading {
+  margin-bottom: clamp(16px, 2.2svh, 26px);
+}
+
+.public-site .section-heading h2,
+.public-site .tpr-panel h2,
+.public-site .tpr-manifesto h2,
+.public-site .contact-intro h2 {
+  max-width: min(28ch, 100%);
+  font-size: clamp(1.55rem, 2.25vw, 2.55rem);
+}
+
+.public-site .section-heading p,
+.public-site .tpr-panel p,
+.public-site .tpr-manifesto p,
+.public-site .contact-intro p {
+  font-size: clamp(.88rem, .95vw, .98rem);
+  line-height: 1.45;
+}
+
+.public-site .tpr-card,
+.public-site .tpr-usecase,
+.public-site .tpr-impact-card,
+.public-site .case-card {
+  padding: clamp(16px, 1.8vw, 22px);
+}
+
+.public-site .tpr-card p,
+.public-site .tpr-usecase p,
+.public-site .case-card p,
+.public-site .tpr-impact-card dd {
+  color: var(--safe-muted);
+}
+
+.public-site .tpr-icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 12px;
+}
+
+.public-site .tpr-pillar-grid,
+.public-site .tpr-solutions-grid,
+.public-site .tpr-impact-grid,
+.public-site .tpr-case-grid {
+  gap: clamp(12px, 1.6vw, 18px);
+}
+
+.public-site .tpr-solutions-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.public-site .tpr-indicators {
+  margin-bottom: 16px;
+}
+
+.public-site .tpr-indicators span {
+  color: #102521;
+  background: rgba(255, 253, 248, .92);
+  border: 1px solid rgba(23, 52, 47, .16);
+  box-shadow: 0 10px 24px rgba(23, 42, 39, .08);
+}
+
+.public-site .tpr-split-section__shade,
+.public-site .tpr-method-section__shade,
+.public-site .tpr-cases-section__shade,
+.public-site .story-section__shade {
+  background:
+    radial-gradient(circle at 80% 18%, rgba(70, 209, 192, .14), transparent 28%),
+    linear-gradient(90deg, rgba(3, 12, 21, .94), rgba(5, 20, 32, .82) 52%, rgba(3, 12, 21, .90));
+}
+
+.public-site .tpr-panel,
+.public-site .contact-intro,
+.public-site .quote-wizard,
+.public-site .quote-confirmation,
+.public-site .tpr-manifesto__grid {
+  background: linear-gradient(145deg, rgba(4,16,27,.94), rgba(6,27,42,.86));
+  border: 1px solid rgba(141, 243, 229, .24);
+  color: var(--safe-text);
+  box-shadow: 0 22px 55px rgba(0,0,0,.30);
+}
+
+.public-site .contact-intro .section-heading h2,
+.public-site .contact-intro .section-heading p,
+.public-site .tpr-panel .section-heading h2,
+.public-site .tpr-panel .section-heading p,
+.public-site .tpr-manifesto h2,
+.public-site .tpr-manifesto p,
+.public-site .tpr-cases-section .section-heading h2,
+.public-site .tpr-cases-section .section-heading p {
+  color: var(--safe-text);
+}
+
+.public-site .contact-intro .section-heading p,
+.public-site .tpr-panel .section-heading p,
+.public-site .tpr-panel p,
+.public-site .tpr-manifesto p,
+.public-site .tpr-cases-section .section-heading p {
+  color: var(--safe-muted);
+}
+
+.public-site .story-section--contact {
+  min-height: var(--public-section-min);
+  padding-block: clamp(26px, 3.6svh, 44px);
+}
+
+.public-site .contact-layout--immersive {
+  min-height: auto;
+  grid-template-columns: minmax(0, .88fr) minmax(360px, .78fr);
+  gap: clamp(16px, 2.2vw, 30px);
+}
+
+.public-site .contact-intro {
+  padding: clamp(22px, 2.5vw, 30px);
+}
+
+.public-site .contact-intro .section-heading {
+  margin-bottom: 18px;
+}
+
+.public-site .contact-links--compact {
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.public-site .contact-links > a,
+.public-site .contact-links > div {
+  min-height: 58px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,.06);
+  border-color: rgba(141, 243, 229, .20);
+}
+
+.public-site .contact-links small {
+  color: rgba(238,247,255,.58);
+  font-size: .68rem;
+}
+
+.public-site .contact-links strong {
+  color: #ffffff;
+  font-size: .88rem;
+}
+
+.public-site .tpr-form--compact {
+  display: grid;
+  gap: 12px;
+  padding: clamp(16px, 2vw, 22px);
+  border-radius: 24px;
+}
+
+.public-site .form-headline {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(141, 243, 229, .18);
+}
+
+.public-site .form-headline span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #8df3e5;
+  font-size: .72rem;
+  font-weight: 850;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.public-site .form-headline strong {
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1.15;
+  text-align: right;
+}
+
+.public-site .tpr-form-grid {
+  gap: 10px;
+}
+
+.public-site .field-label {
+  display: grid;
+  gap: 6px;
+  color: rgba(246,251,255,.92);
+  font-size: .76rem;
+  font-weight: 800;
+}
+
+.public-site .field-label > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.public-site .field-label .app-icon {
+  width: 15px;
+  height: 15px;
+  color: #8df3e5;
+}
+
+.public-site .tpr-form--compact input,
+.public-site .tpr-form--compact select,
+.public-site .tpr-form--compact textarea {
+  margin-top: 0;
+  min-height: 40px;
+  padding: 9px 11px;
+  border-radius: 12px;
+  color: #ffffff;
+  background: rgba(1, 10, 18, .72);
+  border-color: rgba(141, 243, 229, .25);
+  font-size: .88rem;
+}
+
+.public-site .tpr-form--compact textarea {
+  min-height: 76px;
+  max-height: 96px;
+  resize: vertical;
+}
+
+.public-site .tpr-form--compact input:focus,
+.public-site .tpr-form--compact select:focus,
+.public-site .tpr-form--compact textarea:focus {
+  outline: 2px solid rgba(141, 243, 229, .42);
+  outline-offset: 1px;
+}
+
+.public-site .tpr-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 0;
+  color: rgba(238,247,255,.78);
+  font-size: .78rem;
+  line-height: 1.35;
+}
+
+.public-site .tpr-check input {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  margin: 2px 0 0;
+}
+
+.public-site .form-submit {
+  min-height: 42px;
+  padding: 10px 14px;
+}
+
+.public-site .quote-confirmation {
+  display: grid;
+  gap: 12px;
+  place-items: center;
+  text-align: center;
+}
+
+@media (min-width: 980px) and (max-height: 820px) {
+  .public-site .section,
+  .public-site .tpr-split-section,
+  .public-site .tpr-method-section,
+  .public-site .tpr-cases-section,
+  .public-site .tpr-manifesto,
+  .public-site .story-section--contact {
+    padding-block: 26px;
+  }
+  .public-site .section-heading {
+    margin-bottom: 14px;
+  }
+  .public-site .section-heading h2,
+  .public-site .tpr-panel h2,
+  .public-site .tpr-manifesto h2,
+  .public-site .contact-intro h2 {
+    font-size: clamp(1.42rem, 1.9vw, 2.15rem);
+  }
+  .public-site .section-heading p,
+  .public-site .tpr-panel p,
+  .public-site .tpr-manifesto p,
+  .public-site .contact-intro p,
+  .public-site .tpr-card p,
+  .public-site .tpr-usecase p,
+  .public-site .case-card p,
+  .public-site .tpr-impact-card dd {
+    font-size: .82rem;
+    line-height: 1.36;
+  }
+  .public-site .tpr-card,
+  .public-site .tpr-usecase,
+  .public-site .tpr-impact-card,
+  .public-site .case-card,
+  .public-site .tpr-panel,
+  .public-site .contact-intro,
+  .public-site .quote-wizard {
+    padding: 14px;
+  }
+  .public-site .tpr-icon {
+    width: 34px;
+    height: 34px;
+    margin-bottom: 9px;
+  }
+  .public-site .tpr-usecase-grid,
+  .public-site .tpr-pillar-grid,
+  .public-site .tpr-solutions-grid,
+  .public-site .tpr-impact-grid,
+  .public-site .tpr-case-grid {
+    gap: 10px;
+  }
+  .public-site .tpr-form--compact {
+    gap: 9px;
+  }
+  .public-site .tpr-form--compact input,
+  .public-site .tpr-form--compact select {
+    min-height: 36px;
+    padding: 7px 10px;
+  }
+  .public-site .tpr-form--compact textarea {
+    min-height: 58px;
+    max-height: 68px;
+  }
+  .public-site .form-headline {
+    padding-bottom: 7px;
+  }
+  .public-site .contact-links > a,
+  .public-site .contact-links > div {
+    min-height: 48px;
+    padding: 9px 12px;
+  }
+}
+
+@media (max-width: 860px) {
+  .public-site .section,
+  .public-site .tpr-split-section,
+  .public-site .tpr-method-section,
+  .public-site .tpr-cases-section,
+  .public-site .tpr-manifesto,
+  .public-site .story-section--contact {
+    min-height: auto;
+    padding-block: 44px;
+  }
+  .public-site .contact-layout--immersive,
+  .public-site .tpr-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .public-site .form-headline {
+    align-items: start;
+    flex-direction: column;
+  }
+  .public-site .form-headline strong {
+    text-align: left;
+  }
+}
+
+@media (max-width: 520px) {
+  .public-site .section,
+  .public-site .tpr-split-section,
+  .public-site .tpr-method-section,
+  .public-site .tpr-cases-section,
+  .public-site .tpr-manifesto,
+  .public-site .story-section--contact {
+    padding-block: 34px;
+  }
+  .public-site .section-heading h2,
+  .public-site .tpr-panel h2,
+  .public-site .tpr-manifesto h2,
+  .public-site .contact-intro h2 {
+    font-size: clamp(1.46rem, 7vw, 2rem);
+  }
+  .public-site .tpr-form--compact textarea {
+    min-height: 70px;
+  }
+}

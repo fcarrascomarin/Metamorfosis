@@ -11,59 +11,59 @@ export const transformationPillars = [
   {
     icon: 'query_stats',
     title: 'Eficiencia operacional',
-    text: 'Procesos, datos y recursos mejor organizados para reducir pérdidas y elevar desempeño.'
+    text: 'Procesos, datos y recursos ordenados para reducir pérdidas y mejorar desempeño.'
   },
   {
     icon: 'group',
     title: 'Condiciones humanas',
-    text: 'Roles, rutinas y experiencias de trabajo que permiten sostener el cambio.'
+    text: 'Roles, rutinas y cargas de trabajo diseñadas para sostener el cambio.'
   },
   {
     icon: 'public',
     title: 'Sistemas vivos',
-    text: 'Operaciones conectadas con su entorno, sus impactos y sus responsabilidades.'
+    text: 'Decisiones que consideran recursos, entorno, impactos y continuidad.'
   }
 ];
 
 export const activeOfferUseCases = [
   {
-    title: 'Operar sin depender de la memoria',
-    text: 'Ordenamos tareas, registros, roles y puntos críticos para que la empresa crezca con método.'
+    title: 'Ordenar la operación',
+    text: 'Roles, tareas, registros y puntos críticos visibles.'
   },
   {
-    title: 'Explicar mejor lo que ya vale',
-    text: 'Convertimos capacidades dispersas en una oferta clara, visible y fácil de conversar.'
+    title: 'Explicar el valor',
+    text: 'Oferta, relato y canales comerciales más claros.'
   },
   {
-    title: 'Cuidar equipos mientras se mejora',
-    text: 'Diseñamos cambios que consideran carga, coordinación, hábitos y herramientas reales.'
+    title: 'Cuidar equipos',
+    text: 'Cambios compatibles con cargas, hábitos y coordinación real.'
   },
   {
-    title: 'Hacer sostenibilidad desde la operación',
-    text: 'Integramos recursos, residuos, datos y entorno sin caer en discursos superficiales.'
+    title: 'Sostener recursos',
+    text: 'Eficiencia, mermas e impacto integrados al diseño.'
   }
 ];
 
 export const solutions = [
   {
     icon: 'visibility',
-    title: 'Diagnóstico operacional integral',
-    text: 'Vemos cómo opera la organización, dónde pierde energía y qué debe priorizar.'
+    title: 'Diagnóstico integral',
+    text: 'Detectamos brechas, riesgos y prioridades de mejora.'
   },
   {
     icon: 'schema',
-    title: 'Rediseño de procesos',
-    text: 'Diseñamos flujos, roles, registros, indicadores y tecnología útil para operar mejor.'
+    title: 'Procesos eficientes',
+    text: 'Rediseñamos flujos, roles, registros e indicadores.'
   },
   {
     icon: 'group',
-    title: 'Cambio y condiciones humanas',
-    text: 'Acompañamos adopción, comunicación interna y rutinas de trabajo sostenibles.'
+    title: 'Cambio humano',
+    text: 'Acompañamos adopción, comunicación y rutinas de equipo.'
   },
   {
     icon: 'public',
     title: 'Sostenibilidad operativa',
-    text: 'Incorporamos recursos, entorno, circularidad e impacto como parte del diseño.'
+    text: 'Integramos recursos, entorno e impacto al negocio.'
   }
 ];
 
@@ -71,48 +71,48 @@ export const methodPrinciples = [
   {
     icon: 'visibility',
     title: 'Observable',
-    text: 'Hacemos visible cómo se genera valor y dónde se pierde capacidad.'
+    text: 'Ver cómo se genera valor y dónde se pierde capacidad.'
   },
   {
     icon: 'query_stats',
     title: 'Medible',
-    text: 'Definimos indicadores simples para verificar avances reales.'
+    text: 'Indicadores simples para verificar avances.'
   },
   {
     icon: 'verified_user',
     title: 'Sostenible',
-    text: 'Dejamos responsables, documentos y rutinas para mantener la mejora.'
+    text: 'Responsables, documentos y rutinas para continuar.'
   }
 ];
 
 export const resultIndicators = [
-  'Tiempos de respuesta',
-  'Uso de recursos',
-  'Mermas y continuidad',
-  'Claridad de roles',
-  'Coordinación del equipo',
-  'Oferta más comprensible',
-  'Capacidad instalada'
+  'Tiempos',
+  'Recursos',
+  'Mermas',
+  'Roles',
+  'Coordinación',
+  'Oferta',
+  'Continuidad'
 ];
 
 export const impactCases = [
   {
     title: 'CM Banquetería & Restaurant',
-    challenge: 'Operación activa con información dispersa y necesidad de orden documental.',
-    intervention: 'Acompañamiento en operación, registros, presencia web y sistema interno.',
-    result: 'Mejor trazabilidad y base metodológica para servicios replicables.'
+    challenge: 'Operación activa con información dispersa.',
+    intervention: 'Registros, web, sistema interno y orden documental.',
+    result: 'Mayor trazabilidad y base replicable.'
   },
   {
     title: 'Presencia digital profesional',
-    challenge: 'Valor real difícil de explicar, cotizar o mostrar en canales digitales.',
-    intervention: 'Orden de oferta, relato, arquitectura web y formularios de contacto.',
-    result: 'Una vitrina clara para iniciar conversaciones comerciales.'
+    challenge: 'Valor difícil de explicar o cotizar.',
+    intervention: 'Relato, arquitectura web y formularios claros.',
+    result: 'Conversaciones comerciales más ordenadas.'
   },
   {
     title: 'Sistema interno de gestión',
-    challenge: 'Decisiones y documentos dispersos entre mensajes, archivos y urgencias.',
-    intervention: 'Panel interno con proyectos, responsables, documentos, estados e hitos.',
-    result: 'Memoria institucional y seguimiento simple de avances.'
+    challenge: 'Decisiones repartidas entre mensajes y archivos.',
+    intervention: 'Panel con proyectos, documentos, estados e hitos.',
+    result: 'Memoria institucional y seguimiento real.'
   }
 ];
 
@@ -123,15 +123,15 @@ export const publicCases = [
     label: 'Transformación productiva',
     name: 'CM Banquetería & Restaurant',
     text: 'Orden operativo, documentación, web pública y sistema interno para una pyme real.',
-    tags: ['Operación', 'Documentación', 'Sistema', 'Web']
+    tags: ['Operación', 'Documentos', 'Sistema', 'Web']
   },
   {
     id: 'metamorfosis-os',
     brand: 'metamorfosis',
     label: 'Capacidad propia',
     name: 'Metamorfosis OS',
-    text: 'Panel privado para proyectos, documentos, decisiones y continuidad del trabajo.',
-    tags: ['Gestión', 'Documentos', 'Indicadores', 'Memoria'],
+    text: 'Panel privado para proyectos, documentos, decisiones y continuidad.',
+    tags: ['Gestión', 'Memoria', 'Indicadores'],
     action: 'Ingresar al sistema interno'
   },
   {
@@ -140,6 +140,6 @@ export const publicCases = [
     label: 'Identidad y comercio',
     name: 'Joyas Juana de Arco',
     text: 'Marca, catálogo, relato simbólico y experiencia digital de compra.',
-    tags: ['Marca', 'Catálogo', 'E-commerce', 'Experiencia']
+    tags: ['Marca', 'Catálogo', 'Experiencia']
   }
 ];
