@@ -193,22 +193,47 @@ function QuoteForm() {
     return `${waBase}?text=${encodeURIComponent(lines.join('\n'))}`;
   }, [form]);
 
+  const emailUrl = useMemo(() => {
+    const subject = `Solicitud web · ${form.company || 'Metamorfosis Lab'}`;
+    const body = [
+      'Nueva solicitud recibida desde metamorfosislab.cl',
+      '',
+      `Servicio de interés: ${form.serviceType}`,
+      `Organización: ${form.company || 'No indicada'}`,
+      `Nombre: ${form.contactName || 'No indicado'}`,
+      `Teléfono: ${form.phone || 'No indicado'}`,
+      '',
+      'Necesidad principal:',
+      form.details || 'No indicada',
+      '',
+      'Consentimiento: acepta ser contactado/a para responder esta solicitud.'
+    ];
+    return `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.join('\n'))}`;
+  }, [form]);
+
   const submit = (event) => {
     event.preventDefault();
     if (!isValid) return;
     setStatus('ready');
+    window.location.href = emailUrl;
   };
 
   if (status === 'ready') {
     return (
-      <div className="quote-confirmation" role="status" aria-live="polite">
-        <span className="confirmation-icon"><Icon name="check_circle" /></span>
-        <h3>Solicitud lista</h3>
-        <p>Abre WhatsApp para enviarla y coordinar una conversación inicial.</p>
-        <a className="button" href={whatsappUrl} target="_blank" rel="noreferrer">
-          <img src="/assets/icons/whatsapp.svg" alt="" width="20" height="20" />
-          WhatsApp
-        </a>
+      <div className="quote-confirmation quote-confirmation--email" role="status" aria-live="polite">
+        <span className="confirmation-icon"><Icon name="mail" /></span>
+        <h3>Correo preparado</h3>
+        <p>Se abrió un mensaje dirigido a contacto@metamorfosislab.cl. Revísalo y presiona enviar en tu correo.</p>
+        <div className="quote-confirmation__actions">
+          <a className="button" href={emailUrl}>
+            <Icon name="mail" />
+            Abrir correo
+          </a>
+          <a className="button button--ghost-light" href={whatsappUrl} target="_blank" rel="noreferrer">
+            <img src="/assets/icons/whatsapp.svg" alt="" width="20" height="20" />
+            WhatsApp
+          </a>
+        </div>
         <button type="button" className="text-button" onClick={() => { setStatus('idle'); setForm(empty); }}>
           Nueva solicitud
         </button>
@@ -251,7 +276,7 @@ function QuoteForm() {
       <label className="check-line tpr-check"><input type="checkbox" name="consent" checked={form.consent} onChange={update} /> <span>Acepto ser contactado para responder esta solicitud.</span></label>
 
       <button className="button button--full form-submit" type="submit" disabled={!isValid}>
-        Enviar por WhatsApp <Icon name="send" />
+        Enviar al correo <Icon name="send" />
       </button>
     </form>
   );
