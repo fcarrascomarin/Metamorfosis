@@ -5076,3 +5076,226 @@ textarea::placeholder { color: #7f98ac; }
     min-height: 70px;
   }
 }
+
+/* ==========================================================================
+   2026-08 · Respiro visual: bordes libres y lectura sin saturación
+   ========================================================================== */
+.public-site--tpr {
+  --public-gutter: clamp(28px, 7vw, 132px);
+  --content-max: 1060px;
+  --content-compact: 980px;
+  --content-narrow: 880px;
+}
+
+.public-site--tpr .shell {
+  width: min(var(--content-max), calc(100% - (var(--public-gutter) * 2)));
+}
+
+.public-site--tpr .section-heading {
+  max-width: var(--content-narrow);
+}
+
+.public-site--tpr .section-heading h2 {
+  max-width: 22ch;
+}
+
+.public-site--tpr #pilares .shell,
+.public-site--tpr #soluciones .shell,
+.public-site--tpr #resultados .shell,
+.public-site--tpr #casos .shell,
+.public-site--tpr #nosotros .shell,
+.public-site--tpr #contacto .shell {
+  width: min(var(--content-max), calc(100% - (var(--public-gutter) * 2)));
+}
+
+.public-site--tpr #pilares .shell,
+.public-site--tpr #soluciones .shell,
+.public-site--tpr #resultados .shell {
+  padding-inline: clamp(14px, 1.6vw, 24px);
+}
+
+.public-site--tpr .tpr-pillar-grid,
+.public-site--tpr .tpr-impact-grid,
+.public-site--tpr .tpr-case-grid {
+  max-width: var(--content-compact);
+  margin-inline: auto;
+}
+
+.public-site--tpr .tpr-solutions-grid,
+.public-site--tpr .tpr-usecase-grid {
+  max-width: 940px;
+  margin-inline: auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.public-site--tpr .tpr-split-grid,
+.public-site--tpr .tpr-method-grid,
+.public-site--tpr .contact-layout--immersive,
+.public-site--tpr .tpr-manifesto__grid {
+  max-width: var(--content-max);
+  margin-inline: auto;
+}
+
+.public-site--tpr .tpr-split-section,
+.public-site--tpr .tpr-method-section,
+.public-site--tpr .tpr-cases-section,
+.public-site--tpr .story-section--contact,
+.public-site--tpr .tpr-manifesto {
+  padding-inline: var(--public-gutter);
+}
+
+.public-site--tpr .tpr-split-section > .shell,
+.public-site--tpr .tpr-method-section > .shell,
+.public-site--tpr .tpr-cases-section > .shell,
+.public-site--tpr .story-section--contact > .shell,
+.public-site--tpr .tpr-manifesto > .shell {
+  width: min(var(--content-max), 100%);
+}
+
+.public-site--tpr .tpr-card,
+.public-site--tpr .tpr-usecase,
+.public-site--tpr .tpr-impact-card,
+.public-site--tpr .case-card,
+.public-site--tpr .tpr-panel,
+.public-site--tpr .contact-intro,
+.public-site--tpr .quote-wizard,
+.public-site--tpr .tpr-manifesto__grid {
+  box-shadow: 0 18px 42px rgba(0, 0, 0, .22);
+}
+
+.public-site--tpr .tpr-card,
+.public-site--tpr .tpr-impact-card,
+.public-site--tpr .case-card {
+  min-height: auto;
+}
+
+.public-site--tpr .tpr-icon {
+  margin-bottom: 10px;
+}
+
+.public-site--tpr .tpr-card h3,
+.public-site--tpr .tpr-usecase h3,
+.public-site--tpr .tpr-impact-card h3,
+.public-site--tpr .case-card h3 {
+  max-width: 18ch;
+}
+
+.public-site--tpr .tpr-card p,
+.public-site--tpr .tpr-usecase p,
+.public-site--tpr .case-card p,
+.public-site--tpr .tpr-impact-card dd {
+  max-width: 34ch;
+}
+
+.public-site--tpr .tpr-impact-card dl {
+  gap: 8px;
+}
+
+.public-site--tpr .tpr-indicators {
+  max-width: 760px;
+}
+
+.public-site--tpr .tpr-method-visual {
+  max-width: 390px;
+  justify-self: end;
+}
+
+.public-site--tpr .contact-layout--immersive {
+  grid-template-columns: minmax(0, .82fr) minmax(320px, .72fr);
+}
+
+.public-site--tpr .contact-intro .section-heading,
+.public-site--tpr .tpr-panel .section-heading {
+  text-align: left;
+  margin-inline: 0;
+}
+
+.public-site--tpr .contact-intro .section-heading h2,
+.public-site--tpr .contact-intro .section-heading p,
+.public-site--tpr .tpr-panel .section-heading h2,
+.public-site--tpr .tpr-panel .section-heading p {
+  margin-inline: 0;
+}
+
+.public-site--tpr .site-footer .shell {
+  width: min(var(--content-max), calc(100% - (var(--public-gutter) * 2)));
+}
+
+.public-site--tpr .site-footer__grid {
+  gap: clamp(28px, 4vw, 56px);
+}
+
+@media (min-width: 1280px) {
+  .public-site--tpr .tpr-hero__grid {
+    width: min(1180px, calc(100% - 220px));
+  }
+}
+
+@media (min-width: 980px) and (max-height: 820px) {
+  .public-site--tpr {
+    --public-gutter: clamp(34px, 8vw, 120px);
+    --content-max: 1010px;
+    --content-compact: 940px;
+  }
+  .public-site--tpr .tpr-solutions-grid,
+  .public-site--tpr .tpr-usecase-grid {
+    max-width: 900px;
+  }
+}
+
+@media (max-width: 1120px) {
+  .public-site--tpr {
+    --public-gutter: clamp(24px, 4.5vw, 72px);
+    --content-max: 960px;
+  }
+}
+
+@media (max-width: 860px) {
+  .public-site--tpr {
+    --public-gutter: clamp(18px, 5vw, 34px);
+    --content-max: 680px;
+  }
+
+  .public-site--tpr .shell,
+  .public-site--tpr #pilares .shell,
+  .public-site--tpr #soluciones .shell,
+  .public-site--tpr #resultados .shell,
+  .public-site--tpr #casos .shell,
+  .public-site--tpr #nosotros .shell,
+  .public-site--tpr #contacto .shell,
+  .public-site--tpr .site-footer .shell {
+    width: min(var(--content-max), calc(100% - (var(--public-gutter) * 2)));
+  }
+
+  .public-site--tpr .tpr-split-section,
+  .public-site--tpr .tpr-method-section,
+  .public-site--tpr .tpr-cases-section,
+  .public-site--tpr .story-section--contact,
+  .public-site--tpr .tpr-manifesto {
+    padding-inline: 0;
+  }
+
+  .public-site--tpr .tpr-pillar-grid,
+  .public-site--tpr .tpr-solutions-grid,
+  .public-site--tpr .tpr-usecase-grid,
+  .public-site--tpr .tpr-impact-grid,
+  .public-site--tpr .tpr-case-grid {
+    max-width: 100%;
+    grid-template-columns: 1fr;
+  }
+
+  .public-site--tpr .tpr-method-visual {
+    max-width: 100%;
+    justify-self: stretch;
+  }
+}
+
+@media (max-width: 520px) {
+  .public-site--tpr {
+    --public-gutter: 14px;
+  }
+
+  .public-site--tpr .section-heading {
+    margin-bottom: 18px;
+  }
+}
