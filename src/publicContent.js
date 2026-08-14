@@ -97,22 +97,28 @@ export const resultIndicators = [
 
 export const impactCases = [
   {
+    icon: 'inventory_2',
     title: 'CM Banquetería & Restaurant',
-    challenge: 'Operación activa con información dispersa.',
-    intervention: 'Registros, web, sistema interno y orden documental.',
-    result: 'Mayor trazabilidad y base replicable.'
+    lead: 'Una operación real necesitaba trazabilidad sin perder ritmo de trabajo.',
+    challenge: 'Información dispersa.',
+    intervention: 'Registros, web y panel interno.',
+    result: 'Base clara para decidir y replicar.'
   },
   {
+    icon: 'public',
     title: 'Presencia digital profesional',
-    challenge: 'Valor difícil de explicar o cotizar.',
-    intervention: 'Relato, arquitectura web y formularios claros.',
-    result: 'Conversaciones comerciales más ordenadas.'
+    lead: 'Cuando el valor no se explica bien, vender se vuelve más difícil.',
+    challenge: 'Oferta poco visible.',
+    intervention: 'Relato, arquitectura web y canal formal.',
+    result: 'Conversaciones comerciales más serias.'
   },
   {
+    icon: 'dashboard',
     title: 'Sistema interno de gestión',
-    challenge: 'Decisiones repartidas entre mensajes y archivos.',
-    intervention: 'Panel con proyectos, documentos, estados e hitos.',
-    result: 'Memoria institucional y seguimiento real.'
+    lead: 'El conocimiento pierde fuerza cuando queda repartido entre mensajes y archivos.',
+    challenge: 'Decisiones sin lugar común.',
+    intervention: 'Proyectos, documentos, estados e hitos.',
+    result: 'Memoria institucional visible.'
   }
 ];
 

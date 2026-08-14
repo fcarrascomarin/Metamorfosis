@@ -4,6 +4,7 @@ import { documents, initialProjects } from './data.js';
 import { createDefaultOsState, OWNERS, TOPICS } from './osSeed.js';
 
 const STORAGE_KEY = 'metamorfosis-os-draft-v6';
+const PUBLIC_QUOTES_KEY = 'metamorfosis-public-quotes';
 const PUBLIC_SITE_URL = String(import.meta.env.VITE_PUBLIC_SITE_URL || 'https://www.metamorfosislab.cl').replace(/\/$/, '');
 const STATUS_OPTIONS = ['nueva', 'contactada', 'evaluacion', 'propuesta', 'cerrada', 'descartada'];
 
@@ -709,7 +710,7 @@ function TimeTrackingView({ osState, setOsState }) {
 }
 
 function QuotesView({ quotes, loading, onStatusChange, notice }) {
-  return <div className="admin-view"><ViewHeading kicker="Comercial" title="Oportunidades y cotizaciones" description="Consultas de la web convertidas en registros trazables, con estado y contacto directo." />{notice && <p className={`admin-notice ${notice.type === 'error' ? 'admin-notice--error' : ''}`} role="status">{notice.message}</p>}<section className="panel-card"><div className="table-page"><table><thead><tr><th>Fecha</th><th>Contacto</th><th>Necesidad</th><th>Ciudad</th><th>Estado</th><th><span className="sr-only">Acciones</span></th></tr></thead><tbody>{quotes.map((quote) => <tr key={quote.id}><td>{new Intl.DateTimeFormat('es-CL', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(quote.created_at))}</td><td><strong>{quote.contact_name}</strong><small>{quote.company || quote.phone}</small></td><td><details><summary>{quote.service_type}</summary><p>{quote.details}</p>{(quote.project_stage || quote.team_size || quote.desired_date) && <small>{[quote.project_stage, quote.team_size, quote.desired_date].filter(Boolean).join(' · ')}</small>}</details></td><td>{quote.city || 'Sin indicar'}</td><td><select className="status-select" aria-label={`Cambiar estado de ${quote.contact_name}`} value={quote.status || 'nueva'} onChange={(event) => onStatusChange(quote.id, event.target.value)}>{STATUS_OPTIONS.map((status) => <option key={status} value={status}>{status === 'evaluacion' ? 'En evaluación' : status.charAt(0).toUpperCase() + status.slice(1)}</option>)}</select></td><td className="table-actions"><a className="icon-button" aria-label={`Contactar a ${quote.contact_name} por WhatsApp`} title="WhatsApp" href={`https://wa.me/${String(quote.phone || '').replace(/\D/g, '')}`} target="_blank" rel="noreferrer"><img src="/assets/icons/whatsapp.svg" alt="" width="18" height="18" /></a>{quote.email && <a className="icon-button" aria-label={`Enviar correo a ${quote.contact_name}`} title="Correo" href={`mailto:${quote.email}`}><Icon name="mail" /></a>}</td></tr>)}{!loading && !quotes.length && <tr><td colSpan="6"><div className="empty-state-inline"><Icon name="request_quote" /><p>No hay oportunidades registradas.</p></div></td></tr>}</tbody></table>{loading && <p className="loading-line">Cargando oportunidades…</p>}</div></section></div>;
+  return <div className="admin-view"><ViewHeading kicker="Comercial" title="Oportunidades y cotizaciones" description="Consultas de la web convertidas en registros trazables, con estado y contacto directo." />{notice && <p className={`admin-notice ${notice.type === 'error' ? 'admin-notice--error' : ''}`} role="status">{notice.message}</p>}<section className="panel-card"><div className="table-page"><table><thead><tr><th>Fecha</th><th>Contacto</th><th>Necesidad</th><th>Ciudad</th><th>Estado</th><th><span className="sr-only">Acciones</span></th></tr></thead><tbody>{quotes.map((quote) => <tr key={quote.id}><td>{new Intl.DateTimeFormat('es-CL', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(quote.created_at))}</td><td><strong>{quote.contact_name}</strong><small>{quote.company || quote.phone}</small></td><td><details><summary>{quote.service_type}</summary><p>{quote.details}</p>{(quote.project_stage || quote.team_size || quote.desired_date) && <small>{[quote.project_stage, quote.team_size, quote.desired_date].filter(Boolean).join(' · ')}</small>}</details></td><td>{quote.city || 'Sin indicar'}</td><td><select className="status-select" aria-label={`Cambiar estado de ${quote.contact_name}`} value={quote.status || 'nueva'} onChange={(event) => onStatusChange(quote.id, event.target.value)}>{STATUS_OPTIONS.map((status) => <option key={status} value={status}>{status === 'evaluacion' ? 'En evaluación' : status.charAt(0).toUpperCase() + status.slice(1)}</option>)}</select></td><td className="table-actions">{quote.email && <a className="icon-button" aria-label={`Enviar correo a ${quote.contact_name}`} title="Correo" href={`mailto:${quote.email}`}><Icon name="mail" /></a>}{quote.phone && <a className="icon-button" aria-label={`Llamar a ${quote.contact_name}`} title="Teléfono" href={`tel:${String(quote.phone || '').replace(/\D/g, '')}`}><Icon name="phone" /></a>}</td></tr>)}{!loading && !quotes.length && <tr><td colSpan="6"><div className="empty-state-inline"><Icon name="request_quote" /><p>No hay oportunidades registradas.</p></div></td></tr>}</tbody></table>{loading && <p className="loading-line">Cargando oportunidades…</p>}</div></section></div>;
 }
 
 function ProjectsView() {
@@ -776,9 +777,36 @@ function AdminShell({ session, onLogout }) {
 
   useEffect(() => { if (!loadingState) window.localStorage.setItem(STORAGE_KEY, JSON.stringify(osState)); }, [osState, loadingState]);
 
+  const readPublicQuotes = () => {
+    try {
+      const local = JSON.parse(window.localStorage.getItem(PUBLIC_QUOTES_KEY) || '[]');
+      return Array.isArray(local) ? local : [];
+    } catch {
+      return [];
+    }
+  };
+
+  const writePublicQuotes = (items) => {
+    try { window.localStorage.setItem(PUBLIC_QUOTES_KEY, JSON.stringify(items)); } catch { /* ignore */ }
+  };
+
+  const mergeQuotes = (remoteQuotes, localQuotes) => {
+    const map = new Map();
+    [...localQuotes, ...remoteQuotes].forEach((quote) => {
+      if (!quote?.id) return;
+      map.set(quote.id, { status: 'nueva', ...quote });
+    });
+    return Array.from(map.values()).sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+  };
+
   useEffect(() => {
     setLoadingQuotes(true);
-    fetch('/api/quotes').then((response) => response.json()).then((payload) => setQuotes(Array.isArray(payload.quotes) ? payload.quotes : [])).catch(() => setQuotes([])).finally(() => setLoadingQuotes(false));
+    const localQuotes = readPublicQuotes();
+    fetch('/api/quotes')
+      .then((response) => response.json())
+      .then((payload) => setQuotes(mergeQuotes(Array.isArray(payload.quotes) ? payload.quotes : [], localQuotes)))
+      .catch(() => setQuotes(localQuotes))
+      .finally(() => setLoadingQuotes(false));
   }, [session]);
 
   const saveState = async () => {
@@ -793,9 +821,24 @@ function AdminShell({ session, onLogout }) {
   };
 
   const updateQuoteStatus = async (id, status) => {
-    const previous = quotes; setQuotes((current) => current.map((quote) => quote.id === id ? { ...quote, status } : quote));
-    try { const response = await fetch(`/api/quotes/${id}/status`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) }); if (!response.ok) throw new Error(); setNotice({ type: 'success', message: 'Estado comercial actualizado.' }); }
-    catch { setQuotes(previous); setNotice({ type: 'error', message: 'No fue posible guardar el cambio.' }); }
+    const previous = quotes;
+    const nextQuotes = quotes.map((quote) => quote.id === id ? { ...quote, status } : quote);
+    setQuotes(nextQuotes);
+    const nextLocalQuotes = readPublicQuotes().map((quote) => quote.id === id ? { ...quote, status } : quote);
+    writePublicQuotes(nextLocalQuotes);
+    if (String(id).startsWith('web-')) {
+      setNotice({ type: 'success', message: 'Estado comercial actualizado en este navegador.' });
+      return;
+    }
+    try {
+      const response = await fetch(`/api/quotes/${id}/status`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) });
+      if (!response.ok) throw new Error();
+      setNotice({ type: 'success', message: 'Estado comercial actualizado.' });
+    }
+    catch {
+      setQuotes(previous);
+      setNotice({ type: 'error', message: 'No fue posible guardar el cambio.' });
+    }
   };
 
   const navigate = (key) => { setActive(key); window.localStorage.setItem('metamorfosis-admin-view', key); setMenuOpen(false); };

@@ -21,6 +21,7 @@ import {
 const waBase = `https://wa.me/${contact.phoneDigits}`;
 const defaultAdminUrl = '/admin';
 const adminUrl = String(import.meta.env.VITE_ADMIN_URL || defaultAdminUrl).replace(/\/$/, '');
+const PUBLIC_QUOTES_KEY = 'metamorfosis-public-quotes';
 
 function scrollToPublicSection(id, { smooth = true, updateHash = true } = {}) {
   const target = document.getElementById(id);
@@ -167,85 +168,98 @@ function QuoteForm() {
     details: '',
     contactName: '',
     company: '',
+    email: '',
     phone: '',
     consent: false
   };
   const [form, setForm] = useState(empty);
-  const [status, setStatus] = useState('idle');
+  const [saved, setSaved] = useState(false);
 
   const update = (event) => {
     const { name, value, type, checked } = event.target;
+    setSaved(false);
     setForm((current) => ({ ...current, [name]: type === 'checkbox' ? checked : value }));
   };
 
-  const isValid = form.contactName.trim() && form.company.trim() && form.details.trim() && /[0-9]{8,}/.test(form.phone.replace(/\D/g, '')) && form.consent;
-
-  const whatsappUrl = useMemo(() => {
-    const lines = [
-      'Hola, quiero conversar con Metamorfosis Lab.',
-      '',
-      `Interés: ${form.serviceType}`,
-      `Organización: ${form.company || 'No indicada'}`,
-      `Necesidad: ${form.details || 'Por explicar'}`,
-      `Contacto: ${form.contactName || 'No indicado'}`,
-      `Teléfono: ${form.phone || 'No indicado'}`
-    ];
-    return `${waBase}?text=${encodeURIComponent(lines.join('\n'))}`;
-  }, [form]);
+  const cleanPhone = form.phone.replace(/\D/g, '');
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim());
+  const isValid = form.contactName.trim() && form.company.trim() && form.details.trim() && emailValid && (!form.phone.trim() || cleanPhone.length >= 8) && form.consent;
 
   const emailUrl = useMemo(() => {
     const subject = `Solicitud web · ${form.company || 'Metamorfosis Lab'}`;
     const body = [
-      'Nueva solicitud recibida desde metamorfosislab.cl',
+      'Hola Metamorfosis Lab,',
+      '',
+      'Quiero solicitar una conversación inicial sobre Transformación Productiva Responsable.',
       '',
       `Servicio de interés: ${form.serviceType}`,
       `Organización: ${form.company || 'No indicada'}`,
       `Nombre: ${form.contactName || 'No indicado'}`,
+      `Correo de respuesta: ${form.email || 'No indicado'}`,
       `Teléfono: ${form.phone || 'No indicado'}`,
       '',
       'Necesidad principal:',
       form.details || 'No indicada',
       '',
-      'Consentimiento: acepta ser contactado/a para responder esta solicitud.'
+      'Gracias.'
     ];
     return `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.join('\n'))}`;
   }, [form]);
 
-  const submit = (event) => {
-    event.preventDefault();
-    if (!isValid) return;
-    setStatus('ready');
-    window.location.href = emailUrl;
+  const saveInternalRequest = () => {
+    const quote = {
+      id: `web-${Date.now()}`,
+      created_at: new Date().toISOString(),
+      contact_name: form.contactName.trim(),
+      company: form.company.trim(),
+      email: form.email.trim(),
+      phone: form.phone.trim(),
+      service_type: form.serviceType,
+      details: form.details.trim(),
+      city: '',
+      status: 'nueva',
+      source: 'web-publica',
+      channel: 'correo'
+    };
+    try {
+      const current = JSON.parse(window.localStorage.getItem(PUBLIC_QUOTES_KEY) || '[]');
+      const next = [quote, ...(Array.isArray(current) ? current : [])].slice(0, 200);
+      window.localStorage.setItem(PUBLIC_QUOTES_KEY, JSON.stringify(next));
+      setSaved(true);
+    } catch {
+      setSaved(false);
+    }
+
+    fetch('/api/quotes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        serviceType: form.serviceType,
+        details: form.details.trim(),
+        contactName: form.contactName.trim(),
+        company: form.company.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        preferredContact: 'Correo',
+        consent: form.consent,
+        website: ''
+      })
+    }).catch(() => {});
   };
 
-  if (status === 'ready') {
-    return (
-      <div className="quote-confirmation quote-confirmation--email" role="status" aria-live="polite">
-        <span className="confirmation-icon"><Icon name="mail" /></span>
-        <h3>Correo preparado</h3>
-        <p>Se abrió un mensaje dirigido a contacto@metamorfosislab.cl. Revísalo y presiona enviar en tu correo.</p>
-        <div className="quote-confirmation__actions">
-          <a className="button" href={emailUrl}>
-            <Icon name="mail" />
-            Abrir correo
-          </a>
-          <a className="button button--ghost-light" href={whatsappUrl} target="_blank" rel="noreferrer">
-            <img src="/assets/icons/whatsapp.svg" alt="" width="20" height="20" />
-            WhatsApp
-          </a>
-        </div>
-        <button type="button" className="text-button" onClick={() => { setStatus('idle'); setForm(empty); }}>
-          Nueva solicitud
-        </button>
-      </div>
-    );
-  }
+  const handleEmailClick = (event) => {
+    if (!isValid) {
+      event.preventDefault();
+      return;
+    }
+    saveInternalRequest();
+  };
 
   return (
-    <form className="quote-wizard tpr-form tpr-form--compact" onSubmit={submit} noValidate>
+    <form className="quote-wizard tpr-form tpr-form--compact" onSubmit={(event) => event.preventDefault()} noValidate>
       <div className="form-headline">
-        <span><Icon name="query_stats" /> Diagnóstico inicial</span>
-        <strong>Cuéntanos lo esencial</strong>
+        <span><Icon name="mail" /> Canal formal</span>
+        <strong>Escríbenos por correo</strong>
       </div>
 
       <div className="form-grid form-grid--two tpr-form-grid">
@@ -264,10 +278,14 @@ function QuoteForm() {
         <label className="field-label"><span><Icon name="group" /> Nombre</span>
           <input name="contactName" value={form.contactName} onChange={update} required />
         </label>
-        <label className="field-label"><span><Icon name="phone" /> Teléfono</span>
-          <input name="phone" inputMode="tel" value={form.phone} onChange={update} required />
+        <label className="field-label"><span><Icon name="mail" /> Correo</span>
+          <input name="email" type="email" inputMode="email" value={form.email} onChange={update} required />
         </label>
       </div>
+
+      <label className="field-label field-label--full"><span><Icon name="phone" /> Teléfono opcional</span>
+        <input name="phone" inputMode="tel" value={form.phone} onChange={update} />
+      </label>
 
       <label className="field-label field-label--full"><span><Icon name="edit" /> Necesidad principal</span>
         <textarea name="details" value={form.details} onChange={update} placeholder="Ej.: ordenar roles, reducir mermas, documentar procesos, mejorar coordinación o explicar mejor la oferta." required />
@@ -275,9 +293,15 @@ function QuoteForm() {
 
       <label className="check-line tpr-check"><input type="checkbox" name="consent" checked={form.consent} onChange={update} /> <span>Acepto ser contactado para responder esta solicitud.</span></label>
 
-      <button className="button button--full form-submit" type="submit" disabled={!isValid}>
-        Enviar al correo <Icon name="send" />
-      </button>
+      <a
+        className={`button button--full form-submit ${!isValid ? 'is-disabled' : ''}`}
+        href={isValid ? emailUrl : '#contacto'}
+        aria-disabled={!isValid}
+        onClick={handleEmailClick}
+      >
+        <Icon name="mail" /> Enviar correo formal
+      </a>
+      {saved && <p className="form-helper"><Icon name="check_circle" /> Solicitud registrada en Metamorfosis OS.</p>}
     </form>
   );
 }
@@ -406,17 +430,28 @@ function PublicSite() {
             <div className="tpr-indicators">
               {resultIndicators.map((item) => <span key={item}>{item}</span>)}
             </div>
-            <div className="tpr-impact-grid">
-              {impactCases.map((item) => (
-                <article key={item.title} className="tpr-impact-card">
-                  <h3>{item.title}</h3>
-                  <dl>
-                    <div><dt>Desafío operativo</dt><dd>{item.challenge}</dd></div>
-                    <div><dt>Intervención integral</dt><dd>{item.intervention}</dd></div>
-                    <div><dt>Resultado medible</dt><dd>{item.result}</dd></div>
-                  </dl>
-                </article>
-              ))}
+            <div className="tpr-impact-showcase">
+              {impactCases.map((item, index) => {
+                const visuals = [projectsImage, workImage, systemImage];
+                return (
+                  <article key={item.title} className="tpr-impact-story">
+                    <figure>
+                      <img src={visuals[index % visuals.length]} alt="" loading="lazy" />
+                    </figure>
+                    <div className="tpr-impact-story__body">
+                      <span className="tpr-impact-story__icon"><Icon name={item.icon} /></span>
+                      <span className="tpr-impact-story__label">Caso aplicado</span>
+                      <h3>{item.title}</h3>
+                      <p>{item.lead}</p>
+                      <div className="tpr-impact-story__points">
+                        <span><Icon name="visibility" /> {item.challenge}</span>
+                        <span><Icon name="schema" /> {item.intervention}</span>
+                        <strong><Icon name="check_circle" /> {item.result}</strong>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -459,9 +494,8 @@ function PublicSite() {
           <div className="shell contact-layout contact-layout--immersive">
             <div className="contact-intro">
               <SectionHeading kicker="Conversemos" title="Evaluemos tu operación" description="Primero entendemos el problema. Luego definimos el siguiente paso útil." />
-              <div className="contact-links contact-links--compact">
-                <a href={`${waBase}?text=${encodeURIComponent('Hola, quisiera solicitar una conversación inicial con Metamorfosis Lab sobre Transformación Productiva Responsable.')}`} target="_blank" rel="noreferrer"><img src="/assets/icons/whatsapp.svg" alt="" width="22" height="22" /><span><small>WhatsApp</small><strong>{contact.phoneDisplay}</strong></span></a>
-                <a href={`mailto:${contact.email}`}><Icon name="mail" /><span><small>Correo</small><strong>{contact.email}</strong></span></a>
+              <div className="contact-links contact-links--compact contact-links--email-only">
+                <a href={`mailto:${contact.email}`}><Icon name="mail" /><span><small>Correo formal</small><strong>{contact.email}</strong></span></a>
               </div>
             </div>
             <QuoteForm />
@@ -472,7 +506,7 @@ function PublicSite() {
         <div className="shell site-footer__grid">
           <div className="site-footer__brand"><Brand /><p>Consultoría para operar mejor, cuidar equipos y sostener valor con responsabilidad.</p></div>
           <div><span className="footer-title">Navegación</span><SectionLink id="pilares">Tres ejes</SectionLink><SectionLink id="soluciones">Soluciones</SectionLink><SectionLink id="resultados">Resultados</SectionLink><SectionLink id="contacto">Contacto</SectionLink></div>
-          <div><span className="footer-title">Contacto</span><a className="footer-icon-link" href={`mailto:${contact.email}`}><Icon name="mail" /><span>{contact.email}</span></a><a className="footer-icon-link" href={waBase} target="_blank" rel="noreferrer"><img src="/assets/icons/whatsapp.svg" alt="" width="18" height="18" /><span>{contact.phoneDisplay}</span></a><p>{contact.coverage}</p></div>
+          <div><span className="footer-title">Contacto</span><a className="footer-icon-link" href={`mailto:${contact.email}`}><Icon name="mail" /><span>{contact.email}</span></a><p>{contact.coverage}</p></div>
           <div><span className="footer-title">Acceso interno</span><p>El seguimiento de prioridades, documentos y decisiones vive en Metamorfosis OS.</p><a href={adminUrl}>Ingresar a Metamorfosis OS</a></div>
         </div>
         <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis Lab</span><span>Transformación productiva responsable</span></div>
