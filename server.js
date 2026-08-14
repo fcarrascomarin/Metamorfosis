@@ -248,9 +248,10 @@ app.post('/api/quotes', publicLimiter, async (req, res) => {
   }
 
   const phoneDigits = quote.phone.replace(/\D/g, '');
-  const validEmail = !quote.email || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(quote.email);
-  if (!quote.serviceType || !quote.details || !quote.contactName || phoneDigits.length < 8 || !quote.consent || !validEmail) {
-    return res.status(400).json({ ok: false, message: 'Revisa los datos obligatorios, el teléfono, el correo y la autorización de contacto.' });
+  const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(quote.email);
+  const validPhone = !quote.phone || phoneDigits.length >= 8;
+  if (!quote.serviceType || !quote.details || !quote.contactName || !quote.consent || !validEmail || !validPhone) {
+    return res.status(400).json({ ok: false, message: 'Revisa los datos obligatorios, el correo y la autorización de contacto.' });
   }
 
   if (!pool) {
