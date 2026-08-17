@@ -1,69 +1,74 @@
 export const publicNavigation = [
-  { id: 'pilares', label: 'Ejes' },
-  { id: 'transformacion', label: 'Entrada' },
-  { id: 'soluciones', label: 'Servicios' },
-  { id: 'metodo', label: 'Método' },
-  { id: 'resultados', label: 'Impacto' },
-  { id: 'contacto', label: 'Contacto' }
+  { id: 'pilares', label: 'Enfoque', helper: 'procesos, personas y entorno', icon: 'account_tree' },
+  { id: 'transformacion', label: 'Entradas', helper: 'formas concretas de iniciar', icon: 'target' },
+  { id: 'soluciones', label: 'Soluciones', helper: 'qué podemos construir', icon: 'design_services' },
+  { id: 'metodo', label: 'Método', helper: 'cómo reducimos incertidumbre', icon: 'timeline' },
+  { id: 'resultados', label: 'Resultados', helper: 'evidencia y confianza', icon: 'query_stats' },
+  { id: 'casos', label: 'Casos', helper: 'proyectos y sistemas', icon: 'open_in_new' },
+  { id: 'nosotros', label: 'Lab', helper: 'criterio y responsabilidad', icon: 'verified_user' }
 ];
 
 export const transformationPillars = [
   {
     icon: 'query_stats',
-    title: 'Eficiencia operacional',
-    text: 'Procesos, datos y recursos ordenados para reducir pérdidas y mejorar desempeño.'
+    title: 'Operación eficiente',
+    text: 'Procesos, datos y recursos ordenados para reducir pérdidas y elevar desempeño.'
   },
   {
     icon: 'group',
-    title: 'Condiciones humanas',
-    text: 'Roles, rutinas y cargas de trabajo diseñadas para sostener el cambio.'
+    title: 'Trabajo sostenible',
+    text: 'Roles, rutinas y acuerdos que cuidan la capacidad real de los equipos.'
   },
   {
     icon: 'public',
-    title: 'Sistemas vivos',
-    text: 'Decisiones que consideran recursos, entorno, impactos y continuidad.'
+    title: 'Entorno responsable',
+    text: 'Decisiones que integran recursos, impactos, territorio y sistemas vivos.'
   }
 ];
 
 export const activeOfferUseCases = [
   {
-    title: 'Ordenar la operación',
-    text: 'Roles, tareas, registros y puntos críticos visibles.'
+    icon: 'query_stats',
+    title: 'Diagnóstico productivo responsable',
+    text: 'Una lectura breve de operación, riesgos, prioridades y próximos pasos.'
   },
   {
-    title: 'Explicar el valor',
-    text: 'Oferta, relato y canales comerciales más claros.'
+    icon: 'public',
+    title: 'Vitrina Pyme',
+    text: 'Presencia digital simple, clara y ética para explicar mejor una oferta real.'
   },
   {
-    title: 'Cuidar equipos',
-    text: 'Cambios compatibles con cargas, hábitos y coordinación real.'
+    icon: 'inventory_2',
+    title: 'Ciclo Seguro',
+    text: 'Gestión del vestuario laboral como activo: trazabilidad, vida útil y salida responsable.'
   },
   {
-    title: 'Sostener recursos',
-    text: 'Eficiencia, mermas e impacto integrados al diseño.'
+    icon: 'dashboard',
+    title: 'Sistema interno mínimo',
+    text: 'Tableros, documentos y rutinas para que el negocio no dependa de la memoria.'
   }
 ];
 
 export const solutions = [
   {
     icon: 'visibility',
-    title: 'Diagnóstico integral',
-    text: 'Detectamos brechas, riesgos y prioridades de mejora.'
+    title: 'Diagnóstico operacional integral',
+    text: 'Miramos cómo se genera valor, dónde se pierde capacidad y qué conviene abordar primero.'
   },
   {
     icon: 'schema',
-    title: 'Procesos eficientes',
-    text: 'Rediseñamos flujos, roles, registros e indicadores.'
+    title: 'Rediseño de procesos y registros',
+    text: 'Convertimos tareas dispersas en flujos, responsables, evidencia e indicadores simples.'
   },
   {
     icon: 'group',
-    title: 'Cambio humano',
-    text: 'Acompañamos adopción, comunicación y rutinas de equipo.'
+    title: 'Gestión del cambio humano',
+    text: 'Diseñamos adopción, roles y comunicación para que el cambio pueda sostenerse.'
   },
   {
     icon: 'public',
     title: 'Sostenibilidad operativa',
-    text: 'Integramos recursos, entorno e impacto al negocio.'
+    text: 'Integramos recursos, entorno e impacto sin convertir la responsabilidad en decoración.'
   }
 ];
 
@@ -71,27 +76,59 @@ export const methodPrinciples = [
   {
     icon: 'visibility',
     title: 'Observable',
-    text: 'Ver cómo se genera valor y dónde se pierde capacidad.'
+    text: 'Primero vemos la operación real.'
   },
   {
     icon: 'query_stats',
     title: 'Medible',
-    text: 'Indicadores simples para verificar avances.'
+    text: 'Luego definimos señales simples de avance.'
   },
   {
     icon: 'verified_user',
     title: 'Sostenible',
-    text: 'Responsables, documentos y rutinas para continuar.'
+    text: 'Finalmente dejamos responsables, documentos y continuidad.'
   }
 ];
 
+export const processRoadmap = [
+  {
+    icon: 'visibility',
+    title: 'Entender',
+    text: 'Contexto, operación, restricciones y oportunidades.'
+  },
+  {
+    icon: 'design_services',
+    title: 'Diseñar',
+    text: 'Solución mínima suficiente y experiencia de uso.'
+  },
+  {
+    icon: 'construction',
+    title: 'Implementar',
+    text: 'Web, sistema, proceso, documentos o piloto.'
+  },
+  {
+    icon: 'rule',
+    title: 'Sostener',
+    text: 'QA, traspaso, indicadores y próximos hitos.'
+  }
+];
+
+export const stackBadges = [
+  'React',
+  'Vite',
+  'Node',
+  'PostgreSQL',
+  'Render',
+  'Lighthouse',
+  'UX/UI',
+  'Documentación'
+];
+
 export const resultIndicators = [
-  'Tiempos',
-  'Recursos',
-  'Mermas',
-  'Roles',
+  'Tiempo',
+  'Merma',
   'Coordinación',
-  'Oferta',
+  'Trazabilidad',
   'Continuidad'
 ];
 
@@ -99,26 +136,26 @@ export const impactCases = [
   {
     icon: 'inventory_2',
     title: 'CM Banquetería & Restaurant',
-    lead: 'Una operación real necesitaba trazabilidad sin perder ritmo de trabajo.',
-    challenge: 'Información dispersa.',
-    intervention: 'Registros, web y panel interno.',
-    result: 'Base clara para decidir y replicar.'
+    lead: 'De información dispersa a una base operativa visible.',
+    challenge: 'Decisiones, registros y prioridades repartidas entre conversaciones y documentos.',
+    intervention: 'Web pública, panel interno, documentos, hitos y criterios de seguimiento.',
+    result: 'Más claridad para decidir, corregir y proyectar la operación.'
   },
   {
     icon: 'public',
     title: 'Presencia digital profesional',
-    lead: 'Cuando el valor no se explica bien, vender se vuelve más difícil.',
-    challenge: 'Oferta poco visible.',
-    intervention: 'Relato, arquitectura web y canal formal.',
-    result: 'Conversaciones comerciales más serias.'
+    lead: 'La oferta debe entenderse antes de venderse.',
+    challenge: 'Servicios valiosos difíciles de explicar en una primera conversación.',
+    intervention: 'Relato, arquitectura web, canal formal y llamados a la acción.',
+    result: 'Primer contacto más claro y confiable.'
   },
   {
     icon: 'dashboard',
-    title: 'Sistema interno de gestión',
-    lead: 'El conocimiento pierde fuerza cuando queda repartido entre mensajes y archivos.',
-    challenge: 'Decisiones sin lugar común.',
-    intervention: 'Proyectos, documentos, estados e hitos.',
-    result: 'Memoria institucional visible.'
+    title: 'Gestión interna',
+    lead: 'Lo que no se registra, se pierde.',
+    challenge: 'Tareas, decisiones y aprendizajes sin lugar común.',
+    intervention: 'Sistema interno con proyectos, solicitudes, estados e hitos.',
+    result: 'Memoria institucional y continuidad operativa.'
   }
 ];
 
@@ -129,16 +166,18 @@ export const publicCases = [
     label: 'Transformación productiva',
     name: 'CM Banquetería & Restaurant',
     text: 'Orden operativo, documentación, web pública y sistema interno para una pyme real.',
-    tags: ['Operación', 'Documentos', 'Sistema', 'Web']
+    tags: ['Operación', 'Documentos', 'Sistema', 'Web'],
+    hover: 'Del diagnóstico al sistema: una operación visible, documentada y mejor preparada.',
+    live: 'https://www.cmbanqueteria.cl/'
   },
   {
     id: 'metamorfosis-os',
     brand: 'metamorfosis',
     label: 'Capacidad propia',
     name: 'Metamorfosis OS',
-    text: 'Panel privado para proyectos, documentos, decisiones y continuidad.',
+    text: 'Panel privado para proyectos, documentos, decisiones, oportunidades y continuidad.',
     tags: ['Gestión', 'Memoria', 'Indicadores'],
-    action: 'Ingresar al sistema interno'
+    hover: 'Un sistema interno para no perder decisiones, evidencia ni próximos pasos.'
   },
   {
     id: 'juana-de-arco',
@@ -146,6 +185,7 @@ export const publicCases = [
     label: 'Identidad y comercio',
     name: 'Joyas Juana de Arco',
     text: 'Marca, catálogo, relato simbólico y experiencia digital de compra.',
-    tags: ['Marca', 'Catálogo', 'Experiencia']
+    tags: ['Marca', 'Catálogo', 'Experiencia'],
+    hover: 'Identidad comercial y narrativa para una marca con significado.'
   }
 ];

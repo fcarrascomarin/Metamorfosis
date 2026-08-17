@@ -809,6 +809,17 @@ function AdminShell({ session, onLogout }) {
       .finally(() => setLoadingQuotes(false));
   }, [session]);
 
+
+  useEffect(() => {
+    const syncLocalQuotes = (event) => {
+      if (event.key && event.key !== PUBLIC_QUOTES_KEY) return;
+      const localQuotes = readPublicQuotes();
+      setQuotes((current) => mergeQuotes(current, localQuotes));
+    };
+    window.addEventListener('storage', syncLocalQuotes);
+    return () => window.removeEventListener('storage', syncLocalQuotes);
+  }, []);
+
   const saveState = async () => {
     setSaving(true); setNotice(null);
     try {
