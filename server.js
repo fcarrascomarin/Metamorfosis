@@ -10,6 +10,7 @@ import helmet from 'helmet';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import pg from 'pg';
+import nodemailer from 'nodemailer';
 
 const { Pool } = pg;
 const __filename = fileURLToPath(import.meta.url);
@@ -17,7 +18,13 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = Number(process.env.PORT || 4173);
 const isProduction = process.env.NODE_ENV === 'production';
+function cleanEnv(value, max = 500) {
+  if (typeof value !== 'string') return '';
+  return value.trim().slice(0, max);
+}
 const hasDatabase = Boolean(process.env.DATABASE_URL);
+const contactRecipient = cleanEnv(process.env.CONTACT_TO_EMAIL || 'contacto@metamorfosislab.cl', 180);
+const smtpConfigured = Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
 const publicOrigins = new Set(
   String(process.env.PUBLIC_ORIGINS || '')
     .split(',')
@@ -32,7 +39,7 @@ app.use(helmet({
     directives: {
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", "'sha256-GypvWo9kvH0GqwrdM6SQjd010VPtdbMjoBARL+kC7bA='"],
-      styleSrc: ["'self'", 'https://fonts.googleapis.com'],
+      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
       fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
       imgSrc: ["'self'", 'data:'],
       connectSrc: ["'self'"],
@@ -155,6 +162,62 @@ function clean(value, max = 500) {
   return value.trim().replace(/\s+/g, ' ').slice(0, max);
 }
 
+function createMailer() {
+  if (!smtpConfigured) return null;
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT || 465),
+    secure: String(process.env.SMTP_SECURE || 'true') !== 'false',
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS
+    }
+  });
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[char]));
+}
+
+function quoteEmailText(quote) {
+  return [
+    'Nueva solicitud formal desde metamorfosislab.cl',
+    '',
+    `Servicio: ${quote.serviceType}`,
+    `Organización: ${quote.company || 'No indicada'}`,
+    `Nombre: ${quote.contactName}`,
+    `Correo: ${quote.email}`,
+    `Teléfono: ${quote.phone || 'No indicado'}`,
+    `Canal preferido: ${quote.preferredContact || 'Correo'}`,
+    '',
+    'Necesidad principal:',
+    quote.details,
+    '',
+    `ID interno: ${quote.id}`,
+    `Fecha: ${new Date().toLocaleString('es-CL', { timeZone: 'America/Santiago' })}`
+  ].join('\n');
+}
+
+async function sendQuoteEmail(quote) {
+  const mailer = createMailer();
+  if (!mailer) return false;
+  const subject = `Nueva solicitud web · ${quote.company || quote.contactName}`;
+  const text = quoteEmailText(quote);
+  const html = text
+    .split('\n')
+    .map((line) => line ? `<p>${escapeHtml(line)}</p>` : '<br />')
+    .join('');
+  await mailer.sendMail({
+    from: process.env.SMTP_FROM || process.env.SMTP_USER,
+    to: contactRecipient,
+    replyTo: quote.email,
+    subject,
+    text,
+    html
+  });
+  return true;
+}
+
 function requireAdmin(req, res, next) {
   if (req.session?.isAdmin) return next();
   return res.status(401).json({ ok: false, message: 'Sesión no autorizada.' });
@@ -254,12 +317,22 @@ app.post('/api/quotes', publicLimiter, async (req, res) => {
     return res.status(400).json({ ok: false, message: 'Revisa los datos obligatorios, el correo y la autorización de contacto.' });
   }
 
+  let emailSent = false;
+  try {
+    emailSent = await sendQuoteEmail(quote);
+  } catch (error) {
+    console.error('Error al enviar correo de solicitud:', error.message);
+  }
+
   if (!pool) {
     return res.status(202).json({
       ok: true,
       saved: false,
+      emailSent,
       id: quote.id,
-      message: 'Solicitud preparada. La persistencia requiere conectar DATABASE_URL.'
+      message: emailSent
+        ? 'Solicitud enviada por correo. Conecta DATABASE_URL para persistencia compartida en Metamorfosis OS.'
+        : 'Solicitud recibida por la API. Configura SMTP y DATABASE_URL para envío automático y persistencia compartida.'
     });
   }
 
@@ -270,7 +343,7 @@ app.post('/api/quotes', publicLimiter, async (req, res) => {
       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)`,
       [quote.id, quote.serviceType, quote.projectStage, quote.desiredDate, quote.teamSize, quote.details, quote.contactName, quote.company, quote.city, quote.email, quote.phone, quote.preferredContact, quote.consent]
     );
-    return res.status(201).json({ ok: true, saved: true, id: quote.id });
+    return res.status(201).json({ ok: true, saved: true, emailSent, id: quote.id });
   } catch (error) {
     console.error('Error al registrar cotización:', error.message);
     return res.status(500).json({ ok: false, message: 'No fue posible registrar la solicitud en este momento.' });
@@ -367,12 +440,27 @@ app.use('/api', (_req, res) => {
   res.status(404).json({ ok: false, message: 'Endpoint no encontrado.' });
 });
 
-app.use((_req, res, next) => {
+const publicDist = path.join(__dirname, 'dist-public');
+const adminDist = path.join(__dirname, 'dist-admin');
+
+app.use('/admin', (req, res, next) => {
   res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
   next();
+}, express.static(adminDist, {
+  maxAge: isProduction ? '7d' : 0,
+  index: false,
+  setHeaders(res, filePath) {
+    if (filePath.endsWith('.html')) res.setHeader('Cache-Control', 'no-store');
+  }
+}));
+
+app.get('/admin*', (_req, res) => {
+  res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  res.setHeader('Cache-Control', 'no-store');
+  res.sendFile(path.join(adminDist, 'admin.html'));
 });
 
-app.use(express.static(path.join(__dirname, 'dist-admin'), {
+app.use(express.static(publicDist, {
   maxAge: isProduction ? '7d' : 0,
   index: false,
   setHeaders(res, filePath) {
@@ -382,7 +470,7 @@ app.use(express.static(path.join(__dirname, 'dist-admin'), {
 
 app.get('*', (_req, res) => {
   res.setHeader('Cache-Control', 'no-store');
-  res.sendFile(path.join(__dirname, 'dist-admin', 'admin.html'));
+  res.sendFile(path.join(publicDist, 'index.html'));
 });
 
 async function startServer() {

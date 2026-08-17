@@ -1,15 +1,13 @@
 services:
   - type: web
-    name: metamorfosis-os
+    name: metamorfosis-lab
     runtime: node
     plan: free
-    buildCommand: npm ci --registry=https://registry.npmjs.org/ --no-audit --no-fund && npm run build:admin
+    buildCommand: npm install --registry=https://registry.npmjs.org/ --no-audit --no-fund && npm run build
     startCommand: npm start
     healthCheckPath: /api/health
     autoDeploy: true
     envVars:
-      - key: NODE_VERSION
-        value: 20.19.0
       - key: NPM_CONFIG_REGISTRY
         value: https://registry.npmjs.org/
       - key: NODE_ENV
@@ -22,7 +20,25 @@ services:
         sync: false
       - key: ADMIN_PASSWORD_HASH
         sync: false
+      - key: CONTACT_TO_EMAIL
+        value: contacto@metamorfosislab.cl
+      - key: SMTP_HOST
+        value: smtp.zoho.com
+      - key: SMTP_PORT
+        value: 465
+      - key: SMTP_SECURE
+        value: true
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: SMTP_FROM
+        value: contacto@metamorfosislab.cl
       - key: PUBLIC_ORIGINS
         value: https://metamorfosislab.cl,https://www.metamorfosislab.cl
       - key: VITE_PUBLIC_SITE_URL
         value: https://www.metamorfosislab.cl
+      - key: VITE_ADMIN_URL
+        value: /admin
+      - key: VITE_API_BASE
+        value: ""
