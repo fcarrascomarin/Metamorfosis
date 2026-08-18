@@ -5,6 +5,7 @@ import { createDefaultOsState, OWNERS, TOPICS } from './osSeed.js';
 
 const STORAGE_KEY = 'metamorfosis-os-draft-v6';
 const PUBLIC_QUOTES_KEY = 'metamorfosis-public-quotes';
+const PUBLIC_EVENTS_KEY = 'metamorfosis-public-events';
 const PUBLIC_SITE_URL = String(import.meta.env.VITE_PUBLIC_SITE_URL || 'https://www.metamorfosislab.cl').replace(/\/$/, '');
 const STATUS_OPTIONS = ['nueva', 'contactada', 'evaluacion', 'propuesta', 'cerrada', 'descartada'];
 
@@ -37,7 +38,7 @@ const menuGroups = [
     id: 'comercial',
     label: 'Comercial',
     icon: 'handshake',
-    items: [['quotes', 'Oportunidades', 'request_quote']]
+    items: [['quotes', 'Oportunidades', 'request_quote'], ['webEvents', 'Indicadores web', 'query_stats']]
   },
   {
     id: 'gestion',
@@ -186,6 +187,7 @@ function DashboardView({ osState, quotes, dirty, onNavigate, onAddTask }) {
         <button type="button" onClick={() => onNavigate('day')}><Icon name="today" />Agenda de hoy</button>
         <button type="button" onClick={() => onNavigate('family')}><Icon name="home" />Vida familiar</button>
         <button type="button" onClick={() => onNavigate('quotes')}><Icon name="request_quote" />Oportunidades</button>
+        <button type="button" onClick={() => onNavigate('webEvents')}><Icon name="query_stats" />Indicadores web</button>
         <button type="button" onClick={() => onNavigate('projects')}><Icon name="account_tree" />Proyectos</button>
         <button type="button" onClick={() => onNavigate('metrics')}><Icon name="query_stats" />Tiempo y rentabilidad</button>
         <button type="button" onClick={() => onNavigate('documents')}><Icon name="folder_open" />Documentos</button>
@@ -713,6 +715,63 @@ function QuotesView({ quotes, loading, onStatusChange, notice }) {
   return <div className="admin-view"><ViewHeading kicker="Comercial" title="Oportunidades y cotizaciones" description="Consultas de la web convertidas en registros trazables, con estado y contacto directo." />{notice && <p className={`admin-notice ${notice.type === 'error' ? 'admin-notice--error' : ''}`} role="status">{notice.message}</p>}<section className="panel-card"><div className="table-page"><table><thead><tr><th>Fecha</th><th>Contacto</th><th>Necesidad</th><th>Ciudad</th><th>Estado</th><th><span className="sr-only">Acciones</span></th></tr></thead><tbody>{quotes.map((quote) => <tr key={quote.id}><td>{new Intl.DateTimeFormat('es-CL', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(quote.created_at))}</td><td><strong>{quote.contact_name}</strong><small>{quote.company || quote.phone}</small></td><td><details><summary>{quote.service_type}</summary><p>{quote.details}</p>{(quote.project_stage || quote.team_size || quote.desired_date) && <small>{[quote.project_stage, quote.team_size, quote.desired_date].filter(Boolean).join(' · ')}</small>}</details></td><td>{quote.city || 'Sin indicar'}</td><td><select className="status-select" aria-label={`Cambiar estado de ${quote.contact_name}`} value={quote.status || 'nueva'} onChange={(event) => onStatusChange(quote.id, event.target.value)}>{STATUS_OPTIONS.map((status) => <option key={status} value={status}>{status === 'evaluacion' ? 'En evaluación' : status.charAt(0).toUpperCase() + status.slice(1)}</option>)}</select></td><td className="table-actions">{quote.email && <a className="icon-button" aria-label={`Enviar correo a ${quote.contact_name}`} title="Correo" href={`mailto:${quote.email}`}><Icon name="mail" /></a>}{quote.phone && <a className="icon-button" aria-label={`Llamar a ${quote.contact_name}`} title="Teléfono" href={`tel:${String(quote.phone || '').replace(/\D/g, '')}`}><Icon name="phone" /></a>}</td></tr>)}{!loading && !quotes.length && <tr><td colSpan="6"><div className="empty-state-inline"><Icon name="request_quote" /><p>No hay oportunidades registradas.</p></div></td></tr>}</tbody></table>{loading && <p className="loading-line">Cargando oportunidades…</p>}</div></section></div>;
 }
 
+
+function AnalyticsView({ events, loading }) {
+  const stats = useMemo(() => {
+    const all = Array.isArray(events) ? events : [];
+    const today = new Date().toISOString().slice(0, 10);
+    const byService = new Map();
+    const byType = new Map();
+    const todayEvents = all.filter((event) => String(event.created_at || '').slice(0, 10) === today);
+    all.forEach((event) => {
+      const type = event.event_type || event.eventType || 'evento';
+      byType.set(type, (byType.get(type) || 0) + 1);
+      if (type === 'service_price_opened') {
+        const label = event.label || event.metadata?.serviceTitle || 'Servicio sin nombre';
+        byService.set(label, (byService.get(label) || 0) + 1);
+      }
+    });
+    const serviceRanking = Array.from(byService.entries()).map(([label, count]) => ({ label, count })).sort((a, b) => b.count - a.count);
+    const typeRanking = Array.from(byType.entries()).map(([label, count]) => ({ label, count })).sort((a, b) => b.count - a.count);
+    return {
+      total: all.length,
+      today: todayEvents.length,
+      prices: all.filter((event) => (event.event_type || event.eventType) === 'service_price_opened').length,
+      requests: all.filter((event) => (event.event_type || event.eventType) === 'formal_request_prepared').length,
+      serviceRanking,
+      typeRanking,
+      latest: all.slice(0, 12)
+    };
+  }, [events]);
+
+  return <div className="admin-view analytics-view"><ViewHeading kicker="Inteligencia comercial" title="Indicadores de navegación web" description="Registra señales útiles sin invadir: qué servicios despiertan interés, qué rutas se abren y qué solicitudes se preparan desde la vitrina pública." />
+    <div className="finance-metrics time-metrics">
+      <MetricCard icon="query_stats" label="Interacciones" value={stats.total} note={loading ? 'Cargando…' : 'Eventos registrados'} tone="accent" />
+      <MetricCard icon="payments" label="Precios abiertos" value={stats.prices} note="Clics en alcance y valor" />
+      <MetricCard icon="request_quote" label="Solicitudes preparadas" value={stats.requests} note="Formulario formal" />
+      <MetricCard icon="today" label="Hoy" value={stats.today} note="Actividad del día" />
+    </div>
+    <div className="analytics-layout">
+      <section className="panel-card">
+        <div className="panel-card__heading"><div><span className="kicker">Interés por servicio</span><h2>Qué quieren conocer</h2></div></div>
+        <div className="analytics-ranking">
+          {stats.serviceRanking.length ? stats.serviceRanking.map((item) => <div key={item.label}><span>{item.label}</span><strong>{item.count}</strong></div>) : <p className="empty-copy">Aún no hay aperturas de precios registradas.</p>}
+        </div>
+      </section>
+      <section className="panel-card">
+        <div className="panel-card__heading"><div><span className="kicker">Tipo de señal</span><h2>Eventos capturados</h2></div></div>
+        <div className="analytics-ranking">
+          {stats.typeRanking.length ? stats.typeRanking.map((item) => <div key={item.label}><span>{item.label}</span><strong>{item.count}</strong></div>) : <p className="empty-copy">Sin eventos disponibles.</p>}
+        </div>
+      </section>
+    </div>
+    <section className="panel-card">
+      <div className="panel-card__heading"><div><span className="kicker">Últimas señales</span><h2>Bitácora comercial web</h2></div><span className="count-pill">{stats.latest.length}</span></div>
+      <div className="table-page"><table><thead><tr><th>Fecha</th><th>Evento</th><th>Detalle</th><th>Ruta</th></tr></thead><tbody>{stats.latest.map((event) => <tr key={event.id}><td>{new Intl.DateTimeFormat('es-CL', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }).format(new Date(event.created_at))}</td><td><strong>{event.event_type || event.eventType}</strong></td><td>{event.label || event.metadata?.serviceTitle || 'Sin detalle'}</td><td><small>{event.path || '—'}</small></td></tr>)}{!loading && !stats.latest.length && <tr><td colSpan="4"><div className="empty-state-inline"><Icon name="query_stats" /><p>No hay indicadores web registrados.</p></div></td></tr>}</tbody></table>{loading && <p className="loading-line">Cargando indicadores…</p>}</div>
+    </section>
+  </div>;
+}
+
 function ProjectsView() {
   return <div className="admin-view"><ViewHeading kicker="Gestión interna" title="Proyectos" description="Lectura compacta de etapas, próximos hitos y evidencia esperada." /><p className="admin-notice" role="note">Estos registros describen la configuración inicial. La edición y persistencia individual se incorporarán después de validar el sistema operativo central.</p><div className="project-grid">{initialProjects.map((project) => <article className="project-card" key={project.name}><div className="project-card__top"><span className="status-badge">{project.status}</span><span>{project.progress}%</span></div><span className="kicker">{project.client}</span><h2>{project.name}</h2><p>{project.stage}</p><div className="progress-track"><span style={{ width: `${project.progress}%` }} /></div><div className="next-action"><Icon name="arrow_forward" /><span><small>Próxima acción</small><strong>{project.next}</strong></span></div></article>)}</div></div>;
 }
@@ -750,6 +809,8 @@ function AdminShell({ session, onLogout }) {
   const [notice, setNotice] = useState(null);
   const [quotes, setQuotes] = useState([]);
   const [loadingQuotes, setLoadingQuotes] = useState(false);
+  const [webEvents, setWebEvents] = useState([]);
+  const [loadingWebEvents, setLoadingWebEvents] = useState(false);
   const [taskDraft, setTaskDraft] = useState(null);
   const importRef = useRef(null);
 
@@ -799,6 +860,24 @@ function AdminShell({ session, onLogout }) {
     return Array.from(map.values()).sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
   };
 
+  const readPublicEvents = () => {
+    try {
+      const local = JSON.parse(window.localStorage.getItem(PUBLIC_EVENTS_KEY) || '[]');
+      return Array.isArray(local) ? local : [];
+    } catch {
+      return [];
+    }
+  };
+
+  const mergeEvents = (remoteEvents, localEvents) => {
+    const map = new Map();
+    [...localEvents, ...remoteEvents].forEach((event) => {
+      if (!event?.id) return;
+      map.set(event.id, event);
+    });
+    return Array.from(map.values()).sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+  };
+
   useEffect(() => {
     setLoadingQuotes(true);
     const localQuotes = readPublicQuotes();
@@ -811,13 +890,28 @@ function AdminShell({ session, onLogout }) {
 
 
   useEffect(() => {
-    const syncLocalQuotes = (event) => {
-      if (event.key && event.key !== PUBLIC_QUOTES_KEY) return;
-      const localQuotes = readPublicQuotes();
-      setQuotes((current) => mergeQuotes(current, localQuotes));
+    setLoadingWebEvents(true);
+    const localEvents = readPublicEvents();
+    fetch('/api/events')
+      .then((response) => response.json())
+      .then((payload) => setWebEvents(mergeEvents(Array.isArray(payload.events) ? payload.events : [], localEvents)))
+      .catch(() => setWebEvents(localEvents))
+      .finally(() => setLoadingWebEvents(false));
+  }, [session]);
+
+  useEffect(() => {
+    const syncLocalPublicData = (event) => {
+      if (!event.key || event.key === PUBLIC_QUOTES_KEY) {
+        const localQuotes = readPublicQuotes();
+        setQuotes((current) => mergeQuotes(current, localQuotes));
+      }
+      if (!event.key || event.key === PUBLIC_EVENTS_KEY) {
+        const localEvents = readPublicEvents();
+        setWebEvents((current) => mergeEvents(current, localEvents));
+      }
     };
-    window.addEventListener('storage', syncLocalQuotes);
-    return () => window.removeEventListener('storage', syncLocalQuotes);
+    window.addEventListener('storage', syncLocalPublicData);
+    return () => window.removeEventListener('storage', syncLocalPublicData);
   }, []);
 
   const saveState = async () => {
@@ -877,6 +971,7 @@ function AdminShell({ session, onLogout }) {
           : active === 'fronts' ? <FrontsView osState={osState} setOsState={setOsState} />
             : active === 'finance' ? <FinanceView osState={osState} setOsState={setOsState} />
               : active === 'quotes' ? <QuotesView quotes={quotes} loading={loadingQuotes} onStatusChange={updateQuoteStatus} notice={notice} />
+                : active === 'webEvents' ? <AnalyticsView events={webEvents} loading={loadingWebEvents} />
                 : active === 'projects' ? <ProjectsView />
                   : active === 'metrics' ? <TimeTrackingView osState={osState} setOsState={setOsState} />
                   : active === 'documents' ? <DocumentsView />

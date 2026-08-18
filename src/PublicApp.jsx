@@ -13,9 +13,11 @@ import {
   impactCases,
   methodPrinciples,
   processRoadmap,
+  pricingPrinciples,
   publicCases,
   publicNavigation,
   resultIndicators,
+  servicePricing,
   solutions,
   stackBadges,
   transformationPillars
@@ -26,6 +28,58 @@ const defaultAdminUrl = '/admin';
 const adminUrl = String(import.meta.env.VITE_ADMIN_URL || defaultAdminUrl).replace(/\/$/, '');
 const apiBase = String(import.meta.env.VITE_API_BASE || '').replace(/\/$/, '');
 const PUBLIC_QUOTES_KEY = 'metamorfosis-public-quotes';
+const PUBLIC_EVENTS_KEY = 'metamorfosis-public-events';
+
+
+function getVisitorSessionId() {
+  try {
+    const existing = window.localStorage.getItem('metamorfosis-visitor-session');
+    if (existing) return existing;
+    const value = crypto.randomUUID ? crypto.randomUUID() : `visitor-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    window.localStorage.setItem('metamorfosis-visitor-session', value);
+    return value;
+  } catch {
+    return `visitor-${Date.now()}`;
+  }
+}
+
+function savePublicEventLocally(event) {
+  try {
+    const current = JSON.parse(window.localStorage.getItem(PUBLIC_EVENTS_KEY) || '[]');
+    const next = [event, ...(Array.isArray(current) ? current : [])].slice(0, 500);
+    window.localStorage.setItem(PUBLIC_EVENTS_KEY, JSON.stringify(next));
+    window.dispatchEvent(new StorageEvent('storage', { key: PUBLIC_EVENTS_KEY, newValue: JSON.stringify(next) }));
+  } catch {
+    // El registro local es complementario y no debe bloquear la navegación.
+  }
+}
+
+function trackPublicEvent(eventType, metadata = {}) {
+  if (typeof window === 'undefined') return;
+  const event = {
+    id: crypto.randomUUID ? crypto.randomUUID() : `event-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    event_type: eventType,
+    label: metadata.label || metadata.serviceTitle || metadata.section || eventType,
+    metadata,
+    path: `${window.location.pathname}${window.location.hash || ''}`,
+    referrer: document.referrer || '',
+    session_id: getVisitorSessionId(),
+    viewport: `${window.innerWidth}x${window.innerHeight}`,
+    created_at: new Date().toISOString()
+  };
+  savePublicEventLocally(event);
+  try {
+    const endpoint = `${apiBase}/api/events`;
+    const body = JSON.stringify(event);
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(endpoint, new Blob([body], { type: 'application/json' }));
+      return;
+    }
+    fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, keepalive: true }).catch(() => {});
+  } catch {
+    // El indicador local ya quedó disponible como respaldo.
+  }
+}
 
 function scrollToPublicSection(id, { smooth = true, updateHash = true } = {}) {
   const target = document.getElementById(id);
@@ -45,6 +99,7 @@ function SectionLink({ id, className = '', children, onClick }) {
       onClick={(event) => {
         event.preventDefault();
         scrollToPublicSection(id);
+        trackPublicEvent('navigation_click', { section: id, label: typeof children === 'string' ? children : id });
         onClick?.();
       }}
     >
@@ -246,7 +301,7 @@ function saveQuoteLocally(form) {
   return quote;
 }
 
-function sendQuoteToApi(form) {
+async function postQuoteToApi(form) {
   const endpoint = `${apiBase}/api/quotes`;
   const payload = {
     serviceType: form.serviceType,
@@ -259,17 +314,14 @@ function sendQuoteToApi(form) {
     consent: form.consent,
     website: ''
   };
-  try {
-    const body = JSON.stringify(payload);
-    if (navigator.sendBeacon) {
-      const blob = new Blob([body], { type: 'application/json' });
-      navigator.sendBeacon(endpoint, blob);
-      return;
-    }
-    fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, keepalive: true }).catch(() => {});
-  } catch {
-    // El correo formal y el registro local siguen disponibles aunque la API no responda.
-  }
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  const payloadResponse = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(payloadResponse.message || 'No fue posible enviar la solicitud.');
+  return payloadResponse;
 }
 
 function QuoteForm() {
@@ -284,11 +336,11 @@ function QuoteForm() {
   };
   const [form, setForm] = useState(empty);
   const [step, setStep] = useState(1);
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState({ type: 'idle', message: '' });
 
   const update = (event) => {
     const { name, value, type, checked } = event.target;
-    setSent(false);
+    setStatus({ type: 'idle', message: '' });
     setForm((current) => ({ ...current, [name]: type === 'checkbox' ? checked : value }));
   };
 
@@ -299,11 +351,27 @@ function QuoteForm() {
   const isValid = stepOneReady && stepTwoReady && emailValid && (!form.phone.trim() || cleanPhone.length >= 8) && form.consent;
   const emailUrl = useMemo(() => getMailtoUrl(form), [form]);
 
-  const prepareFormalContact = () => {
+  const prepareFormalContact = async () => {
     if (!isValid) return;
     saveQuoteLocally(form);
-    sendQuoteToApi(form);
-    setSent(true);
+    trackPublicEvent('formal_request_prepared', { label: form.serviceType, serviceTitle: form.serviceType, section: 'contacto' });
+    setStatus({ type: 'loading', message: 'Enviando solicitud formal…' });
+    try {
+      const response = await postQuoteToApi(form);
+      if (response.emailSent && response.saved !== false) {
+        setStatus({ type: 'success', message: 'Solicitud enviada al correo institucional y registrada en Metamorfosis OS.' });
+      } else if (response.emailSent) {
+        setStatus({ type: 'success', message: 'Solicitud enviada al correo institucional. Conecta base de datos para registro compartido en OS.' });
+      } else if (response.saved) {
+        setStatus({ type: 'success', message: 'Solicitud registrada en Metamorfosis OS. Falta configurar SMTP para envío automático al correo.' });
+      } else {
+        window.location.href = emailUrl;
+        setStatus({ type: 'warning', message: 'No hay servidor de correo activo. Se abrió un correo formal para enviar manualmente.' });
+      }
+    } catch (error) {
+      window.location.href = emailUrl;
+      setStatus({ type: 'warning', message: 'No fue posible contactar la API. Se abrió un correo formal para enviar manualmente.' });
+    }
   };
 
   return (
@@ -311,7 +379,7 @@ function QuoteForm() {
       <div className="form-headline form-headline--steps">
         <span><Icon name="mail" /> Canal formal</span>
         <strong>Solicitud por correo</strong>
-        <small>Queda registrada para seguimiento interno y abre un mensaje dirigido a contacto@metamorfosislab.cl.</small>
+        <small>Se envía al correo institucional y queda disponible para seguimiento interno cuando el OS está conectado.</small>
       </div>
 
       <div className="quote-steps" aria-label="Pasos del diagnóstico">
@@ -365,16 +433,87 @@ function QuoteForm() {
           <label className="check-line tpr-check"><input type="checkbox" name="consent" checked={form.consent} onChange={update} /> <span>Acepto ser contactado por Metamorfosis Lab para responder esta solicitud.</span></label>
           <div className="quote-step-actions">
             <button type="button" className="button button--ghost-light" onClick={() => setStep(2)}><Icon name="arrow_back" /> Volver</button>
-            {isValid ? (
-              <a className="button form-submit" href={emailUrl} onClick={prepareFormalContact}><Icon name="mail" /> Enviar correo formal</a>
-            ) : (
-              <button className="button form-submit" type="button" disabled><Icon name="mail" /> Completa los datos</button>
-            )}
+            <button className="button form-submit" type="button" disabled={!isValid || status.type === 'loading'} onClick={prepareFormalContact}>
+              <Icon name="mail" /> {status.type === 'loading' ? 'Enviando…' : isValid ? 'Enviar solicitud formal' : 'Completa los datos'}
+            </button>
           </div>
-          {sent && <p className="form-helper"><Icon name="check_circle" /> Solicitud registrada para seguimiento. Revisa el correo abierto y presiona enviar.</p>}
+          {status.message && <p className={`form-helper form-helper--${status.type}`}><Icon name={status.type === 'warning' ? 'warning' : 'check_circle'} /> {status.message}</p>}
         </div>
       )}
     </form>
+  );
+}
+
+
+function PricingTransparency() {
+  const [openId, setOpenId] = useState(null);
+  const selected = servicePricing.find((item) => item.id === openId) || null;
+
+  const toggle = (item) => {
+    const next = openId === item.id ? null : item.id;
+    setOpenId(next);
+    if (next) {
+      trackPublicEvent('service_price_opened', {
+        label: item.title,
+        serviceId: item.id,
+        serviceTitle: item.title,
+        price: item.price,
+        section: 'servicios-y-precios'
+      });
+    }
+  };
+
+  return (
+    <div id="precios" className="pricing-transparency section-anchor">
+      <div className="pricing-transparency__intro">
+        <span className="kicker"><Icon name="payments" /> Servicios y precios</span>
+        <h3>Transparencia antes de contratar</h3>
+        <p>Trabajamos con alcances definidos, horas presupuestadas y autorización previa para cualquier ampliación. Los valores aparecen solo al revisar cada servicio, y esa interacción nos ayuda a entender qué necesita el mercado.</p>
+      </div>
+      <div className="pricing-shell">
+        <div className="pricing-grid" aria-label="Servicios disponibles">
+          {servicePricing.map((item) => {
+            const open = openId === item.id;
+            return (
+              <button key={item.id} type="button" className={`pricing-card ${open ? 'is-open' : ''}`} onClick={() => toggle(item)} aria-expanded={open} aria-controls="pricing-detail-panel">
+                <span className="tpr-icon"><Icon name={item.icon} /></span>
+                <span><strong>{item.title}</strong><small>{item.scope}</small></span>
+                <em>{open ? 'Ocultar' : 'Ver alcance y valor'}</em>
+              </button>
+            );
+          })}
+        </div>
+        <aside id="pricing-detail-panel" className={`pricing-detail-panel ${selected ? 'is-visible' : ''}`} aria-live="polite">
+          {selected ? (
+            <>
+              <span className="pricing-detail-panel__eyebrow"><Icon name={selected.icon} /> {selected.compact}</span>
+              <h4>{selected.title}</h4>
+              <div className="pricing-card__price"><span>Referencia inicial</span><strong>{selected.price}</strong></div>
+              <ul>
+                {selected.includes.map((entry) => <li key={entry}><Icon name="check_circle" /> {entry}</li>)}
+              </ul>
+              <p><b>Resultado:</b> {selected.result}</p>
+            </>
+          ) : (
+            <>
+              <span className="pricing-detail-panel__eyebrow"><Icon name="info" /> Criterio de contratación</span>
+              <h4>Primero claridad, luego presupuesto</h4>
+              <p>Antes de cobrar, delimitamos problema, trabajo incluido, resultado esperado, exclusiones y condiciones que podrían modificar el precio.</p>
+            </>
+          )}
+        </aside>
+      </div>
+      <div className="pricing-principles">
+        {pricingPrinciples.map((item) => (
+          <article key={item.title}>
+            <Icon name={item.icon} />
+            <strong>{item.title}</strong>
+            <span>{item.text}</span>
+          </article>
+        ))}
+      </div>
+      <p className="pricing-note"><Icon name="info" /> Hora profesional de referencia: <b>$35.000</b>. Los gastos externos se identifican y autorizan antes de incurrir en ellos.</p>
+    </div>
   );
 }
 
@@ -552,6 +691,7 @@ function PublicSite() {
                 <div className="stack-badges">{stackBadges.map((badge) => <span key={badge}>{badge}</span>)}</div>
               </article>
             </div>
+            <PricingTransparency />
           </div>
         </section>
 

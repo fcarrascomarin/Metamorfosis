@@ -2,6 +2,7 @@ export const publicNavigation = [
   { id: 'pilares', label: 'Enfoque', helper: 'procesos, personas y entorno', icon: 'account_tree' },
   { id: 'transformacion', label: 'Entradas', helper: 'formas concretas de iniciar', icon: 'target' },
   { id: 'soluciones', label: 'Soluciones', helper: 'qué podemos construir', icon: 'design_services' },
+  { id: 'precios', label: 'Servicios y precios', helper: 'alcance claro antes de contratar', icon: 'payments' },
   { id: 'metodo', label: 'Método', helper: 'cómo reducimos incertidumbre', icon: 'timeline' },
   { id: 'resultados', label: 'Resultados', helper: 'evidencia y confianza', icon: 'query_stats' },
   { id: 'casos', label: 'Casos', helper: 'proyectos y sistemas', icon: 'open_in_new' },
@@ -188,4 +189,75 @@ export const publicCases = [
     tags: ['Marca', 'Catálogo', 'Experiencia'],
     hover: 'Identidad comercial y narrativa para una marca con significado.'
   }
+];
+
+
+export const servicePricing = [
+  {
+    id: 'conversacion-inicial',
+    icon: 'schedule',
+    title: 'Conversación inicial',
+    compact: '30 minutos · sin costo',
+    price: 'Sin costo',
+    scope: 'Una primera conversación para comprender la situación general y determinar si Metamorfosis puede aportar valor.',
+    includes: ['No constituye diagnóstico', 'No fuerza una solución predeterminada', 'Si requiere otro apoyo, lo diremos'],
+    result: 'Criterio inicial para decidir si corresponde avanzar.'
+  },
+  {
+    id: 'diagnostico-focalizado',
+    icon: 'visibility',
+    title: 'Diagnóstico focalizado',
+    compact: 'Desde $210.000 · hasta 6 horas',
+    price: 'Desde $210.000',
+    scope: 'Para una situación concreta que debe comprenderse antes de decidir qué hacer.',
+    includes: ['Revisión de antecedentes', 'Reunión de levantamiento', 'Análisis y contraste', 'Reunión de devolución'],
+    result: 'Problema claro, principales causas o tensiones, prioridades y próximos pasos.'
+  },
+  {
+    id: 'diagnostico-terreno',
+    icon: 'location_on',
+    title: 'Diagnóstico con terreno',
+    compact: 'Desde $420.000 · hasta 12 horas',
+    price: 'Desde $420.000',
+    scope: 'Para situaciones que necesitan observación directa, entrevistas o levantamiento presencial.',
+    includes: ['Análisis previo', 'Trabajo en terreno acordado', 'Procesamiento de evidencia', 'Devolución de resultados'],
+    result: 'Diagnóstico sustentado en documentos y evidencia directa.'
+  },
+  {
+    id: 'diseno-intervencion',
+    icon: 'design_services',
+    title: 'Diseño de intervención',
+    compact: 'Desde $175.000 · hasta 5 horas',
+    price: 'Desde $175.000',
+    scope: 'Cuando ya existe diagnóstico suficiente y se necesita convertirlo en una solución ejecutable.',
+    includes: ['Qué cambiar y qué no intervenir', 'Responsables y recursos', 'Indicadores', 'Condición de cierre'],
+    result: 'Diseño de intervención y propuesta de ejecución con solución mínima suficiente.'
+  },
+  {
+    id: 'implementacion',
+    icon: 'construction',
+    title: 'Implementación y acompañamiento',
+    compact: 'Desde $350.000 · bloques de 10 horas',
+    price: 'Desde $350.000',
+    scope: 'Para ejecutar, probar o acompañar una transformación previamente definida.',
+    includes: ['Trabajo en terreno o remoto', 'Coordinación', 'Documentación', 'Herramientas y reuniones según proyecto'],
+    result: 'Avance acompañado, horas visibles y autorización previa para ampliar alcance.'
+  },
+  {
+    id: 'jornada-terreno',
+    icon: 'group',
+    title: 'Jornada en terreno',
+    compact: '1 profesional $210.000 · 2 profesionales $420.000',
+    price: 'Desde $210.000',
+    scope: 'Para observación directa, levantamiento de evidencia, entrevistas o trabajo conjunto con el equipo.',
+    includes: ['Hasta 6 horas', 'Cantidad de profesionales acordada', 'Extensiones presupuestadas previamente'],
+    result: 'Información directa para diagnosticar, decidir o implementar con base real.'
+  }
+];
+
+export const pricingPrinciples = [
+  { icon: 'rule', title: 'Alcance definido', text: 'Antes de comenzar indicamos qué incluye, qué queda fuera y qué resultado se espera.' },
+  { icon: 'schedule', title: 'Horas visibles', text: 'Trabajamos con horas presupuestadas y seguimiento de uso.' },
+  { icon: 'verified_user', title: 'Autorización previa', text: 'No se agregan horas ni gastos externos sin acuerdo expreso.' },
+  { icon: 'conversion_path', title: 'Cierre y transferencia', text: 'Cada intervención completa explica qué cambió y qué queda instalado.' }
 ];
