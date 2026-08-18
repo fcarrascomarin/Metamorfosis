@@ -95,7 +95,21 @@ async function ensureSchema() {
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
   `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS metamorfosis_web_events (
+      id UUID PRIMARY KEY,
+      event_type TEXT NOT NULL,
+      label TEXT,
+      metadata JSONB DEFAULT '{}'::jsonb,
+      path TEXT,
+      referrer TEXT,
+      session_id TEXT,
+      viewport TEXT,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+  `);
 }
+
 
 const PgSession = connectPgSimple(session);
 const sessionSecret = process.env.SESSION_SECRET || (isProduction ? null : crypto.randomBytes(32).toString('hex'));
@@ -160,6 +174,13 @@ const loginLimiter = rateLimit({
 function clean(value, max = 500) {
   if (typeof value !== 'string') return '';
   return value.trim().replace(/\s+/g, ' ').slice(0, max);
+}
+
+function safeMetadata(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
+  const json = JSON.stringify(value);
+  if (Buffer.byteLength(json, 'utf8') > 5000) return { truncated: true };
+  return value;
 }
 
 function createMailer() {
@@ -286,6 +307,57 @@ app.post('/api/logout', (req, res) => {
     res.clearCookie('metamorfosis.sid');
     res.json({ ok: true });
   });
+});
+
+
+app.post('/api/events', publicLimiter, async (req, res) => {
+  const event = {
+    id: crypto.randomUUID(),
+    eventType: clean(req.body?.event_type || req.body?.eventType, 120),
+    label: clean(req.body?.label, 180),
+    path: clean(req.body?.path, 260),
+    referrer: clean(req.body?.referrer, 260),
+    sessionId: clean(req.body?.session_id || req.body?.sessionId, 120),
+    viewport: clean(req.body?.viewport, 60),
+    metadata: safeMetadata(req.body?.metadata)
+  };
+
+  if (!event.eventType) {
+    return res.status(400).json({ ok: false, message: 'Evento no válido.' });
+  }
+
+  if (!pool) {
+    return res.status(202).json({ ok: true, saved: false, id: event.id });
+  }
+
+  try {
+    await pool.query(
+      `INSERT INTO metamorfosis_web_events
+      (id, event_type, label, metadata, path, referrer, session_id, viewport)
+      VALUES ($1,$2,$3,$4::jsonb,$5,$6,$7,$8)`,
+      [event.id, event.eventType, event.label, JSON.stringify(event.metadata), event.path, event.referrer, event.sessionId, event.viewport]
+    );
+    return res.status(201).json({ ok: true, saved: true, id: event.id });
+  } catch (error) {
+    console.error('Error al registrar evento web:', error.message);
+    return res.status(500).json({ ok: false, message: 'No fue posible registrar el evento.' });
+  }
+});
+
+app.get('/api/events', requireAdmin, async (_req, res) => {
+  if (!pool) return res.json({ ok: true, events: [] });
+  try {
+    const result = await pool.query(`
+      SELECT id, event_type, label, metadata, path, referrer, session_id, viewport, created_at
+      FROM metamorfosis_web_events
+      ORDER BY created_at DESC
+      LIMIT 500
+    `);
+    return res.json({ ok: true, events: result.rows });
+  } catch (error) {
+    console.error('Error al consultar eventos web:', error.message);
+    return res.status(500).json({ ok: false, message: 'No fue posible cargar los indicadores web.' });
+  }
 });
 
 app.post('/api/quotes', publicLimiter, async (req, res) => {
