@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /admin
-Sitemap: https://www.metamorfosislab.cl/sitemap.xml
+Sitemap: https://metamorfosislab.cl/sitemap.xml
