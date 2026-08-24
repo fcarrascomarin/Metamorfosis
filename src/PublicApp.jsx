@@ -3,29 +3,25 @@ import Icon from './components/Icon.jsx';
 import heroImage from './assets/images/jardin/hero-jardin.webp';
 import workImage from './assets/images/jardin/trabajo-metodo.webp';
 import mapImage from './assets/images/jardin/mapa-transformacion.webp';
-import projectsImage from './assets/images/jardin/proyectos-vivos.webp';
 import contactImage from './assets/images/jardin/contacto-jardin.webp';
 import systemImage from './assets/images/sistema-digital.webp';
-import caseCmImage from './assets/images/caso-cm.webp';
 import { contact } from './data.js';
 import {
   activeOfferUseCases,
-  impactCases,
   methodPrinciples,
   processRoadmap,
   pricingPrinciples,
-  publicCases,
   publicNavigation,
   resultIndicators,
+  resultOutcomes,
   servicePricing,
   solutions,
   stackBadges,
+  team,
   transformationPillars
 } from './publicContent.js';
 
 const waBase = `https://wa.me/${contact.phoneDigits}`;
-const defaultAdminUrl = 'https://os.metamorfosislab.cl';
-const adminUrl = String(import.meta.env.VITE_ADMIN_URL || defaultAdminUrl).replace(/\/$/, '');
 const apiBase = String(import.meta.env.VITE_API_BASE || 'https://os.metamorfosislab.cl').replace(/\/$/, '');
 const PUBLIC_QUOTES_KEY = 'metamorfosis-public-quotes';
 const PUBLIC_EVENTS_KEY = 'metamorfosis-public-events';
@@ -122,7 +118,7 @@ function Brand({ compact = false }) {
       <img className="brand-logo" src="/logo-metamorfosis-transparente.png" alt="Isotipo de Metamorfosis Lab" width="44" height="44" />
       <span className="brand-copy">
         <strong>METAMORFOSIS LAB</strong>
-        <small>transformación productiva responsable</small>
+        <small>operación · trazabilidad · capacidad</small>
       </span>
     </a>
   );
@@ -147,52 +143,30 @@ function PublicHeader() {
   }, []);
 
   useEffect(() => {
-    const close = (event) => {
-      if (!event.target.closest('.site-nav')) setOpen(false);
-    };
-    const onKey = (event) => {
-      if (event.key === 'Escape') setOpen(false);
-    };
-    document.addEventListener('pointerdown', close);
+    const onKey = (event) => event.key === 'Escape' && setOpen(false);
     document.addEventListener('keydown', onKey);
-    return () => {
-      document.removeEventListener('pointerdown', close);
-      document.removeEventListener('keydown', onKey);
-    };
+    return () => document.removeEventListener('keydown', onKey);
   }, []);
 
   const goTo = (id) => {
     setOpen(false);
     scrollToPublicSection(id);
+    trackPublicEvent('navigation_click', { section: id, label: id });
   };
 
   return (
     <header className="site-header">
       <div className="site-header__inner shell">
         <Brand />
-        <nav id="site-navigation" className={`site-nav site-nav--menu ${open ? 'is-open' : ''}`} aria-label="Navegación principal">
-          <div className={`site-nav__menu ${open ? 'is-open' : ''}`}>
-            <button
-              type="button"
-              className="site-nav__menu-trigger"
-              onClick={() => setOpen((value) => !value)}
-              aria-expanded={open}
-              aria-controls="site-menu-panel"
-            >
-              <Icon name={open ? 'close' : 'menu'} />
-              <span>Menú</span>
-            </button>
-            <div id="site-menu-panel" className="site-nav__dropdown" role="menu">
-              {publicNavigation.map(({ id, label, helper, icon }) => (
-                <button type="button" key={id} onClick={() => goTo(id)} role="menuitem">
-                  <Icon name={icon || 'arrow_forward'} />
-                  <span><strong>{label}</strong>{helper && <small>{helper}</small>}</span>
-                </button>
-              ))}
-            </div>
+        <nav id="site-navigation" className={`site-nav site-nav--audit ${open ? 'is-open' : ''}`} aria-label="Navegación principal">
+          <div id="site-menu-panel" className="site-nav__links">
+            {publicNavigation.map(({ id, label }) => (
+              <button type="button" key={id} onClick={() => goTo(id)}>{label}</button>
+            ))}
           </div>
-          <a className="site-nav__os" href={adminUrl} aria-label="Ingresar al panel interno Metamorfosis OS"><Icon name="lock" /><span>OS</span></a>
-          <button className="button button--small site-nav__conversation" type="button" onClick={() => goTo('contacto')}><Icon name="mail" />Conversemos</button>
+          <button className="button button--small site-nav__conversation" type="button" onClick={() => goTo('contacto')}>
+            <Icon name="mail" /> Solicitar evaluación inicial
+          </button>
         </nav>
         <IconButton
           className="menu-button"
@@ -208,7 +182,7 @@ function PublicHeader() {
 }
 
 function WhatsappFloating() {
-  const message = encodeURIComponent('Hola, conocí Metamorfosis Lab a través de su página. Quiero conversar sobre Transformación Productiva Responsable para mi organización.');
+  const message = encodeURIComponent('Hola, conocí Metamorfosis Lab a través de su página. Quiero conversar sobre un problema de operación u organización.');
   return (
     <a className="whatsapp-floating" href={`${waBase}?text=${message}`} target="_blank" rel="noreferrer" aria-label={`Conversar con Metamorfosis Lab por WhatsApp al ${contact.phoneDisplay}`}>
       <img src="/assets/icons/whatsapp.svg" alt="" width="28" height="28" />
@@ -223,33 +197,6 @@ function SectionHeading({ kicker, title, description, align = 'center' }) {
       <span className="kicker">{kicker}</span>
       <h2>{title}</h2>
       {description && <p>{description}</p>}
-    </div>
-  );
-}
-
-function CaseBrand({ brand, name }) {
-  if (brand === 'metamorfosis') {
-    return (
-      <div className="case-brand case-brand--metamorfosis" role="img" aria-label={`Logo de ${name}`}>
-        <img src="/logo-metamorfosis-transparente.png" alt="" width="72" height="72" />
-        <span><strong>METAMORFOSIS</strong><small>OS · sistema interno</small></span>
-      </div>
-    );
-  }
-
-  if (brand === 'cm') {
-    return (
-      <div className="case-brand case-brand--cm" role="img" aria-label={`Logo de ${name}`}>
-        <img className="case-brand__logo case-brand__logo--cm" src="/assets/brand/logo-cm-banqueteria.png" alt="" width="96" height="96" />
-        <span><strong>CM</strong><small>Banquetería & Restaurant</small></span>
-      </div>
-    );
-  }
-
-  return (
-    <div className="case-brand case-brand--juana" role="img" aria-label={`Logo de ${name}`}>
-      <img className="case-brand__logo case-brand__logo--juana" src="/assets/brand/logo-juana-de-arco.png" alt="" width="156" height="90" />
-      <span><strong>JUANA DE ARCO</strong><small>joyas con significado</small></span>
     </div>
   );
 }
@@ -379,7 +326,7 @@ function QuoteForm() {
       <div className="form-headline form-headline--steps">
         <span><Icon name="mail" /> Canal formal</span>
         <strong>Solicitud por correo</strong>
-        <small>Se envía al correo institucional y queda disponible para seguimiento interno cuando el OS está conectado.</small>
+        <small>Se envía al correo institucional y queda registrada para seguimiento interno.</small>
       </div>
 
       <ol className="quote-steps" aria-label="Pasos de la solicitud">
@@ -527,40 +474,23 @@ function PricingTransparency() {
   );
 }
 
-function ImpactShowcase() {
-  const [featured, ...secondary] = impactCases;
+function ResultsShowcase() {
   return (
-    <div className="impact-storyboard">
-      <article className="impact-hero-card">
-        <div className="impact-hero-card__visual">
-          <img src={caseCmImage} alt="Caso CM Banquetería: operación, web y sistema interno" loading="lazy" />
-          <span><Icon name="verified_user" /> Caso aplicado</span>
-        </div>
-        <div className="impact-hero-card__content">
-          <span className="kicker">Del diagnóstico al sistema</span>
-          <h3>{featured.title}</h3>
-          <p>{featured.lead}</p>
-          <div className="impact-flow" aria-label="Secuencia de resultado">
-            <div><Icon name="warning" /><strong>Desafío</strong><span>{featured.challenge}</span></div>
-            <div><Icon name="schema" /><strong>Solución</strong><span>{featured.intervention}</span></div>
-            <div><Icon name="check_circle" /><strong>Resultado</strong><span>{featured.result}</span></div>
-          </div>
+    <div className="results-audit-grid">
+      <article className="results-audit-lead">
+        <span className="tpr-icon"><Icon name="query_stats" /></span>
+        <h3>No prometemos impacto antes de medirlo</h3>
+        <p>Definimos desde el inicio qué evidencia puede observarse y qué cambios no corresponde atribuir a una intervención breve.</p>
+        <div className="tpr-indicators tpr-indicators--compact">
+          {resultIndicators.map((item) => <span key={item}>{item}</span>)}
         </div>
       </article>
-      <div className="impact-proof-grid">
-        <article className="impact-proof-card impact-proof-card--metrics">
-          <span className="tpr-icon"><Icon name="query_stats" /></span>
-          <h3>Lo que se mide se puede sostener</h3>
-          <div className="tpr-indicators tpr-indicators--compact">
-            {resultIndicators.map((item) => <span key={item}>{item}</span>)}
-          </div>
-        </article>
-        {secondary.map((item) => (
-          <article key={item.title} className="impact-proof-card">
+      <div className="results-audit-cards">
+        {resultOutcomes.map((item) => (
+          <article key={item.title} className="tpr-card result-outcome-card">
             <span className="tpr-icon"><Icon name={item.icon} /></span>
             <h3>{item.title}</h3>
-            <p>{item.lead}</p>
-            <strong>{item.result}</strong>
+            <p>{item.text}</p>
           </article>
         ))}
       </div>
@@ -568,28 +498,16 @@ function ImpactShowcase() {
   );
 }
 
-function PortfolioShowcase() {
-  const visuals = {
-    'cm-banqueteria': caseCmImage,
-    'metamorfosis-os': systemImage,
-    'juana-de-arco': projectsImage
-  };
+function TeamSection() {
   return (
-    <div className="portfolio-showcase">
-      {publicCases.map((caseItem, index) => (
-        <article key={caseItem.id} className={`portfolio-card portfolio-card--${index === 0 ? 'large' : 'compact'}`}>
-          <figure className="device-mockup">
-            <div className="device-mockup__bar"><span /><span /><span /></div>
-            <img src={visuals[caseItem.id] || projectsImage} alt={`Vista del proyecto ${caseItem.name}`} loading="lazy" />
-            <figcaption>{caseItem.hover}</figcaption>
-          </figure>
-          <div className="portfolio-card__body">
-            <CaseBrand brand={caseItem.brand} name={caseItem.name} />
-            <span className="case-card__label">{caseItem.label}</span>
-            <h3>{caseItem.name}</h3>
-            <p>{caseItem.text}</p>
-            <div className="case-tags">{caseItem.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
-            {caseItem.live && <a className="text-link" href={caseItem.live} target="_blank" rel="noreferrer">Ver proyecto <Icon name="open_in_new" /></a>}
+    <div className="team-audit-grid">
+      {team.map((person) => (
+        <article key={person.name} className="team-audit-card">
+          <span className="team-audit-card__avatar" aria-hidden="true">{person.initials}</span>
+          <div>
+            <h3>{person.name}</h3>
+            <strong>{person.role}</strong>
+            <p>{person.text}</p>
           </div>
         </article>
       ))}
@@ -607,190 +525,109 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--tpr public-site--lab">
-      <a className="skip-link" href="#contenido">Saltar al contenido principal</a>
+    <div className="public-site public-site--lab public-site--audit">
+      <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
-        <section id="inicio" className="tpr-hero section-anchor" onPointerMove={handleHeroMove}>
-          <div className="tpr-hero__image" aria-hidden="true"><img src={heroImage} alt="" fetchPriority="high" /></div>
+        <section id="inicio" className="tpr-hero section-anchor" style={{ '--section-image': `url(${heroImage})` }} onPointerMove={handleHeroMove}>
           <div className="tpr-hero__shade" aria-hidden="true" />
-          <div className="lab-cursor-field" aria-hidden="true" />
-          <div className="lab-orbit lab-orbit--one" aria-hidden="true" />
-          <div className="lab-orbit lab-orbit--two" aria-hidden="true" />
           <div className="shell tpr-hero__grid">
             <div className="tpr-hero__copy">
-              <span className="kicker">Transformación Productiva Responsable</span>
-              <h1>Transformar la operación sin perder lo valioso.</h1>
-              <p>Diagnosticamos procesos, personas, recursos y entorno para convertir desorden en decisiones, herramientas y resultados medibles.</p>
+              <span className="kicker">Metamorfosis Lab · Biobío</span>
+              <h1>Ordenamos operaciones para que puedan funcionar mejor y crecer con responsabilidad</h1>
+              <p>Ayudamos a organizaciones a comprender problemas concretos, ordenar procesos y registros, implementar soluciones acotadas y dejar resultados que puedan observarse.</p>
               <div className="hero__actions">
-                <SectionLink className="button" id="contacto">Evaluar mi operación</SectionLink>
-                <SectionLink className="button button--ghost-light" id="metodo">Ver método</SectionLink>
+                <SectionLink className="button" id="contacto">Solicitar evaluación inicial</SectionLink>
+                <SectionLink className="button button--ghost-light" id="metodo">Cómo trabajamos</SectionLink>
               </div>
+              <p className="hero-proofline">Primera conversación de 30 minutos · sin costo · si el problema no encaja con nuestras capacidades, lo diremos.</p>
             </div>
             <aside className="tpr-hero__card lab-pulse-card">
-              <strong>Primera conversación útil</strong>
-              <p>Problema claro, ruta priorizada y siguiente paso concreto.</p>
-              <div><span>Procesos</span><span>Personas</span><span>Recursos</span><span>Tecnología</span><span>Entorno</span></div>
+              <strong>¿Cuándo tiene sentido conversar?</strong>
+              <ul className="hero-checklist">
+                <li>Procesos que dependen demasiado de una persona o de la memoria</li>
+                <li>Registros dispersos y poca trazabilidad</li>
+                <li>Costos, pérdidas o tareas repetidas difíciles de ver</li>
+                <li>Una exigencia nueva que obliga a ordenar la operación</li>
+              </ul>
             </aside>
           </div>
         </section>
 
-        <section id="pilares" className="section section-anchor tpr-section tpr-section--intro">
+        <section id="que-hacemos" className="section section-anchor tpr-section tpr-section--intro surface-light">
           <div className="shell">
-            <SectionHeading
-              kicker="La tríada fundamental"
-              title="Una empresa no mejora por partes aisladas"
-              description="La eficiencia, las condiciones humanas y la responsabilidad con el entorno deben avanzar juntas."
-            />
+            <SectionHeading kicker="Qué hacemos" title="Entramos por un problema concreto, no por una solución predeterminada" description="La identidad de Metamorfosis es transversal. La intervención comienza delimitando qué problema vale la pena resolver y qué cambio sería suficiente." />
             <div className="tpr-pillar-grid">
               {transformationPillars.map((item) => (
-                <article key={item.title} className="tpr-card tpr-pillar-card">
-                  <span className="tpr-icon"><Icon name={item.icon} /></span>
-                  <h3>{item.title}</h3>
-                  <p>{item.text}</p>
-                </article>
+                <article key={item.title} className="tpr-card tpr-pillar-card surface-light-card"><span className="tpr-icon"><Icon name={item.icon} /></span><h3>{item.title}</h3><p>{item.text}</p></article>
               ))}
             </div>
           </div>
         </section>
 
-        <section id="transformacion" className="tpr-split-section section-anchor" style={{ '--section-image': `url(${workImage})` }}>
+        <section className="tpr-split-section section-anchor surface-dark" style={{ '--section-image': `url(${workImage})` }}>
           <div className="tpr-split-section__shade" aria-hidden="true" />
           <div className="shell tpr-split-grid">
-            <div className="tpr-panel">
-              <span className="kicker">Campo inicial</span>
-              <h2>Partimos donde el problema ya duele</h2>
-              <p>Operación, presencia digital, sistema interno o ciclo de vestuario laboral.</p>
-            </div>
-            <div className="tpr-panel tpr-panel--accent">
-              <span className="kicker">Visión completa</span>
-              <h2>Luego conectamos el sistema</h2>
-              <p>Procesos, personas, recursos, tecnología y entorno quedan integrados en una ruta viable.</p>
-            </div>
+            <div className="tpr-panel"><span className="kicker">Problemas de entrada</span><h2>Donde la informalidad empieza a costar</h2><p>Procesos, información, trazabilidad, presencia digital o recursos que ya no pueden depender solamente de conversaciones y memoria.</p></div>
+            <div className="tpr-panel tpr-panel--accent"><span className="kicker">Criterio</span><h2>Primero evidencia, después escala</h2><p>Las líneas comerciales actuales son hipótesis en validación. Construimos solo lo necesario para aprender si existe valor real.</p></div>
           </div>
           <div className="shell tpr-usecase-grid">
-            {activeOfferUseCases.map((item, index) => (
-              <article key={item.title} className="tpr-usecase">
-                <span><Icon name={item.icon || 'arrow_forward'} />{String(index + 1).padStart(2, '0')}</span>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </article>
-            ))}
+            {activeOfferUseCases.map((item, index) => <article key={item.title} className="tpr-usecase"><span><Icon name={item.icon || 'arrow_forward'} />{String(index + 1).padStart(2, '0')}</span><h3>{item.title}</h3><p>{item.text}</p></article>)}
           </div>
         </section>
 
-        <section id="soluciones" className="section section-anchor tpr-section tpr-section--bento">
+        <section className="section tpr-section tpr-section--bento surface-light">
           <div className="shell">
-            <SectionHeading
-              kicker="Servicios y soluciones"
-              title="Soluciones para ordenar, operar y crecer"
-              description="Cada servicio debe dejar una capacidad instalada, no solo una recomendación."
-            />
+            <SectionHeading kicker="Capacidades" title="Una intervención debe dejar algo funcionando" description="No vendemos documentos por sí mismos: usamos diagnóstico, diseño, tecnología y documentación cuando ayudan a modificar una capacidad real." />
             <div className="tpr-bento-grid">
-              {solutions.map((item, index) => (
-                <article key={item.title} className={`tpr-card tpr-solution-card tpr-bento-card tpr-bento-card--${index}`}>
-                  <span className="tpr-icon"><Icon name={item.icon} /></span>
-                  <h3>{item.title}</h3>
-                  <p>{item.text}</p>
-                </article>
-              ))}
-              <article className="tpr-card tpr-stack-card">
-                <span className="tpr-icon"><Icon name="database" /></span>
-                <h3>Stack responsable</h3>
-                <p>Herramientas modernas solo cuando hacen más clara, medible o sostenible la operación.</p>
-                <div className="stack-badges">{stackBadges.map((badge) => <span key={badge}>{badge}</span>)}</div>
-              </article>
+              {solutions.map((item, index) => <article key={item.title} className={`tpr-card tpr-solution-card tpr-bento-card tpr-bento-card--${index} surface-light-card`}><span className="tpr-icon"><Icon name={item.icon} /></span><h3>{item.title}</h3><p>{item.text}</p></article>)}
+              <article className="tpr-card tpr-stack-card surface-light-card"><span className="tpr-icon"><Icon name="database" /></span><h3>Herramientas según necesidad</h3><p>La tecnología entra cuando reduce fricción, mejora trazabilidad o permite medir.</p><div className="stack-badges">{stackBadges.map((badge) => <span key={badge}>{badge}</span>)}</div></article>
             </div>
             <PricingTransparency />
           </div>
         </section>
 
-        <section id="metodo" className="tpr-method-section section-anchor" style={{ '--section-image': `url(${mapImage})` }}>
+        <section id="metodo" className="tpr-method-section section-anchor surface-dark" style={{ '--section-image': `url(${mapImage})` }}>
           <div className="tpr-method-section__shade" aria-hidden="true" />
           <div className="shell tpr-method-grid">
             <div className="tpr-panel tpr-panel--wide">
-              <SectionHeading kicker="Cómo trabajamos" title="Un proceso simple, serio y trazable" description="Primero entendemos. Luego diseñamos, probamos y dejamos continuidad." />
-              <div className="tpr-roadmap">
-                {processRoadmap.map((item, index) => (
-                  <article key={item.title}>
-                    <span>{String(index + 1).padStart(2, '0')}</span>
-                    <Icon name={item.icon} />
-                    <strong>{item.title}</strong>
-                    <p>{item.text}</p>
-                  </article>
-                ))}
-              </div>
-              <div className="tpr-method-cards">
-                {methodPrinciples.map((item) => (
-                  <article key={item.title}>
-                    <Icon name={item.icon} />
-                    <strong>{item.title}</strong>
-                    <p>{item.text}</p>
-                  </article>
-                ))}
-              </div>
+              <SectionHeading kicker="Cómo trabajamos" title="Entender → priorizar → intervenir → medir y transferir" description="El método busca reducir incertidumbre sin convertir una pyme o una organización pequeña en un proyecto infinito." />
+              <div className="tpr-roadmap">{processRoadmap.map((item, index) => <article key={item.title}><span>{String(index + 1).padStart(2, '0')}</span><Icon name={item.icon} /><strong>{item.title}</strong><p>{item.text}</p></article>)}</div>
+              <div className="tpr-method-cards">{methodPrinciples.map((item) => <article key={item.title}><Icon name={item.icon} /><strong>{item.title}</strong><p>{item.text}</p></article>)}</div>
             </div>
-            <figure className="tpr-method-visual">
-              <img src={systemImage} alt="Sistema digital de organización y datos" loading="lazy" />
-              <figcaption>La tecnología entra cuando mejora una capacidad real.</figcaption>
-            </figure>
+            <figure className="tpr-method-visual"><img src={systemImage} alt="Representación de un sistema de organización, datos y seguimiento" loading="lazy" /><figcaption>El sistema sirve al trabajo; no reemplaza la comprensión del problema.</figcaption></figure>
           </div>
         </section>
 
-        <section id="resultados" className="section section-anchor tpr-section tpr-section--results">
+        <section id="resultados" className="section tpr-section tpr-section--results surface-light">
+          <div className="shell"><SectionHeading kicker="Qué buscamos dejar" title="Resultados verificables antes que relatos de éxito" description="Mientras no exista evidencia pública autorizada, mostramos con claridad los tipos de resultado que diseñamos y medimos." /><ResultsShowcase /></div>
+        </section>
+
+        <section id="equipo" className="section section-anchor team-audit-section surface-light">
           <div className="shell">
-            <SectionHeading
-              kicker="Resultados e impacto"
-              title="Resultados que se entienden"
-              description="Menos promesas abstractas. Más evidencia, aprendizaje y continuidad."
-            />
-            <ImpactShowcase />
+            <SectionHeading kicker="Quién está detrás" title="Un equipo pequeño, con responsabilidades visibles" description="Metamorfosis Lab combina lectura operacional, investigación, diseño de intervención y documentación. Cuando un problema requiere una especialidad habilitante, se incorpora de forma acotada o se deriva." />
+            <TeamSection />
           </div>
         </section>
 
-        <section id="casos" className="tpr-cases-section section-anchor" style={{ '--section-image': `url(${projectsImage})` }}>
-          <div className="tpr-cases-section__shade" aria-hidden="true" />
-          <div className="shell">
-            <SectionHeading
-              kicker="Portafolio dinámico"
-              title="Casos que muestran cómo trabajamos"
-              description="Diseño, tecnología y documentación al servicio de una operación real."
-            />
-            <PortfolioShowcase />
-          </div>
-        </section>
-
-        <section id="nosotros" className="section section-anchor tpr-manifesto">
-          <div className="shell tpr-manifesto__grid">
-            <div>
-              <span className="kicker">Sobre el Lab</span>
-              <h2>Oficio digital con criterio responsable</h2>
-            </div>
-            <p>Metamorfosis Lab trabaja con organizaciones que necesitan mejorar sin simplificar la realidad. Ordenamos procesos, cuidamos capacidades humanas e incorporamos responsabilidad con los sistemas vivos que hacen posible el valor.</p>
-          </div>
-        </section>
-
-        <section id="contacto" className="story-section story-section--contact section-anchor tpr-contact" style={{ '--section-image': `url(${contactImage})` }}>
+        <section id="contacto" className="story-section story-section--contact section-anchor tpr-contact surface-dark" style={{ '--section-image': `url(${contactImage})` }}>
           <div className="story-section__shade" aria-hidden="true" />
           <div className="shell contact-layout contact-layout--immersive">
             <div className="contact-intro">
-              <SectionHeading kicker="Canal formal" title="Abramos una conversación seria" description="Cuéntanos el problema. Te responderemos por correo con una forma concreta de abordarlo." />
-              <div className="contact-links contact-links--compact contact-links--email-only">
-                <a href={`mailto:${contact.email}`}><Icon name="mail" /><span><small>Correo formal</small><strong>{contact.email}</strong></span></a>
-              </div>
+              <SectionHeading kicker="Siguiente paso" title="Cuéntanos el problema, no la solución que crees necesitar" description="Responderemos si vemos encaje y cuál sería el próximo paso más pequeño que tenga sentido." />
+              <div className="contact-links contact-links--compact contact-links--email-only"><a href={`mailto:${contact.email}`}><Icon name="mail" /><span><small>Correo institucional</small><strong>{contact.email}</strong></span></a></div>
             </div>
             <QuoteForm />
           </div>
         </section>
       </main>
-      <footer className="site-footer">
-        <div className="shell site-footer__grid">
-          <div className="site-footer__brand"><Brand /><p>Consultoría para operar mejor, cuidar equipos y sostener valor con responsabilidad.</p></div>
-          <div><span className="footer-title">Navegación</span><SectionLink id="pilares">Tres ejes</SectionLink><SectionLink id="soluciones">Soluciones</SectionLink><SectionLink id="resultados">Resultados</SectionLink><SectionLink id="contacto">Contacto</SectionLink></div>
+      <footer className="site-footer surface-dark">
+        <div className="shell site-footer__grid site-footer__grid--public-only">
+          <div className="site-footer__brand"><Brand /><p>Transformación organizacional con eficiencia operacional, condiciones humanas y responsabilidad con los sistemas vivos.</p></div>
+          <div><span className="footer-title">Navegación</span><SectionLink id="que-hacemos">Qué hacemos</SectionLink><SectionLink id="metodo">Cómo trabajamos</SectionLink><SectionLink id="equipo">Equipo</SectionLink><SectionLink id="contacto">Contacto</SectionLink></div>
           <div><span className="footer-title">Contacto</span><a className="footer-icon-link" href={`mailto:${contact.email}`}><Icon name="mail" /><span>{contact.email}</span></a><p>{contact.coverage}</p></div>
-          <div><span className="footer-title">Acceso interno</span><p>Prioridades, solicitudes, documentos y decisiones viven en Metamorfosis OS.</p><a href={adminUrl}>Ingresar a Metamorfosis OS</a></div>
         </div>
-        <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis Lab</span><span>Transformación productiva responsable</span></div>
+        <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis Lab</span><span>Biobío · Chile</span></div>
       </footer>
       <WhatsappFloating />
     </div>

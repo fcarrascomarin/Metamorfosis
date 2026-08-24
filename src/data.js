@@ -49,14 +49,6 @@ export const initialProjects = [
     status: 'Prioridad'
   },
   {
-    name: 'Caso 0 · CM Banquetería & Restaurant',
-    client: 'CM Banquetería & Restaurant',
-    stage: 'Entregado · estudio y evidencia',
-    progress: 100,
-    next: 'Extraer situación inicial, intervención, resultado, valor y aprendizaje',
-    status: 'Cerrado'
-  },
-  {
     name: 'Ordenamiento y trazabilidad operacional',
     client: 'Hipótesis comercial',
     stage: 'Validación',
@@ -70,5 +62,5 @@ export const documents = {
   Operativos: ['Pauta de conversación inicial', 'Minuta de reunión', 'Plan de trabajo', 'Informe de avance'],
   Administrativos: ['Propuesta comercial', 'Cotización', 'Acuerdo de confidencialidad', 'Acta de cierre'],
   Metodológicos: ['Ficha de oportunidad', 'Investigación previa', 'Mapa de Transformación y Activos', 'Matriz de riesgos', 'Mapa de mercado y clientes', 'Propuesta de valor y posicionamiento', 'Ficha de levantamiento ergonómico inicial', 'Registro de tiempo y rentabilidad'],
-  'Casos de estudio': ['Caso 0 · CM: diagnóstico y antecedentes', 'Caso 0 · CM: informes sanitarios', 'Caso 0 · CM: informe final y cierre', 'Caso 0 · CM: herramientas y aprendizaje']
+  'Expedientes comerciales': ['Ficha de oportunidad', 'Perfil preliminar de empresa', 'Pauta de conversación inicial']
 };

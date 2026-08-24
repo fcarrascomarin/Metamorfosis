@@ -2,9 +2,10 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from './components/Icon.jsx';
 import { documents, initialProjects } from './data.js';
 import { createDefaultOsState, OS_SCHEMA_VERSION, OWNERS, TOPICS } from './osSeed.js';
+import { CONSULTING_TOOLS, EXPEDIENTE_STATUSES, createEmptyExpediente, expedienteProgress } from './consultingTools.js';
 
-const STORAGE_KEY = 'metamorfosis-os-draft-v8';
-const LEGACY_STORAGE_KEYS = ['metamorfosis-os-draft-v7', 'metamorfosis-os-draft-v6'];
+const STORAGE_KEY = 'metamorfosis-os-draft-v9';
+const LEGACY_STORAGE_KEYS = ['metamorfosis-os-draft-v8', 'metamorfosis-os-draft-v7', 'metamorfosis-os-draft-v6'];
 const PUBLIC_QUOTES_KEY = 'metamorfosis-public-quotes';
 const PUBLIC_EVENTS_KEY = 'metamorfosis-public-events';
 const PUBLIC_SITE_URL = String(import.meta.env.VITE_PUBLIC_SITE_URL || 'https://metamorfosislab.cl').replace(/\/$/, '');
@@ -12,59 +13,45 @@ const STATUS_OPTIONS = ['nueva', 'contactada', 'evaluacion', 'propuesta', 'cerra
 
 const menuGroups = [
   {
-    id: 'inicio',
-    label: 'Inicio',
-    icon: 'dashboard',
-    items: [['dashboard', 'Panel diario', 'dashboard']]
-  },
-  {
-    id: 'familia',
-    label: 'Vida familiar',
-    icon: 'home',
-    items: [['family', 'Sistema familiar', 'home']]
-  },
-  {
     id: 'operacion',
-    label: 'Sistema operativo',
-    icon: 'calendar_month',
+    label: 'Operación',
+    icon: 'dashboard',
     items: [
-      ['month', 'Vista mensual', 'calendar_month'],
-      ['day', 'Día seleccionado', 'today'],
-      ['inbox', 'Entrada y decisiones', 'inbox'],
-      ['fronts', 'Frentes y límites', 'account_tree'],
-      ['finance', 'Finanzas del negocio', 'payments']
+      ['dashboard', 'Panel diario', 'dashboard'],
+      ['month', 'Agenda semanal', 'calendar_month'],
+      ['day', 'Día seleccionado', 'today']
     ]
   },
   {
     id: 'comercial',
     label: 'Comercial',
     icon: 'handshake',
-    items: [['quotes', 'Oportunidades', 'request_quote'], ['webEvents', 'Indicadores web', 'query_stats']]
+    items: [
+      ['expedientes', 'Expedientes', 'folder_open'],
+      ['quotes', 'Oportunidades', 'request_quote']
+    ]
+  },
+  {
+    id: 'metodo',
+    label: 'Método',
+    icon: 'conversion_path',
+    items: [['tools', 'Herramientas', 'library_books']]
   },
   {
     id: 'gestion',
-    label: 'Gestión interna',
+    label: 'Gestión',
     icon: 'briefcase',
     items: [
-      ['projects', 'Proyectos', 'account_tree'],
+      ['finance', 'Finanzas del negocio', 'payments'],
       ['metrics', 'Tiempo y rentabilidad', 'query_stats'],
-      ['assets', 'Activos intangibles', 'copyright']
+      ['documents', 'Repositorio', 'folder_open']
     ]
   },
   {
-    id: 'documentos',
-    label: 'Documentos',
-    icon: 'folder_open',
-    items: [
-      ['documents', 'Repositorio', 'folder_open'],
-      ['library', 'Biblioteca metodológica', 'library_books']
-    ]
-  },
-  {
-    id: 'consultoria',
-    label: 'Consultoría / consolidación',
-    icon: 'conversion_path',
-    items: [['consulting', 'Proceso temporal', 'conversion_path']]
+    id: 'familia',
+    label: 'Vida familiar',
+    icon: 'home',
+    items: [['family', 'Sistema familiar', 'home']]
   }
 ];
 
@@ -98,48 +85,41 @@ const LEGACY_SEED_TASK_TITLES = new Set([
   'Revisar próximo hito de Consolidación CM',
   'Cierre semanal del sistema'
 ]);
-const LEGACY_FRONT_NAMES = new Set(['Metamorfosis Lab', 'Consultoría de Consolidación CM', 'Método Metamorfosis', 'CM Experiencias']);
-const LEGACY_DECISIONS = new Set([
-  'Francisca lidera Metamorfosis y mantiene la decisión final del proyecto.',
-  'CM es el primer caso demostrativo vivo del método; no se presentará como caso cerrado antes de medir resultados.',
-  'La web pública comunica valor comercial. Los riesgos, cifras y documentos de trabajo permanecen en el panel privado.',
-  'Los procesos temporales de consultoría se ubican al final del menú y no desplazan la operación diaria.'
-]);
+const RETIRED_PROJECT_PATTERN = /CM|Banquetería|Consolidación/i;
 
 function migrateOsState(candidate, fallback) {
   if (!candidate || typeof candidate !== 'object') return fallback;
   if (String(candidate.version || '') === OS_SCHEMA_VERSION) return candidate;
 
   const campaignTasks = fallback.tasks || [];
-  const existingTasks = Array.isArray(candidate.tasks) ? candidate.tasks.filter((task) => !LEGACY_SEED_TASK_TITLES.has(task?.title)) : [];
+  const existingTasks = Array.isArray(candidate.tasks)
+    ? candidate.tasks.filter((task) => !LEGACY_SEED_TASK_TITLES.has(task?.title) && !RETIRED_PROJECT_PATTERN.test(`${task?.title || ''} ${task?.topic || ''}`))
+    : [];
   const existingTitles = new Set(existingTasks.map((task) => task?.title));
   const tasks = [...existingTasks, ...campaignTasks.filter((task) => !existingTitles.has(task.title))];
 
-  const timeProjects = Array.isArray(candidate.timeTracking?.projects) ? candidate.timeTracking.projects.map((project) => {
-    const isCm = /CM|Consolidación/i.test(`${project?.name || ''} ${project?.client || ''}`);
-    return isCm ? { ...project, name: 'Caso 0 · CM Banquetería & Restaurant', status: 'Cerrado · Caso 0' } : project;
-  }) : fallback.timeTracking.projects;
+  const currentTracking = candidate.timeTracking || {};
+  const timeProjects = Array.isArray(currentTracking.projects)
+    ? currentTracking.projects.filter((project) => !RETIRED_PROJECT_PATTERN.test(`${project?.name || ''} ${project?.client || ''}`))
+    : fallback.timeTracking.projects;
+  const projectIds = new Set(timeProjects.map((project) => project.id));
+  const timeEntries = Array.isArray(currentTracking.entries)
+    ? currentTracking.entries.filter((entry) => projectIds.has(entry.projectId))
+    : fallback.timeTracking.entries;
 
   const family = candidate.family && typeof candidate.family === 'object' ? candidate.family : {};
-  const migratedWorkFronts = Array.isArray(family.workFronts) ? family.workFronts.map((front) =>
-    /CM Banquetería/i.test(front?.name || '')
-      ? { ...front, state: 'Caso 0', next: 'Usar la información recopilada para evidencia y aprendizaje de Metamorfosis.', limit: 'Intervención entregada y terminada; no reabrir trabajo operativo.' }
-      : front
-  ) : fallback.family.workFronts;
-  const migratedInventory = Array.isArray(family.inventory) ? family.inventory.map((item) =>
-    /CM Banquetería/i.test(item?.title || '')
-      ? { ...item, title: 'CM Banquetería & Restaurant · Caso 0', status: 'Caso 0' }
-      : item
-  ) : fallback.family.inventory;
+  const workFronts = (Array.isArray(family.workFronts) ? family.workFronts : fallback.family.workFronts)
+    .filter((front) => !RETIRED_PROJECT_PATTERN.test(front?.name || ''));
+  const inventory = (Array.isArray(family.inventory) ? family.inventory : fallback.family.inventory)
+    .filter((item) => !RETIRED_PROJECT_PATTERN.test(item?.title || ''));
+  const weeklyActions = (Array.isArray(family.weeklyActions) ? family.weeklyActions : fallback.family.weeklyActions)
+    .filter((item) => !RETIRED_PROJECT_PATTERN.test(item?.title || ''));
 
-  const preservedFronts = Array.isArray(candidate.fronts)
-    ? candidate.fronts.filter((front) => !LEGACY_FRONT_NAMES.has(front?.name))
-    : [];
-  const fronts = [...fallback.fronts, ...preservedFronts];
-  const preservedDecisions = Array.isArray(candidate.decisions)
-    ? candidate.decisions.filter((decision) => !LEGACY_DECISIONS.has(decision))
-    : [];
-  const decisions = [...fallback.decisions, ...preservedDecisions.filter((decision) => !fallback.decisions.includes(decision))];
+  const candidateFronts = (Array.isArray(candidate.fronts) ? candidate.fronts : [])
+    .filter((front) => !RETIRED_PROJECT_PATTERN.test(front?.name || ''));
+  const frontsByName = new Map([...fallback.fronts, ...candidateFronts].map((front) => [front.name, front]));
+  const decisions = (Array.isArray(candidate.decisions) ? candidate.decisions : fallback.decisions)
+    .filter((decision) => !RETIRED_PROJECT_PATTERN.test(decision || ''));
 
   return {
     ...candidate,
@@ -147,15 +127,17 @@ function migrateOsState(candidate, fallback) {
     selectedDate: candidate.selectedDate && candidate.selectedDate >= '2026-08-24' ? candidate.selectedDate : '2026-08-24',
     tasks,
     guides: { ...(candidate.guides || {}), ...fallback.guides },
-    fronts,
-    decisions,
-    timeTracking: { ...(candidate.timeTracking || {}), projects: timeProjects },
+    fronts: [...frontsByName.values()],
+    decisions: [...fallback.decisions, ...decisions.filter((decision) => !fallback.decisions.includes(decision))],
+    expedientes: Array.isArray(candidate.expedientes) && candidate.expedientes.length ? candidate.expedientes : fallback.expedientes,
+    timeTracking: { ...fallback.timeTracking, ...currentTracking, projects: timeProjects, entries: timeEntries },
     family: {
+      ...fallback.family,
       ...family,
       weekLabel: 'Semana del 24 al 30 de agosto de 2026',
-      weeklyActions: Array.isArray(family.weeklyActions) ? family.weeklyActions : fallback.family.weeklyActions,
-      workFronts: migratedWorkFronts,
-      inventory: migratedInventory
+      weeklyActions,
+      workFronts,
+      inventory
     }
   };
 }
@@ -182,6 +164,7 @@ function hydrateState(candidate) {
     fronts: (Array.isArray(candidate.fronts) ? candidate.fronts : fallback.fronts).map(normalizeId),
     decisions: Array.isArray(candidate.decisions) ? candidate.decisions : fallback.decisions,
     inbox: (Array.isArray(candidate.inbox) ? candidate.inbox : fallback.inbox).map(normalizeId),
+    expedientes: Array.isArray(candidate.expedientes) ? candidate.expedientes : fallback.expedientes,
     family: {
       ...fallback.family,
       ...(candidate.family || {}),
@@ -251,6 +234,9 @@ function DashboardView({ osState, quotes, dirty, onNavigate, onAddTask }) {
   const nextSevenIso = nextSeven.toISOString().slice(0, 10);
   const upcoming = osState.tasks.filter((task) => task.status !== 'done' && task.date >= today && task.date <= nextSevenIso);
   const openQuotes = quotes.filter((quote) => !['cerrada', 'descartada'].includes(quote.status)).length;
+  const expedientes = Array.isArray(osState.expedientes) ? osState.expedientes : [];
+  const activeExpedientes = expedientes.filter((item) => !['Cerrado', 'Descartado'].includes(item.status));
+  const conversationPending = activeExpedientes.filter((item) => item.tools?.conversation?.status !== 'Completa').length;
 
   return (
     <div className="admin-view">
@@ -259,8 +245,8 @@ function DashboardView({ osState, quotes, dirty, onNavigate, onAddTask }) {
         <button type="button" onClick={() => onNavigate('day')}><Icon name="today" />Agenda de hoy</button>
         <button type="button" onClick={() => onNavigate('family')}><Icon name="home" />Vida familiar</button>
         <button type="button" onClick={() => onNavigate('quotes')}><Icon name="request_quote" />Oportunidades</button>
-        <button type="button" onClick={() => onNavigate('webEvents')}><Icon name="query_stats" />Indicadores web</button>
-        <button type="button" onClick={() => onNavigate('projects')}><Icon name="account_tree" />Proyectos</button>
+        <button type="button" onClick={() => onNavigate('expedientes')}><Icon name="folder_open" />Expedientes</button>
+        <button type="button" onClick={() => onNavigate('tools')}><Icon name="library_books" />Herramientas</button>
         <button type="button" onClick={() => onNavigate('metrics')}><Icon name="query_stats" />Tiempo y rentabilidad</button>
         <button type="button" onClick={() => onNavigate('documents')}><Icon name="folder_open" />Documentos</button>
       </div>
@@ -268,8 +254,8 @@ function DashboardView({ osState, quotes, dirty, onNavigate, onAddTask }) {
         <MetricCard icon="task_alt" label="Pendientes de hoy" value={pendingToday.length} note={`${todayTasks.length} tareas cargadas`} />
         <MetricCard icon="schedule" label="Próximos 7 días" value={upcoming.length} note="Tareas sin cerrar" />
         <MetricCard icon="request_quote" label="Oportunidades abiertas" value={openQuotes} note={`${quotes.length} registros totales`} tone="accent" />
-        <MetricCard icon="account_tree" label="Frentes activos" value={osState.fronts.length} note="Con liderazgo y límite" />
-        <MetricCard icon="inbox" label="Entradas por decidir" value={osState.inbox.length} note="Antes de convertir en trabajo" tone={osState.inbox.length ? 'warning' : ''} />
+        <MetricCard icon="folder_open" label="Expedientes activos" value={activeExpedientes.length} note={`${expedientes.length} expedientes registrados`} />
+        <MetricCard icon="forum" label="Conversaciones pendientes" value={conversationPending} note="Prospectos que aún deben validarse" tone={conversationPending ? 'warning' : ''} />
         <MetricCard icon={dirty ? 'warning' : 'save'} label="Estado del sistema" value={dirty ? 'Sin guardar' : 'Guardado'} note="Persistencia del panel" tone={dirty ? 'warning' : ''} />
       </div>
       <div className="dashboard-grid">
@@ -284,11 +270,14 @@ function DashboardView({ osState, quotes, dirty, onNavigate, onAddTask }) {
           <div className="decision-list">{osState.decisions.slice(0, 4).map((decision, index) => <div key={`${decision}-${index}`}><span>{index + 1}</span><p>{decision}</p></div>)}</div>
         </section>
         <section className="panel-card">
-          <div className="panel-card__heading"><div><span className="kicker">Bandeja</span><h2>Nuevos retos</h2></div><button type="button" className="text-button" onClick={() => onNavigate('inbox')}>Clasificar</button></div>
-          {osState.inbox.length ? osState.inbox.slice(0, 4).map((item) => <div className="inbox-preview" key={item.id}><strong>{item.title}</strong><span className={`decision-tag decision-tag--${String(item.decision).toLowerCase()}`}>{item.decision}</span></div>) : <p className="empty-copy">No hay entradas esperando decisión.</p>}
+          <div className="panel-card__heading"><div><span className="kicker">Comercial</span><h2>Expedientes en curso</h2></div><button type="button" className="text-button" onClick={() => onNavigate('expedientes')}>Abrir expedientes</button></div>
+          {activeExpedientes.length ? activeExpedientes.slice(0, 4).map((item) => {
+            const progress = expedienteProgress(item);
+            return <div className="project-line" key={item.id}><div><strong>{item.id} · {item.name}</strong><small>{item.status} · {item.territory || 'Territorio por definir'}</small></div><span>{progress}%</span></div>;
+          }) : <p className="empty-copy">Todavía no hay expedientes comerciales activos.</p>}
         </section>
         <section className="panel-card">
-          <div className="panel-card__heading"><div><span className="kicker">Proyectos</span><h2>Próximas acciones</h2></div><button type="button" className="text-button" onClick={() => onNavigate('projects')}>Ver proyectos</button></div>
+          <div className="panel-card__heading"><div><span className="kicker">Validación</span><h2>Próximas acciones</h2></div><button type="button" className="text-button" onClick={() => onNavigate('expedientes')}>Ver avance</button></div>
           {initialProjects.map((project) => <div className="project-line" key={project.name}><div><strong>{project.name}</strong><small>{project.stage}</small></div><span>{project.progress}%</span></div>)}
         </section>
       </div>
@@ -405,8 +394,8 @@ function FinanceView({ osState, setOsState }) {
 
 const FAMILY_STATUSES = ['Bien', 'Atención', 'Intervenir'];
 const FAMILY_LOADS = ['Ligera', 'Media', 'Alta'];
-const FAMILY_INVENTORY_STATES = ['Activo', 'Próximo', 'Esperando condición', 'Caso 0', 'Pausado', 'Futuro'];
-const FAMILY_FRONT_STATES = ['Activo', 'Preparar', 'Cierre', 'Validación', 'Caso 0', 'Esperando', 'Pausado'];
+const FAMILY_INVENTORY_STATES = ['Activo', 'Próximo', 'Esperando condición', 'Pausado', 'Futuro'];
+const FAMILY_FRONT_STATES = ['Activo', 'Preparar', 'Cierre', 'Validación', 'Esperando', 'Pausado'];
 
 function FamilyView({ osState, setOsState }) {
   const family = osState.family;
@@ -770,7 +759,7 @@ function TimeTrackingView({ osState, setOsState }) {
           <label>Honorario acordado<input type="number" min="0" step="1000" value={projectForm.fee} onChange={(event) => setProjectForm({ ...projectForm, fee: event.target.value })} /></label>
           <label>Costos directos<input type="number" min="0" step="1000" value={projectForm.directCosts} onChange={(event) => setProjectForm({ ...projectForm, directCosts: event.target.value })} /></label>
           <label>Horas presupuestadas<input type="number" min="0" step="0.5" value={projectForm.targetHours} onChange={(event) => setProjectForm({ ...projectForm, targetHours: event.target.value })} /></label>
-          <label>Estado<select value={projectForm.status} onChange={(event) => setProjectForm({ ...projectForm, status: event.target.value })}><option>Propuesta</option><option>Activo</option><option>Desarrollo</option><option>Validación</option><option>Pausado</option><option>Cerrado</option><option>Cerrado · Caso 0</option></select></label>
+          <label>Estado<select value={projectForm.status} onChange={(event) => setProjectForm({ ...projectForm, status: event.target.value })}><option>Propuesta</option><option>Activo</option><option>Desarrollo</option><option>Validación</option><option>Pausado</option><option>Cerrado</option></select></label>
           <div className="modal-actions field-full">{projectForm.id && <button type="button" className="button button--ghost" onClick={() => setProjectForm(emptyProject)}>Cancelar edición</button>}<button type="submit" className="button"><Icon name="add" /> {projectForm.id ? 'Guardar cambios' : 'Agregar proyecto'}</button></div>
         </form>
       </section>
@@ -779,6 +768,147 @@ function TimeTrackingView({ osState, setOsState }) {
         <div className="panel-card__heading"><div><span className="kicker">Trazabilidad</span><h2>Registros de tiempo</h2></div><span className="count-pill">{tracking.entries.length}</span></div>
         <div className="table-page"><table className="time-table"><thead><tr><th>Fecha</th><th>Proyecto</th><th>Responsable</th><th>Trabajo</th><th>Horas</th><th>Costo</th><th>Facturable</th><th><span className="sr-only">Acciones</span></th></tr></thead><tbody>{tracking.entries.map((entry) => { const project = tracking.projects.find((item) => item.id === entry.projectId); return <tr key={entry.id}><td>{formatDate(entry.date, { day: '2-digit', month: 'short' })}</td><td><strong>{project?.name || 'Proyecto eliminado'}</strong></td><td>{entry.owner}</td><td><strong>{entry.category}</strong><small>{entry.note || 'Sin detalle'}</small></td><td>{number(entry.hours).toFixed(2)}</td><td>{formatMoney(number(entry.hours) * number(tracking.rates[entry.owner]))}</td><td>{entry.billable ? 'Sí' : 'No'}</td><td className="table-actions"><IconButton icon="edit" label="Editar registro" onClick={() => setEntryForm(entry)} /><IconButton icon="delete" label="Eliminar registro" className="icon-button--danger" onClick={() => removeEntry(entry.id)} /></td></tr>; })}{!tracking.entries.length && <tr><td colSpan="8"><div className="empty-state-inline"><Icon name="schedule" /><p>Aún no hay horas registradas.</p></div></td></tr>}</tbody></table></div>
       </section>
+    </div>
+  );
+}
+
+
+function ToolsView() {
+  return (
+    <div className="admin-view tools-view">
+      <ViewHeading kicker="Método comercial" title="Tres herramientas activas de prospección" description="El expediente avanza con evidencia acumulada. Cada herramienta tiene un propósito y un límite para evitar convertir la preparación comercial en consultoría gratuita." />
+      <div className="tool-standard-grid">
+        {CONSULTING_TOOLS.map((tool) => (
+          <article className="tool-standard-card" key={tool.id}>
+            <header><span>{tool.number}</span><div><small>{tool.stage}</small><h2>{tool.title}</h2></div></header>
+            <p>{tool.purpose}</p>
+            <div className="tool-standard-meta"><span><b>Visibilidad:</b> {tool.visibility}</span><span><b>Límite:</b> {tool.limit}</span></div>
+            <details>
+              <summary>Ver campos de la herramienta</summary>
+              <ul>{tool.fields.map((field) => <li key={field.key}>{field.label}</li>)}</ul>
+            </details>
+          </article>
+        ))}
+      </div>
+      <section className="panel-card method-chain-card">
+        <div className="panel-card__heading"><div><span className="kicker">Cadena metodológica</span><h2>Lo que ocurre después</h2></div></div>
+        <p>Estas tres herramientas cubren la etapa actual de prospección y primera conversación. Si el prospecto avanza, el expediente puede continuar con formulario base, Mapa de Transformación y Activos, propuesta y alcance, registro de hitos, indicadores y cierre.</p>
+      </section>
+    </div>
+  );
+}
+
+function ExpedientesView({ osState, setOsState }) {
+  const expedientes = Array.isArray(osState.expedientes) ? osState.expedientes : [];
+  const [selectedId, setSelectedId] = useState(expedientes[0]?.id || '');
+  const [newForm, setNewForm] = useState({ name: '', sector: '', territory: 'Biobío', owner: 'Francisca' });
+
+  useEffect(() => {
+    if (!expedientes.length) return setSelectedId('');
+    if (!expedientes.some((item) => item.id === selectedId)) setSelectedId(expedientes[0].id);
+  }, [expedientes, selectedId]);
+
+  const selected = expedientes.find((item) => item.id === selectedId) || null;
+  const updateExpediente = (id, updater) => setOsState((current) => ({
+    ...current,
+    expedientes: (current.expedientes || []).map((item) => item.id === id
+      ? { ...(typeof updater === 'function' ? updater(item) : { ...item, ...updater }), lastUpdate: new Date().toISOString().slice(0, 10) }
+      : item)
+  }));
+
+  const addExpediente = (event) => {
+    event.preventDefault();
+    if (!newForm.name.trim()) return;
+    const usedNumbers = expedientes.map((item) => Number(String(item.id).replace(/\D/g, '')) || 0);
+    const next = createEmptyExpediente(Math.max(0, ...usedNumbers) + 1);
+    const created = { ...next, ...newForm, name: newForm.name.trim(), sector: newForm.sector.trim(), territory: newForm.territory.trim() || 'Biobío' };
+    setOsState((current) => ({ ...current, expedientes: [...(current.expedientes || []), created] }));
+    setSelectedId(created.id);
+    setNewForm({ name: '', sector: '', territory: 'Biobío', owner: 'Francisca' });
+  };
+
+  const removeExpediente = (item) => {
+    if (!window.confirm(`¿Eliminar ${item.id} · ${item.name}?`)) return;
+    setOsState((current) => ({ ...current, expedientes: (current.expedientes || []).filter((entry) => entry.id !== item.id) }));
+  };
+
+  const updateToolStatus = (toolId, status) => updateExpediente(selected.id, (item) => ({
+    ...item,
+    tools: { ...item.tools, [toolId]: { ...(item.tools?.[toolId] || { data: {} }), status } }
+  }));
+
+  const updateToolField = (toolId, key, value) => updateExpediente(selected.id, (item) => ({
+    ...item,
+    tools: {
+      ...item.tools,
+      [toolId]: {
+        ...(item.tools?.[toolId] || { status: 'En curso', data: {} }),
+        status: item.tools?.[toolId]?.status === 'Pendiente' ? 'En curso' : (item.tools?.[toolId]?.status || 'En curso'),
+        data: { ...(item.tools?.[toolId]?.data || {}), [key]: value }
+      }
+    }
+  }));
+
+  return (
+    <div className="admin-view expediente-view">
+      <ViewHeading kicker="Validación comercial" title="Expedientes de prospectos" description="Cada prospecto conserva su evidencia, hipótesis, preguntas y avance. El objetivo es aprender sin depender de chats o archivos dispersos." />
+      <div className="expediente-summary-strip">
+        <span><b>{expedientes.length}</b> expedientes</span>
+        <span><b>{expedientes.filter((item) => expedienteProgress(item) === 100).length}</b> listos para siguiente etapa</span>
+        <span><b>{expedientes.filter((item) => item.tools?.conversacion?.status === 'Pendiente').length}</b> conversaciones pendientes</span>
+      </div>
+
+      <div className="expediente-layout">
+        <aside className="expediente-sidebar">
+          <form className="expediente-new-form" onSubmit={addExpediente}>
+            <strong>Nuevo expediente</strong>
+            <input aria-label="Nombre del prospecto" placeholder="Nombre del prospecto" value={newForm.name} onChange={(event) => setNewForm({ ...newForm, name: event.target.value })} required />
+            <input aria-label="Rubro" placeholder="Rubro o actividad" value={newForm.sector} onChange={(event) => setNewForm({ ...newForm, sector: event.target.value })} />
+            <input aria-label="Territorio" placeholder="Territorio" value={newForm.territory} onChange={(event) => setNewForm({ ...newForm, territory: event.target.value })} />
+            <select aria-label="Responsable" value={newForm.owner} onChange={(event) => setNewForm({ ...newForm, owner: event.target.value })}>{OWNERS.map((owner) => <option key={owner}>{owner}</option>)}</select>
+            <button className="button button--small" type="submit"><Icon name="add" /> Crear expediente</button>
+          </form>
+          <div className="expediente-list">
+            {expedientes.map((item) => {
+              const progress = expedienteProgress(item);
+              return <button type="button" key={item.id} className={selectedId === item.id ? 'is-active' : ''} onClick={() => setSelectedId(item.id)}><span><b>{item.id}</b><small>{progress}%</small></span><strong>{item.name || 'Sin nombre'}</strong><em>{item.status}</em><div className="expediente-progress"><i style={{ width: `${progress}%` }} /></div></button>;
+            })}
+          </div>
+        </aside>
+
+        {selected ? <section className="expediente-detail">
+          <header className="expediente-detail__header">
+            <div><span className="kicker">{selected.id}</span><input className="expediente-title-input" value={selected.name} onChange={(event) => updateExpediente(selected.id, { name: event.target.value })} aria-label="Nombre del expediente" /><p>{selected.sector} · {selected.territory}</p></div>
+            <div className="expediente-detail__controls"><span className="progress-badge">{expedienteProgress(selected)}% completo</span><select value={selected.status} onChange={(event) => updateExpediente(selected.id, { status: event.target.value })}><option>Prospecto</option><option>Preparación previa</option><option>Conversación</option><option>Propuesta</option><option>En pausa</option><option>Descartado</option></select><IconButton icon="delete" label={`Eliminar ${selected.id}`} className="icon-button--danger" onClick={() => removeExpediente(selected)} /></div>
+          </header>
+          <div className="expediente-meta-grid">
+            <label>Responsable<select value={selected.owner} onChange={(event) => updateExpediente(selected.id, { owner: event.target.value })}>{OWNERS.map((owner) => <option key={owner}>{owner}</option>)}</select></label>
+            <label>Rubro<input value={selected.sector} onChange={(event) => updateExpediente(selected.id, { sector: event.target.value })} /></label>
+            <label>Territorio<input value={selected.territory} onChange={(event) => updateExpediente(selected.id, { territory: event.target.value })} /></label>
+            <label>Última actualización<input value={selected.lastUpdate || ''} readOnly /></label>
+          </div>
+          <label className="expediente-notes">Nota general<textarea value={selected.notes || ''} onChange={(event) => updateExpediente(selected.id, { notes: event.target.value })} /></label>
+
+          <div className="expediente-tools">
+            {CONSULTING_TOOLS.map((tool) => {
+              const state = selected.tools?.[tool.id] || { status: 'Pendiente', data: {} };
+              return <details className={`expediente-tool expediente-tool--${String(state.status).toLowerCase().replaceAll(' ', '-')}`} key={tool.id} open={tool.id === 'perfil' && selected.id === 'EXP-001'}>
+                <summary><span className="expediente-tool__number">{tool.number}</span><div><small>{tool.stage}</small><strong>{tool.title}</strong></div><select aria-label={`Estado de ${tool.title}`} value={state.status} onClick={(event) => event.stopPropagation()} onChange={(event) => updateToolStatus(tool.id, event.target.value)}>{EXPEDIENTE_STATUSES.map((status) => <option key={status}>{status}</option>)}</select></summary>
+                <div className="expediente-tool__body">
+                  <p className="tool-purpose">{tool.purpose}</p>
+                  <div className="expediente-fields">
+                    {tool.fields.map((field) => {
+                      const value = state.data?.[field.key] ?? '';
+                      return <label key={field.key} className={field.type === 'textarea' ? 'field-wide' : ''}><span>{field.label}</span>{field.type === 'textarea' ? <textarea value={value} onChange={(event) => updateToolField(tool.id, field.key, event.target.value)} /> : field.type === 'select' ? <select value={value} onChange={(event) => updateToolField(tool.id, field.key, event.target.value)}><option value="">Seleccionar</option>{field.options.map((option) => <option key={option}>{option}</option>)}</select> : <input type={field.type} min={field.min} max={field.max} value={value} onChange={(event) => updateToolField(tool.id, field.key, field.type === 'number' ? Number(event.target.value) : event.target.value)} />}</label>;
+                    })}
+                  </div>
+                  <p className="tool-limit"><Icon name="rule" /> {tool.limit}</p>
+                </div>
+              </details>;
+            })}
+          </div>
+        </section> : <section className="panel-card empty-expediente"><Icon name="folder_open" /><h2>Crea el primer expediente</h2><p>Los expedientes ordenan la evidencia comercial desde el filtro inicial hasta la conversación.</p></section>}
+      </div>
     </div>
   );
 }
@@ -871,7 +1001,7 @@ function TaskModal({ draft, onClose, onSave }) {
 }
 
 function AdminShell({ session, onLogout }) {
-  const [active, setActive] = useState(() => window.localStorage.getItem('metamorfosis-admin-view') || 'dashboard');
+  const [active, setActive] = useState(() => { const stored = window.localStorage.getItem('metamorfosis-admin-view'); const allowed = new Set(menuGroups.flatMap((group) => group.items.map(([key]) => key))); return stored && allowed.has(stored) ? stored : 'dashboard'; });
   const [menuOpen, setMenuOpen] = useState(false);
   const [openGroups, setOpenGroups] = useState(() => new Set(menuGroups.map((group) => group.id)));
   const [osState, setOsStateRaw] = useState(createDefaultOsState);
@@ -901,7 +1031,7 @@ function AdminShell({ session, onLogout }) {
           setOsStateRaw(hydrateState(payload.state));
           if (needsMigration) {
             setDirty(true);
-            setNotice({ type: 'success', message: 'Metamorfosis OS fue actualizado a la agenda comercial 8.0. Guarda los cambios para persistir la migración.' });
+            setNotice({ type: 'success', message: 'Metamorfosis OS fue actualizado a la arquitectura comercial 9.0. Guarda los cambios para persistir la migración.' });
           }
         } else {
           const key = [STORAGE_KEY, ...LEGACY_STORAGE_KEYS].find((item) => window.localStorage.getItem(item));
@@ -912,7 +1042,7 @@ function AdminShell({ session, onLogout }) {
             setOsStateRaw(hydrateState(parsed));
             if (needsMigration) {
               setDirty(true);
-              setNotice({ type: 'success', message: 'Se recuperó tu borrador anterior y se migró a Metamorfosis OS 8.0. Guarda los cambios para consolidarlo.' });
+              setNotice({ type: 'success', message: 'Se recuperó tu borrador anterior y se migró a Metamorfosis OS 9.0. Guarda los cambios para consolidarlo.' });
             }
           }
         }
@@ -1055,22 +1185,20 @@ function AdminShell({ session, onLogout }) {
 
   const currentItem = menuGroups.flatMap((group) => group.items).find(([key]) => key === active);
   const view = active === 'dashboard' ? <DashboardView osState={osState} quotes={quotes} dirty={dirty} onNavigate={navigate} onAddTask={openTask} />
-    : active === 'family' ? <FamilyView osState={osState} setOsState={setOsState} />
-      : active === 'month' ? <MonthView osState={osState} setOsState={setOsState} onNavigate={navigate} onAddTask={openTask} />
+    : active === 'month' ? <MonthView osState={osState} setOsState={setOsState} onNavigate={navigate} onAddTask={openTask} />
       : active === 'day' ? <DayView osState={osState} setOsState={setOsState} onAddTask={openTask} onEditTask={setTaskDraft} />
-        : active === 'inbox' ? <InboxView osState={osState} setOsState={setOsState} onEditTask={setTaskDraft} />
-          : active === 'fronts' ? <FrontsView osState={osState} setOsState={setOsState} />
-            : active === 'finance' ? <FinanceView osState={osState} setOsState={setOsState} />
-              : active === 'quotes' ? <QuotesView quotes={quotes} loading={loadingQuotes} onStatusChange={updateQuoteStatus} notice={notice} />
-                : active === 'webEvents' ? <AnalyticsView events={webEvents} loading={loadingWebEvents} />
-                : active === 'projects' ? <ProjectsView />
-                  : active === 'metrics' ? <TimeTrackingView osState={osState} setOsState={setOsState} />
+        : active === 'expedientes' ? <ExpedientesView osState={osState} setOsState={setOsState} />
+          : active === 'quotes' ? <QuotesView quotes={quotes} loading={loadingQuotes} onStatusChange={updateQuoteStatus} notice={notice} />
+            : active === 'tools' ? <ToolsView />
+              : active === 'finance' ? <FinanceView osState={osState} setOsState={setOsState} />
+                : active === 'metrics' ? <TimeTrackingView osState={osState} setOsState={setOsState} />
                   : active === 'documents' ? <DocumentsView />
-                    : <GenericView active={active} />;
+                    : active === 'family' ? <FamilyView osState={osState} setOsState={setOsState} />
+                      : <GenericView active={active} />;
 
   if (loadingState) return <div className="app-loading"><Brand /><span>Cargando sistema operativo…</span></div>;
 
-  return <div className="admin-frame"><a className="skip-link" href="#admin-main">Saltar al contenido del panel</a><header className="admin-header"><div className="admin-header__brand"><IconButton icon="menu" label="Abrir menú" className="admin-menu-button" onClick={() => setMenuOpen(true)} /><Brand /></div><div className="admin-header__actions"><a className="admin-action-button admin-action-button--public" href={PUBLIC_SITE_URL} target="_blank" rel="noreferrer"><Icon name="public" /><span>Sitio público</span></a><IconButton icon="upload" label="Importar respaldo JSON" onClick={() => importRef.current?.click()} /><input ref={importRef} type="file" accept="application/json,.json" hidden onChange={importBackup} /><IconButton icon="download" label="Descargar respaldo JSON" onClick={exportBackup} /><button type="button" className={`admin-action-button ${dirty ? 'is-dirty' : ''}`} onClick={saveState} disabled={saving}><Icon name="save" /><span>{saving ? 'Guardando…' : dirty ? 'Guardar cambios' : 'Guardado'}</span></button><button type="button" className="admin-action-button admin-action-button--exit" onClick={onLogout}><Icon name="logout" /><span>Salir</span></button></div></header><div className="admin-body"><aside className={`admin-sidebar ${menuOpen ? 'is-open' : ''}`} aria-label="Módulos del panel"><div className="sidebar-heading"><strong>Módulos</strong><IconButton icon="close" label="Cerrar menú" className="sidebar-close" onClick={() => setMenuOpen(false)} /></div><nav>{menuGroups.map((group) => { const expanded = openGroups.has(group.id); const containsActive = group.items.some(([key]) => key === active); return <section className="sidebar-group" key={group.id}><button type="button" className={`sidebar-group__toggle ${containsActive ? 'has-active' : ''}`} onClick={() => toggleGroup(group.id)} aria-expanded={expanded}><Icon name={group.icon} /><span>{group.label}</span><Icon name={expanded ? 'expand_less' : 'expand_more'} /></button>{expanded && <div className="sidebar-submenu">{group.items.map(([key, label, icon]) => <button type="button" key={key} className={active === key ? 'is-active' : ''} onClick={() => navigate(key)} aria-current={active === key ? 'page' : undefined}><Icon name={icon} /><span>{label}</span></button>)}</div>}</section>; })}</nav><div className="sidebar-footer"><div className="admin-user"><span>ML</span><div><strong>Administración</strong><small>{session.demo ? 'Modo demostración' : session.email}</small></div></div></div></aside>{menuOpen && <button type="button" className="sidebar-backdrop" aria-label="Cerrar menú" onClick={() => setMenuOpen(false)} />}<main id="admin-main" className="admin-main"><div className="admin-breadcrumb"><span>{currentItem?.[1] || 'Panel diario'}</span>{notice && active !== 'quotes' && <p className={`save-notice ${notice.type === 'error' ? 'is-error' : ''}`} role="status">{notice.message}</p>}</div>{view}</main></div>{taskDraft && <TaskModal draft={taskDraft} onClose={() => setTaskDraft(null)} onSave={saveTask} />}</div>;
+  return <div className={`admin-frame ${active === 'family' ? 'admin-frame--family' : 'admin-frame--business'}`}><a className="skip-link" href="#admin-main">Saltar al contenido del panel</a><header className="admin-header"><div className="admin-header__brand"><IconButton icon="menu" label="Abrir menú" className="admin-menu-button" onClick={() => setMenuOpen(true)} /><Brand /></div><div className="admin-header__actions"><a className="admin-action-button admin-action-button--public" href={PUBLIC_SITE_URL} target="_blank" rel="noreferrer"><Icon name="public" /><span>Sitio público</span></a><IconButton icon="upload" label="Importar respaldo JSON" onClick={() => importRef.current?.click()} /><input ref={importRef} type="file" accept="application/json,.json" hidden onChange={importBackup} /><IconButton icon="download" label="Descargar respaldo JSON" onClick={exportBackup} /><button type="button" className={`admin-action-button ${dirty ? 'is-dirty' : ''}`} onClick={saveState} disabled={saving}><Icon name="save" /><span>{saving ? 'Guardando…' : dirty ? 'Guardar cambios' : 'Guardado'}</span></button><button type="button" className="admin-action-button admin-action-button--exit" onClick={onLogout}><Icon name="logout" /><span>Salir</span></button></div></header><div className="admin-body"><aside className={`admin-sidebar ${menuOpen ? 'is-open' : ''}`} aria-label="Módulos del panel"><div className="sidebar-heading"><strong>Módulos</strong><IconButton icon="close" label="Cerrar menú" className="sidebar-close" onClick={() => setMenuOpen(false)} /></div><nav>{menuGroups.map((group) => { const expanded = openGroups.has(group.id); const containsActive = group.items.some(([key]) => key === active); return <section className="sidebar-group" key={group.id}><button type="button" className={`sidebar-group__toggle ${containsActive ? 'has-active' : ''}`} onClick={() => toggleGroup(group.id)} aria-expanded={expanded}><Icon name={group.icon} /><span>{group.label}</span><Icon name={expanded ? 'expand_less' : 'expand_more'} /></button>{expanded && <div className="sidebar-submenu">{group.items.map(([key, label, icon]) => <button type="button" key={key} className={active === key ? 'is-active' : ''} onClick={() => navigate(key)} aria-current={active === key ? 'page' : undefined}><Icon name={icon} /><span>{label}</span></button>)}</div>}</section>; })}</nav><div className="sidebar-footer"><div className="admin-user"><span>ML</span><div><strong>Administración</strong><small>{session.demo ? 'Modo demostración' : session.email}</small></div></div></div></aside>{menuOpen && <button type="button" className="sidebar-backdrop" aria-label="Cerrar menú" onClick={() => setMenuOpen(false)} />}<main id="admin-main" className="admin-main"><div className="admin-breadcrumb"><span>{currentItem?.[1] || 'Panel diario'}</span><em className="admin-context-badge">{active === 'family' ? 'Familiar' : 'Empresa'}</em>{notice && active !== 'quotes' && <p className={`save-notice ${notice.type === 'error' ? 'is-error' : ''}`} role="status">{notice.message}</p>}</div>{view}</main></div>{taskDraft && <TaskModal draft={taskDraft} onClose={() => setTaskDraft(null)} onSave={saveTask} />}</div>;
 }
 
 export default function AdminApp() {

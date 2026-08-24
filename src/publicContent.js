@@ -1,263 +1,105 @@
 export const publicNavigation = [
-  { id: 'pilares', label: 'Enfoque', helper: 'procesos, personas y entorno', icon: 'account_tree' },
-  { id: 'transformacion', label: 'Entradas', helper: 'formas concretas de iniciar', icon: 'target' },
-  { id: 'soluciones', label: 'Soluciones', helper: 'qué podemos construir', icon: 'design_services' },
-  { id: 'precios', label: 'Servicios y precios', helper: 'alcance claro antes de contratar', icon: 'payments' },
-  { id: 'metodo', label: 'Método', helper: 'cómo reducimos incertidumbre', icon: 'timeline' },
-  { id: 'resultados', label: 'Resultados', helper: 'evidencia y confianza', icon: 'query_stats' },
-  { id: 'casos', label: 'Casos', helper: 'proyectos y sistemas', icon: 'open_in_new' },
-  { id: 'nosotros', label: 'Lab', helper: 'criterio y responsabilidad', icon: 'verified_user' }
+  { id: 'que-hacemos', label: 'Qué hacemos', icon: 'target' },
+  { id: 'metodo', label: 'Cómo trabajamos', icon: 'timeline' },
+  { id: 'equipo', label: 'Equipo', icon: 'group' },
+  { id: 'contacto', label: 'Contacto', icon: 'mail' }
 ];
 
 export const transformationPillars = [
-  {
-    icon: 'query_stats',
-    title: 'Operación eficiente',
-    text: 'Procesos, datos y recursos ordenados para reducir pérdidas y elevar desempeño.'
-  },
-  {
-    icon: 'group',
-    title: 'Trabajo sostenible',
-    text: 'Roles, rutinas y acuerdos que cuidan la capacidad real de los equipos.'
-  },
-  {
-    icon: 'public',
-    title: 'Entorno responsable',
-    text: 'Decisiones que integran recursos, impactos, territorio y sistemas vivos.'
-  }
+  { icon: 'query_stats', title: 'Operación', text: 'Ordenamos procesos, información y recursos para que las decisiones no dependan de improvisación.' },
+  { icon: 'group', title: 'Personas', text: 'Diseñamos cambios que puedan ser usados y sostenidos por quienes realizan el trabajo.' },
+  { icon: 'public', title: 'Sistemas vivos', text: 'Integramos impactos y recursos materiales cuando son relevantes para la forma en que la organización genera valor.' }
 ];
 
 export const activeOfferUseCases = [
-  {
-    icon: 'query_stats',
-    title: 'Diagnóstico productivo responsable',
-    text: 'Una lectura breve de operación, riesgos, prioridades y próximos pasos.'
-  },
-  {
-    icon: 'public',
-    title: 'Vitrina Pyme',
-    text: 'Presencia digital simple, clara y ética para explicar mejor una oferta real.'
-  },
-  {
-    icon: 'inventory_2',
-    title: 'Ciclo Seguro',
-    text: 'Gestión del vestuario laboral como activo: trazabilidad, vida útil y salida responsable.'
-  },
-  {
-    icon: 'dashboard',
-    title: 'Sistema interno mínimo',
-    text: 'Tableros, documentos y rutinas para que el negocio no dependa de la memoria.'
-  }
+  { icon: 'visibility', title: 'Diagnóstico focalizado', text: 'Comprender un problema concreto, separar síntomas de causas y priorizar un siguiente paso.' },
+  { icon: 'schema', title: 'Ordenamiento y trazabilidad', text: 'Pasar de registros dispersos a procesos, responsables y evidencia operacional utilizable.' },
+  { icon: 'public', title: 'Vitrina Pyme', text: 'Una presencia digital acotada para explicar una oferta real y facilitar el primer contacto.' },
+  { icon: 'inventory_2', title: 'Ciclo Seguro', text: 'Hipótesis en validación para gestionar vestuario laboral con trazabilidad, vida útil y salida responsable.' }
 ];
 
 export const solutions = [
-  {
-    icon: 'visibility',
-    title: 'Diagnóstico operacional integral',
-    text: 'Miramos cómo se genera valor, dónde se pierde capacidad y qué conviene abordar primero.'
-  },
-  {
-    icon: 'schema',
-    title: 'Rediseño de procesos y registros',
-    text: 'Convertimos tareas dispersas en flujos, responsables, evidencia e indicadores simples.'
-  },
-  {
-    icon: 'group',
-    title: 'Gestión del cambio humano',
-    text: 'Diseñamos adopción, roles y comunicación para que el cambio pueda sostenerse.'
-  },
-  {
-    icon: 'public',
-    title: 'Sostenibilidad operativa',
-    text: 'Integramos recursos, entorno e impacto sin convertir la responsabilidad en decoración.'
-  }
+  { icon: 'visibility', title: 'Entender el sistema', text: 'Revisamos operación, restricciones, evidencia y decisiones antes de recomendar cambios.' },
+  { icon: 'schema', title: 'Ordenar lo crítico', text: 'Convertimos tareas y registros dispersos en una forma de trabajo simple y demostrable.' },
+  { icon: 'construction', title: 'Implementar con alcance', text: 'Construimos la solución mínima suficiente y acordamos qué queda dentro y fuera.' },
+  { icon: 'query_stats', title: 'Medir y transferir', text: 'Dejamos responsables, indicadores y continuidad para evitar dependencia innecesaria.' }
 ];
 
 export const methodPrinciples = [
-  {
-    icon: 'visibility',
-    title: 'Observable',
-    text: 'Primero vemos la operación real.'
-  },
-  {
-    icon: 'query_stats',
-    title: 'Medible',
-    text: 'Luego definimos señales simples de avance.'
-  },
-  {
-    icon: 'verified_user',
-    title: 'Sostenible',
-    text: 'Finalmente dejamos responsables, documentos y continuidad.'
-  }
+  { icon: 'visibility', title: 'Entender antes de intervenir', text: 'La operación real importa más que la solución de moda.' },
+  { icon: 'design_services', title: 'Complejidad justa', text: 'La solución debe ser suficiente para el problema, no más grande que él.' },
+  { icon: 'verified_user', title: 'Capacidad instalada', text: 'El trabajo debe quedar utilizable por la organización.' }
 ];
 
 export const processRoadmap = [
+  { icon: 'visibility', title: 'Entender', text: 'Contexto, operación, restricciones y evidencia.' },
+  { icon: 'sort', title: 'Priorizar', text: 'Problema, urgencia, costo de no actuar y alcance.' },
+  { icon: 'construction', title: 'Intervenir', text: 'Solución mínima suficiente, implementación y prueba.' },
+  { icon: 'query_stats', title: 'Medir y transferir', text: 'Resultados observables, documentación y continuidad.' }
+];
+
+export const stackBadges = ['Procesos', 'Datos', 'Documentación', 'Diseño', 'Tecnología', 'Indicadores'];
+
+export const resultIndicators = ['Tiempo', 'Errores', 'Trazabilidad', 'Coordinación', 'Uso de recursos', 'Continuidad'];
+
+export const resultOutcomes = [
+  { icon: 'schema', title: 'Procesos más claros', text: 'Responsables, pasos y puntos de decisión visibles.' },
+  { icon: 'database', title: 'Información utilizable', text: 'Registros que sirven para decidir, demostrar y aprender.' },
+  { icon: 'query_stats', title: 'Resultados observables', text: 'Indicadores definidos antes de atribuir éxito a la intervención.' },
+  { icon: 'verified_user', title: 'Continuidad', text: 'Herramientas y criterios que permanecen después del cierre.' }
+];
+
+export const team = [
   {
-    icon: 'visibility',
-    title: 'Entender',
-    text: 'Contexto, operación, restricciones y oportunidades.'
+    initials: 'FC',
+    name: 'Francisca Carrasco Marín',
+    role: 'Dirección de Metamorfosis Lab',
+    text: 'Lidera la lectura operacional, el diseño de soluciones y la ejecución de las intervenciones.'
   },
   {
-    icon: 'design_services',
-    title: 'Diseñar',
-    text: 'Solución mínima suficiente y experiencia de uso.'
-  },
-  {
-    icon: 'construction',
-    title: 'Implementar',
-    text: 'Web, sistema, proceso, documentos o piloto.'
-  },
-  {
-    icon: 'rule',
-    title: 'Sostener',
-    text: 'QA, traspaso, indicadores y próximos hitos.'
+    initials: 'BS',
+    name: 'Benjamín Sepúlveda',
+    role: 'Estrategia, investigación y desarrollo metodológico',
+    text: 'Trabaja en investigación previa, estructuración de problemas, gobernanza, documentación y aprendizaje del método.'
   }
 ];
-
-export const stackBadges = [
-  'React',
-  'Vite',
-  'Node',
-  'PostgreSQL',
-  'Render',
-  'Lighthouse',
-  'UX/UI',
-  'Documentación'
-];
-
-export const resultIndicators = [
-  'Tiempo',
-  'Merma',
-  'Coordinación',
-  'Trazabilidad',
-  'Continuidad'
-];
-
-export const impactCases = [
-  {
-    icon: 'inventory_2',
-    title: 'CM Banquetería & Restaurant · Caso 0',
-    lead: 'Primer caso cerrado de estudio: de información dispersa a una base operativa visible.',
-    challenge: 'Decisiones, registros y prioridades repartidas entre conversaciones y documentos.',
-    intervention: 'Web pública, panel interno, documentos, hitos y criterios de seguimiento.',
-    result: 'Más claridad para decidir, corregir y proyectar la operación.'
-  },
-  {
-    icon: 'public',
-    title: 'Presencia digital profesional',
-    lead: 'La oferta debe entenderse antes de venderse.',
-    challenge: 'Servicios valiosos difíciles de explicar en una primera conversación.',
-    intervention: 'Relato, arquitectura web, canal formal y llamados a la acción.',
-    result: 'Primer contacto más claro y confiable.'
-  },
-  {
-    icon: 'dashboard',
-    title: 'Gestión interna',
-    lead: 'Lo que no se registra, se pierde.',
-    challenge: 'Tareas, decisiones y aprendizajes sin lugar común.',
-    intervention: 'Sistema interno con proyectos, solicitudes, estados e hitos.',
-    result: 'Memoria institucional y continuidad operativa.'
-  }
-];
-
-export const publicCases = [
-  {
-    id: 'cm-banqueteria',
-    brand: 'cm',
-    label: 'Caso 0 · proyecto cerrado',
-    name: 'CM Banquetería & Restaurant',
-    text: 'Primer caso de estudio cerrado: diagnóstico, orden operativo, documentación, web pública, sistema interno y traspaso.',
-    tags: ['Operación', 'Documentos', 'Sistema', 'Web'],
-    hover: 'Caso entregado: evidencia para estudiar cómo Metamorfosis comprende, ordena, implementa, documenta y transfiere.',
-    live: 'https://www.cmbanqueteria.cl/'
-  },
-  {
-    id: 'metamorfosis-os',
-    brand: 'metamorfosis',
-    label: 'Capacidad propia',
-    name: 'Metamorfosis OS',
-    text: 'Panel privado para proyectos, documentos, decisiones, oportunidades y continuidad.',
-    tags: ['Gestión', 'Memoria', 'Indicadores'],
-    hover: 'Un sistema interno para no perder decisiones, evidencia ni próximos pasos.'
-  },
-  {
-    id: 'juana-de-arco',
-    brand: 'juana',
-    label: 'Identidad y comercio',
-    name: 'Joyas Juana de Arco',
-    text: 'Marca, catálogo, relato simbólico y experiencia digital de compra.',
-    tags: ['Marca', 'Catálogo', 'Experiencia'],
-    hover: 'Identidad comercial y narrativa para una marca con significado.'
-  }
-];
-
 
 export const servicePricing = [
   {
-    id: 'conversacion-inicial',
-    icon: 'schedule',
-    title: 'Conversación inicial',
-    compact: '30 minutos · sin costo',
-    price: 'Sin costo',
-    scope: 'Una primera conversación para comprender la situación general y determinar si Metamorfosis puede aportar valor.',
-    includes: ['No constituye diagnóstico', 'No fuerza una solución predeterminada', 'Si requiere otro apoyo, lo diremos'],
+    id: 'conversacion-inicial', icon: 'schedule', title: 'Conversación inicial', compact: '30 minutos · sin costo', price: 'Sin costo',
+    scope: 'Primera conversación para comprender la situación general y decidir si existe un problema que Metamorfosis pueda abordar.',
+    includes: ['No constituye diagnóstico', 'No fuerza una solución predeterminada', 'Si el problema requiere otra especialidad, lo señalamos'],
     result: 'Criterio inicial para decidir si corresponde avanzar.'
   },
   {
-    id: 'diagnostico-focalizado',
-    icon: 'visibility',
-    title: 'Diagnóstico focalizado',
-    compact: 'Desde $210.000 · hasta 6 horas',
-    price: 'Desde $210.000',
-    scope: 'Para una situación concreta que debe comprenderse antes de decidir qué hacer.',
-    includes: ['Revisión de antecedentes', 'Reunión de levantamiento', 'Análisis y contraste', 'Reunión de devolución'],
-    result: 'Problema claro, principales causas o tensiones, prioridades y próximos pasos.'
+    id: 'diagnostico-focalizado', icon: 'visibility', title: 'Diagnóstico focalizado', compact: 'Desde $210.000 · hasta 6 horas', price: 'Desde $210.000',
+    scope: 'Para una situación concreta que necesita comprensión antes de invertir en una solución.',
+    includes: ['Revisión de antecedentes', 'Levantamiento', 'Análisis y contraste', 'Devolución priorizada'],
+    result: 'Problema delimitado, evidencia, prioridades y próximos pasos.'
   },
   {
-    id: 'diagnostico-terreno',
-    icon: 'location_on',
-    title: 'Diagnóstico con terreno',
-    compact: 'Desde $420.000 · hasta 12 horas',
-    price: 'Desde $420.000',
-    scope: 'Para situaciones que necesitan observación directa, entrevistas o levantamiento presencial.',
+    id: 'diagnostico-terreno', icon: 'location_on', title: 'Diagnóstico con terreno', compact: 'Desde $420.000 · hasta 12 horas', price: 'Desde $420.000',
+    scope: 'Para situaciones que requieren observación directa, entrevistas o levantamiento presencial.',
     includes: ['Análisis previo', 'Trabajo en terreno acordado', 'Procesamiento de evidencia', 'Devolución de resultados'],
-    result: 'Diagnóstico sustentado en documentos y evidencia directa.'
+    result: 'Diagnóstico sustentado en antecedentes y observación directa.'
   },
   {
-    id: 'diseno-intervencion',
-    icon: 'design_services',
-    title: 'Diseño de intervención',
-    compact: 'Desde $175.000 · hasta 5 horas',
-    price: 'Desde $175.000',
+    id: 'diseno-intervencion', icon: 'design_services', title: 'Diseño de intervención', compact: 'Desde $175.000 · hasta 5 horas', price: 'Desde $175.000',
     scope: 'Cuando ya existe diagnóstico suficiente y se necesita convertirlo en una solución ejecutable.',
-    includes: ['Qué cambiar y qué no intervenir', 'Responsables y recursos', 'Indicadores', 'Condición de cierre'],
-    result: 'Diseño de intervención y propuesta de ejecución con solución mínima suficiente.'
+    includes: ['Qué cambiar y qué no', 'Responsables y recursos', 'Indicadores', 'Condición de cierre'],
+    result: 'Intervención delimitada y ejecutable.'
   },
   {
-    id: 'implementacion',
-    icon: 'construction',
-    title: 'Implementación y acompañamiento',
-    compact: 'Desde $350.000 · bloques de 10 horas',
-    price: 'Desde $350.000',
+    id: 'implementacion', icon: 'construction', title: 'Implementación y acompañamiento', compact: 'Desde $350.000 · bloques de 10 horas', price: 'Desde $350.000',
     scope: 'Para ejecutar, probar o acompañar una transformación previamente definida.',
-    includes: ['Trabajo en terreno o remoto', 'Coordinación', 'Documentación', 'Herramientas y reuniones según proyecto'],
-    result: 'Avance acompañado, horas visibles y autorización previa para ampliar alcance.'
-  },
-  {
-    id: 'jornada-terreno',
-    icon: 'group',
-    title: 'Jornada en terreno',
-    compact: '1 profesional $210.000 · 2 profesionales $420.000',
-    price: 'Desde $210.000',
-    scope: 'Para observación directa, levantamiento de evidencia, entrevistas o trabajo conjunto con el equipo.',
-    includes: ['Hasta 6 horas', 'Cantidad de profesionales acordada', 'Extensiones presupuestadas previamente'],
-    result: 'Información directa para diagnosticar, decidir o implementar con base real.'
+    includes: ['Trabajo remoto o en terreno', 'Coordinación', 'Documentación', 'Herramientas según alcance'],
+    result: 'Cambio implementado con horas, alcance y continuidad visibles.'
   }
 ];
 
 export const pricingPrinciples = [
-  { icon: 'rule', title: 'Alcance definido', text: 'Antes de comenzar indicamos qué incluye, qué queda fuera y qué resultado se espera.' },
-  { icon: 'schedule', title: 'Horas visibles', text: 'Trabajamos con horas presupuestadas y seguimiento de uso.' },
-  { icon: 'verified_user', title: 'Autorización previa', text: 'No se agregan horas ni gastos externos sin acuerdo expreso.' },
-  { icon: 'conversion_path', title: 'Cierre y transferencia', text: 'Cada intervención completa explica qué cambió y qué queda instalado.' }
+  { icon: 'rule', title: 'Alcance definido', text: 'Indicamos qué incluye, qué queda fuera y qué resultado se espera.' },
+  { icon: 'schedule', title: 'Horas visibles', text: 'Presupuestamos y registramos el trabajo para aprender costos reales.' },
+  { icon: 'verified_user', title: 'Autorización previa', text: 'No agregamos horas ni gastos externos sin acuerdo.' },
+  { icon: 'conversion_path', title: 'Cierre y transferencia', text: 'Cada intervención debe explicar qué cambió y qué queda instalado.' }
 ];
