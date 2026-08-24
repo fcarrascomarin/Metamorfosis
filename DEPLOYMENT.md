@@ -81,3 +81,20 @@ www.metamorfosislab.cl   -> redirección 301 a https://metamorfosislab.cl
 5. El botón Sitio público del OS abre `https://metamorfosislab.cl`.
 6. El formulario público avanza solo con cada paso válido y confirma envío únicamente si el backend confirma correo.
 7. `/api/health` informa `database: configured` y `smtp: configured`.
+
+
+## Comprobación 4.9.0
+
+Arquitectura canónica:
+
+- Web pública: `https://metamorfosislab.cl` en Cloudflare Pages.
+- OS y API: `https://os.metamorfosislab.cl` en Render.
+- El público accede al OS mediante el control utilitario **Acceso OS**; el OS vuelve mediante **Sitio público**.
+- No usar `*.pages.dev` ni `*.onrender.com` como enlaces de navegación.
+
+Formulario:
+
+1. Abrir `https://os.metamorfosislab.cl/api/health`.
+2. Confirmar `database: configured` y `smtp: configured`.
+3. Si aparece `smtp: placeholder`, sustituir `SMTP_PASS` en Render por una contraseña de aplicación real de Zoho y volver a desplegar.
+4. Probar el formulario desde `https://metamorfosislab.cl`, no desde la URL técnica de Pages.

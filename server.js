@@ -43,15 +43,19 @@ function getDatabaseConfig() {
 const databaseConfig = getDatabaseConfig();
 const hasDatabase = databaseConfig.configured;
 const contactRecipient = cleanEnv(process.env.CONTACT_TO_EMAIL || 'contacto@metamorfosislab.cl', 180);
-const smtpConfigured = Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
+const smtpPass = cleanEnv(process.env.SMTP_PASS || '', 500);
+const smtpPlaceholder = /CLAVE_|APP_PASSWORD|CAMBIAR|PLACEHOLDER|TU[_ -]?CLAVE/i.test(smtpPass);
+const smtpConfigured = Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && smtpPass && !smtpPlaceholder);
 const PUBLIC_SITE_URL = cleanEnv(process.env.PUBLIC_SITE_URL || 'https://metamorfosislab.cl', 300).replace(/\/$/, '');
 const OS_SITE_URL = 'https://os.metamorfosislab.cl';
-const publicOrigins = new Set(
-  String(process.env.PUBLIC_ORIGINS || '')
+const publicOrigins = new Set([
+  'https://metamorfosislab.cl',
+  'https://www.metamorfosislab.cl',
+  ...String(process.env.PUBLIC_ORIGINS || '')
     .split(',')
     .map((value) => value.trim().replace(/\/$/, ''))
     .filter(Boolean)
-);
+]);
 
 app.set('trust proxy', 1);
 app.disable('x-powered-by');
@@ -231,7 +235,7 @@ function createMailer() {
     secure: String(process.env.SMTP_SECURE || 'true') !== 'false',
     auth: {
       user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS
+      pass: smtpPass
     }
   });
 }
@@ -306,7 +310,7 @@ async function establishSession(req, email, demo) {
 }
 
 app.get('/api/health', (_req, res) => {
-  res.json({ ok: true, database: hasDatabase ? 'configured' : 'development-only', smtp: smtpConfigured ? 'configured' : 'missing' });
+  res.json({ ok: true, database: hasDatabase ? 'configured' : 'development-only', smtp: smtpConfigured ? 'configured' : smtpPlaceholder ? 'placeholder' : 'missing' });
 });
 
 app.get('/api/session', (req, res) => {
@@ -433,7 +437,7 @@ app.post('/api/quotes', publicLimiter, async (req, res) => {
     return res.status(503).json({
       ok: false,
       emailSent: false,
-      message: 'El envío automático de correo no está configurado en el servidor. Revisa SMTP_HOST, SMTP_USER, SMTP_PASS y SMTP_FROM.'
+      message: smtpPlaceholder ? 'SMTP_PASS todavía contiene un valor de ejemplo. Configura la contraseña de aplicación real de Zoho en Render.' : 'El envío automático de correo no está configurado en el servidor. Revisa SMTP_HOST, SMTP_USER, SMTP_PASS y SMTP_FROM.'
     });
   }
 
@@ -593,7 +597,10 @@ app.get(['/admin', '/admin/*'], (_req, res) => {
   res.sendFile(path.join(adminDist, 'admin.html'));
 });
 
-
+// El dominio del OS muestra directamente el panel, sin duplicar la web pública.
+app.get('/', (_req, res) => {
+  res.redirect(302, '/admin');
+});
 
 // Cualquier otra ruta no-API de Render vuelve al sitio público canónico.
 app.get('*', (req, res) => {
