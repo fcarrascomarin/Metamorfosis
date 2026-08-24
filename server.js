@@ -73,6 +73,17 @@ app.use(compression());
 app.use(express.json({ limit: '1.5mb' }));
 app.use(express.urlencoded({ extended: false, limit: '250kb' }));
 
+// Nunca exponer la URL técnica de Render como destino visible.
+// El health check queda exento para que Render pueda verificar el servicio.
+app.use((req, res, next) => {
+  if (!isProduction || req.path === '/api/health') return next();
+  const host = String(req.get('host') || '').split(':')[0].toLowerCase();
+  if (host.endsWith('.onrender.com')) {
+    return res.redirect(308, `https://os.metamorfosislab.cl${req.originalUrl || '/'}`);
+  }
+  return next();
+});
+
 let pool = null;
 if (hasDatabase) {
   pool = new Pool({
@@ -542,9 +553,10 @@ app.use('/api', (_req, res) => {
   res.status(404).json({ ok: false, message: 'Endpoint no encontrado.' });
 });
 
-const publicDist = path.join(__dirname, 'dist-public');
 const adminDist = path.join(__dirname, 'dist-admin');
+const PUBLIC_SITE_URL = cleanEnv(process.env.PUBLIC_SITE_URL || 'https://metamorfosislab.cl', 300).replace(/\/$/, '');
 
+// Render sirve exclusivamente Metamorfosis OS y su API.
 app.use('/admin', (req, res, next) => {
   res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
   next();
@@ -556,23 +568,21 @@ app.use('/admin', (req, res, next) => {
   }
 }));
 
-app.get('/admin*', (_req, res) => {
+app.get(['/admin', '/admin/*'], (_req, res) => {
   res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
   res.setHeader('Cache-Control', 'no-store');
   res.sendFile(path.join(adminDist, 'admin.html'));
 });
 
-app.use(express.static(publicDist, {
-  maxAge: isProduction ? '7d' : 0,
-  index: false,
-  setHeaders(res, filePath) {
-    if (filePath.endsWith('.html')) res.setHeader('Cache-Control', 'no-store');
-  }
-}));
+// El dominio del OS muestra directamente el panel, sin duplicar la web pública.
+app.get('/', (_req, res) => {
+  res.redirect(302, '/admin');
+});
 
-app.get('*', (_req, res) => {
-  res.setHeader('Cache-Control', 'no-store');
-  res.sendFile(path.join(publicDist, 'index.html'));
+// Cualquier otra ruta no-API de Render vuelve al sitio público canónico.
+app.get('*', (req, res) => {
+  const suffix = req.originalUrl && req.originalUrl !== '/' ? req.originalUrl : '';
+  res.redirect(302, `${PUBLIC_SITE_URL}${suffix}`);
 });
 
 async function startServer() {

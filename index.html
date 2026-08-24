@@ -1,16 +1,24 @@
 <!doctype html>
 <html lang="es">
   <head>
+    <script>
+      (() => {
+        const host = window.location.hostname.toLowerCase();
+        if (host.endsWith('.pages.dev') || host === 'www.metamorfosislab.cl') {
+          window.location.replace(`https://metamorfosislab.cl${window.location.pathname}${window.location.search}${window.location.hash}`);
+        }
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#17342f" />
     <meta name="description" content="Metamorfosis Lab acompaña procesos de Transformación Productiva Responsable, integrando eficiencia operacional, condiciones humanas, tecnología, recursos y relación responsable con sistemas vivos." />
-    <link rel="canonical" href="https://www.metamorfosislab.cl/" />
+    <link rel="canonical" href="https://metamorfosislab.cl/" />
     <meta property="og:title" content="Metamorfosis Lab | Transformación Productiva Responsable" />
     <meta property="og:description" content="Analizamos cómo tu organización genera valor y acompañamos mejores formas de operar: eficientes, humanas y sostenibles." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.metamorfosislab.cl/" />
-    <meta property="og:image" content="https://www.metamorfosislab.cl/assets/brand/social-card.jpg" />
+    <meta property="og:url" content="https://metamorfosislab.cl/" />
+    <meta property="og:image" content="https://metamorfosislab.cl/assets/brand/social-card.jpg" />
     <link rel="icon" href="/assets/brand/favicon.png" type="image/png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,7 +29,7 @@
         "@context": "https://schema.org",
         "@type": "ProfessionalService",
         "name": "Metamorfosis Lab",
-        "url": "https://www.metamorfosislab.cl",
+        "url": "https://metamorfosislab.cl",
         "telephone": "+56923770543",
         "email": "contacto@metamorfosislab.cl",
         "areaServed": "Región del Biobío, Chile",

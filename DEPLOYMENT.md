@@ -4,7 +4,7 @@
 
 | Componente | Servicio | Dominio sugerido | Espera de Render |
 |---|---|---|---|
-| Web pública | Cloudflare Pages | `www.metamorfosislab.cl` y `metamorfosislab.cl` | No |
+| Web pública | Cloudflare Pages | `metamorfosislab.cl` | No |
 | Panel privado + API | Render Web Service | `os.metamorfosislab.cl` | Sí, aceptable en plan gratuito |
 | Base de datos | Neon PostgreSQL | conexión privada por `DATABASE_URL` | No aplica |
 
@@ -66,8 +66,8 @@ npm start
 | `DATABASE_URL` | URL de conexión PostgreSQL entregada por Neon |
 | `ADMIN_EMAIL` | `contacto@metamorfosislab.cl` |
 | `ADMIN_PASSWORD_HASH` | hash bcrypt de la contraseña, nunca la contraseña en texto plano |
-| `PUBLIC_ORIGINS` | `https://metamorfosislab.cl,https://www.metamorfosislab.cl` |
-| `VITE_PUBLIC_SITE_URL` | `https://www.metamorfosislab.cl` |
+| `PUBLIC_ORIGINS` | `https://metamorfosislab.cl,https://metamorfosislab.cl` |
+| `VITE_PUBLIC_SITE_URL` | `https://metamorfosislab.cl` |
 | `CONTACT_TO_EMAIL` | `contacto@metamorfosislab.cl` |
 | `SMTP_HOST` | `smtp.zoho.com` |
 | `SMTP_PORT` | `465` |
@@ -149,7 +149,7 @@ Las tablas se crean automáticamente al iniciar el servidor.
 
 1. Abrir el proyecto Pages > **Custom domains**.
 2. Agregar primero `metamorfosislab.cl`.
-3. Agregar también `www.metamorfosislab.cl`.
+3. Configurar `www.metamorfosislab.cl` solo como redirección 301 hacia `https://metamorfosislab.cl` (no como segundo origen).
 4. Definir uno como dominio principal y redirigir el otro hacia él. La configuración propuesta en el código usa `www` como URL pública canónica.
 5. Verificar que los registros anteriores que apuntaban la web pública a Render sean eliminados o reemplazados por los creados por Pages.
 

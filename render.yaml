@@ -3,7 +3,7 @@ services:
     name: metamorfosis-lab
     runtime: node
     plan: free
-    buildCommand: npm install --registry=https://registry.npmjs.org/ --no-audit --no-fund && npm run build
+    buildCommand: npm install --registry=https://registry.npmjs.org/ --no-audit --no-fund && npm run build:admin
     startCommand: npm start
     healthCheckPath: /api/health
     autoDeploy: true
@@ -36,9 +36,11 @@ services:
         value: contacto@metamorfosislab.cl
       - key: PUBLIC_ORIGINS
         value: https://metamorfosislab.cl,https://www.metamorfosislab.cl
+      - key: PUBLIC_SITE_URL
+        value: https://metamorfosislab.cl
       - key: VITE_PUBLIC_SITE_URL
-        value: https://www.metamorfosislab.cl
+        value: https://metamorfosislab.cl
       - key: VITE_ADMIN_URL
-        value: /admin
+        value: https://os.metamorfosislab.cl
       - key: VITE_API_BASE
-        value: ""
+        value: https://os.metamorfosislab.cl
