@@ -7,7 +7,7 @@ const STORAGE_KEY = 'metamorfosis-os-draft-v8';
 const LEGACY_STORAGE_KEYS = ['metamorfosis-os-draft-v7', 'metamorfosis-os-draft-v6'];
 const PUBLIC_QUOTES_KEY = 'metamorfosis-public-quotes';
 const PUBLIC_EVENTS_KEY = 'metamorfosis-public-events';
-const PUBLIC_SITE_URL = String(import.meta.env.VITE_PUBLIC_SITE_URL || 'https://www.metamorfosislab.cl').replace(/\/$/, '');
+const PUBLIC_SITE_URL = String(import.meta.env.VITE_PUBLIC_SITE_URL || 'https://metamorfosislab.cl').replace(/\/$/, '');
 const STATUS_OPTIONS = ['nueva', 'contactada', 'evaluacion', 'propuesta', 'cerrada', 'descartada'];
 
 const menuGroups = [

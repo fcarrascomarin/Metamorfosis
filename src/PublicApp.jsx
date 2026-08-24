@@ -24,9 +24,9 @@ import {
 } from './publicContent.js';
 
 const waBase = `https://wa.me/${contact.phoneDigits}`;
-const defaultAdminUrl = '/admin';
+const defaultAdminUrl = 'https://os.metamorfosislab.cl';
 const adminUrl = String(import.meta.env.VITE_ADMIN_URL || defaultAdminUrl).replace(/\/$/, '');
-const apiBase = String(import.meta.env.VITE_API_BASE || '').replace(/\/$/, '');
+const apiBase = String(import.meta.env.VITE_API_BASE || 'https://os.metamorfosislab.cl').replace(/\/$/, '');
 const PUBLIC_QUOTES_KEY = 'metamorfosis-public-quotes';
 const PUBLIC_EVENTS_KEY = 'metamorfosis-public-events';
 
