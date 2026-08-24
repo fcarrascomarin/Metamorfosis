@@ -44,6 +44,8 @@ const databaseConfig = getDatabaseConfig();
 const hasDatabase = databaseConfig.configured;
 const contactRecipient = cleanEnv(process.env.CONTACT_TO_EMAIL || 'contacto@metamorfosislab.cl', 180);
 const smtpConfigured = Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
+const PUBLIC_SITE_URL = cleanEnv(process.env.PUBLIC_SITE_URL || 'https://metamorfosislab.cl', 300).replace(/\/$/, '');
+const OS_SITE_URL = 'https://os.metamorfosislab.cl';
 const publicOrigins = new Set(
   String(process.env.PUBLIC_ORIGINS || '')
     .split(',')
@@ -70,18 +72,26 @@ app.use(helmet({
   strictTransportSecurity: isProduction ? undefined : false
 }));
 app.use(compression());
+app.use((req, res, next) => {
+  // El OS y la API son infraestructura privada/técnica: nunca deben indexarse.
+  res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  next();
+});
+
 app.use(express.json({ limit: '1.5mb' }));
 app.use(express.urlencoded({ extended: false, limit: '250kb' }));
 
-// Nunca exponer la URL técnica de Render como destino visible.
-// El health check queda exento para que Render pueda verificar el servicio.
+// Canonicalización de dominios: Render es exclusivamente OS + API.
+// El health check queda exento para que Render pueda verificar el servicio por su hostname técnico.
 app.use((req, res, next) => {
   if (!isProduction || req.path === '/api/health') return next();
   const host = String(req.get('host') || '').split(':')[0].toLowerCase();
-  if (host.endsWith('.onrender.com')) {
-    return res.redirect(308, `https://os.metamorfosislab.cl${req.originalUrl || '/'}`);
+  if (host === 'metamorfosislab.cl' || host === 'www.metamorfosislab.cl') {
+    return res.redirect(308, `${PUBLIC_SITE_URL}${req.originalUrl === '/' ? '' : req.originalUrl}`);
   }
-  return next();
+  if (host === 'os.metamorfosislab.cl') return next();
+  // Incluye *.onrender.com y cualquier hostname técnico o no autorizado.
+  return res.redirect(308, `${OS_SITE_URL}${req.originalUrl || '/'}`);
 });
 
 let pool = null;
@@ -458,8 +468,15 @@ app.post('/api/quotes', publicLimiter, async (req, res) => {
     );
     return res.status(201).json({ ok: true, saved: true, emailSent: true, id: quote.id });
   } catch (error) {
-    console.error('Error al registrar cotización:', error.message);
-    return res.status(500).json({ ok: false, message: 'No fue posible registrar la solicitud en este momento.' });
+    // El correo ya fue confirmado. No informar un falso fallo de envío si solo falló la persistencia.
+    console.error('Correo enviado, pero falló el registro de cotización:', error.message);
+    return res.status(201).json({
+      ok: true,
+      saved: false,
+      emailSent: true,
+      id: quote.id,
+      message: 'La solicitud fue enviada por correo, pero no pudo registrarse en el panel. Revísala desde el correo institucional.'
+    });
   }
 });
 
@@ -524,6 +541,10 @@ app.put('/api/os-state', requireAdmin, requireSameOrigin, async (req, res) => {
   if (state.tasks.length > 5000 || state.fronts.length > 500 || state.inbox.length > 1000 || state.decisions.length > 500) {
     return res.status(413).json({ ok: false, message: 'El respaldo supera los límites operativos permitidos.' });
   }
+  const expedientes = Array.isArray(state.expedientes) ? state.expedientes : [];
+  if (expedientes.length > 500) {
+    return res.status(413).json({ ok: false, message: 'El número de expedientes supera el límite operativo permitido.' });
+  }
   const trackingProjects = Array.isArray(state.timeTracking?.projects) ? state.timeTracking.projects : [];
   const trackingEntries = Array.isArray(state.timeTracking?.entries) ? state.timeTracking.entries : [];
   if (trackingProjects.length > 500 || trackingEntries.length > 20_000) {
@@ -554,8 +575,6 @@ app.use('/api', (_req, res) => {
 });
 
 const adminDist = path.join(__dirname, 'dist-admin');
-const PUBLIC_SITE_URL = cleanEnv(process.env.PUBLIC_SITE_URL || 'https://metamorfosislab.cl', 300).replace(/\/$/, '');
-
 // Render sirve exclusivamente Metamorfosis OS y su API.
 app.use('/admin', (req, res, next) => {
   res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');

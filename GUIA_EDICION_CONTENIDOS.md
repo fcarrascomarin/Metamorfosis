@@ -1,159 +1,38 @@
-# Guía rápida para editar la web pública
+# Guía breve de edición · Metamorfosis Lab 4.8
 
-La web pública y el panel interno permanecen separados:
+## Web pública
 
-- **Web pública:** `src/PublicApp.jsx` + `src/publicContent.js` + estilos públicos en `src/styles.css`.
-- **Panel privado:** `src/AdminApp.jsx` y sus módulos. Los cambios visuales de esta actualización están limitados a `.public-site`, por lo que no alteran Metamorfosis OS.
+El contenido público principal está en `src/publicContent.js` y la composición en `src/PublicApp.jsx`.
 
-## 1. Textos que se editan sin tocar la estructura
+Navegación vigente:
 
-El archivo principal para contenidos repetibles es:
+1. Qué hacemos
+2. Cómo trabajamos
+3. Equipo
+4. Contacto
 
-```text
-src/publicContent.js
-```
+No agregar clientes, logos, testimonios ni “casos” sin autorización expresa documentada. El OS tampoco forma parte de la navegación pública.
 
-Ahí puedes cambiar:
+## Equipo
 
-- `publicNavigation`: nombres y destinos del menú.
-- `gardenPrinciples`: tarjetas de la sección **El jardín**.
-- `publicCapabilities`: capacidades, descripciones y principios.
-- `publicCases`: casos, etiquetas, textos, palabras clave y llamada a la acción.
+Editar el arreglo `team` en `src/publicContent.js`. Mantener nombre, función real y descripción breve; no inflar cargos o capacidades.
 
-Cada elemento conserva una estructura clara. Ejemplo:
+## Servicios y precios
 
-```js
-{
-  icon: 'campaign',
-  title: 'Mercado, marca y comercialización',
-  text: 'Descripción principal.',
-  principle: 'Frase breve de criterio.'
-}
-```
+Editar `servicePricing` en `src/publicContent.js`. Toda modificación debe preservar alcance, resultado y exclusiones comprensibles.
 
-## 2. Textos principales de cada sección
+## Herramientas comerciales y expedientes
 
-Los títulos y párrafos introductorios están en:
+Las tres herramientas activas están en `src/consultingTools.js`:
 
-```text
-src/PublicApp.jsx
-```
+- Ficha de oportunidad
+- Perfil preliminar de empresa
+- Pauta de conversación inicial
 
-Busca los componentes `SectionHeading` dentro de estas secciones:
+`createEmptyExpediente()` define la estructura reutilizable y `createClubVeganExpediente()` contiene la semilla del EXP-001. Los expedientes posteriores se crean desde el propio OS y se guardan dentro del estado persistente.
 
-- `id="jardin"`
-- `id="capacidades"`
-- `id="mapa"`
-- `id="proyectos"`
-- `id="contacto"`
+## Estilos
 
-También en `PublicApp.jsx` se edita el texto principal del hero, dentro de:
+`src/styles.css` contiene estilos compartidos. Las reglas finales de 4.8 están acotadas por `.public-site--audit`, `.expediente-*`, `.tool-standard-*` y `.admin-frame--family` para reducir interferencias con componentes históricos.
 
-```jsx
-<section id="inicio" ...>
-```
-
-## 3. Datos de contacto
-
-Se editan en:
-
-```text
-src/data.js
-```
-
-Objeto:
-
-```js
-export const contact = { ... }
-```
-
-Modifica ahí teléfono, correo, ubicación y cobertura. El formulario, footer y botón de WhatsApp usan esos datos automáticamente.
-
-## 4. Imágenes de fondo
-
-Están en:
-
-```text
-src/assets/images/jardin/
-```
-
-Los archivos actuales son:
-
-- `hero-jardin.webp`
-- `jardin-terrazas.webp`
-- `trabajo-metodo.webp`
-- `mapa-transformacion.webp`
-- `proyectos-vivos.webp`
-- `contacto-jardin.webp`
-
-Para reemplazar una imagen sin editar código, conserva el mismo nombre y formato.
-
-## 5. Logos de casos
-
-La composición visual de los casos está en el componente:
-
-```jsx
-CaseBrand
-```
-
-ubicado en `src/PublicApp.jsx`.
-
-- **Metamorfosis OS** usa `public/logo-metamorfosis-transparente.png`.
-- **Juana de Arco** usa `public/assets/brand/logo-juana-de-arco.png`.
-- **CM** usa `public/assets/brand/logo-cm-banqueteria.png`.
-
-Para reemplazar cualquiera de ellos, conserva el nombre del archivo o actualiza la ruta dentro de `CaseBrand`. Mantén `alt` o `aria-label` para accesibilidad.
-
-## 6. Estilos y tamaños
-
-Los ajustes nuevos están al final de:
-
-```text
-src/styles.css
-```
-
-Busca el comentario:
-
-```css
-Armonía visual pública · navegación, método, casos y footer · 2026-08
-```
-
-Las reglas están precedidas por `.public-site`. Esto evita que una modificación de la vitrina pública cambie accidentalmente el panel privado.
-
-## 7. Navegación y anclas
-
-La función:
-
-```js
-scrollToPublicSection()
-```
-
-calcula dinámicamente la altura real del encabezado fijo. Así cada sección queda alineada justo debajo del menú y no a mitad de pantalla.
-
-No es necesario añadir valores manuales por sección.
-
-## 8. Compilación y despliegue
-
-Web pública en Cloudflare Pages:
-
-```bash
-npm run build:public
-```
-
-Directorio de salida:
-
-```text
-dist-public
-```
-
-Panel privado en Render:
-
-```bash
-npm run build:admin
-```
-
-Después:
-
-```bash
-npm start
-```
+Regla visual: texto oscuro sobre superficies claras y texto claro sobre superficies oscuras. Comprobar siempre escritorio, tablet y móvil.

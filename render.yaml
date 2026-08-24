@@ -12,6 +12,8 @@ services:
         value: https://registry.npmjs.org/
       - key: NODE_ENV
         value: production
+      - key: NODE_VERSION
+        value: 20.19.0
       - key: SESSION_SECRET
         generateValue: true
       - key: DATABASE_URL
@@ -35,7 +37,7 @@ services:
       - key: SMTP_FROM
         value: contacto@metamorfosislab.cl
       - key: PUBLIC_ORIGINS
-        value: https://metamorfosislab.cl,https://www.metamorfosislab.cl
+        value: https://metamorfosislab.cl
       - key: PUBLIC_SITE_URL
         value: https://metamorfosislab.cl
       - key: VITE_PUBLIC_SITE_URL
