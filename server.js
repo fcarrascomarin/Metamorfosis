@@ -593,10 +593,7 @@ app.get(['/admin', '/admin/*'], (_req, res) => {
   res.sendFile(path.join(adminDist, 'admin.html'));
 });
 
-// El dominio del OS muestra directamente el panel, sin duplicar la web pública.
-app.get('/', (_req, res) => {
-  res.redirect(302, '/admin');
-});
+
 
 // Cualquier otra ruta no-API de Render vuelve al sitio público canónico.
 app.get('*', (req, res) => {
