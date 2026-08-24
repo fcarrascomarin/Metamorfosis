@@ -29,7 +29,7 @@ services:
       - key: SMTP_SECURE
         value: true
       - key: SMTP_USER
-        sync: false
+        value: contacto@metamorfosislab.cl
       - key: SMTP_PASS
         sync: false
       - key: SMTP_FROM

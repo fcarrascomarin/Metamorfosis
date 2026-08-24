@@ -7307,3 +7307,280 @@ textarea::placeholder { color: #7f98ac; }
     text-align: left;
   }
 }
+
+
+/* ==========================================================
+   2026-08-23 · CAPA FINAL DE LEGIBILIDAD Y FORMULARIO
+   Esta capa va al final para neutralizar reglas históricas que
+   mezclaban texto claro con superficies claras y viceversa.
+   ========================================================== */
+
+.public-site--lab {
+  --contrast-dark: #10252d;
+  --contrast-dark-soft: #405a63;
+  --contrast-light: #ffffff;
+  --contrast-light-soft: #dcecf1;
+  --contrast-field-bg: #0b2531;
+}
+
+/* Superficies claras: texto inequívocamente oscuro. */
+.public-site--lab .tpr-section,
+.public-site--lab .tpr-manifesto,
+.public-site--lab .tpr-section .tpr-card,
+.public-site--lab .tpr-section .tpr-usecase,
+.public-site--lab .pricing-transparency,
+.public-site--lab .pricing-card {
+  color: var(--contrast-dark);
+}
+
+.public-site--lab .tpr-section h1,
+.public-site--lab .tpr-section h2,
+.public-site--lab .tpr-section h3,
+.public-site--lab .tpr-manifesto h2,
+.public-site--lab .tpr-manifesto h3,
+.public-site--lab .tpr-section strong {
+  color: var(--contrast-dark);
+}
+
+.public-site--lab .tpr-section p,
+.public-site--lab .tpr-manifesto p,
+.public-site--lab .tpr-section small,
+.public-site--lab .tpr-section .section-heading p {
+  color: var(--contrast-dark-soft);
+}
+
+/* Superficies oscuras: texto inequívocamente claro. */
+.public-site--lab .tpr-hero,
+.public-site--lab .tpr-split-section,
+.public-site--lab .tpr-method-section,
+.public-site--lab .tpr-cases-section,
+.public-site--lab .story-section--contact,
+.public-site--lab .site-footer {
+  color: var(--contrast-light);
+}
+
+.public-site--lab .tpr-hero h1,
+.public-site--lab .tpr-hero h2,
+.public-site--lab .tpr-split-section h2,
+.public-site--lab .tpr-split-section h3,
+.public-site--lab .tpr-method-section h2,
+.public-site--lab .tpr-method-section h3,
+.public-site--lab .tpr-cases-section h2,
+.public-site--lab .tpr-cases-section h3,
+.public-site--lab .story-section--contact h2,
+.public-site--lab .story-section--contact h3,
+.public-site--lab .site-footer strong,
+.public-site--lab .site-footer .footer-title {
+  color: var(--contrast-light);
+}
+
+.public-site--lab .tpr-hero p,
+.public-site--lab .tpr-split-section p,
+.public-site--lab .tpr-method-section p,
+.public-site--lab .tpr-cases-section p,
+.public-site--lab .story-section--contact p,
+.public-site--lab .site-footer p,
+.public-site--lab .site-footer small,
+.public-site--lab .site-footer a {
+  color: var(--contrast-light-soft);
+}
+
+.public-site--lab .story-section--contact .kicker,
+.public-site--lab .tpr-method-section .kicker,
+.public-site--lab .tpr-cases-section .kicker,
+.public-site--lab .tpr-split-section .kicker,
+.public-site--lab .site-footer a:hover {
+  color: #8df3e5;
+}
+
+/* Formulario por pasos: contraste, estados y navegación no clickeable. */
+.public-site--lab .quote-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.public-site--lab .quote-steps li {
+  min-height: 46px;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border: 1px solid rgba(141, 243, 229, .24);
+  border-radius: 14px;
+  background: rgba(255,255,255,.075);
+  color: #dbeaf0;
+}
+
+.public-site--lab .quote-steps li > span {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(255,255,255,.09);
+  color: #ffffff;
+  font-weight: 900;
+}
+
+.public-site--lab .quote-steps li small {
+  color: #dbeaf0;
+  font-size: .72rem;
+  font-weight: 800;
+}
+
+.public-site--lab .quote-steps li.is-active {
+  border-color: rgba(105,247,234,.7);
+  background: rgba(105,247,234,.13);
+}
+
+.public-site--lab .quote-steps li.is-active > span,
+.public-site--lab .quote-steps li.is-complete > span {
+  background: #69f7ea;
+  color: #03121c;
+}
+
+.public-site--lab .quote-wizard,
+.public-site--lab .quote-wizard label,
+.public-site--lab .quote-wizard .field-label > span,
+.public-site--lab .quote-step-title,
+.public-site--lab .check-line,
+.public-site--lab .check-line span {
+  color: #ffffff;
+}
+
+.public-site--lab .quote-wizard input,
+.public-site--lab .quote-wizard textarea,
+.public-site--lab .quote-wizard select {
+  border: 1px solid rgba(141,243,229,.32);
+  background: var(--contrast-field-bg);
+  color: #ffffff;
+  caret-color: #8df3e5;
+}
+
+.public-site--lab .quote-wizard input::placeholder,
+.public-site--lab .quote-wizard textarea::placeholder {
+  color: #b8cbd1;
+  opacity: 1;
+}
+
+.public-site--lab .quote-wizard input:focus,
+.public-site--lab .quote-wizard textarea:focus,
+.public-site--lab .quote-wizard select:focus {
+  border-color: #8df3e5;
+  box-shadow: 0 0 0 3px rgba(141,243,229,.16);
+  outline: none;
+}
+
+.public-site--lab .field-help {
+  display: block;
+  margin-top: 6px;
+  color: #c7dbe0;
+  font-size: .74rem;
+  line-height: 1.35;
+}
+
+.public-site--lab .quote-step-panel .button:disabled,
+.public-site--lab .form-submit:disabled {
+  border-color: #556c74;
+  background: #344c55;
+  color: #dce7ea;
+  opacity: .78;
+}
+
+.public-site--lab .form-helper--success { color: #9ff7d4; }
+.public-site--lab .form-helper--error { color: #ffd5cf; }
+.public-site--lab .form-helper--loading { color: #dcecf1; }
+.public-site--lab .form-mail-fallback {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #8df3e5;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Panel interno: evita herencias de texto claro en tarjetas claras. */
+.admin-frame .admin-view__heading,
+.admin-frame .panel-card,
+.admin-frame .metric-card,
+.admin-frame .front-card,
+.admin-frame .project-card,
+.admin-frame .document-category,
+.admin-frame .month-day,
+.admin-frame .task-card {
+  color: #14282d;
+}
+
+.admin-frame .admin-view__heading h1,
+.admin-frame .panel-card h2,
+.admin-frame .panel-card h3,
+.admin-frame .metric-card strong,
+.admin-frame .front-card h2,
+.admin-frame .project-card h2,
+.admin-frame .document-category h2 {
+  color: #14282d;
+}
+
+.admin-frame .admin-view__heading p,
+.admin-frame .panel-card p,
+.admin-frame .metric-card small,
+.admin-frame .metric-card span,
+.admin-frame .front-card p,
+.admin-frame .project-card p,
+.admin-frame .document-category small {
+  color: #4d656c;
+}
+
+.admin-frame input,
+.admin-frame textarea,
+.admin-frame select {
+  color: #14282d;
+}
+
+.admin-frame input::placeholder,
+.admin-frame textarea::placeholder {
+  color: #687d82;
+  opacity: 1;
+}
+
+/* Responsive seguro para formulario y textos largos. */
+@media (max-width: 760px) {
+  .public-site--lab .quote-steps {
+    grid-template-columns: 1fr;
+  }
+  .public-site--lab .quote-steps li {
+    grid-template-columns: 30px 1fr;
+  }
+  .public-site--lab .choice-grid,
+  .public-site--lab .tpr-form-grid,
+  .public-site--lab .contact-layout--immersive {
+    grid-template-columns: 1fr;
+  }
+  .public-site--lab .quote-wizard {
+    width: 100%;
+    padding: 18px;
+  }
+  .public-site--lab .quote-step-actions {
+    flex-direction: column-reverse;
+  }
+  .public-site--lab .quote-step-actions .button,
+  .public-site--lab .choice-grid button {
+    width: 100%;
+    min-height: 48px;
+  }
+  .public-site--lab .section-heading h2,
+  .public-site--lab .tpr-manifesto h2 {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 420px) {
+  .public-site--lab .quote-wizard { padding: 15px; }
+  .public-site--lab .quote-step-panel { gap: 10px; }
+  .public-site--lab .quote-wizard input,
+  .public-site--lab .quote-wizard textarea,
+  .public-site--lab .quote-wizard select { font-size: 16px; }
+}

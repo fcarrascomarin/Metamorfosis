@@ -266,7 +266,7 @@ async function establishSession(req, email, demo) {
 }
 
 app.get('/api/health', (_req, res) => {
-  res.json({ ok: true, database: hasDatabase ? 'configured' : 'development-only' });
+  res.json({ ok: true, database: hasDatabase ? 'configured' : 'development-only', smtp: smtpConfigured ? 'configured' : 'missing' });
 });
 
 app.get('/api/session', (req, res) => {
@@ -385,26 +385,37 @@ app.post('/api/quotes', publicLimiter, async (req, res) => {
   const phoneDigits = quote.phone.replace(/\D/g, '');
   const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(quote.email);
   const validPhone = !quote.phone || phoneDigits.length >= 8;
-  if (!quote.serviceType || !quote.details || !quote.contactName || !quote.consent || !validEmail || !validPhone) {
-    return res.status(400).json({ ok: false, message: 'Revisa los datos obligatorios, el correo y la autorización de contacto.' });
+  if (!quote.serviceType || quote.details.length < 10 || !quote.contactName || !quote.company || !quote.consent || !validEmail || !validPhone) {
+    return res.status(400).json({ ok: false, message: 'Completa los tres pasos: necesidad, organización/contacto, correo válido y autorización.' });
   }
 
-  let emailSent = false;
+  if (!smtpConfigured) {
+    return res.status(503).json({
+      ok: false,
+      emailSent: false,
+      message: 'El envío automático de correo no está configurado en el servidor. Revisa SMTP_HOST, SMTP_USER, SMTP_PASS y SMTP_FROM.'
+    });
+  }
+
   try {
-    emailSent = await sendQuoteEmail(quote);
+    const emailSent = await sendQuoteEmail(quote);
+    if (!emailSent) throw new Error('El transporte SMTP no está disponible.');
   } catch (error) {
     console.error('Error al enviar correo de solicitud:', error.message);
+    return res.status(502).json({
+      ok: false,
+      emailSent: false,
+      message: 'No fue posible confirmar el envío del correo institucional. Intenta nuevamente o utiliza el enlace de correo alternativo.'
+    });
   }
 
   if (!pool) {
-    return res.status(202).json({
+    return res.status(201).json({
       ok: true,
       saved: false,
-      emailSent,
+      emailSent: true,
       id: quote.id,
-      message: emailSent
-        ? 'Solicitud enviada por correo. Conecta DATABASE_URL para persistencia compartida en Metamorfosis OS.'
-        : 'Solicitud recibida por la API. Configura SMTP y DATABASE_URL para envío automático y persistencia compartida.'
+      message: 'Solicitud enviada por correo. Conecta DATABASE_URL para persistencia compartida en Metamorfosis OS.'
     });
   }
 
@@ -415,7 +426,7 @@ app.post('/api/quotes', publicLimiter, async (req, res) => {
       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)`,
       [quote.id, quote.serviceType, quote.projectStage, quote.desiredDate, quote.teamSize, quote.details, quote.contactName, quote.company, quote.city, quote.email, quote.phone, quote.preferredContact, quote.consent]
     );
-    return res.status(201).json({ ok: true, saved: true, emailSent, id: quote.id });
+    return res.status(201).json({ ok: true, saved: true, emailSent: true, id: quote.id });
   } catch (error) {
     console.error('Error al registrar cotización:', error.message);
     return res.status(500).json({ ok: false, message: 'No fue posible registrar la solicitud en este momento.' });

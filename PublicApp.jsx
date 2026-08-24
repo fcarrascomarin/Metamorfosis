@@ -275,9 +275,9 @@ function getMailtoUrl(form) {
   return `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.join('\n'))}`;
 }
 
-function saveQuoteLocally(form) {
+function saveQuoteLocally(form, apiId = null) {
   const quote = {
-    id: `web-${Date.now()}`,
+    id: apiId || `web-${Date.now()}`,
     created_at: new Date().toISOString(),
     contact_name: form.contactName.trim(),
     company: form.company.trim(),
@@ -326,7 +326,7 @@ async function postQuoteToApi(form) {
 
 function QuoteForm() {
   const empty = {
-    serviceType: 'Diagnóstico productivo responsable',
+    serviceType: '',
     details: '',
     contactName: '',
     company: '',
@@ -346,56 +346,65 @@ function QuoteForm() {
 
   const cleanPhone = form.phone.replace(/\D/g, '');
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim());
+  const phoneValid = !form.phone.trim() || cleanPhone.length >= 8;
   const stepOneReady = Boolean(form.serviceType && form.details.trim().length >= 10);
-  const stepTwoReady = Boolean(form.company.trim() && form.contactName.trim());
-  const isValid = stepOneReady && stepTwoReady && emailValid && (!form.phone.trim() || cleanPhone.length >= 8) && form.consent;
+  const stepTwoReady = Boolean(form.company.trim().length >= 2 && form.contactName.trim().length >= 2);
+  const stepThreeReady = Boolean(emailValid && phoneValid && form.consent);
+  const isValid = stepOneReady && stepTwoReady && stepThreeReady;
   const emailUrl = useMemo(() => getMailtoUrl(form), [form]);
 
-  const prepareFormalContact = async () => {
-    if (!isValid) return;
-    saveQuoteLocally(form);
+  const prepareFormalContact = async (event) => {
+    event?.preventDefault();
+    if (!isValid || status.type === 'loading' || status.type === 'success') return;
     trackPublicEvent('formal_request_prepared', { label: form.serviceType, serviceTitle: form.serviceType, section: 'contacto' });
     setStatus({ type: 'loading', message: 'Enviando solicitud formal…' });
     try {
       const response = await postQuoteToApi(form);
-      if (response.emailSent && response.saved !== false) {
-        setStatus({ type: 'success', message: 'Solicitud enviada al correo institucional y registrada en Metamorfosis OS.' });
-      } else if (response.emailSent) {
-        setStatus({ type: 'success', message: 'Solicitud enviada al correo institucional. Conecta base de datos para registro compartido en OS.' });
-      } else if (response.saved) {
-        setStatus({ type: 'success', message: 'Solicitud registrada en Metamorfosis OS. Falta configurar SMTP para envío automático al correo.' });
-      } else {
-        window.location.href = emailUrl;
-        setStatus({ type: 'warning', message: 'No hay servidor de correo activo. Se abrió un correo formal para enviar manualmente.' });
-      }
+      if (!response.emailSent) throw new Error(response.message || 'El servidor recibió la solicitud, pero no confirmó el envío del correo.');
+      saveQuoteLocally(form, response.id);
+      setStatus({ type: 'success', message: 'Solicitud enviada correctamente a contacto@metamorfosislab.cl. Te responderemos al correo indicado.' });
+      trackPublicEvent('formal_request_sent', { label: form.serviceType, serviceTitle: form.serviceType, section: 'contacto' });
     } catch (error) {
-      window.location.href = emailUrl;
-      setStatus({ type: 'warning', message: 'No fue posible contactar la API. Se abrió un correo formal para enviar manualmente.' });
+      setStatus({ type: 'error', message: error.message || 'No fue posible enviar la solicitud automáticamente. Puedes usar el enlace de correo alternativo.' });
     }
   };
 
+  const chooseService = (option) => {
+    setStatus({ type: 'idle', message: '' });
+    setForm((current) => ({ ...current, serviceType: option }));
+  };
+
   return (
-    <form className="quote-wizard tpr-form tpr-form--steps" onSubmit={(event) => event.preventDefault()} noValidate>
+    <form className="quote-wizard tpr-form tpr-form--steps" onSubmit={prepareFormalContact} noValidate>
       <div className="form-headline form-headline--steps">
         <span><Icon name="mail" /> Canal formal</span>
         <strong>Solicitud por correo</strong>
         <small>Se envía al correo institucional y queda disponible para seguimiento interno cuando el OS está conectado.</small>
       </div>
 
-      <div className="quote-steps" aria-label="Pasos del diagnóstico">
-        {[1, 2, 3].map((item) => <button type="button" key={item} className={step === item ? 'is-active' : ''} onClick={() => setStep(item)}>{item}</button>)}
-      </div>
+      <ol className="quote-steps" aria-label="Pasos de la solicitud">
+        {[
+          [1, 'Necesidad'],
+          [2, 'Identificación'],
+          [3, 'Contacto']
+        ].map(([item, label]) => (
+          <li key={item} className={`${step === item ? 'is-active' : ''} ${step > item ? 'is-complete' : ''}`} aria-current={step === item ? 'step' : undefined}>
+            <span>{step > item ? '✓' : item}</span><small>{label}</small>
+          </li>
+        ))}
+      </ol>
 
       {step === 1 && (
         <div className="quote-step-panel">
           <span className="quote-step-title"><Icon name="target" /> Elige una entrada</span>
           <div className="choice-grid choice-grid--compact">
             {['Diagnóstico productivo responsable', 'Vitrina Pyme', 'Ciclo Seguro', 'Sistema interno mínimo'].map((option) => (
-              <button type="button" key={option} className={form.serviceType === option ? 'is-selected' : ''} onClick={() => setForm((current) => ({ ...current, serviceType: option }))}>{option}</button>
+              <button type="button" key={option} className={form.serviceType === option ? 'is-selected' : ''} onClick={() => chooseService(option)}>{option}</button>
             ))}
           </div>
           <label className="field-label field-label--full"><span><Icon name="edit" /> Qué necesitas resolver</span>
-            <textarea name="details" value={form.details} onChange={update} placeholder="Ej.: ordenar roles, reducir pérdidas, explicar mejor la oferta o controlar el ciclo de vestuario laboral." required />
+            <textarea name="details" value={form.details} onChange={update} placeholder="Ej.: ordenar roles, reducir pérdidas, explicar mejor la oferta o controlar el ciclo de vestuario laboral." required aria-describedby="details-help" />
+            <small id="details-help" className="field-help">Selecciona una entrada y escribe al menos 10 caracteres. {form.details.trim().length}/10 mínimo.</small>
           </label>
           <button type="button" className="button button--full" disabled={!stepOneReady} onClick={() => setStep(2)}>Continuar <Icon name="arrow_forward" /></button>
         </div>
@@ -433,11 +442,12 @@ function QuoteForm() {
           <label className="check-line tpr-check"><input type="checkbox" name="consent" checked={form.consent} onChange={update} /> <span>Acepto ser contactado por Metamorfosis Lab para responder esta solicitud.</span></label>
           <div className="quote-step-actions">
             <button type="button" className="button button--ghost-light" onClick={() => setStep(2)}><Icon name="arrow_back" /> Volver</button>
-            <button className="button form-submit" type="button" disabled={!isValid || status.type === 'loading'} onClick={prepareFormalContact}>
-              <Icon name="mail" /> {status.type === 'loading' ? 'Enviando…' : isValid ? 'Enviar solicitud formal' : 'Completa los datos'}
+            <button className="button form-submit" type="submit" disabled={!isValid || status.type === 'loading' || status.type === 'success'}>
+              <Icon name="mail" /> {status.type === 'loading' ? 'Enviando…' : status.type === 'success' ? 'Solicitud enviada' : stepThreeReady ? 'Enviar solicitud formal' : 'Completa los datos'}
             </button>
           </div>
-          {status.message && <p className={`form-helper form-helper--${status.type}`}><Icon name={status.type === 'warning' ? 'warning' : 'check_circle'} /> {status.message}</p>}
+          {status.message && <p className={`form-helper form-helper--${status.type}`} role="status"><Icon name={status.type === 'error' ? 'warning' : 'check_circle'} /> {status.message}</p>}
+          {status.type === 'error' && <a className="form-mail-fallback" href={emailUrl}><Icon name="mail" /> Enviar por correo manual</a>}
         </div>
       )}
     </form>

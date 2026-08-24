@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from './components/Icon.jsx';
 import { documents, initialProjects } from './data.js';
-import { createDefaultOsState, OWNERS, TOPICS } from './osSeed.js';
+import { createDefaultOsState, OS_SCHEMA_VERSION, OWNERS, TOPICS } from './osSeed.js';
 
-const STORAGE_KEY = 'metamorfosis-os-draft-v6';
+const STORAGE_KEY = 'metamorfosis-os-draft-v8';
+const LEGACY_STORAGE_KEYS = ['metamorfosis-os-draft-v7', 'metamorfosis-os-draft-v6'];
 const PUBLIC_QUOTES_KEY = 'metamorfosis-public-quotes';
 const PUBLIC_EVENTS_KEY = 'metamorfosis-public-events';
 const PUBLIC_SITE_URL = String(import.meta.env.VITE_PUBLIC_SITE_URL || 'https://www.metamorfosislab.cl').replace(/\/$/, '');
@@ -90,9 +91,80 @@ function formatMoney(value) {
   return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(Number(value || 0));
 }
 
+
+const LEGACY_SEED_TASK_TITLES = new Set([
+  'Revisar estado comercial y próximos contactos',
+  'Cerrar una mejora del sistema Metamorfosis OS',
+  'Revisar próximo hito de Consolidación CM',
+  'Cierre semanal del sistema'
+]);
+const LEGACY_FRONT_NAMES = new Set(['Metamorfosis Lab', 'Consultoría de Consolidación CM', 'Método Metamorfosis', 'CM Experiencias']);
+const LEGACY_DECISIONS = new Set([
+  'Francisca lidera Metamorfosis y mantiene la decisión final del proyecto.',
+  'CM es el primer caso demostrativo vivo del método; no se presentará como caso cerrado antes de medir resultados.',
+  'La web pública comunica valor comercial. Los riesgos, cifras y documentos de trabajo permanecen en el panel privado.',
+  'Los procesos temporales de consultoría se ubican al final del menú y no desplazan la operación diaria.'
+]);
+
+function migrateOsState(candidate, fallback) {
+  if (!candidate || typeof candidate !== 'object') return fallback;
+  if (String(candidate.version || '') === OS_SCHEMA_VERSION) return candidate;
+
+  const campaignTasks = fallback.tasks || [];
+  const existingTasks = Array.isArray(candidate.tasks) ? candidate.tasks.filter((task) => !LEGACY_SEED_TASK_TITLES.has(task?.title)) : [];
+  const existingTitles = new Set(existingTasks.map((task) => task?.title));
+  const tasks = [...existingTasks, ...campaignTasks.filter((task) => !existingTitles.has(task.title))];
+
+  const timeProjects = Array.isArray(candidate.timeTracking?.projects) ? candidate.timeTracking.projects.map((project) => {
+    const isCm = /CM|Consolidación/i.test(`${project?.name || ''} ${project?.client || ''}`);
+    return isCm ? { ...project, name: 'Caso 0 · CM Banquetería & Restaurant', status: 'Cerrado · Caso 0' } : project;
+  }) : fallback.timeTracking.projects;
+
+  const family = candidate.family && typeof candidate.family === 'object' ? candidate.family : {};
+  const migratedWorkFronts = Array.isArray(family.workFronts) ? family.workFronts.map((front) =>
+    /CM Banquetería/i.test(front?.name || '')
+      ? { ...front, state: 'Caso 0', next: 'Usar la información recopilada para evidencia y aprendizaje de Metamorfosis.', limit: 'Intervención entregada y terminada; no reabrir trabajo operativo.' }
+      : front
+  ) : fallback.family.workFronts;
+  const migratedInventory = Array.isArray(family.inventory) ? family.inventory.map((item) =>
+    /CM Banquetería/i.test(item?.title || '')
+      ? { ...item, title: 'CM Banquetería & Restaurant · Caso 0', status: 'Caso 0' }
+      : item
+  ) : fallback.family.inventory;
+
+  const preservedFronts = Array.isArray(candidate.fronts)
+    ? candidate.fronts.filter((front) => !LEGACY_FRONT_NAMES.has(front?.name))
+    : [];
+  const fronts = [...fallback.fronts, ...preservedFronts];
+  const preservedDecisions = Array.isArray(candidate.decisions)
+    ? candidate.decisions.filter((decision) => !LEGACY_DECISIONS.has(decision))
+    : [];
+  const decisions = [...fallback.decisions, ...preservedDecisions.filter((decision) => !fallback.decisions.includes(decision))];
+
+  return {
+    ...candidate,
+    version: OS_SCHEMA_VERSION,
+    selectedDate: candidate.selectedDate && candidate.selectedDate >= '2026-08-24' ? candidate.selectedDate : '2026-08-24',
+    tasks,
+    guides: { ...(candidate.guides || {}), ...fallback.guides },
+    fronts,
+    decisions,
+    timeTracking: { ...(candidate.timeTracking || {}), projects: timeProjects },
+    family: {
+      ...family,
+      weekLabel: 'Semana del 24 al 30 de agosto de 2026',
+      weeklyActions: Array.isArray(family.weeklyActions) ? family.weeklyActions : fallback.family.weeklyActions,
+      workFronts: migratedWorkFronts,
+      inventory: migratedInventory
+    }
+  };
+}
+
 function hydrateState(candidate) {
   const fallback = createDefaultOsState();
-  if (!candidate || typeof candidate !== 'object') return fallback;
+  const migrated = migrateOsState(candidate, fallback);
+  if (!migrated || typeof migrated !== 'object') return fallback;
+  candidate = migrated;
   const normalizeId = (item) => ({ ...item, id: item?.id || crypto.randomUUID() });
   return {
     ...fallback,
@@ -333,8 +405,8 @@ function FinanceView({ osState, setOsState }) {
 
 const FAMILY_STATUSES = ['Bien', 'Atención', 'Intervenir'];
 const FAMILY_LOADS = ['Ligera', 'Media', 'Alta'];
-const FAMILY_INVENTORY_STATES = ['Activo', 'Próximo', 'Esperando condición', 'Pausado', 'Futuro'];
-const FAMILY_FRONT_STATES = ['Activo', 'Preparar', 'Cierre', 'Validación', 'Esperando', 'Pausado'];
+const FAMILY_INVENTORY_STATES = ['Activo', 'Próximo', 'Esperando condición', 'Caso 0', 'Pausado', 'Futuro'];
+const FAMILY_FRONT_STATES = ['Activo', 'Preparar', 'Cierre', 'Validación', 'Caso 0', 'Esperando', 'Pausado'];
 
 function FamilyView({ osState, setOsState }) {
   const family = osState.family;
@@ -698,7 +770,7 @@ function TimeTrackingView({ osState, setOsState }) {
           <label>Honorario acordado<input type="number" min="0" step="1000" value={projectForm.fee} onChange={(event) => setProjectForm({ ...projectForm, fee: event.target.value })} /></label>
           <label>Costos directos<input type="number" min="0" step="1000" value={projectForm.directCosts} onChange={(event) => setProjectForm({ ...projectForm, directCosts: event.target.value })} /></label>
           <label>Horas presupuestadas<input type="number" min="0" step="0.5" value={projectForm.targetHours} onChange={(event) => setProjectForm({ ...projectForm, targetHours: event.target.value })} /></label>
-          <label>Estado<select value={projectForm.status} onChange={(event) => setProjectForm({ ...projectForm, status: event.target.value })}><option>Propuesta</option><option>Activo</option><option>Desarrollo</option><option>Validación</option><option>Pausado</option><option>Cerrado</option></select></label>
+          <label>Estado<select value={projectForm.status} onChange={(event) => setProjectForm({ ...projectForm, status: event.target.value })}><option>Propuesta</option><option>Activo</option><option>Desarrollo</option><option>Validación</option><option>Pausado</option><option>Cerrado</option><option>Cerrado · Caso 0</option></select></label>
           <div className="modal-actions field-full">{projectForm.id && <button type="button" className="button button--ghost" onClick={() => setProjectForm(emptyProject)}>Cancelar edición</button>}<button type="submit" className="button"><Icon name="add" /> {projectForm.id ? 'Guardar cambios' : 'Agregar proyecto'}</button></div>
         </form>
       </section>
@@ -824,13 +896,32 @@ function AdminShell({ session, onLogout }) {
       try {
         const response = await fetch('/api/os-state');
         const payload = await response.json();
-        if (response.ok && payload.state) setOsStateRaw(hydrateState(payload.state));
-        else {
-          const local = window.localStorage.getItem(STORAGE_KEY);
-          if (local) setOsStateRaw(hydrateState(JSON.parse(local)));
+        if (response.ok && payload.state) {
+          const needsMigration = String(payload.state.version || '') !== OS_SCHEMA_VERSION;
+          setOsStateRaw(hydrateState(payload.state));
+          if (needsMigration) {
+            setDirty(true);
+            setNotice({ type: 'success', message: 'Metamorfosis OS fue actualizado a la agenda comercial 8.0. Guarda los cambios para persistir la migración.' });
+          }
+        } else {
+          const key = [STORAGE_KEY, ...LEGACY_STORAGE_KEYS].find((item) => window.localStorage.getItem(item));
+          const local = key ? window.localStorage.getItem(key) : null;
+          if (local) {
+            const parsed = JSON.parse(local);
+            const needsMigration = String(parsed?.version || '') !== OS_SCHEMA_VERSION;
+            setOsStateRaw(hydrateState(parsed));
+            if (needsMigration) {
+              setDirty(true);
+              setNotice({ type: 'success', message: 'Se recuperó tu borrador anterior y se migró a Metamorfosis OS 8.0. Guarda los cambios para consolidarlo.' });
+            }
+          }
         }
       } catch {
-        try { const local = window.localStorage.getItem(STORAGE_KEY); if (local) setOsStateRaw(hydrateState(JSON.parse(local))); } catch { /* ignore invalid local draft */ }
+        try {
+          const key = [STORAGE_KEY, ...LEGACY_STORAGE_KEYS].find((item) => window.localStorage.getItem(item));
+          const local = key ? window.localStorage.getItem(key) : null;
+          if (local) setOsStateRaw(hydrateState(JSON.parse(local)));
+        } catch { /* ignore invalid local draft */ }
       } finally { setLoadingState(false); }
     };
     load();

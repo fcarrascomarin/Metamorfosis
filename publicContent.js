@@ -136,8 +136,8 @@ export const resultIndicators = [
 export const impactCases = [
   {
     icon: 'inventory_2',
-    title: 'CM Banquetería & Restaurant',
-    lead: 'De información dispersa a una base operativa visible.',
+    title: 'CM Banquetería & Restaurant · Caso 0',
+    lead: 'Primer caso cerrado de estudio: de información dispersa a una base operativa visible.',
     challenge: 'Decisiones, registros y prioridades repartidas entre conversaciones y documentos.',
     intervention: 'Web pública, panel interno, documentos, hitos y criterios de seguimiento.',
     result: 'Más claridad para decidir, corregir y proyectar la operación.'
@@ -164,11 +164,11 @@ export const publicCases = [
   {
     id: 'cm-banqueteria',
     brand: 'cm',
-    label: 'Transformación productiva',
+    label: 'Caso 0 · proyecto cerrado',
     name: 'CM Banquetería & Restaurant',
-    text: 'Orden operativo, documentación, web pública y sistema interno para una pyme real.',
+    text: 'Primer caso de estudio cerrado: diagnóstico, orden operativo, documentación, web pública, sistema interno y traspaso.',
     tags: ['Operación', 'Documentos', 'Sistema', 'Web'],
-    hover: 'Del diagnóstico al sistema: una operación visible, documentada y mejor preparada.',
+    hover: 'Caso entregado: evidencia para estudiar cómo Metamorfosis comprende, ordena, implementa, documenta y transfiere.',
     live: 'https://www.cmbanqueteria.cl/'
   },
   {

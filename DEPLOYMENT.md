@@ -68,6 +68,13 @@ npm start
 | `ADMIN_PASSWORD_HASH` | hash bcrypt de la contraseña, nunca la contraseña en texto plano |
 | `PUBLIC_ORIGINS` | `https://metamorfosislab.cl,https://www.metamorfosislab.cl` |
 | `VITE_PUBLIC_SITE_URL` | `https://www.metamorfosislab.cl` |
+| `CONTACT_TO_EMAIL` | `contacto@metamorfosislab.cl` |
+| `SMTP_HOST` | `smtp.zoho.com` |
+| `SMTP_PORT` | `465` |
+| `SMTP_SECURE` | `true` |
+| `SMTP_USER` | cuenta SMTP autorizada (secreta) |
+| `SMTP_PASS` | contraseña o app password SMTP (secreta) |
+| `SMTP_FROM` | `contacto@metamorfosislab.cl` |
 
 Para generar un hash nuevo localmente:
 
@@ -157,7 +164,7 @@ No modificar el CNAME `os`, porque ese subdominio debe continuar apuntando a Ren
 3. Probar inicio de sesión, guardado y formulario mediante la URL privada.
 4. Crear Cloudflare Pages y probar la URL `pages.dev`.
 5. Confirmar que el botón **Acceso OS** abre `os.metamorfosislab.cl`.
-6. Confirmar que el formulario público registra una oportunidad en el panel.
+6. Confirmar que el formulario público registra una oportunidad en el panel y que el mensaje llega efectivamente a `contacto@metamorfosislab.cl`.
 7. Recién entonces trasladar `metamorfosislab.cl` y `www` desde Render a Pages.
 
 ---
@@ -170,7 +177,7 @@ No modificar el CNAME `os`, porque ese subdominio debe continuar apuntando a Ren
 - Navegación de escritorio y móvil sin superposición.
 - Secciones de capacidades, Juana de Arco y CM visibles.
 - Botón Acceso OS abre el subdominio privado.
-- Formulario prepara WhatsApp incluso si la API tarda en despertar.
+- Formulario avanza solo al completar cada paso y envía automáticamente al correo institucional cuando SMTP está configurado.
 
 ### Panel privado
 

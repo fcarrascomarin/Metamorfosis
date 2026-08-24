@@ -41,28 +41,28 @@ export const methodSteps = [
 
 export const initialProjects = [
   {
-    name: 'Consultoría de Consolidación CM',
-    client: 'CM Banquetería',
-    stage: 'Ejecución y documentación',
-    progress: 68,
-    next: 'Cerrar matriz de medidas e indicadores',
-    status: 'Activo'
-  },
-  {
-    name: 'Método Metamorfosis',
+    name: 'Validación comercial · 5 prospectos',
     client: 'Metamorfosis Lab',
-    stage: 'Estandarización',
-    progress: 54,
-    next: 'Validar herramientas de entrada',
+    stage: 'Mercado · semana 24–28 agosto',
+    progress: 20,
+    next: 'Seleccionar 5 prospectos + 2 suplentes y preparar ofertas específicas',
     status: 'Prioridad'
   },
   {
-    name: 'Mapa de Transformación y Activos',
-    client: 'Producto propio',
-    stage: 'Diseño comercial',
-    progress: 42,
-    next: 'Preparar versión vendible',
-    status: 'En diseño'
+    name: 'Caso 0 · CM Banquetería & Restaurant',
+    client: 'CM Banquetería & Restaurant',
+    stage: 'Entregado · estudio y evidencia',
+    progress: 100,
+    next: 'Extraer situación inicial, intervención, resultado, valor y aprendizaje',
+    status: 'Cerrado'
+  },
+  {
+    name: 'Ordenamiento y trazabilidad operacional',
+    client: 'Hipótesis comercial',
+    stage: 'Validación',
+    progress: 15,
+    next: 'Probar dolor y disposición a pagar en prospectos del Biobío',
+    status: 'Hipótesis'
   }
 ];
 
@@ -70,5 +70,5 @@ export const documents = {
   Operativos: ['Pauta de conversación inicial', 'Minuta de reunión', 'Plan de trabajo', 'Informe de avance'],
   Administrativos: ['Propuesta comercial', 'Cotización', 'Acuerdo de confidencialidad', 'Acta de cierre'],
   Metodológicos: ['Ficha de oportunidad', 'Investigación previa', 'Mapa de Transformación y Activos', 'Matriz de riesgos', 'Mapa de mercado y clientes', 'Propuesta de valor y posicionamiento', 'Ficha de levantamiento ergonómico inicial', 'Registro de tiempo y rentabilidad'],
-  'Consultoría / consolidación': ['Diagnóstico CM', 'Matriz de medidas', 'Registro de hitos', 'Documento de entrega']
+  'Casos de estudio': ['Caso 0 · CM: diagnóstico y antecedentes', 'Caso 0 · CM: informes sanitarios', 'Caso 0 · CM: informe final y cierre', 'Caso 0 · CM: herramientas y aprendizaje']
 };
