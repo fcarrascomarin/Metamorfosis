@@ -5,6 +5,15 @@ const addDays = (base, days) => {
   return iso(value);
 };
 
+export const OS_SCHEMA_VERSION = '8.0';
+const COMMERCIAL_WEEK = {
+  monday: '2026-08-24',
+  tuesday: '2026-08-25',
+  wednesday: '2026-08-26',
+  thursday: '2026-08-27',
+  friday: '2026-08-28'
+};
+
 export function createDefaultOsState() {
   const today = iso(new Date());
   const projectMetamorfosis = crypto.randomUUID();
@@ -12,81 +21,105 @@ export function createDefaultOsState() {
   const projectJuana = crypto.randomUUID();
   const projectExperiencias = crypto.randomUUID();
   return {
-    version: '7.0',
-    selectedDate: today,
+    version: OS_SCHEMA_VERSION,
+    selectedDate: today < COMMERCIAL_WEEK.monday ? COMMERCIAL_WEEK.monday : today,
     tasks: [
       {
-        id: crypto.randomUUID(),
-        date: today,
-        start: '09:30',
-        end: '10:15',
-        owner: 'Francisca',
-        topic: 'Metamorfosis',
-        title: 'Revisar estado comercial y próximos contactos',
-        explain: 'Definir a quién contactar, con qué propuesta y cuál es el cierre esperado.',
-        why: 'El sistema debe convertir trabajo interno en movimiento comercial verificable.',
-        done_when: 'Queda registrada una acción externa concreta con responsable y fecha.',
-        status: 'pending',
-        comments: []
+        id: crypto.randomUUID(), date: COMMERCIAL_WEEK.monday, start: '09:30', end: '11:00', owner: 'Ambos', topic: 'Comercial',
+        title: 'Construir y puntuar el universo de prospectos del Biobío',
+        explain: 'Levantar candidatos reales y evaluarlos con los diez criterios acordados: dolor, compatibilidad, pago, acceso, facilidad, medición, valor como caso, aprendizaje, repetición y contacto inmediato.',
+        why: 'El mercado inicial debe seleccionarse con evidencia y no por intuición.',
+        done_when: 'Existe una matriz comparable de candidatos suficiente para tomar una decisión.', status: 'pending', comments: []
       },
       {
-        id: crypto.randomUUID(),
-        date: today,
-        start: '10:30',
-        end: '11:30',
-        owner: 'Ambos',
-        topic: 'Sistema',
-        title: 'Cerrar una mejora del sistema Metamorfosis OS',
-        explain: 'Elegir una única mejora operativa y llevarla a un estado utilizable.',
-        why: 'La plataforma debe reducir dispersión, no convertirse en otro proyecto infinito.',
-        done_when: 'La mejora queda probada, documentada y sin pendientes críticos abiertos.',
-        status: 'pending',
-        comments: []
+        id: crypto.randomUUID(), date: COMMERCIAL_WEEK.monday, start: '11:15', end: '12:00', owner: 'Francisca', topic: 'Comercial',
+        title: 'Seleccionar 5 prospectos definitivos y 2 suplentes',
+        explain: 'Elegir los cinco experimentos comerciales de la semana, incluyendo obligatoriamente Club Vegan, y definir qué hipótesis prueba cada uno.',
+        why: 'La semana necesita una muestra pequeña pero deliberada que genere aprendizaje comercial.',
+        done_when: 'Quedan 5 prospectos titulares + 2 suplentes con hipótesis y canal probable de contacto.', status: 'pending', comments: []
       },
       {
-        id: crypto.randomUUID(),
-        date: addDays(today, 1),
-        start: '10:00',
-        end: '11:00',
-        owner: 'Francisca',
-        topic: 'CM',
-        title: 'Revisar próximo hito de Consolidación CM',
-        explain: 'Confirmar entregable, evidencia faltante y responsable de cada antecedente.',
-        why: 'CM es el caso demostrativo que debe producir evidencia real del método.',
-        done_when: 'El siguiente hito tiene criterio de cierre, documentos y fecha definida.',
-        status: 'pending',
-        comments: []
+        id: crypto.randomUUID(), date: COMMERCIAL_WEEK.tuesday, start: '09:30', end: '10:30', owner: 'Francisca', topic: 'Comercial',
+        title: 'Completar diagnóstico previo de Club Vegan',
+        explain: 'Revisar actividad, presencia digital, operación visible, decisor y problema de entrada más plausible antes de contactar.',
+        why: 'Club Vegan es el primer prospecto obligatorio y debe recibir una propuesta específica, no genérica.',
+        done_when: 'Ficha breve lista con problema probable, decisor, canal y oferta de entrada.', status: 'pending', comments: []
       },
       {
-        id: crypto.randomUUID(),
-        date: addDays(today, 2),
-        start: '18:30',
-        end: '19:00',
-        owner: 'Ambos',
-        topic: 'Dirección',
-        title: 'Cierre semanal del sistema',
-        explain: 'Revisar avances, bloqueos y una prioridad por frente para la semana siguiente.',
-        why: 'El sistema necesita cierres breves para no acumular decisiones invisibles.',
-        done_when: 'Cada frente activo queda con un próximo paso y un límite explícito.',
-        status: 'pending',
-        comments: []
+        id: crypto.randomUUID(), date: COMMERCIAL_WEEK.tuesday, start: '10:45', end: '12:15', owner: 'Ambos', topic: 'Comercial',
+        title: 'Completar fichas previas de los otros 4 prospectos',
+        explain: 'Investigar únicamente lo necesario para formular una oferta competente: actividad, señales de dolor, decisor, capacidad probable de pago y entrada Metamorfosis.',
+        why: 'La investigación previa debe elevar la calidad del contacto sin transformarse en un proyecto de escritorio.',
+        done_when: 'Los cinco prospectos tienen ficha breve comparable y una hipótesis de valor.', status: 'pending', comments: []
+      },
+      {
+        id: crypto.randomUUID(), date: COMMERCIAL_WEEK.wednesday, start: '09:30', end: '11:00', owner: 'Ambos', topic: 'Comercial',
+        title: 'Diseñar las 5 ofertas específicas',
+        explain: 'Construir una entrada concreta para cada prospecto: Vitrina Pyme, ordenamiento/trazabilidad, Ciclo Seguro u otra intervención mínima coherente con la evidencia.',
+        why: 'Metamorfosis debe probar problemas concretos y no enviar una presentación genérica cinco veces.',
+        done_when: 'Cada prospecto tiene oferta, resultado esperado y siguiente paso definidos.', status: 'pending', comments: []
+      },
+      {
+        id: crypto.randomUUID(), date: COMMERCIAL_WEEK.wednesday, start: '11:15', end: '12:00', owner: 'Francisca', topic: 'Comercial',
+        title: 'Cerrar alcance, precio y canal de cada propuesta',
+        explain: 'Revisar que cada oferta sea simple, cobrable y ejecutable, con condiciones claras y sin sobrediseño.',
+        why: 'Una propuesta no está lista hasta que el cliente puede entender qué obtiene, cuánto cuesta y qué debe hacer después.',
+        done_when: 'Las 5 ofertas quedan listas para envío sin pendientes internos críticos.', status: 'pending', comments: []
+      },
+      {
+        id: crypto.randomUUID(), date: COMMERCIAL_WEEK.thursday, start: '09:30', end: '10:45', owner: 'Francisca', topic: 'Comercial',
+        title: 'Enviar las 5 ofertas al mercado',
+        explain: 'Contactar efectivamente a los cinco prospectos por el canal más directo disponible. Club Vegan debe recibir su propuesta sí o sí.',
+        why: 'El cuello de botella actual es la conversión entre capacidad interna y respuesta externa.',
+        done_when: 'Cinco organizaciones reales han recibido una propuesta concreta de Metamorfosis.', status: 'pending', comments: []
+      },
+      {
+        id: crypto.randomUUID(), date: COMMERCIAL_WEEK.thursday, start: '11:00', end: '11:30', owner: 'Ambos', topic: 'Sistema',
+        title: 'Registrar contactos y próximos seguimientos',
+        explain: 'Registrar prospecto, canal, hora, propuesta enviada, responsable y próxima fecha razonable de seguimiento.',
+        why: 'Cada contacto debe producir memoria comercial y no depender de conversaciones dispersas.',
+        done_when: 'Los cinco contactos aparecen trazables en el sistema con estado y próximo paso.', status: 'pending', comments: []
+      },
+      {
+        id: crypto.randomUUID(), date: COMMERCIAL_WEEK.friday, start: '09:30', end: '10:30', owner: 'Ambos', topic: 'Dirección',
+        title: 'Leer respuestas, silencios y objeciones',
+        explain: 'Revisar las señales recibidas sin sobrerreaccionar a un caso aislado y distinguir interés, confusión, precio, timing y falta de dolor.',
+        why: 'La evidencia comercial debe empezar a seleccionar el mercado y mejorar la oferta.',
+        done_when: 'Cada prospecto tiene aprendizaje registrado y seguimiento definido cuando corresponde.', status: 'pending', comments: []
+      },
+      {
+        id: crypto.randomUUID(), date: COMMERCIAL_WEEK.friday, start: '10:45', end: '11:30', owner: 'Ambos', topic: 'Dirección',
+        title: 'Cerrar la semana comercial y decidir el siguiente experimento',
+        explain: 'Comparar las cinco pruebas y definir qué mantener, ajustar o descartar para la semana siguiente.',
+        why: 'Metamorfosis debe vender, ejecutar, medir, documentar, ajustar y repetir.',
+        done_when: 'Existe un tablero comercial actualizado y una prioridad comercial única para la semana siguiente.', status: 'pending', comments: []
       }
     ],
     guides: {
-      [today]: {
-        name: 'Cerrar antes de abrir',
-        why: 'Priorizar una mejora operativa y una acción comercial antes de sumar nuevas ideas.',
-        limit: 'No abrir nuevos módulos ni servicios sin cerrar el resultado definido para hoy.'
+      [COMMERCIAL_WEEK.monday]: {
+        name: 'Seleccionar con evidencia',
+        why: 'La prioridad es escoger bien cinco experimentos de mercado, no abrir nuevas líneas.',
+        limit: 'Cerrar 5 prospectos + 2 suplentes antes de producir nuevas piezas comerciales.'
       },
-      [addDays(today, 1)]: {
-        name: 'Caso demostrativo',
-        why: 'El trabajo con CM debe convertirse en evidencia, metodología y entregables reutilizables.',
-        limit: 'No confundir avance declarado con avance documentado.'
+      [COMMERCIAL_WEEK.tuesday]: {
+        name: 'Investigar solo lo necesario',
+        why: 'El diagnóstico previo debe mejorar la propuesta sin postergar el contacto.',
+        limit: 'Una ficha breve por prospecto; no convertir la investigación en consultoría gratuita.'
       },
-      [addDays(today, 2)]: {
-        name: 'Revisión y descanso',
-        why: 'El cierre semanal protege la continuidad y evita arrastrar decisiones sin dueño.',
-        limit: 'La revisión no debe transformarse en una nueva jornada completa.'
+      [COMMERCIAL_WEEK.wednesday]: {
+        name: 'Oferta específica y cobrable',
+        why: 'Cada prospecto debe recibir una entrada coherente con su dolor probable y con nuestras capacidades reales.',
+        limit: 'No enviar una propuesta genérica ni construir soluciones que nadie haya comprado.'
+      },
+      [COMMERCIAL_WEEK.thursday]: {
+        name: 'Tocar mercado',
+        why: 'Hoy la prioridad es exposición externa: cinco ofertas efectivamente enviadas.',
+        limit: 'Club Vegan debe ser contactado y cada envío debe quedar registrado.'
+      },
+      [COMMERCIAL_WEEK.friday]: {
+        name: 'Aprender antes de ampliar',
+        why: 'Las respuestas, silencios y objeciones son evidencia para seleccionar mercado.',
+        limit: 'No rediseñar Metamorfosis por una sola reacción; buscar patrones y definir un siguiente experimento.'
       }
     },
     finance: {
@@ -117,12 +150,12 @@ export function createDefaultOsState() {
         },
         {
           id: projectCm,
-          name: 'Consultoría de Consolidación CM',
+          name: 'Caso 0 · CM Banquetería & Restaurant',
           client: 'CM Banquetería & Restaurant',
           fee: 0,
           directCosts: 0,
           targetHours: 0,
-          status: 'Activo'
+          status: 'Cerrado · Caso 0'
         },
         {
           id: projectJuana,
@@ -148,49 +181,44 @@ export function createDefaultOsState() {
     },
     fronts: [
       {
-        id: crypto.randomUUID(),
-        name: 'Metamorfosis Lab',
-        leader: 'Francisca',
-        state: 'Prioridad central',
-        next: 'Convertir la propuesta comercial y el Mapa en una oferta comprensible y vendible.',
-        limit: 'No ampliar el catálogo antes de validar la puerta de entrada.'
+        id: crypto.randomUUID(), name: 'Validación comercial · 5 prospectos', leader: 'Francisca', state: 'Prioridad semanal',
+        next: 'Seleccionar, preparar y enviar cinco ofertas reales en Biobío antes del cierre del jueves 27.',
+        limit: 'No abrir nuevas líneas ni rediseñar la arquitectura mientras no se complete el experimento.'
       },
       {
-        id: crypto.randomUUID(),
-        name: 'Consultoría de Consolidación CM',
-        leader: 'Francisca',
-        state: 'Activo',
-        next: 'Cerrar hitos con evidencia, responsables y documentos asociados.',
-        limit: 'Sistema Interno CM es un entregable de la consultoría, no un proyecto separado.'
+        id: crypto.randomUUID(), name: 'Vitrina Pyme · Club Vegan', leader: 'Francisca', state: 'Prueba comercial',
+        next: 'Preparar una oferta de entrada simple y enviarla durante esta semana.',
+        limit: 'Usarla como gimnasio comercial y línea de caja; no redefinir Metamorfosis como agencia web.'
       },
       {
-        id: crypto.randomUUID(),
-        name: 'Método Metamorfosis',
-        leader: 'Francisca',
-        state: 'Estandarización',
-        next: 'Consolidar ficha de oportunidad, investigación previa y conversación inicial.',
-        limit: 'No crear documentos aislados sin función dentro del recorrido completo.'
+        id: crypto.randomUUID(), name: 'Ordenamiento y trazabilidad operacional', leader: 'Ambos', state: 'Hipótesis prioritaria',
+        next: 'Probar el dolor en uno o dos prospectos con procesos informales, registros dispersos o exigencias de trazabilidad.',
+        limit: 'Validar problema y disposición a pagar antes de estandarizar un producto.'
       },
       {
-        id: crypto.randomUUID(),
-        name: 'CM Experiencias',
-        leader: 'Compartido',
-        state: 'Validación',
-        next: 'Probar el piloto sin comprometer caja ni operación central.',
-        limit: 'No escalar ni formalizar una nueva estructura antes de validar demanda y costos.'
+        id: crypto.randomUUID(), name: 'Ciclo Seguro', leader: 'Francisca', state: 'Hipótesis a validar',
+        next: 'Usar al menos un prospecto pertinente para validar dolor, decisor y disposición a pagar.',
+        limit: 'No construir software, plataforma ni infraestructura antes de obtener evidencia comercial.'
+      },
+      {
+        id: crypto.randomUUID(), name: 'Caso 0 · CM Banquetería & Restaurant', leader: 'Francisca', state: 'Cerrado · estudio',
+        next: 'Conservar y explotar la evidencia recopilada como antecedente metodológico y comercial.',
+        limit: 'CM ya fue entregado; no reabrir intervención. Trabajarlo solo para extraer evidencia, resultados y aprendizaje.'
       }
     ],
     decisions: [
       'Francisca lidera Metamorfosis y mantiene la decisión final del proyecto.',
-      'CM es el primer caso demostrativo vivo del método; no se presentará como caso cerrado antes de medir resultados.',
-      'La web pública comunica valor comercial. Los riesgos, cifras y documentos de trabajo permanecen en el panel privado.',
-      'Los procesos temporales de consultoría se ubican al final del menú y no desplazan la operación diaria.'
+      'La prioridad del 24 al 28 de agosto es seleccionar y contactar 5 prospectos reales del Biobío, incluyendo Club Vegan.',
+      'El mercado inicial se selecciona con evidencia: dolor, disposición a pagar, acceso al decisor, repetibilidad y valor como caso.',
+      'CM Banquetería & Restaurant está cerrado y pasa a ser Caso 0 de estudio de Metamorfosis.',
+      'Metamorfosis no necesita demostrar que puede imaginar más; necesita demostrar que puede repetir valor.',
+      'Durante esta etapa, el trabajo interno debe aumentar ventas, evidencia, capacidad de ejecución o margen.'
     ],
     inbox: [],
     family: {
       phase: 'PREPARAR',
       phaseNote: 'Hasta el término de la licencia y la renuncia a la DPP. Después el sistema cambia a MERCADO.',
-      weekLabel: 'Semana del 3 al 9 de agosto de 2026',
+      weekLabel: 'Semana del 24 al 30 de agosto de 2026',
       wellbeing: [
         { id: crypto.randomUUID(), name: 'Benjamín', area: 'Salud y transición', status: 'Atención', load: 'Media', note: 'Recuperación, Magíster y preparación profesional sin reconstruir una jornada de 45 horas.' },
         { id: crypto.randomUUID(), name: 'Francisca', area: 'Liderazgo y proyectos', status: 'Atención', load: 'Alta', note: 'Proteger su liderazgo en Metamorfosis sin absorber toda la carga familiar.' },
@@ -200,8 +228,8 @@ export function createDefaultOsState() {
       weeklyActions: [
         { id: crypto.randomUUID(), owner: 'Benjamín', title: 'Aterrizar agosto y mantener utilizable el Sistema Familiar V1.0', load: 'Exigente', status: 'pending' },
         { id: crypto.randomUUID(), owner: 'Benjamín', title: 'Preparar Con Criterio sin activación comercial durante la licencia', load: 'Media', status: 'pending' },
-        { id: crypto.randomUUID(), owner: 'Francisca', title: 'Definir la prioridad operativa de Metamorfosis para agosto', load: 'Exigente', status: 'pending' },
-        { id: crypto.randomUUID(), owner: 'Francisca', title: 'Ordenar los hitos reales de CM y Experiencias', load: 'Media', status: 'pending' },
+        { id: crypto.randomUUID(), owner: 'Francisca', title: 'Enviar 5 ofertas reales de Metamorfosis y registrar sus respuestas', load: 'Exigente', status: 'pending' },
+        { id: crypto.randomUUID(), owner: 'Compartido', title: 'Convertir CM cerrado en evidencia útil como Caso 0, sin reabrir la intervención', load: 'Ligera', status: 'pending' },
         { id: crypto.randomUUID(), owner: 'Compartido', title: 'Cerrar el ciclo financiero actual con datos confirmados', load: 'Media', status: 'pending' },
         { id: crypto.randomUUID(), owner: 'Compartido', title: 'Completar una microintervención cerrable del hogar', load: 'Media', status: 'pending' },
         { id: crypto.randomUUID(), owner: 'Compartido', title: 'Proteger un bloque familiar sin trabajo', load: 'Ligera', status: 'pending' }
@@ -210,7 +238,7 @@ export function createDefaultOsState() {
         { id: crypto.randomUUID(), name: 'Con Criterio', leader: 'Benjamín', state: 'Preparar', next: 'Cerrar Mesa V1 y revisar la economía conjunta de Taller, Mapa y Mesa.', limit: 'Sin contacto comercial durante la licencia.' },
         { id: crypto.randomUUID(), name: 'Magíster e investigación', leader: 'Benjamín', state: 'Activo', next: 'Ordenar el bloque intensivo y explorar criminología verde como giro rector, manteniendo la tesis anterior en pausa.', limit: 'No convertir toda lectura interesante en una nueva línea activa.' },
         { id: crypto.randomUUID(), name: 'Metamorfosis', leader: 'Francisca', state: 'Activo', next: 'Priorizar operación, oferta y casos reales en Biobío.', limit: 'No abrir más productos sin capacidad ni demanda comprobada.' },
-        { id: crypto.randomUUID(), name: 'CM Banquetería & Restaurant', leader: 'Francisca', state: 'Cierre', next: 'Cerrar los compromisos sanitarios y operativos pendientes.', limit: 'No expandir antes de ordenar y regularizar la operación real.' },
+        { id: crypto.randomUUID(), name: 'CM Banquetería & Restaurant', leader: 'Francisca', state: 'Caso 0', next: 'Usar la información recopilada para evidencia y aprendizaje de Metamorfosis.', limit: 'Intervención entregada y terminada; no reabrir trabajo operativo.' },
         { id: crypto.randomUUID(), name: 'Experiencias', leader: 'Compartido', state: 'Validación', next: 'Definir el piloto viable sin sobredimensionar inversión ni carga.', limit: 'No tratar líneas antiguas como proyectos separados.' }
       ],
       home: {
@@ -246,7 +274,7 @@ export function createDefaultOsState() {
         { id: crypto.randomUUID(), title: 'Fase 0 del hogar', area: 'Hogar', status: 'Activo' },
         { id: crypto.randomUUID(), title: 'Con Criterio', area: 'Trabajo', status: 'Activo' },
         { id: crypto.randomUUID(), title: 'Metamorfosis', area: 'Trabajo', status: 'Activo' },
-        { id: crypto.randomUUID(), title: 'CM Banquetería & Restaurant', area: 'Trabajo', status: 'Activo' },
+        { id: crypto.randomUUID(), title: 'CM Banquetería & Restaurant · Caso 0', area: 'Trabajo', status: 'Caso 0' },
         { id: crypto.randomUUID(), title: 'Experiencias', area: 'Trabajo', status: 'Activo' },
         { id: crypto.randomUUID(), title: 'Vía docente y caja profesional de Benjamín', area: 'Trabajo', status: 'Próximo' },
         { id: crypto.randomUUID(), title: 'Activación comercial de Benjamín', area: 'Trabajo', status: 'Esperando condición' },
