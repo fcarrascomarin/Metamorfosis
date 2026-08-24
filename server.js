@@ -22,7 +22,26 @@ function cleanEnv(value, max = 500) {
   if (typeof value !== 'string') return '';
   return value.trim().slice(0, max);
 }
-const hasDatabase = Boolean(process.env.DATABASE_URL);
+function getDatabaseConfig() {
+  const raw = cleanEnv(process.env.DATABASE_URL || '', 2000);
+  if (!raw) return { configured: false, url: '' };
+  try {
+    const parsed = new URL(raw);
+    if (!['postgres:', 'postgresql:'].includes(parsed.protocol)) {
+      throw new Error('el protocolo debe ser postgres:// o postgresql://');
+    }
+    if (!parsed.hostname || ['base', 'host', 'hostname', 'localhost'].includes(parsed.hostname.toLowerCase())) {
+      throw new Error(`host inválido: ${parsed.hostname || '(vacío)'}`);
+    }
+    return { configured: true, url: raw, hostname: parsed.hostname };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'formato inválido';
+    throw new Error(`DATABASE_URL inválida (${message}). Configura en Render la URL PostgreSQL completa entregada por tu proveedor de base de datos.`);
+  }
+}
+
+const databaseConfig = getDatabaseConfig();
+const hasDatabase = databaseConfig.configured;
 const contactRecipient = cleanEnv(process.env.CONTACT_TO_EMAIL || 'contacto@metamorfosislab.cl', 180);
 const smtpConfigured = Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
 const publicOrigins = new Set(
@@ -57,7 +76,7 @@ app.use(express.urlencoded({ extended: false, limit: '250kb' }));
 let pool = null;
 if (hasDatabase) {
   pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: databaseConfig.url,
     ssl: isProduction ? { rejectUnauthorized: false } : undefined,
     max: 8,
     idleTimeoutMillis: 30_000
@@ -558,7 +577,13 @@ app.get('*', (_req, res) => {
 
 async function startServer() {
   if (pool) {
-    await ensureSchema();
+    try {
+      await pool.query('SELECT 1');
+      await ensureSchema();
+      console.log(`PostgreSQL conectado: ${databaseConfig.hostname}`);
+    } catch (error) {
+      throw new Error(`No fue posible conectar a PostgreSQL (${databaseConfig.hostname || 'host desconocido'}): ${error.message}. Revisa DATABASE_URL en Render.`);
+    }
     pool.on('error', (error) => console.error('Error inesperado de PostgreSQL:', error.message));
   }
   const server = app.listen(port, () => {
