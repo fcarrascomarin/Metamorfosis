@@ -49,14 +49,19 @@ function getDatabaseConfig() {
 const databaseConfig = getDatabaseConfig();
 const hasDatabase = databaseConfig.configured;
 const contactRecipient = cleanEnv(process.env.CONTACT_TO_EMAIL || 'contacto@metamorfosislab.cl', 180);
+const smtpHost = cleanEnv(process.env.SMTP_HOST || 'smtp.zoho.com', 180);
+const smtpPort = Number(process.env.SMTP_PORT || 465);
+const smtpSecure = String(process.env.SMTP_SECURE || 'true') !== 'false';
+const smtpUser = cleanEnv(process.env.SMTP_USER || 'contacto@metamorfosislab.cl', 180);
+const smtpFrom = cleanEnv(process.env.SMTP_FROM || smtpUser, 180);
 const smtpPass = cleanEnv(process.env.SMTP_PASS || '', 500);
 const smtpPlaceholder = /CLAVE_|APP_PASSWORD|CAMBIAR|PLACEHOLDER|TU[_ -]?CLAVE/i.test(smtpPass);
-const smtpConfigured = Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && smtpPass && !smtpPlaceholder);
+const smtpConfigured = Boolean(smtpHost && smtpUser && smtpPass && !smtpPlaceholder);
 const configuredAdminHash = cleanEnv(process.env.ADMIN_PASSWORD_HASH || '', 300);
 const configuredAdminPassword = cleanEnv(process.env.ADMIN_PASSWORD || '', 500);
 const bcryptHashPattern = /^\$2[aby]\$\d{2}\$[./A-Za-z0-9]{53}$/;
 const adminHashValid = bcryptHashPattern.test(configuredAdminHash);
-const adminAuthMode = adminHashValid ? 'bcrypt' : configuredAdminPassword ? 'environment-secret' : configuredAdminHash ? 'invalid-hash' : 'missing';
+const adminAuthMode = configuredAdminPassword ? 'environment-secret' : adminHashValid ? 'bcrypt' : configuredAdminHash ? 'invalid-hash' : 'missing';
 
 function secureStringEqual(a, b) {
   const digestA = crypto.createHash('sha256').update(String(a || '')).digest();
@@ -255,19 +260,22 @@ function safeMetadata(value) {
   return value;
 }
 
-function createMailer() {
+function createMailer({ port = smtpPort, secure = smtpSecure } = {}) {
   if (!smtpConfigured) return null;
   return nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT || 465),
-    secure: String(process.env.SMTP_SECURE || 'true') !== 'false',
+    host: smtpHost,
+    port,
+    secure,
+    requireTLS: !secure,
     auth: {
-      user: process.env.SMTP_USER,
+      user: smtpUser,
       pass: smtpPass
     },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 15000
+    connectionTimeout: 12000,
+    greetingTimeout: 12000,
+    socketTimeout: 18000,
+    disableFileAccess: true,
+    disableUrlAccess: true
   });
 }
 
@@ -295,23 +303,42 @@ function quoteEmailText(quote) {
 }
 
 async function sendQuoteEmail(quote) {
-  const mailer = createMailer();
-  if (!mailer) return false;
+  if (!smtpConfigured) return false;
   const subject = `Nueva solicitud web · ${quote.company || quote.contactName}`;
   const text = quoteEmailText(quote);
   const html = text
     .split('\n')
     .map((line) => line ? `<p>${escapeHtml(line)}</p>` : '<br />')
     .join('');
-  await mailer.sendMail({
-    from: process.env.SMTP_FROM || process.env.SMTP_USER,
+  const message = {
+    from: `Metamorfosis Lab <${smtpFrom}>`,
     to: contactRecipient,
     replyTo: quote.email,
     subject,
     text,
     html
-  });
-  return true;
+  };
+
+  const candidates = [{ port: smtpPort, secure: smtpSecure }];
+  if (smtpHost.toLowerCase().includes('zoho') && smtpPort === 465) candidates.push({ port: 587, secure: false });
+  if (smtpHost.toLowerCase().includes('zoho') && smtpPort === 587) candidates.push({ port: 465, secure: true });
+
+  let lastError = null;
+  for (const candidate of candidates) {
+    const mailer = createMailer(candidate);
+    try {
+      await mailer.sendMail(message);
+      try { mailer.close(); } catch { /* no-op */ }
+      return true;
+    } catch (error) {
+      lastError = error;
+      try { mailer.close(); } catch { /* no-op */ }
+      const raw = String(error?.message || '');
+      const authError = /auth|login|credential|535|password/i.test(raw);
+      if (authError) break;
+    }
+  }
+  throw lastError || new Error('No fue posible enviar el correo SMTP.');
 }
 
 function requireAdmin(req, res, next) {
@@ -341,7 +368,42 @@ async function establishSession(req, email, demo) {
 }
 
 app.get('/api/health', (_req, res) => {
-  res.json({ ok: true, database: hasDatabase ? 'configured' : 'development-only', smtp: smtpConfigured ? 'configured' : smtpPlaceholder ? 'placeholder' : 'missing', smtpHost: smtpConfigured ? cleanEnv(process.env.SMTP_HOST || '', 120) : null, smtpPort: smtpConfigured ? Number(process.env.SMTP_PORT || 465) : null, smtpSecure: smtpConfigured ? String(process.env.SMTP_SECURE || 'true') !== 'false' : null, adminAuth: adminAuthMode });
+  res.setHeader('Cache-Control', 'no-store');
+  res.json({
+    ok: true,
+    database: hasDatabase ? 'configured' : 'development-only',
+    smtp: smtpConfigured ? 'configured' : smtpPlaceholder ? 'placeholder' : 'missing',
+    smtpHost: smtpHost || null,
+    smtpPort,
+    smtpSecure,
+    smtpUserConfigured: Boolean(smtpUser),
+    smtpPasswordConfigured: Boolean(smtpPass && !smtpPlaceholder),
+    adminAuth: adminAuthMode
+  });
+});
+
+app.get('/api/mail-status', requireAdmin, async (_req, res) => {
+  if (!smtpConfigured) {
+    return res.status(503).json({ ok: false, verified: false, message: smtpPlaceholder ? 'SMTP_PASS contiene un valor de ejemplo.' : 'SMTP no está completamente configurado.' });
+  }
+  const mailer = createMailer();
+  try {
+    await mailer.verify();
+    return res.json({ ok: true, verified: true, host: smtpHost, port: smtpPort, secure: smtpSecure });
+  } catch (error) {
+    const raw = clean(error?.message || 'Error SMTP', 500);
+    const authError = /auth|login|credential|535|password/i.test(raw);
+    const connectionError = /timeout|connect|socket|ECONN|ETIMEDOUT/i.test(raw);
+    return res.status(502).json({
+      ok: false,
+      verified: false,
+      kind: authError ? 'authentication' : connectionError ? 'connection' : 'smtp',
+      message: authError ? 'Zoho rechazó las credenciales SMTP. Revisa SMTP_USER y la contraseña de aplicación en Render.' : connectionError ? 'No fue posible conectar con el servidor SMTP de Zoho.' : 'Zoho no confirmó la configuración SMTP.',
+      detail: isProduction ? undefined : raw
+    });
+  } finally {
+    try { mailer.close(); } catch { /* no-op */ }
+  }
 });
 
 app.get('/api/session', (req, res) => {
@@ -502,9 +564,16 @@ app.post('/api/quotes', publicLimiter, async (req, res) => {
     return res.status(201).json({ ok: true, saved, emailSent: true, id: quote.id, message: 'Solicitud registrada en Metamorfosis OS y enviada por correo.' });
   } catch (error) {
     console.error('Solicitud registrada, pero falló el correo:', error.message);
-    const message = 'La solicitud quedó registrada en Metamorfosis OS, pero no fue posible confirmar el correo institucional. Revisa la configuración SMTP o usa el envío manual.';
-    if (pool) await pool.query('UPDATE metamorfosis_quotes SET email_error = $1 WHERE id = $2', [clean(error.message || message, 500), quote.id]).catch(() => {});
-    return res.status(saved ? 202 : 502).json({ ok: saved, saved, emailSent: false, id: quote.id, message });
+    const raw = clean(error?.message || 'Error SMTP', 500);
+    const authError = /auth|login|credential|535|password/i.test(raw);
+    const connectionError = /timeout|connect|socket|ECONN|ETIMEDOUT/i.test(raw);
+    const message = authError
+      ? 'La solicitud quedó registrada en Metamorfosis OS, pero Zoho rechazó la autenticación SMTP. Revisa SMTP_USER y la contraseña de aplicación configurada en Render.'
+      : connectionError
+        ? 'La solicitud quedó registrada en Metamorfosis OS, pero el servidor de correo no respondió. El sistema intentó los puertos seguros habituales de Zoho; revisa la conexión SMTP en Render.'
+        : 'La solicitud quedó registrada en Metamorfosis OS, pero Zoho no confirmó el correo institucional. Revisa la configuración SMTP o usa el envío manual.';
+    if (pool) await pool.query('UPDATE metamorfosis_quotes SET email_error = $1 WHERE id = $2', [raw || message, quote.id]).catch(() => {});
+    return res.status(saved ? 202 : 502).json({ ok: saved, saved, emailSent: false, id: quote.id, message, emailErrorKind: authError ? 'authentication' : connectionError ? 'connection' : 'smtp' });
   }
 });
 
