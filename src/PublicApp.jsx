@@ -3,15 +3,6 @@ import Icon from './components/Icon.jsx';
 import heroImage from './assets/images/jardin/hero-jardin.webp';
 import mapImage from './assets/images/jardin/mapa-transformacion.webp';
 import contactImage from './assets/images/jardin/contacto-jardin.webp';
-import pillarOperationImage from './assets/images/lab-showcase/pillar-operacion.webp';
-import pillarPeopleImage from './assets/images/lab-showcase/pillar-personas.webp';
-import pillarSystemsImage from './assets/images/lab-showcase/pillar-sistemas.webp';
-import methodUnderstandImage from './assets/images/lab-showcase/method-entender.webp';
-import methodPrioritizeImage from './assets/images/lab-showcase/method-priorizar.webp';
-import methodInterveneImage from './assets/images/lab-showcase/method-intervenir.webp';
-import methodMeasureImage from './assets/images/lab-showcase/method-medir.webp';
-import teamFranciscaImage from './assets/images/team/francisca-carrasco.webp';
-import teamBenjaminImage from './assets/images/team/benjamin-sepulveda.webp';
 import { contact } from './data.js';
 import {
   activeOfferUseCases,
@@ -28,9 +19,9 @@ const PUBLIC_QUOTES_KEY = 'metamorfosis-public-quotes';
 const PUBLIC_EVENTS_KEY = 'metamorfosis-public-events';
 
 
-const pillarIllustrations = [pillarOperationImage, pillarPeopleImage, pillarSystemsImage];
-const methodIllustrations = [methodUnderstandImage, methodPrioritizeImage, methodInterveneImage, methodMeasureImage];
-const teamPortraits = { 'Francisca Carrasco Marín': teamFranciscaImage, 'Benjamín Sepúlveda': teamBenjaminImage };
+const pillarIllustrations = ['/pillar-operacion.webp', '/pillar-personas.webp', '/pillar-sistemas.webp'];
+const methodIllustrations = ['/method-entender.webp', '/method-priorizar.webp', '/method-intervenir.webp', '/method-medir.webp'];
+const teamPortraits = { 'Francisca Carrasco Marín': '/francisca-carrasco.webp', 'Benjamín Sepúlveda': '/benjamin-sepulveda.webp' };
 
 
 function getVisitorSessionId() {
