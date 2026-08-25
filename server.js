@@ -156,6 +156,9 @@ async function ensureSchema() {
     );
   `);
   await pool.query('ALTER TABLE metamorfosis_quotes ADD COLUMN IF NOT EXISTS consent BOOLEAN NOT NULL DEFAULT TRUE');
+  await pool.query('ALTER TABLE metamorfosis_quotes ADD COLUMN IF NOT EXISTS email_sent BOOLEAN NOT NULL DEFAULT FALSE');
+  await pool.query('ALTER TABLE metamorfosis_quotes ADD COLUMN IF NOT EXISTS email_sent_at TIMESTAMPTZ');
+  await pool.query('ALTER TABLE metamorfosis_quotes ADD COLUMN IF NOT EXISTS email_error TEXT');
   await pool.query(`
     CREATE TABLE IF NOT EXISTS metamorfosis_os_state (
       workspace_key TEXT PRIMARY KEY,
@@ -261,7 +264,10 @@ function createMailer() {
     auth: {
       user: process.env.SMTP_USER,
       pass: smtpPass
-    }
+    },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000
   });
 }
 
@@ -335,7 +341,7 @@ async function establishSession(req, email, demo) {
 }
 
 app.get('/api/health', (_req, res) => {
-  res.json({ ok: true, database: hasDatabase ? 'configured' : 'development-only', smtp: smtpConfigured ? 'configured' : smtpPlaceholder ? 'placeholder' : 'missing', adminAuth: adminAuthMode });
+  res.json({ ok: true, database: hasDatabase ? 'configured' : 'development-only', smtp: smtpConfigured ? 'configured' : smtpPlaceholder ? 'placeholder' : 'missing', smtpHost: smtpConfigured ? cleanEnv(process.env.SMTP_HOST || '', 120) : null, smtpPort: smtpConfigured ? Number(process.env.SMTP_PORT || 465) : null, smtpSecure: smtpConfigured ? String(process.env.SMTP_SECURE || 'true') !== 'false' : null, adminAuth: adminAuthMode });
 });
 
 app.get('/api/session', (req, res) => {
@@ -449,64 +455,95 @@ app.post('/api/quotes', publicLimiter, async (req, res) => {
   };
 
   if (quote.website) {
-    return res.status(201).json({ ok: true, saved: false, id: quote.id });
+    return res.status(201).json({ ok: true, saved: false, emailSent: false, id: quote.id });
   }
 
   const phoneDigits = quote.phone.replace(/\D/g, '');
   const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(quote.email);
   const validPhone = !quote.phone || phoneDigits.length >= 8;
   if (!quote.serviceType || quote.details.length < 10 || !quote.contactName || !quote.company || !quote.consent || !validEmail || !validPhone) {
-    return res.status(400).json({ ok: false, message: 'Completa los tres pasos: necesidad, organización/contacto, correo válido y autorización.' });
+    return res.status(400).json({ ok: false, saved: false, emailSent: false, message: 'Completa los tres pasos: necesidad, organización/contacto, correo válido y autorización.' });
   }
 
+  // 1) Registrar primero. El OS no debe depender de que el proveedor SMTP responda.
+  let saved = false;
+  if (pool) {
+    try {
+      await pool.query(
+        `INSERT INTO metamorfosis_quotes
+        (id, service_type, project_stage, desired_date, team_size, details, contact_name, company, city, email, phone, preferred_contact, consent, email_sent)
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,FALSE)`,
+        [quote.id, quote.serviceType, quote.projectStage, quote.desiredDate, quote.teamSize, quote.details, quote.contactName, quote.company, quote.city, quote.email, quote.phone, quote.preferredContact, quote.consent]
+      );
+      saved = true;
+    } catch (error) {
+      console.error('Error al registrar solicitud antes del correo:', error.message);
+      return res.status(500).json({ ok: false, saved: false, emailSent: false, message: 'No fue posible registrar la solicitud en Metamorfosis OS. Intenta nuevamente.' });
+    }
+  }
+
+  // 2) Enviar correo con timeouts explícitos para evitar que el formulario quede congelado.
   if (!smtpConfigured) {
-    return res.status(503).json({
-      ok: false,
-      emailSent: false,
-      message: smtpPlaceholder ? 'SMTP_PASS todavía contiene un valor de ejemplo. Configura la contraseña de aplicación real de Zoho en Render.' : 'El envío automático de correo no está configurado en el servidor. Revisa SMTP_HOST, SMTP_USER, SMTP_PASS y SMTP_FROM.'
-    });
+    const message = smtpPlaceholder
+      ? 'La solicitud quedó registrada en Metamorfosis OS, pero SMTP_PASS todavía contiene un valor de ejemplo. Configura la contraseña de aplicación real de Zoho en Render.'
+      : 'La solicitud quedó registrada en Metamorfosis OS, pero el envío automático de correo no está configurado. Revisa SMTP_HOST, SMTP_USER, SMTP_PASS y SMTP_FROM.';
+    if (pool) await pool.query('UPDATE metamorfosis_quotes SET email_error = $1 WHERE id = $2', [message, quote.id]).catch(() => {});
+    return res.status(saved ? 202 : 503).json({ ok: saved, saved, emailSent: false, id: quote.id, message });
   }
 
   try {
-    const emailSent = await sendQuoteEmail(quote);
-    if (!emailSent) throw new Error('El transporte SMTP no está disponible.');
+    await sendQuoteEmail(quote);
+    if (pool) {
+      await pool.query(
+        'UPDATE metamorfosis_quotes SET email_sent = TRUE, email_sent_at = NOW(), email_error = NULL WHERE id = $1',
+        [quote.id]
+      );
+    }
+    return res.status(201).json({ ok: true, saved, emailSent: true, id: quote.id, message: 'Solicitud registrada en Metamorfosis OS y enviada por correo.' });
   } catch (error) {
-    console.error('Error al enviar correo de solicitud:', error.message);
-    return res.status(502).json({
-      ok: false,
-      emailSent: false,
-      message: 'No fue posible confirmar el envío del correo institucional. Intenta nuevamente o utiliza el enlace de correo alternativo.'
-    });
+    console.error('Solicitud registrada, pero falló el correo:', error.message);
+    const message = 'La solicitud quedó registrada en Metamorfosis OS, pero no fue posible confirmar el correo institucional. Revisa la configuración SMTP o usa el envío manual.';
+    if (pool) await pool.query('UPDATE metamorfosis_quotes SET email_error = $1 WHERE id = $2', [clean(error.message || message, 500), quote.id]).catch(() => {});
+    return res.status(saved ? 202 : 502).json({ ok: saved, saved, emailSent: false, id: quote.id, message });
   }
+});
 
-  if (!pool) {
-    return res.status(201).json({
-      ok: true,
-      saved: false,
-      emailSent: true,
-      id: quote.id,
-      message: 'Solicitud enviada por correo. Conecta DATABASE_URL para persistencia compartida en Metamorfosis OS.'
-    });
+app.post('/api/quotes/:id/resend-email', requireAdmin, requireSameOrigin, async (req, res) => {
+  if (!pool) return res.status(503).json({ ok: false, message: 'Base de datos no conectada.' });
+  if (!smtpConfigured) return res.status(503).json({ ok: false, message: 'SMTP no está configurado correctamente.' });
+  const id = clean(req.params.id, 80);
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)) {
+    return res.status(400).json({ ok: false, message: 'Solicitud no válida.' });
   }
-
   try {
-    await pool.query(
-      `INSERT INTO metamorfosis_quotes
-      (id, service_type, project_stage, desired_date, team_size, details, contact_name, company, city, email, phone, preferred_contact, consent)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)`,
-      [quote.id, quote.serviceType, quote.projectStage, quote.desiredDate, quote.teamSize, quote.details, quote.contactName, quote.company, quote.city, quote.email, quote.phone, quote.preferredContact, quote.consent]
-    );
-    return res.status(201).json({ ok: true, saved: true, emailSent: true, id: quote.id });
+    const result = await pool.query(`
+      SELECT id, service_type, project_stage, desired_date, team_size, details,
+             contact_name, company, city, email, phone, preferred_contact
+      FROM metamorfosis_quotes WHERE id = $1 LIMIT 1
+    `, [id]);
+    const row = result.rows[0];
+    if (!row) return res.status(404).json({ ok: false, message: 'Solicitud no encontrada.' });
+    const quote = {
+      id: row.id,
+      serviceType: row.service_type,
+      projectStage: row.project_stage,
+      desiredDate: row.desired_date,
+      teamSize: row.team_size,
+      details: row.details,
+      contactName: row.contact_name,
+      company: row.company,
+      city: row.city,
+      email: row.email,
+      phone: row.phone,
+      preferredContact: row.preferred_contact
+    };
+    await sendQuoteEmail(quote);
+    await pool.query('UPDATE metamorfosis_quotes SET email_sent = TRUE, email_sent_at = NOW(), email_error = NULL WHERE id = $1', [id]);
+    return res.json({ ok: true, emailSent: true });
   } catch (error) {
-    // El correo ya fue confirmado. No informar un falso fallo de envío si solo falló la persistencia.
-    console.error('Correo enviado, pero falló el registro de cotización:', error.message);
-    return res.status(201).json({
-      ok: true,
-      saved: false,
-      emailSent: true,
-      id: quote.id,
-      message: 'La solicitud fue enviada por correo, pero no pudo registrarse en el panel. Revísala desde el correo institucional.'
-    });
+    console.error('Error al reenviar correo de solicitud:', error.message);
+    await pool.query('UPDATE metamorfosis_quotes SET email_error = $1 WHERE id = $2', [clean(error.message || 'Error SMTP', 500), id]).catch(() => {});
+    return res.status(502).json({ ok: false, emailSent: false, message: 'No fue posible reenviar el correo. Revisa SMTP en Render.' });
   }
 });
 
@@ -515,7 +552,8 @@ app.get('/api/quotes', requireAdmin, async (_req, res) => {
   try {
     const result = await pool.query(`
       SELECT id, service_type, project_stage, desired_date, team_size, details,
-             contact_name, company, city, email, phone, preferred_contact, status, created_at
+             contact_name, company, city, email, phone, preferred_contact, status,
+             email_sent, email_sent_at, email_error, created_at
       FROM metamorfosis_quotes
       ORDER BY created_at DESC
       LIMIT 100
