@@ -429,13 +429,24 @@ function TeamSection() {
 }
 
 function PublicSite() {
+  const handleHeroMove = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+    event.currentTarget.style.setProperty('--mx', `${x}%`);
+    event.currentTarget.style.setProperty('--my', `${y}%`);
+  };
+
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v50">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
-        <section id="inicio" className="audit-scene audit-hero section-anchor" style={{ '--section-image': `url(${heroImage})` }}>
+        <section id="inicio" className="audit-scene audit-hero section-anchor" style={{ '--section-image': `url(${heroImage})` }} onPointerMove={handleHeroMove}>
           <div className="audit-scene__shade" aria-hidden="true" />
+          <div className="lab-cursor-field" aria-hidden="true" />
+          <div className="lab-orbit lab-orbit--one" aria-hidden="true" />
+          <div className="lab-orbit lab-orbit--two" aria-hidden="true" />
           <div className="shell audit-hero__grid">
             <div className="audit-hero__copy">
               <span className="kicker">Metamorfosis Lab · Biobío</span>

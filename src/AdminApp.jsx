@@ -46,7 +46,7 @@ const FAMILY_MENU_GROUPS = [
     items: [
       ['family-overview', 'Resumen', 'home'],
       ['family-week', 'Semana y bienestar', 'calendar_month'],
-      ['family-money', 'Caja familiar', 'account_balance_wallet'],
+      ['family-money', 'Caja familiar', 'savings'],
       ['family-home', 'Hogar y pendientes', 'construction']
     ]
   }
@@ -78,8 +78,8 @@ function Brand({ compact = false, mode = 'business' }) {
 function WorkspaceSwitch({ mode, onSwitch }) {
   return (
     <div className="workspace-switch" role="tablist" aria-label="Cambiar área del sistema">
-      <button type="button" role="tab" aria-selected={mode === 'business'} className={mode === 'business' ? 'is-active' : ''} onClick={() => onSwitch('business')}><Icon name="business_center" /><span>Empresa</span></button>
-      <button type="button" role="tab" aria-selected={mode === 'family'} className={mode === 'family' ? 'is-active' : ''} onClick={() => onSwitch('family')}><Icon name="family_restroom" /><span>Familiar</span></button>
+      <button type="button" role="tab" aria-selected={mode === 'business'} className={mode === 'business' ? 'is-active' : ''} onClick={() => onSwitch('business')}><Icon name="briefcase" /><span>Empresa</span></button>
+      <button type="button" role="tab" aria-selected={mode === 'family'} className={mode === 'family' ? 'is-active' : ''} onClick={() => onSwitch('family')}><Icon name="home" /><span>Familiar</span></button>
     </div>
   );
 }
