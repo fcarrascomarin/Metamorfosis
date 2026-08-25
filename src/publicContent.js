@@ -1,8 +1,7 @@
 export const publicNavigation = [
   { id: 'que-hacemos', label: 'Qué hacemos', icon: 'target' },
-  { id: 'metodo', label: 'Cómo trabajamos', icon: 'timeline' },
-  { id: 'equipo', label: 'Equipo', icon: 'group' },
-  { id: 'contacto', label: 'Contacto', icon: 'mail' }
+  { id: 'metodo', label: 'Método', icon: 'timeline' },
+  { id: 'equipo', label: 'Equipo', icon: 'group' }
 ];
 
 export const transformationPillars = [
@@ -12,10 +11,10 @@ export const transformationPillars = [
 ];
 
 export const activeOfferUseCases = [
-  { icon: 'visibility', title: 'Diagnóstico focalizado', text: 'Comprender un problema concreto, separar síntomas de causas y priorizar un siguiente paso.' },
-  { icon: 'schema', title: 'Ordenamiento y trazabilidad', text: 'Pasar de registros dispersos a procesos, responsables y evidencia operacional utilizable.' },
-  { icon: 'public', title: 'Vitrina Pyme', text: 'Una presencia digital acotada para explicar una oferta real y facilitar el primer contacto.' },
-  { icon: 'inventory_2', title: 'Ciclo Seguro', text: 'Hipótesis en validación para gestionar vestuario laboral con trazabilidad, vida útil y salida responsable.' }
+  { icon: 'schema', title: 'Procesos y roles', text: 'Cuando tareas, decisiones o responsabilidades dependen demasiado de la memoria o de una sola persona.' },
+  { icon: 'database', title: 'Registros y trazabilidad', text: 'Cuando existe información, pero está dispersa y cuesta seguir, demostrar o aprender de lo que ocurre.' },
+  { icon: 'public', title: 'Presencia y conversión digital', text: 'Cuando la oferta existe, pero no se explica con claridad o el contacto depende de canales improvisados.' },
+  { icon: 'recycling', title: 'Uso de recursos', text: 'Cuando materiales, activos o residuos pueden gestionarse mejor sin separar eficiencia y responsabilidad.' }
 ];
 
 export const solutions = [
