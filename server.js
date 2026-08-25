@@ -33,7 +33,13 @@ function getDatabaseConfig() {
     if (!parsed.hostname || ['base', 'host', 'hostname', 'localhost'].includes(parsed.hostname.toLowerCase())) {
       throw new Error(`host inválido: ${parsed.hostname || '(vacío)'}`);
     }
-    return { configured: true, url: raw, hostname: parsed.hostname };
+    // Mantener la semántica SSL segura que pg aplica hoy y evitar la advertencia
+    // de compatibilidad futura: Neon suele entregar sslmode=require, pero pg recomienda
+    // explicitar verify-full para conservar verificación completa del certificado.
+    if (isProduction && parsed.searchParams.get('sslmode') === 'require') {
+      parsed.searchParams.set('sslmode', 'verify-full');
+    }
+    return { configured: true, url: parsed.toString(), hostname: parsed.hostname };
   } catch (error) {
     const message = error instanceof Error ? error.message : 'formato inválido';
     throw new Error(`DATABASE_URL inválida (${message}). Configura en Render la URL PostgreSQL completa entregada por tu proveedor de base de datos.`);
@@ -102,7 +108,8 @@ let pool = null;
 if (hasDatabase) {
   pool = new Pool({
     connectionString: databaseConfig.url,
-    ssl: isProduction ? { rejectUnauthorized: false } : undefined,
+    // SSL se controla desde DATABASE_URL (normalizada a verify-full en producción).
+    // Evitamos sobrescribirla con rejectUnauthorized:false.
     max: 8,
     idleTimeoutMillis: 30_000
   });
@@ -579,34 +586,34 @@ app.use('/api', (_req, res) => {
 });
 
 const adminDist = path.join(__dirname, 'dist-admin');
+
 // Render sirve exclusivamente Metamorfosis OS y su API.
-app.use('/admin', (req, res, next) => {
-  res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
-  next();
-}, express.static(adminDist, {
+// El OS vive en la raíz de su propio subdominio: https://os.metamorfosislab.cl
+// /admin se conserva solo como ruta histórica y se canonicaliza a la raíz.
+app.get(['/admin', '/admin/', '/admin/*'], (_req, res) => {
+  res.redirect(308, '/');
+});
+
+app.use(express.static(adminDist, {
   maxAge: isProduction ? '7d' : 0,
   index: false,
+  redirect: false,
   setHeaders(res, filePath) {
     if (filePath.endsWith('.html')) res.setHeader('Cache-Control', 'no-store');
   }
 }));
 
-app.get(['/admin', '/admin/*'], (_req, res) => {
+function sendAdminShell(res) {
   res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive');
   res.setHeader('Cache-Control', 'no-store');
-  res.sendFile(path.join(adminDist, 'admin.html'));
-});
+  return res.sendFile(path.join(adminDist, 'admin.html'));
+}
 
-// El dominio del OS muestra directamente el panel, sin duplicar la web pública.
-app.get('/', (_req, res) => {
-  res.redirect(302, '/admin');
-});
+// La raíz del subdominio ES el OS. No exponemos /admin en la URL canónica.
+app.get('/', (_req, res) => sendAdminShell(res));
 
-// Cualquier otra ruta no-API de Render vuelve al sitio público canónico.
-app.get('*', (req, res) => {
-  const suffix = req.originalUrl && req.originalUrl !== '/' ? req.originalUrl : '';
-  res.redirect(302, `${PUBLIC_SITE_URL}${suffix}`);
-});
+// Fallback de la SPA del OS. Las rutas /api ya fueron resueltas antes de este punto.
+app.get('*', (_req, res) => sendAdminShell(res));
 
 async function startServer() {
   if (pool) {
