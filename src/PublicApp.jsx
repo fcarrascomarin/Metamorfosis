@@ -3,13 +3,13 @@ import Icon from './components/Icon.jsx';
 import heroImage from './assets/images/jardin/hero-jardin.webp';
 import mapImage from './assets/images/jardin/mapa-transformacion.webp';
 import contactImage from './assets/images/jardin/contacto-jardin.webp';
-import pillarOperationImage from './assets/images/lab-showcase/pillar-operacion.png';
-import pillarPeopleImage from './assets/images/lab-showcase/pillar-personas.png';
-import pillarSystemsImage from './assets/images/lab-showcase/pillar-sistemas.png';
-import methodUnderstandImage from './assets/images/lab-showcase/method-entender.png';
-import methodPrioritizeImage from './assets/images/lab-showcase/method-priorizar.png';
-import methodInterveneImage from './assets/images/lab-showcase/method-intervenir.png';
-import methodMeasureImage from './assets/images/lab-showcase/method-medir.png';
+import pillarOperationImage from './assets/images/lab-showcase/pillar-operacion.webp';
+import pillarPeopleImage from './assets/images/lab-showcase/pillar-personas.webp';
+import pillarSystemsImage from './assets/images/lab-showcase/pillar-sistemas.webp';
+import methodUnderstandImage from './assets/images/lab-showcase/method-entender.webp';
+import methodPrioritizeImage from './assets/images/lab-showcase/method-priorizar.webp';
+import methodInterveneImage from './assets/images/lab-showcase/method-intervenir.webp';
+import methodMeasureImage from './assets/images/lab-showcase/method-medir.webp';
 import { contact } from './data.js';
 import {
   activeOfferUseCases,
@@ -77,6 +77,14 @@ function trackPublicEvent(eventType, metadata = {}) {
     fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, keepalive: true }).catch(() => {});
   } catch {
     // El indicador local ya quedó disponible como respaldo.
+  }
+}
+
+function warmPrivateApi() {
+  try {
+    fetch(`${apiBase}/api/health`, { method: 'GET', mode: 'cors', cache: 'no-store' }).catch(() => {});
+  } catch {
+    // La precarga es silenciosa: nunca bloquea la web pública.
   }
 }
 
@@ -152,6 +160,7 @@ function PublicHeader() {
   }, []);
 
   const goTo = (id) => {
+    if (id === 'contacto') warmPrivateApi();
     setOpen(false);
     scrollToPublicSection(id);
     trackPublicEvent('navigation_click', { section: id, label: id });
@@ -264,14 +273,28 @@ async function postQuoteToApi(form) {
     consent: form.consent,
     website: ''
   };
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  });
-  const payloadResponse = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(payloadResponse.message || 'No fue posible enviar la solicitud.');
-  return payloadResponse;
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 75000);
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    });
+    const payloadResponse = await response.json().catch(() => ({}));
+    if (!response.ok && !payloadResponse.saved) {
+      throw new Error(payloadResponse.message || 'No fue posible registrar la solicitud.');
+    }
+    return { ...payloadResponse, httpOk: response.ok };
+  } catch (error) {
+    if (error?.name === 'AbortError') {
+      throw new Error('El servidor tardó demasiado en responder. La solicitud puede haberse registrado; revisa Oportunidades en el OS antes de reenviarla.');
+    }
+    throw error;
+  } finally {
+    window.clearTimeout(timeout);
+  }
 }
 
 function QuoteForm() {
@@ -307,15 +330,30 @@ function QuoteForm() {
     event?.preventDefault();
     if (!isValid || status.type === 'loading' || status.type === 'success') return;
     trackPublicEvent('formal_request_prepared', { label: form.serviceType, serviceTitle: form.serviceType, section: 'contacto' });
-    setStatus({ type: 'loading', message: 'Enviando solicitud formal…' });
+    setStatus({ type: 'loading', message: 'Registrando la solicitud y preparando el correo…' });
+    const slowNotice = window.setTimeout(() => {
+      setStatus((current) => current.type === 'loading'
+        ? { type: 'loading', message: 'El canal seguro está terminando de activarse. Mantén esta ventana abierta; no necesitas volver a enviar.' }
+        : current);
+    }, 9000);
     try {
       const response = await postQuoteToApi(form);
-      if (!response.emailSent) throw new Error(response.message || 'El servidor recibió la solicitud, pero no confirmó el envío del correo.');
-      saveQuoteLocally(form, response.id);
-      setStatus({ type: 'success', message: 'Solicitud enviada correctamente a contacto@metamorfosislab.cl. Te responderemos al correo indicado.' });
-      trackPublicEvent('formal_request_sent', { label: form.serviceType, serviceTitle: form.serviceType, section: 'contacto' });
+      if (response.saved) saveQuoteLocally(form, response.id);
+      if (response.saved && response.emailSent) {
+        setStatus({ type: 'success', message: 'Solicitud enviada por correo y registrada en Metamorfosis OS. Te responderemos al correo indicado.' });
+        trackPublicEvent('formal_request_sent', { label: form.serviceType, serviceTitle: form.serviceType, section: 'contacto' });
+        return;
+      }
+      if (response.saved && !response.emailSent) {
+        setStatus({ type: 'warning', message: response.message || 'La solicitud quedó registrada en Metamorfosis OS, pero el correo institucional no pudo confirmarse. Puedes usar el envío manual sin volver a completar el formulario.' });
+        trackPublicEvent('formal_request_saved_email_pending', { label: form.serviceType, serviceTitle: form.serviceType, section: 'contacto' });
+        return;
+      }
+      throw new Error(response.message || 'No fue posible confirmar el registro ni el envío del correo.');
     } catch (error) {
-      setStatus({ type: 'error', message: error.message || 'No fue posible enviar la solicitud automáticamente. Puedes usar el enlace de correo alternativo.' });
+      setStatus({ type: 'error', message: error.message || 'No fue posible completar la solicitud automáticamente. Puedes usar el enlace de correo alternativo.' });
+    } finally {
+      window.clearTimeout(slowNotice);
     }
   };
 
@@ -396,8 +434,8 @@ function QuoteForm() {
               <Icon name="mail" /> {status.type === 'loading' ? 'Enviando…' : status.type === 'success' ? 'Solicitud enviada' : stepThreeReady ? 'Enviar solicitud formal' : 'Completa los datos'}
             </button>
           </div>
-          {status.message && <p className={`form-helper form-helper--${status.type}`} role="status"><Icon name={status.type === 'error' ? 'warning' : 'check_circle'} /> {status.message}</p>}
-          {status.type === 'error' && <a className="form-mail-fallback" href={emailUrl}><Icon name="mail" /> Enviar por correo manual</a>}
+          {status.message && <p className={`form-helper form-helper--${status.type}`} role="status"><Icon name={(status.type === 'error' || status.type === 'warning') ? 'warning' : 'check_circle'} /> {status.message}</p>}
+          {(status.type === 'error' || status.type === 'warning') && <a className="form-mail-fallback" href={emailUrl}><Icon name="mail" /> Enviar por correo manual</a>}
         </div>
       )}
     </form>
@@ -429,6 +467,11 @@ function TeamSection() {
 }
 
 function PublicSite() {
+  useEffect(() => {
+    // La API privada puede entrar en reposo. Se despierta en segundo plano al cargar la web.
+    warmPrivateApi();
+  }, []);
+
   const handleHeroMove = (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
     const x = ((event.clientX - rect.left) / rect.width) * 100;
@@ -473,8 +516,8 @@ function PublicSite() {
           <div className="shell audit-scene__content">
             <SectionHeading
               kicker="Qué hacemos"
-              title="Tres entradas claras para leer y transformar la operación"
-              description="La web debe explicar rápido dónde entra Metamorfosis. Primero leemos la operación, luego ordenamos lo crítico y recién entonces definimos el cambio justo."
+              title="Tres ámbitos para ordenar cómo una organización genera valor"
+              description="Trabajamos donde procesos, información, personas y recursos empiezan a perder coordinación. La intervención se ajusta al problema real y al nivel de cambio necesario."
             />
             <div className="audit-pillar-showcase" aria-label="Ámbitos de transformación de Metamorfosis Lab">
               {transformationPillars.map((item, index) => (
@@ -506,8 +549,8 @@ function PublicSite() {
           <div className="shell audit-scene__content">
             <SectionHeading
               kicker="Método"
-              title="Un proceso breve para entender, priorizar, intervenir y transferir"
-              description="La lógica de trabajo debe poder leerse en segundos. Cada etapa agrega criterio, reduce improvisación y ayuda a que la solución quede utilizable por la organización."
+              title="Entender, priorizar, intervenir, medir y transferir"
+              description="Cada etapa reduce incertidumbre y acota la intervención: comprendemos el sistema, priorizamos lo crítico, implementamos lo suficiente y dejamos evidencia para continuar."
             />
             <div className="audit-roadmap audit-roadmap--showcase" aria-label="Etapas del método Metamorfosis">
               {processRoadmap.map((item, index) => (

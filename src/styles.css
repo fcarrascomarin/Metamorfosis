@@ -5748,6 +5748,7 @@ textarea::placeholder { color: #7f98ac; }
   font-weight: 850;
   letter-spacing: .01em;
   white-space: nowrap;
+  text-decoration: none;
 }
 
 .public-site--lab .site-nav__menu-trigger {
@@ -8954,7 +8955,8 @@ textarea::placeholder { color: #7f98ac; }
   border-radius: 999px;
   background: rgba(255,255,255,.055);
 }
-.workspace-switch button {
+.workspace-switch button,
+.workspace-switch a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -8971,12 +8973,14 @@ textarea::placeholder { color: #7f98ac; }
   white-space: nowrap;
 }
 .workspace-switch .app-icon { width: 17px; height: 17px; }
-.admin-frame--business .workspace-switch button.is-active {
+.admin-frame--business .workspace-switch button.is-active,
+.admin-frame--business .workspace-switch a.is-active {
   background: #75e2d3;
   color: #0a2924;
   box-shadow: 0 5px 16px rgba(56,185,165,.2);
 }
-.admin-frame--family .workspace-switch button.is-active {
+.admin-frame--family .workspace-switch button.is-active,
+.admin-frame--family .workspace-switch a.is-active {
   background: #f3c90f;
   color: #20190b;
   box-shadow: 0 5px 16px rgba(243,201,15,.24);
@@ -9166,7 +9170,8 @@ textarea::placeholder { color: #7f98ac; }
   .admin-brand--family img { width: 54px; height: 40px; }
   .admin-brand--family small { display: none; }
   .workspace-switch { grid-template-columns: repeat(2,1fr); }
-  .workspace-switch button { padding-inline: 10px; }
+  .workspace-switch button,
+  .workspace-switch a { padding-inline: 10px; }
   .expediente-method-strip ol { grid-template-columns: 1fr; }
   .tool-guidance { grid-template-columns: 1fr; }
   .family-wellbeing-grid,
@@ -9186,7 +9191,8 @@ textarea::placeholder { color: #7f98ac; }
   .admin-header__actions .icon-button,
   .admin-header__actions .admin-action-button { min-width: 36px; min-height: 36px; padding: 0 9px; }
   .workspace-switch { width: 100%; }
-  .workspace-switch button span { display: inline; }
+  .workspace-switch button span,
+  .workspace-switch a span { display: inline; }
   .family-command-bar { grid-template-columns: 1fr; }
   .family-command-stat { min-height: 72px; }
   .family-add-row,
@@ -9625,4 +9631,341 @@ textarea::placeholder { color: #7f98ac; }
   .public-site--v50 .audit-hero { cursor: auto; }
   .public-site--v50 .lab-cursor-field,
   .public-site--v50 .lab-orbit { display: none; }
+}
+
+/* ========================================================================== 
+   5.1.2 · correcciones acumulativas de viewport, método, formulario y footer
+   ========================================================================== */
+
+/* Una sola escena por viewport en escritorio: se elimina el doble padding heredado. */
+@media (min-width: 900px) {
+  .public-site--v50 .audit-scene {
+    min-height: calc(100svh - var(--header-height));
+    padding-block: 0;
+    align-items: stretch;
+  }
+  .public-site--v50 .audit-scene__content,
+  .public-site--v50 .audit-contact__grid,
+  .public-site--v50 .audit-hero__grid {
+    box-sizing: border-box;
+    min-height: calc(100svh - var(--header-height));
+    padding-block: clamp(24px, 3.7svh, 38px);
+  }
+  .public-site--v50 .audit-scene__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .public-site--v50 .section-heading {
+    width: 100%;
+    max-width: none;
+    margin-bottom: clamp(16px, 2.2svh, 24px);
+  }
+  .public-site--v50 .section-heading h2 {
+    max-width: none;
+    font-size: clamp(1.9rem, 2.35vw, 2.65rem);
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+  .public-site--v50 .section-heading p {
+    max-width: 78ch;
+    font-size: clamp(.88rem, .96vw, .98rem);
+    line-height: 1.44;
+  }
+}
+
+/* Qué hacemos: imágenes limpias, sin marcos blancos ni crecimiento excesivo. */
+.public-site--v50 .audit-pillar-showcase {
+  gap: 16px;
+}
+.public-site--v50 .audit-pillar-showcase__card {
+  grid-template-rows: 158px auto;
+  border-radius: 23px;
+}
+.public-site--v50 .audit-pillar-showcase__media {
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+  background: #0b3139;
+}
+.public-site--v50 .audit-pillar-showcase__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0;
+}
+.public-site--v50 .audit-pillar-showcase__copy {
+  padding: 13px 16px 15px;
+}
+.public-site--v50 .audit-pillar-showcase__copy h3 {
+  font-size: 1.18rem;
+  margin-bottom: 5px;
+}
+.public-site--v50 .audit-pillar-showcase__copy p {
+  font-size: .81rem;
+  line-height: 1.42;
+}
+.public-site--v50 .audit-pill {
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  font-size: .67rem;
+}
+.public-site--v50 .audit-pill .app-icon {
+  width: 17px;
+  height: 17px;
+}
+.public-site--v50 .audit-entry-strip--v50 {
+  gap: 11px;
+  margin-top: 14px;
+}
+.public-site--v50 .audit-entry-strip--v50 article {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  align-items: start;
+  gap: 11px;
+  min-height: 104px;
+  padding: 13px 14px;
+}
+.public-site--v50 .audit-entry-strip__icon {
+  width: 42px;
+  height: 42px;
+  margin: 0;
+  border-radius: 13px;
+}
+.public-site--v50 .audit-entry-strip__icon .app-icon {
+  width: 21px;
+  height: 21px;
+}
+.public-site--v50 .audit-entry-strip--v50 strong {
+  margin-top: 1px;
+  margin-bottom: 4px;
+  font-size: .84rem;
+  line-height: 1.2;
+}
+.public-site--v50 .audit-entry-strip--v50 span:last-child {
+  font-size: .7rem;
+  line-height: 1.36;
+}
+
+/* Método: reseteo explícito de la grilla antigua que comprimía el texto letra por letra. */
+.public-site--v50 .audit-roadmap--showcase {
+  gap: 13px;
+}
+.public-site--v50 .audit-roadmap--showcase > .audit-roadmap__card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 178px auto;
+  align-content: stretch;
+  gap: 0;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  border-radius: 22px;
+  overflow: hidden;
+}
+.public-site--v50 .audit-roadmap--showcase .audit-roadmap__media {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+  background: #081f2c;
+}
+.public-site--v50 .audit-roadmap--showcase .audit-roadmap__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0;
+}
+.public-site--v50 .audit-roadmap--showcase .audit-roadmap__media > span {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  border-radius: 11px;
+  background: rgba(6, 38, 46, .9);
+  color: #8af2e7;
+  font-size: .75rem;
+  font-weight: 900;
+  letter-spacing: .04em;
+}
+.public-site--v50 .audit-roadmap--showcase .audit-roadmap__copy {
+  display: block;
+  min-width: 0;
+  padding: 12px 14px 14px;
+}
+.public-site--v50 .audit-roadmap--showcase .audit-roadmap__copy strong,
+.public-site--v50 .audit-roadmap--showcase .audit-roadmap__copy p {
+  grid-column: auto;
+  writing-mode: horizontal-tb;
+  word-break: normal;
+  overflow-wrap: normal;
+  white-space: normal;
+}
+.public-site--v50 .audit-roadmap--showcase .audit-roadmap__copy strong {
+  display: block;
+  margin: 0 0 5px;
+  font-size: .94rem;
+  line-height: 1.2;
+}
+.public-site--v50 .audit-roadmap--showcase .audit-roadmap__copy p {
+  margin: 0;
+  font-size: .72rem;
+  line-height: 1.4;
+}
+.public-site--v50 .audit-principles--v50 {
+  gap: 10px;
+  margin-top: 12px;
+}
+.public-site--v50 .audit-principles--v50 article {
+  min-height: 68px;
+  padding: 11px 13px;
+}
+.public-site--v50 .audit-principles--v50 .app-icon {
+  width: 22px;
+  height: 22px;
+}
+.public-site--v50 .audit-principles--v50 strong { font-size: .77rem; }
+.public-site--v50 .audit-principles--v50 p { font-size: .67rem; line-height: 1.32; }
+
+/* Equipo: información profesional diferenciada sin convertir la sección en CV. */
+.public-site--v50 .team-audit-card {
+  padding: 20px;
+}
+.public-site--v50 .team-audit-card__tag {
+  padding: 7px 10px;
+  font-size: .7rem;
+}
+
+/* Formulario: estado parcial visible y nunca bloqueado indefinidamente. */
+.public-site--v50 .form-helper--warning {
+  border: 1px solid rgba(244, 190, 84, .36);
+  background: rgba(112, 76, 14, .25);
+  color: #ffe8aa;
+}
+
+/* Footer: el logo vuelve a ser protagonista sin competir con el contenido. */
+.public-site--v50 .audit-footer__grid {
+  grid-template-columns: minmax(340px, 1.35fr) minmax(150px, .55fr) minmax(220px, .72fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: start;
+}
+.public-site--v50 .audit-footer .site-footer__brand .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 12px;
+}
+.public-site--v50 .audit-footer .site-footer__brand .brand-logo {
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 18px rgba(67, 222, 207, .18));
+}
+.public-site--v50 .audit-footer .site-footer__brand .brand-copy strong {
+  font-size: 1.08rem;
+  letter-spacing: .04em;
+}
+.public-site--v50 .audit-footer .site-footer__brand .brand-copy small {
+  margin-top: 3px;
+  font-size: .69rem;
+  letter-spacing: .11em;
+}
+.public-site--v50 .audit-footer .site-footer__brand > p {
+  max-width: 48ch;
+  margin-top: 6px;
+}
+
+/* OS: el selector Empresa/Familiar debe ser siempre clickeable y direccionable. */
+.workspace-switch {
+  position: relative;
+  z-index: 1305;
+  pointer-events: auto;
+}
+.workspace-switch button,
+.workspace-switch a {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+}
+.mail-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  font-size: .67rem;
+  font-weight: 850;
+}
+.mail-state .app-icon { width: 15px; height: 15px; }
+.mail-state.is-sent { background: #e4f5ef; color: #1b725d; }
+.mail-state.is-pending { background: #fff2d8; color: #8b5d0e; }
+.mail-state__error {
+  display: block;
+  max-width: 240px;
+  margin-top: 5px;
+  color: #8b5146 !important;
+  font-size: .62rem !important;
+  line-height: 1.3;
+}
+
+/* Pantallas bajas de escritorio: compactar antes de provocar scroll o recortes. */
+@media (min-width: 900px) and (max-height: 800px) {
+  .public-site--v50 .audit-scene__content,
+  .public-site--v50 .audit-contact__grid,
+  .public-site--v50 .audit-hero__grid { padding-block: 18px; }
+  .public-site--v50 .section-heading { margin-bottom: 13px; }
+  .public-site--v50 .section-heading .kicker { margin-bottom: 5px; }
+  .public-site--v50 .section-heading h2 { margin-bottom: 6px; font-size: clamp(1.65rem, 2.1vw, 2.25rem); }
+  .public-site--v50 .section-heading p { font-size: .83rem; line-height: 1.36; }
+  .public-site--v50 .audit-pillar-showcase__card { grid-template-rows: 132px auto; }
+  .public-site--v50 .audit-pillar-showcase__copy { padding: 10px 13px 12px; }
+  .public-site--v50 .audit-pillar-showcase__copy h3 { font-size: 1.05rem; }
+  .public-site--v50 .audit-pillar-showcase__copy p { font-size: .73rem; }
+  .public-site--v50 .audit-entry-strip--v50 { margin-top: 10px; }
+  .public-site--v50 .audit-entry-strip--v50 article { min-height: 90px; padding: 10px 11px; }
+  .public-site--v50 .audit-entry-strip__icon { width: 36px; height: 36px; }
+  .public-site--v50 .audit-roadmap--showcase > .audit-roadmap__card { grid-template-rows: 142px auto; }
+  .public-site--v50 .audit-roadmap--showcase .audit-roadmap__copy { padding: 9px 11px 11px; }
+  .public-site--v50 .audit-roadmap--showcase .audit-roadmap__copy strong { font-size: .85rem; }
+  .public-site--v50 .audit-roadmap--showcase .audit-roadmap__copy p { font-size: .65rem; }
+  .public-site--v50 .audit-principles--v50 article { min-height: 56px; padding: 8px 10px; }
+  .public-site--v50 .audit-principles--v50 p { display: none; }
+  .public-site--v50 .team-audit-card { padding: 16px; }
+  .public-site--v50 .team-audit-card p { font-size: .79rem; }
+  .public-site--v50 .audit-team-note { margin-top: 10px; }
+}
+
+@media (max-width: 1080px) {
+  .public-site--v50 .audit-footer__grid { grid-template-columns: 1fr 1fr; }
+  .public-site--v50 .audit-footer__grid > div:first-child { grid-column: 1 / -1; }
+}
+
+@media (max-width: 760px) {
+  .public-site--v50 .audit-footer__grid { grid-template-columns: 1fr; }
+  .public-site--v50 .audit-footer__grid > div:first-child { grid-column: auto; }
+  .public-site--v50 .audit-footer .site-footer__brand .brand-logo { width: 64px; height: 64px; }
+}
+
+@media (min-width: 1180px) {
+  .public-site--v50 .section-heading h2 {
+    max-width: 100%;
+    white-space: nowrap;
+    font-size: clamp(1.9rem, 2vw, 2.3rem);
+  }
+}
+.workspace-switch a { text-decoration: none; }
+@media (min-width: 1180px) {
+  .public-site--v50 .audit-method .section-heading h2,
+  .public-site--v50 .audit-team .section-heading h2 {
+    max-width: 100%;
+    white-space: nowrap;
+  }
 }

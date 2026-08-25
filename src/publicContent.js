@@ -77,16 +77,16 @@ export const team = [
     initials: 'FC',
     name: 'Francisca Carrasco Marín',
     role: 'Dirección operativa y diseño de intervención',
-    profession: 'Gestión operativa y coordinación de proyectos',
-    institution: 'Casa de estudio por completar en edición final',
+    profession: 'Ingeniera Civil Industrial',
+    institution: 'Universidad de Concepción',
     text: 'Lidera la lectura operacional, el diseño de soluciones y la ejecución de las intervenciones.'
   },
   {
     initials: 'BS',
     name: 'Benjamín Sepúlveda',
     role: 'Estrategia, investigación y desarrollo metodológico',
-    profession: 'Abogado e investigador',
-    institution: 'Magíster en Derecho Penal en curso · Universidad de Buenos Aires',
+    profession: 'Abogado · investigación aplicada',
+    institution: 'Pontificia Universidad Católica de Valparaíso · Magíster UBA en curso',
     text: 'Trabaja en investigación previa, estructuración de problemas, gobernanza, documentación y aprendizaje del método.'
   }
 ];

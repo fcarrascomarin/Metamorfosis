@@ -78,8 +78,8 @@ function Brand({ compact = false, mode = 'business' }) {
 function WorkspaceSwitch({ mode, onSwitch }) {
   return (
     <div className="workspace-switch" role="tablist" aria-label="Cambiar área del sistema">
-      <button type="button" role="tab" aria-selected={mode === 'business'} className={mode === 'business' ? 'is-active' : ''} onClick={() => onSwitch('business')}><Icon name="briefcase" /><span>Empresa</span></button>
-      <button type="button" role="tab" aria-selected={mode === 'family'} className={mode === 'family' ? 'is-active' : ''} onClick={() => onSwitch('family')}><Icon name="home" /><span>Familiar</span></button>
+      <a href="#dashboard" role="tab" aria-selected={mode === 'business'} className={mode === 'business' ? 'is-active' : ''} onClick={() => onSwitch('business')}><Icon name="briefcase" /><span>Empresa</span></a>
+      <a href="#family-overview" role="tab" aria-selected={mode === 'family'} className={mode === 'family' ? 'is-active' : ''} onClick={() => onSwitch('family')}><Icon name="home" /><span>Familiar</span></a>
     </div>
   );
 }
@@ -928,8 +928,24 @@ function ExpedientesView({ osState, setOsState }) {
   );
 }
 
-function QuotesView({ quotes, loading, onStatusChange, notice }) {
-  return <div className="admin-view"><ViewHeading kicker="Comercial" title="Oportunidades y cotizaciones" description="Consultas de la web convertidas en registros trazables, con estado y contacto directo." />{notice && <p className={`admin-notice ${notice.type === 'error' ? 'admin-notice--error' : ''}`} role="status">{notice.message}</p>}<section className="panel-card"><div className="table-page"><table><thead><tr><th>Fecha</th><th>Contacto</th><th>Necesidad</th><th>Ciudad</th><th>Estado</th><th><span className="sr-only">Acciones</span></th></tr></thead><tbody>{quotes.map((quote) => <tr key={quote.id}><td>{new Intl.DateTimeFormat('es-CL', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(quote.created_at))}</td><td><strong>{quote.contact_name}</strong><small>{quote.company || quote.phone}</small></td><td><details><summary>{quote.service_type}</summary><p>{quote.details}</p>{(quote.project_stage || quote.team_size || quote.desired_date) && <small>{[quote.project_stage, quote.team_size, quote.desired_date].filter(Boolean).join(' · ')}</small>}</details></td><td>{quote.city || 'Sin indicar'}</td><td><select className="status-select" aria-label={`Cambiar estado de ${quote.contact_name}`} value={quote.status || 'nueva'} onChange={(event) => onStatusChange(quote.id, event.target.value)}>{STATUS_OPTIONS.map((status) => <option key={status} value={status}>{status === 'evaluacion' ? 'En evaluación' : status.charAt(0).toUpperCase() + status.slice(1)}</option>)}</select></td><td className="table-actions">{quote.email && <a className="icon-button" aria-label={`Enviar correo a ${quote.contact_name}`} title="Correo" href={`mailto:${quote.email}`}><Icon name="mail" /></a>}{quote.phone && <a className="icon-button" aria-label={`Llamar a ${quote.contact_name}`} title="Teléfono" href={`tel:${String(quote.phone || '').replace(/\D/g, '')}`}><Icon name="phone" /></a>}</td></tr>)}{!loading && !quotes.length && <tr><td colSpan="6"><div className="empty-state-inline"><Icon name="request_quote" /><p>No hay oportunidades registradas.</p></div></td></tr>}</tbody></table>{loading && <p className="loading-line">Cargando oportunidades…</p>}</div></section></div>;
+function QuotesView({ quotes, loading, onStatusChange, onRetryEmail, notice }) {
+  return <div className="admin-view">
+    <ViewHeading kicker="Comercial" title="Oportunidades y cotizaciones" description="Cada formulario público debe quedar registrado aquí aunque el correo tenga una incidencia. El estado de envío permite distinguir registro comercial de notificación SMTP." />
+    {notice && <p className={`admin-notice ${notice.type === 'error' ? 'admin-notice--error' : ''}`} role="status">{notice.message}</p>}
+    <section className="panel-card">
+      <div className="table-page"><table><thead><tr><th>Fecha</th><th>Contacto</th><th>Necesidad</th><th>Correo</th><th>Estado</th><th><span className="sr-only">Acciones</span></th></tr></thead><tbody>
+        {quotes.map((quote) => <tr key={quote.id}>
+          <td>{new Intl.DateTimeFormat('es-CL', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(quote.created_at))}</td>
+          <td><strong>{quote.contact_name}</strong><small>{quote.company || quote.phone}</small></td>
+          <td><details><summary>{quote.service_type}</summary><p>{quote.details}</p>{(quote.project_stage || quote.team_size || quote.desired_date) && <small>{[quote.project_stage, quote.team_size, quote.desired_date].filter(Boolean).join(' · ')}</small>}</details></td>
+          <td><span className={`mail-state ${quote.email_sent ? 'is-sent' : 'is-pending'}`}><Icon name={quote.email_sent ? 'check_circle' : 'warning'} />{quote.email_sent ? 'Enviado' : 'Pendiente'}</span>{quote.email_error && <small className="mail-state__error">{quote.email_error}</small>}</td>
+          <td><select className="status-select" aria-label={`Cambiar estado de ${quote.contact_name}`} value={quote.status || 'nueva'} onChange={(event) => onStatusChange(quote.id, event.target.value)}>{STATUS_OPTIONS.map((status) => <option key={status} value={status}>{status === 'evaluacion' ? 'En evaluación' : status.charAt(0).toUpperCase() + status.slice(1)}</option>)}</select></td>
+          <td className="table-actions">{!quote.email_sent && !String(quote.id).startsWith('web-') && <button type="button" className="icon-button" aria-label={`Reintentar correo de ${quote.contact_name}`} title="Reintentar correo" onClick={() => onRetryEmail(quote.id)}><Icon name="refresh" /></button>}{quote.email && <a className="icon-button" aria-label={`Enviar correo a ${quote.contact_name}`} title="Correo" href={`mailto:${quote.email}`}><Icon name="mail" /></a>}{quote.phone && <a className="icon-button" aria-label={`Llamar a ${quote.contact_name}`} title="Teléfono" href={`tel:${String(quote.phone || '').replace(/\D/g, '')}`}><Icon name="phone" /></a>}</td>
+        </tr>)}
+        {!loading && !quotes.length && <tr><td colSpan="6"><div className="empty-state-inline"><Icon name="request_quote" /><p>No hay oportunidades registradas.</p></div></td></tr>}
+      </tbody></table>{loading && <p className="loading-line">Cargando oportunidades…</p>}</div>
+    </section>
+  </div>;
 }
 
 
@@ -1017,8 +1033,11 @@ function TaskModal({ draft, onClose, onSave }) {
 
 function AdminShell({ session, onLogout }) {
   const [active, setActive] = useState(() => {
+    const hashView = window.location.hash.replace(/^#/, '');
+    const queryWorkspace = new URLSearchParams(window.location.search).get('workspace');
     const stored = window.localStorage.getItem('metamorfosis-admin-view');
-    const normalized = LEGACY_VIEW_MAP[stored] || stored;
+    const candidate = hashView || (queryWorkspace === 'family' ? 'family-overview' : '') || stored;
+    const normalized = LEGACY_VIEW_MAP[candidate] || candidate;
     return normalized && ALL_ADMIN_KEYS.has(normalized) ? normalized : 'dashboard';
   });
   const [menuOpen, setMenuOpen] = useState(false);
@@ -1033,6 +1052,19 @@ function AdminShell({ session, onLogout }) {
   const [loadingWebEvents, setLoadingWebEvents] = useState(false);
   const [taskDraft, setTaskDraft] = useState(null);
   const importRef = useRef(null);
+
+  useEffect(() => {
+    const syncViewFromUrl = () => {
+      const hashView = window.location.hash.replace(/^#/, '');
+      const normalized = LEGACY_VIEW_MAP[hashView] || hashView;
+      if (normalized && ALL_ADMIN_KEYS.has(normalized)) {
+        setActive(normalized);
+        window.localStorage.setItem('metamorfosis-admin-view', normalized);
+      }
+    };
+    window.addEventListener('hashchange', syncViewFromUrl);
+    return () => window.removeEventListener('hashchange', syncViewFromUrl);
+  }, []);
 
   const setOsState = (updater) => {
     setOsStateRaw((current) => hydrateState(typeof updater === 'function' ? updater(current) : updater));
@@ -1185,11 +1217,26 @@ function AdminShell({ session, onLogout }) {
     }
   };
 
+  const retryQuoteEmail = async (id) => {
+    setNotice({ type: 'success', message: 'Reintentando envío de correo…' });
+    try {
+      const response = await fetch(`/api/quotes/${id}/resend-email`, { method: 'POST' });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.message || 'No fue posible reenviar el correo.');
+      setQuotes((current) => current.map((quote) => quote.id === id ? { ...quote, email_sent: true, email_error: null, email_sent_at: new Date().toISOString() } : quote));
+      setNotice({ type: 'success', message: 'Correo reenviado correctamente.' });
+    } catch (error) {
+      setNotice({ type: 'error', message: error.message || 'No fue posible reenviar el correo.' });
+    }
+  };
+
   const navigate = (key) => {
     const normalized = LEGACY_VIEW_MAP[key] || key;
     if (!ALL_ADMIN_KEYS.has(normalized)) return;
     setActive(normalized);
     window.localStorage.setItem('metamorfosis-admin-view', normalized);
+    const nextUrl = `${window.location.pathname}${window.location.search}#${normalized}`;
+    window.history.replaceState(null, '', nextUrl);
     setMenuOpen(false);
   };
   const mode = FAMILY_KEYS.has(active) ? 'family' : 'business';
@@ -1214,7 +1261,7 @@ function AdminShell({ session, onLogout }) {
     : active === 'month' ? <MonthView osState={osState} setOsState={setOsState} onNavigate={navigate} onAddTask={openTask} />
       : active === 'day' ? <DayView osState={osState} setOsState={setOsState} onAddTask={openTask} onEditTask={setTaskDraft} />
         : active === 'expedientes' ? <ExpedientesView osState={osState} setOsState={setOsState} />
-          : active === 'quotes' ? <QuotesView quotes={quotes} loading={loadingQuotes} onStatusChange={updateQuoteStatus} notice={notice} />
+          : active === 'quotes' ? <QuotesView quotes={quotes} loading={loadingQuotes} onStatusChange={updateQuoteStatus} onRetryEmail={retryQuoteEmail} notice={notice} />
             : active === 'finance' ? <FinanceView osState={osState} setOsState={setOsState} />
               : active === 'metrics' ? <TimeTrackingView osState={osState} setOsState={setOsState} />
                 : active === 'documents' ? <DocumentsView />
