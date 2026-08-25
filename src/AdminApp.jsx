@@ -11,56 +11,76 @@ const PUBLIC_EVENTS_KEY = 'metamorfosis-public-events';
 const PUBLIC_SITE_URL = String(import.meta.env.VITE_PUBLIC_SITE_URL || 'https://metamorfosislab.cl').replace(/\/$/, '');
 const STATUS_OPTIONS = ['nueva', 'contactada', 'evaluacion', 'propuesta', 'cerrada', 'descartada'];
 
-const menuGroups = [
+const BUSINESS_MENU_GROUPS = [
   {
     id: 'operacion',
     label: 'Operación',
-    icon: 'dashboard',
     items: [
-      ['dashboard', 'Panel diario', 'dashboard'],
-      ['month', 'Agenda semanal', 'calendar_month'],
-      ['day', 'Día seleccionado', 'today']
+      ['dashboard', 'Inicio', 'dashboard'],
+      ['month', 'Agenda', 'calendar_month']
     ]
   },
   {
     id: 'comercial',
     label: 'Comercial',
-    icon: 'handshake',
     items: [
       ['expedientes', 'Expedientes', 'folder_open'],
       ['quotes', 'Oportunidades', 'request_quote']
     ]
   },
   {
-    id: 'metodo',
-    label: 'Método',
-    icon: 'conversion_path',
-    items: [['tools', 'Herramientas', 'library_books']]
-  },
-  {
     id: 'gestion',
     label: 'Gestión',
-    icon: 'briefcase',
     items: [
-      ['finance', 'Finanzas del negocio', 'payments'],
+      ['finance', 'Finanzas', 'payments'],
       ['metrics', 'Tiempo y rentabilidad', 'query_stats'],
       ['documents', 'Repositorio', 'folder_open']
     ]
-  },
-  {
-    id: 'familia',
-    label: 'Vida familiar',
-    icon: 'home',
-    items: [['family', 'Sistema familiar', 'home']]
   }
 ];
 
-function Brand({ compact = false }) {
+const FAMILY_MENU_GROUPS = [
+  {
+    id: 'familia',
+    label: 'Vida familiar',
+    items: [
+      ['family-overview', 'Resumen', 'home'],
+      ['family-week', 'Semana y bienestar', 'calendar_month'],
+      ['family-money', 'Caja familiar', 'account_balance_wallet'],
+      ['family-home', 'Hogar y pendientes', 'construction']
+    ]
+  }
+];
+
+const FAMILY_KEYS = new Set(FAMILY_MENU_GROUPS.flatMap((group) => group.items.map(([key]) => key)));
+const BUSINESS_KEYS = new Set([...BUSINESS_MENU_GROUPS.flatMap((group) => group.items.map(([key]) => key)), 'day']);
+const ALL_ADMIN_KEYS = new Set([...BUSINESS_KEYS, ...FAMILY_KEYS]);
+const LEGACY_VIEW_MAP = { family: 'family-overview', tools: 'expedientes' };
+
+
+function Brand({ compact = false, mode = 'business' }) {
+  if (mode === 'family') {
+    return (
+      <div className={`admin-brand admin-brand--family ${compact ? 'admin-brand--compact' : ''}`} aria-label="Sistema familiar">
+        <img src="/familia-metamorfosis.webp" alt="Ilustración familiar" width="64" height="44" />
+        <span><strong>Panel familiar</strong><small>Organización · caja · hogar</small></span>
+      </div>
+    );
+  }
   return (
     <a className={`admin-brand ${compact ? 'admin-brand--compact' : ''}`} href={PUBLIC_SITE_URL} aria-label="Metamorfosis Lab, ir al sitio público">
       <img src="/logo-metamorfosis-transparente.png" alt="" width="46" height="46" />
-      <span><strong>Panel interno</strong><small>Metamorfosis OS</small></span>
+      <span><strong>Metamorfosis OS</strong><small>Operación · comercial · gestión</small></span>
     </a>
+  );
+}
+
+function WorkspaceSwitch({ mode, onSwitch }) {
+  return (
+    <div className="workspace-switch" role="tablist" aria-label="Cambiar área del sistema">
+      <button type="button" role="tab" aria-selected={mode === 'business'} className={mode === 'business' ? 'is-active' : ''} onClick={() => onSwitch('business')}><Icon name="business_center" /><span>Empresa</span></button>
+      <button type="button" role="tab" aria-selected={mode === 'family'} className={mode === 'family' ? 'is-active' : ''} onClick={() => onSwitch('family')}><Icon name="family_restroom" /><span>Familiar</span></button>
+    </div>
   );
 }
 
@@ -243,12 +263,11 @@ function DashboardView({ osState, quotes, dirty, onNavigate, onAddTask }) {
       <ViewHeading kicker="Panel diario" title="Panel de control Metamorfosis" description="Accesos rápidos y señales que requieren una decisión concreta hoy." action={<button type="button" className="button button--small" onClick={() => onAddTask({ date: today })}><Icon name="add" /> Nueva tarea</button>} />
       <div className="quick-actions" aria-label="Acciones frecuentes">
         <button type="button" onClick={() => onNavigate('day')}><Icon name="today" />Agenda de hoy</button>
-        <button type="button" onClick={() => onNavigate('family')}><Icon name="home" />Vida familiar</button>
-        <button type="button" onClick={() => onNavigate('quotes')}><Icon name="request_quote" />Oportunidades</button>
         <button type="button" onClick={() => onNavigate('expedientes')}><Icon name="folder_open" />Expedientes</button>
-        <button type="button" onClick={() => onNavigate('tools')}><Icon name="library_books" />Herramientas</button>
+        <button type="button" onClick={() => onNavigate('quotes')}><Icon name="request_quote" />Oportunidades</button>
+        <button type="button" onClick={() => onNavigate('finance')}><Icon name="payments" />Finanzas</button>
         <button type="button" onClick={() => onNavigate('metrics')}><Icon name="query_stats" />Tiempo y rentabilidad</button>
-        <button type="button" onClick={() => onNavigate('documents')}><Icon name="folder_open" />Documentos</button>
+        <button type="button" onClick={() => onNavigate('documents')}><Icon name="folder_open" />Repositorio</button>
       </div>
       <div className="metrics-grid">
         <MetricCard icon="task_alt" label="Pendientes de hoy" value={pendingToday.length} note={`${todayTasks.length} tareas cargadas`} />
@@ -493,59 +512,38 @@ function FamilyView({ osState, setOsState }) {
   const loadPoints = { Ligera: 1, Media: 2, Exigente: 3 };
   const ownerLoad = (owner) => family.weeklyActions.filter((item) => item.owner === owner && item.status !== 'done').reduce((sum, item) => sum + (loadPoints[item.load] || 1), 0);
 
+  const sectionTitles = {
+    'family-overview': ['Resumen familiar', 'Una vista de contexto para saber en qué etapa están, qué frentes siguen activos y qué deliberadamente queda fuera.'],
+    'family-week': ['Semana y bienestar', 'Carga, prioridades y acciones concretas de la semana, sin confundir cantidad de tareas con capacidad real.'],
+    'family-money': ['Caja familiar', 'Un espacio económico separado de la empresa para decidir con claridad qué está disponible, comprometido y protegido.'],
+    'family-home': ['Hogar y pendientes', 'Mejoras domésticas, microacciones e inventario familiar sin mezclarlos con la operación de Metamorfosis.']
+  };
+  const [sectionTitle, sectionDescription] = sectionTitles[section] || sectionTitles['family-overview'];
+
   return (
-    <div className="admin-view family-view">
+    <div className={`admin-view family-view family-view--${section}`}>
       <ViewHeading
-        kicker="Vida familiar"
-        title="Sistema Familiar de Transición"
-        description="Una sola vista para comprender cómo están, qué importa esta semana, cómo está la caja y qué puede esperar."
-        action={<div className="family-phase-control"><label>Verbo actual<select value={family.phase} onChange={(event) => updateFamily({ phase: event.target.value })}><option>PREPARAR</option><option>MERCADO</option><option>ESTABILIZAR</option></select></label></div>}
+        kicker="Espacio familiar"
+        title={sectionTitle}
+        description={sectionDescription}
+        action={section === 'family-overview' ? <div className="family-phase-control"><label>Verbo actual<select value={family.phase} onChange={(event) => updateFamily({ phase: event.target.value })}><option>PREPARAR</option><option>MERCADO</option><option>ESTABILIZAR</option></select></label></div> : null}
       />
 
-      <section className="family-command-bar">
-        <div><span className="kicker">Frontera vigente</span><strong>{family.phase}</strong><p>{family.phaseNote}</p></div>
-        <label>Nombre de la semana<input value={family.weekLabel || ''} onChange={(event) => updateFamily({ weekLabel: event.target.value })} /></label>
-        <div className="family-command-stat"><small>Semana</small><strong>{completedWeekly}/{family.weeklyActions.length}</strong><span>acciones cerradas</span></div>
-        <div className="family-command-stat"><small>Casa</small><strong>{homeProgress}%</strong><span>intervención actual</span></div>
-      </section>
+      {section === 'family-overview' && <>
+        <section className="family-identity-card">
+          <img src="/familia-metamorfosis.webp" alt="Ilustración del espacio familiar" />
+          <div><span className="kicker">Otro contexto, otras reglas</span><h2>La familia no es una unidad de negocio</h2><p>Este espacio usa otra identidad visual y otra lógica de decisión. Aquí importan caja, carga, hogar y prioridades compartidas; no indicadores comerciales.</p></div>
+        </section>
 
-      <section className="family-section">
-        <div className="family-section__heading"><div><span className="kicker">¿Dónde estamos?</span><h2>Nosotros</h2></div><p>La carga se evalúa por energía y responsabilidad, no por cantidad bruta de tareas.</p></div>
-        <div className="family-wellbeing-grid">
-          {family.wellbeing.map((item) => <article className={`family-person family-person--${item.status.toLowerCase().replace('ó', 'o')}`} key={item.id}>
-            <div className="family-person__top"><div><strong>{item.name}</strong><span>{item.area}</span></div><span className="family-status-dot" aria-label={item.status} /></div>
-            <div className="family-inline-fields"><label>Estado<select value={item.status} onChange={(event) => updateWellbeing(item.id, { status: event.target.value })}>{FAMILY_STATUSES.map((status) => <option key={status}>{status}</option>)}</select></label><label>Carga<select value={item.load} onChange={(event) => updateWellbeing(item.id, { load: event.target.value })}>{FAMILY_LOADS.map((load) => <option key={load}>{load}</option>)}</select></label></div>
-            <textarea aria-label={`Nota de ${item.name}`} value={item.note || ''} onChange={(event) => updateWellbeing(item.id, { note: event.target.value })} />
-          </article>)}
-        </div>
-      </section>
+        <section className="family-command-bar">
+          <div><span className="kicker">Frontera vigente</span><strong>{family.phase}</strong><p>{family.phaseNote}</p></div>
+          <label>Nombre de la semana<input value={family.weekLabel || ''} onChange={(event) => updateFamily({ weekLabel: event.target.value })} /></label>
+          <div className="family-command-stat"><small>Semana</small><strong>{completedWeekly}/{family.weeklyActions.length}</strong><span>acciones cerradas</span></div>
+          <div className="family-command-stat"><small>Casa</small><strong>{homeProgress}%</strong><span>intervención actual</span></div>
+        </section>
 
-      <section className="family-section">
-        <div className="family-section__heading"><div><span className="kicker">¿Qué hacemos?</span><h2>Esta semana</h2></div><p>Máximo una tarea central y una secundaria por persona al día.</p></div>
-        <div className="family-week-grid">
-          {['Benjamín', 'Francisca', 'Compartido'].map((owner) => <section className="family-week-lane" key={owner}>
-            <header><div><span>{owner.charAt(0)}</span><div><h3>{owner}</h3><small>{ownerLoad(owner)} puntos de carga pendientes</small></div></div></header>
-            <div className="family-check-list">
-              {family.weeklyActions.filter((item) => item.owner === owner).map((item) => <article className={item.status === 'done' ? 'is-done' : ''} key={item.id}>
-                <button type="button" className="family-check" onClick={() => toggleWeekly(item.id)} aria-label={item.status === 'done' ? 'Reabrir acción' : 'Completar acción'}><Icon name={item.status === 'done' ? 'check_circle' : 'task_alt'} /></button>
-                <div><strong>{item.title}</strong><span>{item.load}</span></div>
-                <IconButton icon="delete" label={`Eliminar ${item.title}`} className="icon-button--danger" onClick={() => removeWeekly(item.id)} />
-              </article>)}
-              {!family.weeklyActions.some((item) => item.owner === owner) && <p className="empty-copy">Sin acciones cargadas.</p>}
-            </div>
-          </section>)}
-        </div>
-        <form className="family-add-row" onSubmit={addWeekly}>
-          <label>Responsable<select value={actionForm.owner} onChange={(event) => setActionForm({ ...actionForm, owner: event.target.value })}><option>Benjamín</option><option>Francisca</option><option>Compartido</option></select></label>
-          <label className="family-grow">Nueva acción<input value={actionForm.title} onChange={(event) => setActionForm({ ...actionForm, title: event.target.value })} placeholder="Resultado concreto de esta semana" /></label>
-          <label>Carga<select value={actionForm.load} onChange={(event) => setActionForm({ ...actionForm, load: event.target.value })}><option>Ligera</option><option>Media</option><option>Exigente</option></select></label>
-          <button className="button button--small" type="submit"><Icon name="add" /> Agregar</button>
-        </form>
-      </section>
-
-      <div className="family-two-columns">
         <section className="family-section">
-          <div className="family-section__heading"><div><span className="kicker">Trabajo</span><h2>Frentes realmente activos</h2></div><p>Preparar no es lo mismo que vender.</p></div>
+          <div className="family-section__heading"><div><span className="kicker">Frentes</span><h2>Lo que sigue realmente activo</h2></div><p>Un frente entra aquí solo si requiere atención familiar durante la transición.</p></div>
           <div className="family-front-list">
             {family.workFronts.map((front) => <article key={front.id}>
               <div className="family-front__top"><input className="family-front__name" value={front.name} onChange={(event) => updateFront(front.id, { name: event.target.value })} aria-label="Nombre del frente" /><IconButton icon="delete" label={`Quitar ${front.name}`} className="icon-button--danger" onClick={() => removeFront(front.id)} /></div>
@@ -557,21 +555,50 @@ function FamilyView({ osState, setOsState }) {
           <details className="family-details"><summary><Icon name="add" /> Agregar frente</summary><form className="compact-form" onSubmit={addFront}><label>Nombre<input value={frontForm.name} onChange={(event) => setFrontForm({ ...frontForm, name: event.target.value })} /></label><label>Lidera<input value={frontForm.leader} onChange={(event) => setFrontForm({ ...frontForm, leader: event.target.value })} /></label><label>Estado<select value={frontForm.state} onChange={(event) => setFrontForm({ ...frontForm, state: event.target.value })}>{FAMILY_FRONT_STATES.map((state) => <option key={state}>{state}</option>)}</select></label><label className="field-full">Próximo movimiento<input value={frontForm.next} onChange={(event) => setFrontForm({ ...frontForm, next: event.target.value })} /></label><label className="field-full">Límite<input value={frontForm.limit} onChange={(event) => setFrontForm({ ...frontForm, limit: event.target.value })} /></label><button className="button button--small field-full" type="submit">Guardar frente</button></form></details>
         </section>
 
-        <section className="family-section family-home">
-          <div className="family-section__heading"><div><span className="kicker">Casa</span><h2>Una intervención cerrable</h2></div><span className="family-progress-number">{homeProgress}%</span></div>
-          <div className="family-progress"><span style={{ width: `${homeProgress}%` }} /></div>
-          <label>Fase<input value={family.home.phase || ''} onChange={(event) => updateHome({ phase: event.target.value })} /></label>
-          <label>Intervención actual<textarea value={family.home.intervention || ''} onChange={(event) => updateHome({ intervention: event.target.value })} /></label>
-          <label>Presupuesto disponible<input type="number" min="0" step="1000" value={family.home.budget || ''} onChange={(event) => updateHome({ budget: event.target.value })} /></label>
-          <label>Regla de la fase<textarea value={family.home.rule || ''} onChange={(event) => updateHome({ rule: event.target.value })} /></label>
-          <div className="family-check-list family-check-list--home">
-            {family.home.checklist.map((item) => <article className={item.status === 'done' ? 'is-done' : ''} key={item.id}><button type="button" className="family-check" onClick={() => toggleHome(item.id)}><Icon name={item.status === 'done' ? 'check_circle' : 'construction'} /></button><div><strong>{item.title}</strong></div><IconButton icon="delete" label={`Eliminar ${item.title}`} className="icon-button--danger" onClick={() => removeHome(item.id)} /></article>)}
-          </div>
-          <form className="family-add-row family-add-row--simple" onSubmit={addHomeItem}><label className="family-grow">Nueva microacción<input value={homeItem} onChange={(event) => setHomeItem(event.target.value)} placeholder="Algo pequeño y cerrable" /></label><button className="button button--small" type="submit"><Icon name="add" /> Agregar</button></form>
+        <section className="family-section family-exclusions">
+          <div className="family-section__heading"><div><span className="kicker">Poda</span><h2>Qué no cabe ahora</h2></div><p>La exclusión deliberada protege la capacidad familiar.</p></div>
+          <div className="family-exclusion-list">{family.exclusions.map((item, index) => <article key={`${item}-${index}`}><Icon name="rule" /><span>{item}</span><IconButton icon="delete" label={`Eliminar exclusión ${index + 1}`} className="icon-button--danger" onClick={() => updateFamily((current) => ({ ...current, exclusions: current.exclusions.filter((_, itemIndex) => itemIndex !== index) }))} /></article>)}</div>
+          <form className="family-add-row family-add-row--simple" onSubmit={addExclusion}><label className="family-grow">Nueva exclusión<input value={exclusion} onChange={(event) => setExclusion(event.target.value)} placeholder="Esto existe, pero no se hará ahora" /></label><button className="button button--small" type="submit"><Icon name="add" /> Agregar</button></form>
         </section>
-      </div>
+      </>}
 
-      <section className="family-section family-money">
+      {section === 'family-week' && <>
+        <section className="family-section">
+          <div className="family-section__heading"><div><span className="kicker">Carga y bienestar</span><h2>Cómo estamos</h2></div><p>La carga se evalúa por energía y responsabilidad, no por cantidad bruta de tareas.</p></div>
+          <div className="family-wellbeing-grid">
+            {family.wellbeing.map((item) => <article className={`family-person family-person--${item.status.toLowerCase().replace('ó', 'o')}`} key={item.id}>
+              <div className="family-person__top"><div><strong>{item.name}</strong><span>{item.area}</span></div><span className="family-status-dot" aria-label={item.status} /></div>
+              <div className="family-inline-fields"><label>Estado<select value={item.status} onChange={(event) => updateWellbeing(item.id, { status: event.target.value })}>{FAMILY_STATUSES.map((status) => <option key={status}>{status}</option>)}</select></label><label>Carga<select value={item.load} onChange={(event) => updateWellbeing(item.id, { load: event.target.value })}>{FAMILY_LOADS.map((load) => <option key={load}>{load}</option>)}</select></label></div>
+              <textarea aria-label={`Nota de ${item.name}`} value={item.note || ''} onChange={(event) => updateWellbeing(item.id, { note: event.target.value })} />
+            </article>)}
+          </div>
+        </section>
+
+        <section className="family-section">
+          <div className="family-section__heading"><div><span className="kicker">Prioridades</span><h2>Esta semana</h2></div><p>Máximo una tarea central y una secundaria por persona al día.</p></div>
+          <div className="family-week-grid">
+            {['Benjamín', 'Francisca', 'Compartido'].map((owner) => <section className="family-week-lane" key={owner}>
+              <header><div><span>{owner.charAt(0)}</span><div><h3>{owner}</h3><small>{ownerLoad(owner)} puntos de carga pendientes</small></div></div></header>
+              <div className="family-check-list">
+                {family.weeklyActions.filter((item) => item.owner === owner).map((item) => <article className={item.status === 'done' ? 'is-done' : ''} key={item.id}>
+                  <button type="button" className="family-check" onClick={() => toggleWeekly(item.id)} aria-label={item.status === 'done' ? 'Reabrir acción' : 'Completar acción'}><Icon name={item.status === 'done' ? 'check_circle' : 'task_alt'} /></button>
+                  <div><strong>{item.title}</strong><span>{item.load}</span></div>
+                  <IconButton icon="delete" label={`Eliminar ${item.title}`} className="icon-button--danger" onClick={() => removeWeekly(item.id)} />
+                </article>)}
+                {!family.weeklyActions.some((item) => item.owner === owner) && <p className="empty-copy">Sin acciones cargadas.</p>}
+              </div>
+            </section>)}
+          </div>
+          <form className="family-add-row" onSubmit={addWeekly}>
+            <label>Responsable<select value={actionForm.owner} onChange={(event) => setActionForm({ ...actionForm, owner: event.target.value })}><option>Benjamín</option><option>Francisca</option><option>Compartido</option></select></label>
+            <label className="family-grow">Nueva acción<input value={actionForm.title} onChange={(event) => setActionForm({ ...actionForm, title: event.target.value })} placeholder="Resultado concreto de esta semana" /></label>
+            <label>Carga<select value={actionForm.load} onChange={(event) => setActionForm({ ...actionForm, load: event.target.value })}><option>Ligera</option><option>Media</option><option>Exigente</option></select></label>
+            <button className="button button--small" type="submit"><Icon name="add" /> Agregar</button>
+          </form>
+        </section>
+      </>}
+
+      {section === 'family-money' && <section className="family-section family-money">
         <div className="family-section__heading"><div><span className="kicker">Dinero familiar</span><h2>{family.cycle.name}</h2></div><span className={`family-income-status ${family.cycle.nextIncomeStatus?.toLowerCase().includes('confirmado') && !family.cycle.nextIncomeStatus?.toLowerCase().includes('no confirmado') ? 'is-confirmed' : ''}`}>{family.cycle.nextIncomeStatus}</span></div>
         <div className="family-money-grid">
           <label>Inicio del ciclo<input type="date" value={family.cycle.startDate || ''} onChange={(event) => updateCycle({ startDate: event.target.value })} /></label>
@@ -587,21 +614,30 @@ function FamilyView({ osState, setOsState }) {
           <label className="family-money-result"><span>Disponible para decidir</span><strong>{formatMoney(availableToDecide)}</strong><small>Incluye el ingreso esperado; no usar hasta confirmarlo.</small></label>
         </div>
         <label>Notas del ciclo<textarea value={family.cycle.notes || ''} onChange={(event) => updateCycle({ notes: event.target.value })} /></label>
-      </section>
+      </section>}
 
-      <section className="family-section">
-        <div className="family-section__heading"><div><span className="kicker">¿Qué está esperando?</span><h2>Inventario completo</h2></div><p>Recordar todo sin sentir que hay que hacer todo.</p></div>
-        <form className="family-capture" onSubmit={addCapture}><label className="family-grow">Capturar<input value={captureForm.title} onChange={(event) => setCaptureForm({ ...captureForm, title: event.target.value })} placeholder="Idea, proyecto, compra, trámite o meta" /></label><label>Área<input value={captureForm.area} onChange={(event) => setCaptureForm({ ...captureForm, area: event.target.value })} /></label><label>Estado<select value={captureForm.status} onChange={(event) => setCaptureForm({ ...captureForm, status: event.target.value })}>{FAMILY_INVENTORY_STATES.map((status) => <option key={status}>{status}</option>)}</select></label><button className="button button--small" type="submit"><Icon name="add" /> Guardar</button></form>
-        <div className="family-inventory-grid">
-          {FAMILY_INVENTORY_STATES.map((status) => <section key={status}><header><h3>{status}</h3><span>{family.inventory.filter((item) => item.status === status).length}</span></header><div>{family.inventory.filter((item) => item.status === status).map((item) => <article key={item.id}><div><strong>{item.title}</strong><small>{item.area}</small></div><select aria-label={`Estado de ${item.title}`} value={item.status} onChange={(event) => updateInventory(item.id, { status: event.target.value })}>{FAMILY_INVENTORY_STATES.map((option) => <option key={option}>{option}</option>)}</select><IconButton icon="delete" label={`Eliminar ${item.title}`} className="icon-button--danger" onClick={() => removeInventory(item.id)} /></article>)}</div></section>)}
-        </div>
-      </section>
+      {section === 'family-home' && <>
+        <section className="family-section family-home family-home--standalone">
+          <div className="family-section__heading"><div><span className="kicker">Casa</span><h2>Una intervención cerrable</h2></div><span className="family-progress-number">{homeProgress}%</span></div>
+          <div className="family-progress"><span style={{ width: `${homeProgress}%` }} /></div>
+          <label>Fase<input value={family.home.phase || ''} onChange={(event) => updateHome({ phase: event.target.value })} /></label>
+          <label>Intervención actual<textarea value={family.home.intervention || ''} onChange={(event) => updateHome({ intervention: event.target.value })} /></label>
+          <label>Presupuesto disponible<input type="number" min="0" step="1000" value={family.home.budget || ''} onChange={(event) => updateHome({ budget: event.target.value })} /></label>
+          <label>Regla de la fase<textarea value={family.home.rule || ''} onChange={(event) => updateHome({ rule: event.target.value })} /></label>
+          <div className="family-check-list family-check-list--home">
+            {family.home.checklist.map((item) => <article className={item.status === 'done' ? 'is-done' : ''} key={item.id}><button type="button" className="family-check" onClick={() => toggleHome(item.id)}><Icon name={item.status === 'done' ? 'check_circle' : 'construction'} /></button><div><strong>{item.title}</strong></div><IconButton icon="delete" label={`Eliminar ${item.title}`} className="icon-button--danger" onClick={() => removeHome(item.id)} /></article>)}
+          </div>
+          <form className="family-add-row family-add-row--simple" onSubmit={addHomeItem}><label className="family-grow">Nueva microacción<input value={homeItem} onChange={(event) => setHomeItem(event.target.value)} placeholder="Algo pequeño y cerrable" /></label><button className="button button--small" type="submit"><Icon name="add" /> Agregar</button></form>
+        </section>
 
-      <section className="family-section family-exclusions">
-        <div className="family-section__heading"><div><span className="kicker">Poda</span><h2>Qué no cabe ahora</h2></div><p>La exclusión deliberada también es una decisión operativa.</p></div>
-        <div className="family-exclusion-list">{family.exclusions.map((item, index) => <article key={`${item}-${index}`}><Icon name="rule" /><span>{item}</span><IconButton icon="delete" label={`Eliminar exclusión ${index + 1}`} className="icon-button--danger" onClick={() => updateFamily((current) => ({ ...current, exclusions: current.exclusions.filter((_, itemIndex) => itemIndex !== index) }))} /></article>)}</div>
-        <form className="family-add-row family-add-row--simple" onSubmit={addExclusion}><label className="family-grow">Nueva exclusión<input value={exclusion} onChange={(event) => setExclusion(event.target.value)} placeholder="Esto existe, pero no se hará ahora" /></label><button className="button button--small" type="submit"><Icon name="add" /> Agregar</button></form>
-      </section>
+        <section className="family-section">
+          <div className="family-section__heading"><div><span className="kicker">Pendientes</span><h2>Inventario familiar</h2></div><p>Recordar todo sin sentir que hay que hacer todo.</p></div>
+          <form className="family-capture" onSubmit={addCapture}><label className="family-grow">Capturar<input value={captureForm.title} onChange={(event) => setCaptureForm({ ...captureForm, title: event.target.value })} placeholder="Idea, compra, trámite o meta" /></label><label>Área<input value={captureForm.area} onChange={(event) => setCaptureForm({ ...captureForm, area: event.target.value })} /></label><label>Estado<select value={captureForm.status} onChange={(event) => setCaptureForm({ ...captureForm, status: event.target.value })}>{FAMILY_INVENTORY_STATES.map((status) => <option key={status}>{status}</option>)}</select></label><button className="button button--small" type="submit"><Icon name="add" /> Guardar</button></form>
+          <div className="family-inventory-grid">
+            {FAMILY_INVENTORY_STATES.map((status) => <section key={status}><header><h3>{status}</h3><span>{family.inventory.filter((item) => item.status === status).length}</span></header><div>{family.inventory.filter((item) => item.status === status).map((item) => <article key={item.id}><div><strong>{item.title}</strong><small>{item.area}</small></div><select aria-label={`Estado de ${item.title}`} value={item.status} onChange={(event) => updateInventory(item.id, { status: event.target.value })}>{FAMILY_INVENTORY_STATES.map((option) => <option key={option}>{option}</option>)}</select><IconButton icon="delete" label={`Eliminar ${item.title}`} className="icon-button--danger" onClick={() => removeInventory(item.id)} /></article>)}</div></section>)}
+          </div>
+        </section>
+      </>}
     </div>
   );
 }
@@ -773,31 +809,6 @@ function TimeTrackingView({ osState, setOsState }) {
 }
 
 
-function ToolsView() {
-  return (
-    <div className="admin-view tools-view">
-      <ViewHeading kicker="Método comercial" title="Tres herramientas activas de prospección" description="El expediente avanza con evidencia acumulada. Cada herramienta tiene un propósito y un límite para evitar convertir la preparación comercial en consultoría gratuita." />
-      <div className="tool-standard-grid">
-        {CONSULTING_TOOLS.map((tool) => (
-          <article className="tool-standard-card" key={tool.id}>
-            <header><span>{tool.number}</span><div><small>{tool.stage}</small><h2>{tool.title}</h2></div></header>
-            <p>{tool.purpose}</p>
-            <div className="tool-standard-meta"><span><b>Visibilidad:</b> {tool.visibility}</span><span><b>Límite:</b> {tool.limit}</span></div>
-            <details>
-              <summary>Ver campos de la herramienta</summary>
-              <ul>{tool.fields.map((field) => <li key={field.key}>{field.label}</li>)}</ul>
-            </details>
-          </article>
-        ))}
-      </div>
-      <section className="panel-card method-chain-card">
-        <div className="panel-card__heading"><div><span className="kicker">Cadena metodológica</span><h2>Lo que ocurre después</h2></div></div>
-        <p>Estas tres herramientas cubren la etapa actual de prospección y primera conversación. Si el prospecto avanza, el expediente puede continuar con formulario base, Mapa de Transformación y Activos, propuesta y alcance, registro de hitos, indicadores y cierre.</p>
-      </section>
-    </div>
-  );
-}
-
 function ExpedientesView({ osState, setOsState }) {
   const expedientes = Array.isArray(osState.expedientes) ? osState.expedientes : [];
   const [selectedId, setSelectedId] = useState(expedientes[0]?.id || '');
@@ -857,6 +868,10 @@ function ExpedientesView({ osState, setOsState }) {
         <span><b>{expedientes.filter((item) => expedienteProgress(item) === 100).length}</b> listos para siguiente etapa</span>
         <span><b>{expedientes.filter((item) => item.tools?.conversacion?.status === 'Pendiente').length}</b> conversaciones pendientes</span>
       </div>
+      <section className="expediente-method-strip" aria-label="Método de trabajo del expediente">
+        <div><span className="kicker">Método integrado</span><strong>La herramienta aparece donde se usa</strong><p>No existe un módulo separado de “Método”. Abre cada etapa del expediente para ver cuándo usarla, para qué sirve y cuál es su límite.</p></div>
+        <ol>{CONSULTING_TOOLS.map((tool) => <li key={tool.id}><span>{tool.number}</span><div><small>{tool.stage}</small><strong>{tool.title}</strong></div></li>)}</ol>
+      </section>
 
       <div className="expediente-layout">
         <aside className="expediente-sidebar">
@@ -895,7 +910,7 @@ function ExpedientesView({ osState, setOsState }) {
               return <details className={`expediente-tool expediente-tool--${String(state.status).toLowerCase().replaceAll(' ', '-')}`} key={tool.id} open={tool.id === 'perfil' && selected.id === 'EXP-001'}>
                 <summary><span className="expediente-tool__number">{tool.number}</span><div><small>{tool.stage}</small><strong>{tool.title}</strong></div><select aria-label={`Estado de ${tool.title}`} value={state.status} onClick={(event) => event.stopPropagation()} onChange={(event) => updateToolStatus(tool.id, event.target.value)}>{EXPEDIENTE_STATUSES.map((status) => <option key={status}>{status}</option>)}</select></summary>
                 <div className="expediente-tool__body">
-                  <p className="tool-purpose">{tool.purpose}</p>
+                  <div className="tool-guidance"><span><b>Cuándo usarla</b>{tool.when}</span><span><b>Para qué sirve</b>{tool.purpose}</span></div>
                   <div className="expediente-fields">
                     {tool.fields.map((field) => {
                       const value = state.data?.[field.key] ?? '';
@@ -1001,9 +1016,12 @@ function TaskModal({ draft, onClose, onSave }) {
 }
 
 function AdminShell({ session, onLogout }) {
-  const [active, setActive] = useState(() => { const stored = window.localStorage.getItem('metamorfosis-admin-view'); const allowed = new Set(menuGroups.flatMap((group) => group.items.map(([key]) => key))); return stored && allowed.has(stored) ? stored : 'dashboard'; });
+  const [active, setActive] = useState(() => {
+    const stored = window.localStorage.getItem('metamorfosis-admin-view');
+    const normalized = LEGACY_VIEW_MAP[stored] || stored;
+    return normalized && ALL_ADMIN_KEYS.has(normalized) ? normalized : 'dashboard';
+  });
   const [menuOpen, setMenuOpen] = useState(false);
-  const [openGroups, setOpenGroups] = useState(() => new Set(menuGroups.map((group) => group.id)));
   const [osState, setOsStateRaw] = useState(createDefaultOsState);
   const [dirty, setDirty] = useState(false);
   const [loadingState, setLoadingState] = useState(true);
@@ -1167,8 +1185,16 @@ function AdminShell({ session, onLogout }) {
     }
   };
 
-  const navigate = (key) => { setActive(key); window.localStorage.setItem('metamorfosis-admin-view', key); setMenuOpen(false); };
-  const toggleGroup = (id) => setOpenGroups((current) => { const next = new Set(current); next.has(id) ? next.delete(id) : next.add(id); return next; });
+  const navigate = (key) => {
+    const normalized = LEGACY_VIEW_MAP[key] || key;
+    if (!ALL_ADMIN_KEYS.has(normalized)) return;
+    setActive(normalized);
+    window.localStorage.setItem('metamorfosis-admin-view', normalized);
+    setMenuOpen(false);
+  };
+  const mode = FAMILY_KEYS.has(active) ? 'family' : 'business';
+  const menuGroups = mode === 'family' ? FAMILY_MENU_GROUPS : BUSINESS_MENU_GROUPS;
+  const switchWorkspace = (nextMode) => navigate(nextMode === 'family' ? 'family-overview' : 'dashboard');
   const openTask = (defaults = {}) => setTaskDraft({ id: '', date: osState.selectedDate, start: '09:00', end: '10:00', owner: 'Francisca', topic: 'Metamorfosis', title: '', explain: '', why: '', done_when: '', status: 'pending', comments: [], ...defaults });
   const saveTask = (task) => { setOsState((current) => ({ ...current, selectedDate: task.date, tasks: current.tasks.some((item) => item.id === task.id) ? current.tasks.map((item) => item.id === task.id ? task : item) : [...current.tasks, task] })); setTaskDraft(null); };
 
@@ -1183,22 +1209,58 @@ function AdminShell({ session, onLogout }) {
     catch (error) { setNotice({ type: 'error', message: error.message }); }
   };
 
-  const currentItem = menuGroups.flatMap((group) => group.items).find(([key]) => key === active);
+  const currentItem = [...BUSINESS_MENU_GROUPS, ...FAMILY_MENU_GROUPS].flatMap((group) => group.items).find(([key]) => key === active);
   const view = active === 'dashboard' ? <DashboardView osState={osState} quotes={quotes} dirty={dirty} onNavigate={navigate} onAddTask={openTask} />
     : active === 'month' ? <MonthView osState={osState} setOsState={setOsState} onNavigate={navigate} onAddTask={openTask} />
       : active === 'day' ? <DayView osState={osState} setOsState={setOsState} onAddTask={openTask} onEditTask={setTaskDraft} />
         : active === 'expedientes' ? <ExpedientesView osState={osState} setOsState={setOsState} />
           : active === 'quotes' ? <QuotesView quotes={quotes} loading={loadingQuotes} onStatusChange={updateQuoteStatus} notice={notice} />
-            : active === 'tools' ? <ToolsView />
-              : active === 'finance' ? <FinanceView osState={osState} setOsState={setOsState} />
-                : active === 'metrics' ? <TimeTrackingView osState={osState} setOsState={setOsState} />
-                  : active === 'documents' ? <DocumentsView />
-                    : active === 'family' ? <FamilyView osState={osState} setOsState={setOsState} />
-                      : <GenericView active={active} />;
+            : active === 'finance' ? <FinanceView osState={osState} setOsState={setOsState} />
+              : active === 'metrics' ? <TimeTrackingView osState={osState} setOsState={setOsState} />
+                : active === 'documents' ? <DocumentsView />
+                  : FAMILY_KEYS.has(active) ? <FamilyView osState={osState} setOsState={setOsState} section={active} />
+                    : <GenericView active={active} />;
 
-  if (loadingState) return <div className="app-loading"><Brand /><span>Cargando sistema operativo…</span></div>;
+  if (loadingState) return <div className="app-loading"><Brand mode={mode} /><span>Cargando sistema operativo…</span></div>;
 
-  return <div className={`admin-frame ${active === 'family' ? 'admin-frame--family' : 'admin-frame--business'}`}><a className="skip-link" href="#admin-main">Saltar al contenido del panel</a><header className="admin-header"><div className="admin-header__brand"><IconButton icon="menu" label="Abrir menú" className="admin-menu-button" onClick={() => setMenuOpen(true)} /><Brand /></div><div className="admin-header__actions"><a className="admin-action-button admin-action-button--public" href={PUBLIC_SITE_URL}><Icon name="public" /><span>Sitio público</span></a><IconButton icon="upload" label="Importar respaldo JSON" onClick={() => importRef.current?.click()} /><input ref={importRef} type="file" accept="application/json,.json" hidden onChange={importBackup} /><IconButton icon="download" label="Descargar respaldo JSON" onClick={exportBackup} /><button type="button" className={`admin-action-button ${dirty ? 'is-dirty' : ''}`} onClick={saveState} disabled={saving}><Icon name="save" /><span>{saving ? 'Guardando…' : dirty ? 'Guardar cambios' : 'Guardado'}</span></button><button type="button" className="admin-action-button admin-action-button--exit" onClick={onLogout}><Icon name="logout" /><span>Salir</span></button></div></header><div className="admin-body"><aside className={`admin-sidebar ${menuOpen ? 'is-open' : ''}`} aria-label="Módulos del panel"><div className="sidebar-heading"><strong>Módulos</strong><IconButton icon="close" label="Cerrar menú" className="sidebar-close" onClick={() => setMenuOpen(false)} /></div><nav>{menuGroups.map((group) => { const expanded = openGroups.has(group.id); const containsActive = group.items.some(([key]) => key === active); return <section className="sidebar-group" key={group.id}><button type="button" className={`sidebar-group__toggle ${containsActive ? 'has-active' : ''}`} onClick={() => toggleGroup(group.id)} aria-expanded={expanded}><Icon name={group.icon} /><span>{group.label}</span><Icon name={expanded ? 'expand_less' : 'expand_more'} /></button>{expanded && <div className="sidebar-submenu">{group.items.map(([key, label, icon]) => <button type="button" key={key} className={active === key ? 'is-active' : ''} onClick={() => navigate(key)} aria-current={active === key ? 'page' : undefined}><Icon name={icon} /><span>{label}</span></button>)}</div>}</section>; })}</nav><div className="sidebar-footer"><div className="admin-user"><span>ML</span><div><strong>Administración</strong><small>{session.demo ? 'Modo demostración' : session.email}</small></div></div></div></aside>{menuOpen && <button type="button" className="sidebar-backdrop" aria-label="Cerrar menú" onClick={() => setMenuOpen(false)} />}<main id="admin-main" className="admin-main"><div className="admin-breadcrumb"><span>{currentItem?.[1] || 'Panel diario'}</span><em className="admin-context-badge">{active === 'family' ? 'Familiar' : 'Empresa'}</em>{notice && active !== 'quotes' && <p className={`save-notice ${notice.type === 'error' ? 'is-error' : ''}`} role="status">{notice.message}</p>}</div>{view}</main></div>{taskDraft && <TaskModal draft={taskDraft} onClose={() => setTaskDraft(null)} onSave={saveTask} />}</div>;
+  return (
+    <div className={`admin-frame admin-frame--${mode}`}>
+      <a className="skip-link" href="#admin-main">Saltar al contenido del panel</a>
+      <header className="admin-header">
+        <div className="admin-header__brand"><IconButton icon="menu" label="Abrir menú" className="admin-menu-button" onClick={() => setMenuOpen(true)} /><Brand mode={mode} /></div>
+        <WorkspaceSwitch mode={mode} onSwitch={switchWorkspace} />
+        <div className="admin-header__actions">
+          <a className="admin-action-button admin-action-button--public" href={PUBLIC_SITE_URL}><Icon name="public" /><span>Sitio público</span></a>
+          <IconButton icon="upload" label="Importar respaldo JSON" onClick={() => importRef.current?.click()} />
+          <input ref={importRef} type="file" accept="application/json,.json" hidden onChange={importBackup} />
+          <IconButton icon="download" label="Descargar respaldo JSON" onClick={exportBackup} />
+          <button type="button" className={`admin-action-button ${dirty ? 'is-dirty' : ''}`} onClick={saveState} disabled={saving}><Icon name="save" /><span>{saving ? 'Guardando…' : dirty ? 'Guardar cambios' : 'Guardado'}</span></button>
+          <button type="button" className="admin-action-button admin-action-button--exit" onClick={onLogout}><Icon name="logout" /><span>Salir</span></button>
+        </div>
+      </header>
+      <div className="admin-body">
+        <aside className={`admin-sidebar ${menuOpen ? 'is-open' : ''}`} aria-label={mode === 'family' ? 'Navegación familiar' : 'Navegación empresarial'}>
+          <div className="sidebar-heading"><strong>{mode === 'family' ? 'Familia' : 'Empresa'}</strong><IconButton icon="close" label="Cerrar menú" className="sidebar-close" onClick={() => setMenuOpen(false)} /></div>
+          <nav className="sidebar-nav--efficient">
+            {menuGroups.map((group) => <section className="sidebar-simple-group" key={group.id}>
+              <span className="sidebar-section-label">{group.label}</span>
+              <div className="sidebar-submenu sidebar-submenu--always">{group.items.map(([key, label, icon]) => <button type="button" key={key} className={active === key ? 'is-active' : ''} onClick={() => navigate(key)} aria-current={active === key ? 'page' : undefined}><Icon name={icon} /><span>{label}</span></button>)}</div>
+            </section>)}
+          </nav>
+          <div className="sidebar-footer">
+            {mode === 'family' ? <div className="sidebar-family-signature"><img src="/familia-metamorfosis.webp" alt="" /><div><strong>Espacio familiar</strong><small>Separado de la gestión empresarial</small></div></div> : <div className="admin-user"><span>ML</span><div><strong>Administración</strong><small>{session.demo ? 'Modo demostración' : session.email}</small></div></div>}
+          </div>
+        </aside>
+        {menuOpen && <button type="button" className="sidebar-backdrop" aria-label="Cerrar menú" onClick={() => setMenuOpen(false)} />}
+        <main id="admin-main" className="admin-main">
+          <div className="admin-breadcrumb"><span>{currentItem?.[1] || (mode === 'family' ? 'Resumen familiar' : 'Inicio')}</span><em className="admin-context-badge">{mode === 'family' ? 'Familiar' : 'Empresa'}</em>{notice && active !== 'quotes' && <p className={`save-notice ${notice.type === 'error' ? 'is-error' : ''}`} role="status">{notice.message}</p>}</div>
+          {view}
+        </main>
+      </div>
+      {taskDraft && <TaskModal draft={taskDraft} onClose={() => setTaskDraft(null)} onSave={saveTask} />}
+    </div>
+  );
+
 }
 
 export default function AdminApp() {

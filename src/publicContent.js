@@ -5,23 +5,47 @@ export const publicNavigation = [
 ];
 
 export const transformationPillars = [
-  { icon: 'query_stats', title: 'Operación', text: 'Ordenamos procesos, información y recursos para que las decisiones no dependan de improvisación.' },
-  { icon: 'group', title: 'Personas', text: 'Diseñamos cambios que puedan ser usados y sostenidos por quienes realizan el trabajo.' },
-  { icon: 'public', title: 'Sistemas vivos', text: 'Integramos impactos y recursos materiales cuando son relevantes para la forma en que la organización genera valor.' }
+  {
+    icon: 'query_stats',
+    title: 'Operación',
+    text: 'Ordenamos procesos, información y recursos para que las decisiones no dependan de improvisación.',
+    accent: 'Procesos, información y recursos'
+  },
+  {
+    icon: 'group',
+    title: 'Personas',
+    text: 'Diseñamos cambios que puedan ser usados y sostenidos por quienes realizan el trabajo.',
+    accent: 'Uso real y continuidad'
+  },
+  {
+    icon: 'public',
+    title: 'Sistemas vivos',
+    text: 'Integramos impactos y recursos materiales cuando son relevantes para la forma en que la organización genera valor.',
+    accent: 'Recursos, impactos y entorno'
+  }
 ];
 
 export const activeOfferUseCases = [
-  { icon: 'schema', title: 'Procesos y roles', text: 'Cuando tareas, decisiones o responsabilidades dependen demasiado de la memoria o de una sola persona.' },
-  { icon: 'database', title: 'Registros y trazabilidad', text: 'Cuando existe información, pero está dispersa y cuesta seguir, demostrar o aprender de lo que ocurre.' },
-  { icon: 'public', title: 'Presencia y conversión digital', text: 'Cuando la oferta existe, pero no se explica con claridad o el contacto depende de canales improvisados.' },
-  { icon: 'recycling', title: 'Uso de recursos', text: 'Cuando materiales, activos o residuos pueden gestionarse mejor sin separar eficiencia y responsabilidad.' }
-];
-
-export const solutions = [
-  { icon: 'visibility', title: 'Entender el sistema', text: 'Revisamos operación, restricciones, evidencia y decisiones antes de recomendar cambios.' },
-  { icon: 'schema', title: 'Ordenar lo crítico', text: 'Convertimos tareas y registros dispersos en una forma de trabajo simple y demostrable.' },
-  { icon: 'construction', title: 'Implementar con alcance', text: 'Construimos la solución mínima suficiente y acordamos qué queda dentro y fuera.' },
-  { icon: 'query_stats', title: 'Medir y transferir', text: 'Dejamos responsables, indicadores y continuidad para evitar dependencia innecesaria.' }
+  {
+    icon: 'schema',
+    title: 'Procesos y roles',
+    text: 'Cuando tareas, decisiones o responsabilidades dependen demasiado de la memoria o de una sola persona.'
+  },
+  {
+    icon: 'database',
+    title: 'Registros y trazabilidad',
+    text: 'Cuando existe información, pero está dispersa y cuesta seguir, demostrar o aprender de lo que ocurre.'
+  },
+  {
+    icon: 'open_in_new',
+    title: 'Presencia y conversión digital',
+    text: 'Cuando la oferta existe, pero no se explica con claridad o el contacto depende de canales improvisados.'
+  },
+  {
+    icon: 'recycling',
+    title: 'Uso de recursos',
+    text: 'Cuando materiales, activos o residuos pueden gestionarse mejor sin separar eficiencia y responsabilidad.'
+  }
 ];
 
 export const methodPrinciples = [
@@ -52,13 +76,17 @@ export const team = [
   {
     initials: 'FC',
     name: 'Francisca Carrasco Marín',
-    role: 'Dirección de Metamorfosis Lab',
+    role: 'Dirección operativa y diseño de intervención',
+    profession: 'Gestión operativa y coordinación de proyectos',
+    institution: 'Casa de estudio por completar en edición final',
     text: 'Lidera la lectura operacional, el diseño de soluciones y la ejecución de las intervenciones.'
   },
   {
     initials: 'BS',
     name: 'Benjamín Sepúlveda',
     role: 'Estrategia, investigación y desarrollo metodológico',
+    profession: 'Abogado e investigador',
+    institution: 'Magíster en Derecho Penal en curso · Universidad de Buenos Aires',
     text: 'Trabaja en investigación previa, estructuración de problemas, gobernanza, documentación y aprendizaje del método.'
   }
 ];

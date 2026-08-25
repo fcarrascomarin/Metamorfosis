@@ -5,6 +5,7 @@ export const CONSULTING_TOOLS = [
     title: 'Ficha de oportunidad',
     stage: '0 · Prospecto',
     purpose: 'Filtrar prospectos antes de invertir trabajo y decidir si corresponde abrir una conversación.',
+    when: 'Úsala al detectar un posible prospecto y antes de investigar en profundidad. Debe permitir decidir rápido si vale la pena abrir expediente.',
     visibility: 'Interna',
     limit: 'No transforma señales públicas en un diagnóstico ni regala una solución antes de validar el dolor.',
     fields: [
@@ -26,6 +27,7 @@ export const CONSULTING_TOOLS = [
     title: 'Perfil preliminar de empresa',
     stage: '0.5 · Preparación previa',
     purpose: 'Ordenar información pública, separar hechos de hipótesis y preparar una conversación inicial con contexto.',
+    when: 'Úsala solo cuando la oportunidad superó el filtro inicial. Se completa antes del primer contacto para llegar con contexto sin convertir observaciones públicas en diagnóstico.',
     visibility: 'Interna · uso parcial en reunión',
     limit: 'No reemplaza el diagnóstico pagado. Las redes y señales visibles se registran como observación, no como verdad interna.',
     fields: [
@@ -47,6 +49,7 @@ export const CONSULTING_TOOLS = [
     title: 'Pauta de conversación inicial',
     stage: '1 · Conversación inicial',
     purpose: 'Validar las hipótesis, detectar dolor real, urgencia, decisor y disposición a avanzar sin convertir la reunión en consultoría gratuita.',
+    when: 'Úsala durante y justo después de la primera conversación con el prospecto. Su resultado debe ser una decisión: avanzar, pedir evidencia, reformular o cerrar.',
     visibility: 'Interna · síntesis compartible',
     limit: 'La primera conversación orienta la decisión de avanzar. No sustituye el Mapa o diagnóstico contratado.',
     fields: [

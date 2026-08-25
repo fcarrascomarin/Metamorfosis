@@ -3,6 +3,13 @@ import Icon from './components/Icon.jsx';
 import heroImage from './assets/images/jardin/hero-jardin.webp';
 import mapImage from './assets/images/jardin/mapa-transformacion.webp';
 import contactImage from './assets/images/jardin/contacto-jardin.webp';
+import pillarOperationImage from './assets/images/lab-showcase/pillar-operacion.png';
+import pillarPeopleImage from './assets/images/lab-showcase/pillar-personas.png';
+import pillarSystemsImage from './assets/images/lab-showcase/pillar-sistemas.png';
+import methodUnderstandImage from './assets/images/lab-showcase/method-entender.png';
+import methodPrioritizeImage from './assets/images/lab-showcase/method-priorizar.png';
+import methodInterveneImage from './assets/images/lab-showcase/method-intervenir.png';
+import methodMeasureImage from './assets/images/lab-showcase/method-medir.png';
 import { contact } from './data.js';
 import {
   activeOfferUseCases,
@@ -17,6 +24,10 @@ const OS_SITE_URL = 'https://os.metamorfosislab.cl';
 const apiBase = String(import.meta.env.DEV ? (import.meta.env.VITE_API_BASE || 'http://localhost:4173') : OS_SITE_URL).replace(/\/$/, '');
 const PUBLIC_QUOTES_KEY = 'metamorfosis-public-quotes';
 const PUBLIC_EVENTS_KEY = 'metamorfosis-public-events';
+
+
+const pillarIllustrations = [pillarOperationImage, pillarPeopleImage, pillarSystemsImage];
+const methodIllustrations = [methodUnderstandImage, methodPrioritizeImage, methodInterveneImage, methodMeasureImage];
 
 
 function getVisitorSessionId() {
@@ -400,9 +411,15 @@ function TeamSection() {
       {team.map((person) => (
         <article key={person.name} className="team-audit-card">
           <span className="team-audit-card__avatar" aria-hidden="true">{person.initials}</span>
-          <div>
-            <h3>{person.name}</h3>
-            <strong>{person.role}</strong>
+          <div className="team-audit-card__body">
+            <div className="team-audit-card__copy">
+              <h3>{person.name}</h3>
+              <strong>{person.role}</strong>
+            </div>
+            <div className="team-audit-card__meta" aria-label={`Perfil de ${person.name}`}>
+              <span className="team-audit-card__tag team-audit-card__tag--profession"><Icon name="briefcase" /> {person.profession}</span>
+              <span className="team-audit-card__tag team-audit-card__tag--institution"><Icon name="menu_book" /> {person.institution}</span>
+            </div>
             <p>{person.text}</p>
           </div>
         </article>
@@ -413,7 +430,7 @@ function TeamSection() {
 
 function PublicSite() {
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v49">
+    <div className="public-site public-site--lab public-site--audit public-site--v50">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
@@ -445,22 +462,27 @@ function PublicSite() {
           <div className="shell audit-scene__content">
             <SectionHeading
               kicker="Qué hacemos"
-              title="Trabajamos sobre el sistema que produce el problema"
-              description="No partimos vendiendo una herramienta. Primero entendemos qué está ocurriendo y qué cambio sería suficiente para mejorar la operación sin sobrediseñarla."
+              title="Tres entradas claras para leer y transformar la operación"
+              description="La web debe explicar rápido dónde entra Metamorfosis. Primero leemos la operación, luego ordenamos lo crítico y recién entonces definimos el cambio justo."
             />
-            <div className="audit-pillar-grid">
-              {transformationPillars.map((item) => (
-                <article key={item.title} className="audit-card audit-card--pillar">
-                  <span className="audit-icon"><Icon name={item.icon} /></span>
-                  <h3>{item.title}</h3>
-                  <p>{item.text}</p>
+            <div className="audit-pillar-showcase" aria-label="Ámbitos de transformación de Metamorfosis Lab">
+              {transformationPillars.map((item, index) => (
+                <article key={item.title} className="audit-pillar-showcase__card">
+                  <div className="audit-pillar-showcase__media">
+                    <img src={pillarIllustrations[index]} alt={`Ilustración de ${item.title}`} loading="lazy" />
+                  </div>
+                  <div className="audit-pillar-showcase__copy">
+                    <span className="audit-pill"><Icon name={item.icon} /> {item.accent}</span>
+                    <h3>{item.title}</h3>
+                    <p>{item.text}</p>
+                  </div>
                 </article>
               ))}
             </div>
-            <div className="audit-entry-strip" aria-label="Problemas donde Metamorfosis puede entrar">
+            <div className="audit-entry-strip audit-entry-strip--v50" aria-label="Problemas donde Metamorfosis puede entrar">
               {activeOfferUseCases.map((item) => (
                 <article key={item.title}>
-                  <Icon name={item.icon || 'arrow_forward'} />
+                  <span className="audit-entry-strip__icon"><Icon name={item.icon || 'arrow_forward'} /></span>
                   <div><strong>{item.title}</strong><span>{item.text}</span></div>
                 </article>
               ))}
@@ -473,20 +495,24 @@ function PublicSite() {
           <div className="shell audit-scene__content">
             <SectionHeading
               kicker="Método"
-              title="Entender antes de intervenir"
-              description="Una transformación útil debe reducir incertidumbre, trabajar con la complejidad justa y dejar capacidad en la organización."
+              title="Un proceso breve para entender, priorizar, intervenir y transferir"
+              description="La lógica de trabajo debe poder leerse en segundos. Cada etapa agrega criterio, reduce improvisación y ayuda a que la solución quede utilizable por la organización."
             />
-            <div className="audit-roadmap">
+            <div className="audit-roadmap audit-roadmap--showcase" aria-label="Etapas del método Metamorfosis">
               {processRoadmap.map((item, index) => (
-                <article key={item.title}>
-                  <span>{String(index + 1).padStart(2, '0')}</span>
-                  <Icon name={item.icon} />
-                  <strong>{item.title}</strong>
-                  <p>{item.text}</p>
+                <article key={item.title} className="audit-roadmap__card">
+                  <div className="audit-roadmap__media">
+                    <img src={methodIllustrations[index]} alt={`Etapa ${index + 1}: ${item.title}`} loading="lazy" />
+                    <span>{String(index + 1).padStart(2, '0')}</span>
+                  </div>
+                  <div className="audit-roadmap__copy">
+                    <strong>{item.title}</strong>
+                    <p>{item.text}</p>
+                  </div>
                 </article>
               ))}
             </div>
-            <div className="audit-principles">
+            <div className="audit-principles audit-principles--v50">
               {methodPrinciples.map((item) => (
                 <article key={item.title}><Icon name={item.icon} /><div><strong>{item.title}</strong><p>{item.text}</p></div></article>
               ))}
