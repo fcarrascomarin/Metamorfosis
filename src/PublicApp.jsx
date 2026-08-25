@@ -6,7 +6,6 @@ import contactImage from './assets/images/jardin/contacto-jardin.webp';
 import { contact } from './data.js';
 import {
   activeOfferUseCases,
-  methodPrinciples,
   processRoadmap,
   publicNavigation,
   team,
@@ -176,7 +175,7 @@ function PublicHeader() {
             ))}
           </div>
           <div className="site-nav__actions">
-            <a className="site-nav__os" href={OS_SITE_URL} onClick={openOs} aria-label="Acceso al sistema interno de Metamorfosis Lab">
+            <a className="site-nav__os" href={OS_SITE_URL} onClick={openOs} onMouseEnter={warmPrivateApi} onFocus={warmPrivateApi} aria-label="Acceso al sistema interno de Metamorfosis Lab">
               <Icon name="lock" /> <span>Acceso OS</span>
             </a>
             <button className="button button--small site-nav__conversation" type="button" onClick={() => goTo('contacto')}>
@@ -557,23 +556,15 @@ function PublicSite() {
                     <span className="method-showcase-card__number">{String(index + 1).padStart(2, '0')}</span>
                   </div>
                   <div className="method-showcase-card__copy">
-                    <span className="method-showcase-card__icon"><Icon name={item.icon} /></span>
-                    <div>
-                      <h3>{item.title}</h3>
-                      <p>{item.text}</p>
-                    </div>
+                    <h3>{item.title}</h3>
+                    <p>{item.text}</p>
                   </div>
                 </article>
               ))}
             </div>
-            <div className="method-principles-grid" aria-label="Principios del método">
-              {methodPrinciples.map((item) => (
-                <article key={item.title}>
-                  <span><Icon name={item.icon} /></span>
-                  <div><strong>{item.title}</strong><p>{item.text}</p></div>
-                </article>
-              ))}
-            </div>
+            <p className="method-criterion-line">
+              <strong>Criterio transversal:</strong> evidencia antes que suposición · complejidad justa · capacidad instalada para continuar.
+            </p>
           </div>
         </section>
 

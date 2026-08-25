@@ -58,6 +58,19 @@ const ALL_ADMIN_KEYS = new Set([...BUSINESS_KEYS, ...FAMILY_KEYS]);
 const LEGACY_VIEW_MAP = { family: 'family-overview', tools: 'expedientes' };
 
 
+async function fetchJsonWithTimeout(url, options = {}, timeoutMs = 15000) {
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, { cache: 'no-store', credentials: 'same-origin', ...options, signal: controller.signal });
+    const payload = await response.json().catch(() => ({}));
+    return { response, payload };
+  } finally {
+    window.clearTimeout(timer);
+  }
+}
+
+
 function Brand({ compact = false, mode = 'business' }) {
   if (mode === 'family') {
     return (
@@ -214,8 +227,7 @@ function AdminLogin({ onLogin }) {
     event.preventDefault();
     setStatus({ loading: true, message: '' });
     try {
-      const response = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
-      const payload = await response.json();
+      const { response, payload } = await fetchJsonWithTimeout('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) }, 18000);
       if (!response.ok) throw new Error(payload.message || 'No fue posible ingresar.');
       onLogin(payload);
     } catch (error) {
@@ -1312,12 +1324,54 @@ function AdminShell({ session, onLogout }) {
 
 }
 
-export default function AdminApp() {
+class AdminErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { error };
+  }
+
+  componentDidCatch(error, info) {
+    console.error('Error al renderizar Metamorfosis OS:', error, info);
+  }
+
+  render() {
+    if (!this.state.error) return this.props.children;
+    return (
+      <div className="admin-fatal-error" role="alert">
+        <div className="admin-fatal-error__card">
+          <Brand />
+          <span className="kicker">Recuperación del sistema</span>
+          <h1>No fue posible cargar el panel</h1>
+          <p>El servidor respondió, pero la interfaz encontró un error de ejecución. Recarga el OS; si persiste, revisa el último despliegue de Render.</p>
+          <button className="button" type="button" onClick={() => window.location.reload()}><Icon name="refresh" /> Recargar OS</button>
+          <a href="/api/health" target="_blank" rel="noreferrer">Ver diagnóstico técnico</a>
+        </div>
+      </div>
+    );
+  }
+}
+
+function AdminAppContent() {
   const [session, setSession] = useState(null);
   const [checking, setChecking] = useState(true);
-  useEffect(() => { fetch('/api/session').then((response) => response.json()).then((payload) => setSession(payload.authenticated ? payload : null)).catch(() => setSession(null)).finally(() => setChecking(false)); }, []);
+  useEffect(() => {
+    let mounted = true;
+    fetchJsonWithTimeout('/api/session', {}, 15000)
+      .then(({ payload }) => { if (mounted) setSession(payload.authenticated ? payload : null); })
+      .catch(() => { if (mounted) setSession(null); })
+      .finally(() => { if (mounted) setChecking(false); });
+    return () => { mounted = false; };
+  }, []);
   const logout = async () => { try { await fetch('/api/logout', { method: 'POST' }); } catch { /* no-op */ } setSession(null); };
   if (checking) return <div className="app-loading"><Brand /><span>Comprobando sesión…</span></div>;
   if (!session) return <AdminLogin onLogin={setSession} />;
   return <AdminShell session={session} onLogout={logout} />;
+}
+
+export default function AdminApp() {
+  return <AdminErrorBoundary><AdminAppContent /></AdminErrorBoundary>;
 }
