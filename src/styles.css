@@ -9969,3 +9969,582 @@ textarea::placeholder { color: #7f98ac; }
     white-space: nowrap;
   }
 }
+
+/* ========================================================================== 
+   5.1.3 · consolidación visual acumulativa + acceso familiar robusto
+   ========================================================================== */
+
+/* Selector Empresa/Familiar: controles reales, sin dependencia de navegación de anclas. */
+.workspace-switch button {
+  appearance: none;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+.workspace-switch button:focus-visible {
+  outline: 3px solid rgba(115, 235, 222, .72);
+  outline-offset: 3px;
+}
+.admin-frame--family .workspace-switch button:focus-visible {
+  outline-color: rgba(243, 201, 15, .72);
+}
+
+/* Qué hacemos: las imágenes son visuales de apoyo, no marcos que dominen la escena. */
+.public-site--v50 .audit-pillar-showcase__card {
+  grid-template-rows: 150px auto;
+  border-radius: 22px;
+}
+.public-site--v50 .audit-pillar-showcase__media {
+  position: relative;
+  isolation: isolate;
+  background: #082b35;
+}
+.public-site--v50 .audit-pillar-showcase__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 58%, rgba(2, 20, 28, .18));
+}
+.public-site--v50 .audit-pillar-showcase__media img {
+  object-position: 50% 48%;
+}
+.public-site--v50 .audit-pill {
+  min-height: 31px;
+  gap: 7px;
+  border: 1px solid rgba(21, 126, 116, .08);
+}
+.public-site--v50 .audit-pill .app-icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+}
+.public-site--v50 .audit-entry-strip--v50 article {
+  grid-template-columns: 46px minmax(0,1fr);
+  gap: 12px;
+  min-height: 98px;
+  border-radius: 18px;
+}
+.public-site--v50 .audit-entry-strip__icon {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(132, 237, 226, .14);
+  background: linear-gradient(145deg, rgba(87, 213, 204, .18), rgba(87, 213, 204, .08));
+}
+.public-site--v50 .audit-entry-strip__icon .app-icon {
+  width: 22px;
+  height: 22px;
+}
+
+/* Método: componente aislado de todo el CSS histórico del antiguo audit-roadmap. */
+.public-site--v50 .method-showcase-grid {
+  width: 100%;
+  max-width: 1080px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 14px;
+}
+.public-site--v50 .method-showcase-card {
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(126, 225, 219, .16);
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(8, 31, 42, .96), rgba(5, 24, 34, .98));
+  box-shadow: 0 16px 34px rgba(0,0,0,.22);
+}
+.public-site--v50 .method-showcase-card__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.42 / 1;
+  overflow: hidden;
+  background: #071d29;
+}
+.public-site--v50 .method-showcase-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 47%;
+  transform: scale(1.015);
+}
+.public-site--v50 .method-showcase-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(3,18,27,.02) 48%, rgba(3,18,27,.22) 100%);
+}
+.public-site--v50 .method-showcase-card__media > span {
+  position: absolute;
+  z-index: 2;
+  top: 11px;
+  left: 11px;
+  min-width: 36px;
+  height: 36px;
+  padding-inline: 8px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(129, 238, 226, .25);
+  border-radius: 12px;
+  background: rgba(3, 35, 43, .88);
+  color: #8af2e7;
+  font-size: .74rem;
+  font-weight: 900;
+  letter-spacing: .04em;
+  backdrop-filter: blur(8px);
+}
+.public-site--v50 .method-showcase-card__copy {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 13px 15px 15px;
+}
+.public-site--v50 .method-showcase-card__copy strong {
+  display: block;
+  margin: 0 0 5px;
+  color: #ffffff;
+  font-size: .98rem;
+  line-height: 1.18;
+  word-break: normal;
+  overflow-wrap: normal;
+  writing-mode: horizontal-tb;
+}
+.public-site--v50 .method-showcase-card__copy p {
+  margin: 0;
+  color: #c2d6dc;
+  font-size: .72rem;
+  line-height: 1.42;
+  word-break: normal;
+  overflow-wrap: normal;
+  writing-mode: horizontal-tb;
+}
+.public-site--v50 .method-principles-grid {
+  width: 100%;
+  max-width: 980px;
+  margin: 12px auto 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 10px;
+}
+.public-site--v50 .method-principles-grid article {
+  min-width: 0;
+  min-height: 68px;
+  display: grid;
+  grid-template-columns: 38px minmax(0,1fr);
+  gap: 11px;
+  align-items: center;
+  padding: 11px 13px;
+  border: 1px solid rgba(126,225,219,.14);
+  border-radius: 16px;
+  background: rgba(8, 36, 47, .78);
+}
+.public-site--v50 .method-principles-grid article > .app-icon {
+  width: 38px;
+  height: 38px;
+  padding: 9px;
+  border-radius: 12px;
+  background: rgba(102, 221, 210, .12);
+  color: #83ebe0;
+}
+.public-site--v50 .method-principles-grid strong {
+  display: block;
+  margin-bottom: 3px;
+  color: #ffffff;
+  font-size: .76rem;
+  line-height: 1.2;
+}
+.public-site--v50 .method-principles-grid p {
+  margin: 0;
+  color: #bcd0d6;
+  font-size: .66rem;
+  line-height: 1.34;
+}
+
+/* Equipo: retrato + información profesional en una sola lectura. */
+.public-site--v50 .team-audit-grid--portraits {
+  max-width: 1040px;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 18px;
+}
+.public-site--v50 .team-audit-card--portrait {
+  min-height: 286px;
+  display: grid;
+  grid-template-columns: 138px minmax(0,1fr);
+  gap: 18px;
+  align-items: stretch;
+  padding: 16px;
+  overflow: hidden;
+}
+.public-site--v50 .team-audit-card__portrait {
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #13b7cf;
+}
+.public-site--v50 .team-audit-card__portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 34%;
+}
+.public-site--v50 .team-audit-card__body {
+  align-content: center;
+  gap: 10px;
+}
+.public-site--v50 .team-audit-card__eyebrow {
+  display: block;
+  margin-bottom: 4px;
+  color: #188278;
+  font-size: .62rem;
+  font-weight: 900;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.public-site--v50 .team-audit-card__copy h3 {
+  font-size: 1.18rem;
+  line-height: 1.15;
+}
+.public-site--v50 .team-audit-card__copy > strong {
+  display: block;
+  color: #285a55;
+  font-size: .79rem;
+  line-height: 1.3;
+}
+.public-site--v50 .team-audit-card__tag {
+  max-width: 100%;
+  white-space: normal;
+  text-align: left;
+}
+.public-site--v50 .team-audit-card__tag .app-icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+}
+.public-site--v50 .team-audit-card--portrait p {
+  font-size: .78rem;
+  line-height: 1.45;
+}
+
+/* Footer: marca visible y respirada. */
+.public-site--v50 .audit-footer .site-footer__brand .brand-logo {
+  width: 84px;
+  height: 84px;
+}
+.public-site--v50 .audit-footer .site-footer__brand .brand-copy strong {
+  font-size: 1.16rem;
+}
+
+/* Mantener cada escena completa en desktop sin sacrificar lectura. */
+@media (min-width: 1100px) {
+  .public-site--v50 #que-hacemos .audit-scene__content,
+  .public-site--v50 #metodo .audit-scene__content,
+  .public-site--v50 #equipo .audit-scene__content {
+    padding-block: clamp(18px, 2.7svh, 28px);
+  }
+  .public-site--v50 #que-hacemos .section-heading,
+  .public-site--v50 #metodo .section-heading,
+  .public-site--v50 #equipo .section-heading {
+    margin-bottom: clamp(12px, 1.8svh, 18px);
+  }
+}
+
+@media (min-width: 1100px) and (max-height: 820px) {
+  .public-site--v50 .audit-pillar-showcase__card { grid-template-rows: 118px auto; }
+  .public-site--v50 .audit-pillar-showcase__copy { padding: 9px 12px 11px; }
+  .public-site--v50 .audit-pillar-showcase__copy p { font-size: .7rem; }
+  .public-site--v50 .audit-entry-strip--v50 article { min-height: 82px; padding: 9px 10px; }
+  .public-site--v50 .audit-entry-strip__icon { width: 34px; height: 34px; }
+  .public-site--v50 .audit-entry-strip__icon .app-icon { width: 18px; height: 18px; }
+  .public-site--v50 .method-showcase-card__media { aspect-ratio: 1.72 / 1; }
+  .public-site--v50 .method-showcase-card__copy { padding: 9px 11px 11px; }
+  .public-site--v50 .method-showcase-card__copy strong { font-size: .84rem; }
+  .public-site--v50 .method-showcase-card__copy p { font-size: .64rem; }
+  .public-site--v50 .method-principles-grid article { min-height: 54px; padding: 8px 10px; }
+  .public-site--v50 .method-principles-grid p { display: none; }
+  .public-site--v50 .team-audit-card--portrait { min-height: 228px; grid-template-columns: 112px minmax(0,1fr); padding: 12px; }
+  .public-site--v50 .team-audit-card--portrait p { font-size: .7rem; }
+  .public-site--v50 .team-audit-card__tag { padding: 5px 8px; font-size: .62rem; }
+}
+
+@media (max-width: 1080px) {
+  .public-site--v50 .method-showcase-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .public-site--v50 .method-principles-grid { grid-template-columns: 1fr; }
+  .public-site--v50 .team-audit-grid--portraits { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 760px) {
+  .public-site--v50 .method-showcase-grid { grid-template-columns: 1fr; }
+  .public-site--v50 .method-showcase-card__media { aspect-ratio: 16 / 9; }
+  .public-site--v50 .team-audit-card--portrait { grid-template-columns: 104px minmax(0,1fr); min-height: 0; }
+  .public-site--v50 .audit-footer .site-footer__brand .brand-logo { width: 70px; height: 70px; }
+}
+
+@media (max-width: 520px) {
+  .public-site--v50 .team-audit-card--portrait { grid-template-columns: 1fr; }
+  .public-site--v50 .team-audit-card__portrait { height: 220px; }
+  .public-site--v50 .team-audit-card__portrait img { object-position: 50% 28%; }
+}
+
+/* ========================================================================== 
+   5.2.0 · consolidación visual y acceso familiar robusto
+   Esta capa SOLO corrige la presentación de los componentes actuales.
+   ========================================================================== */
+
+/* Qué hacemos: imágenes de lectura rápida, sin fondos blancos residuales. */
+.public-site--v50 .audit-pillar-showcase__card {
+  grid-template-rows: minmax(138px, 19svh) auto;
+  border-radius: 22px;
+  background: #f8fcfb;
+}
+.public-site--v50 .audit-pillar-showcase__media {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  background: #062b35;
+}
+.public-site--v50 .audit-pillar-showcase__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 32%;
+  border-radius: 0;
+  transform: scale(1.025);
+}
+.public-site--v50 .audit-pillar-showcase__media::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: auto 0 0;
+  height: 32%;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgba(3, 30, 38, .26));
+}
+.public-site--v50 .audit-pill {
+  min-height: 30px;
+  padding: 6px 10px;
+  background: #e9f7f4;
+  color: #0c655e;
+}
+.public-site--v50 .audit-pill .app-icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  stroke-width: 2;
+}
+.public-site--v50 .audit-entry-strip__icon {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(102, 226, 215, .2), rgba(102, 226, 215, .08));
+  border: 1px solid rgba(131, 236, 225, .18);
+}
+.public-site--v50 .audit-entry-strip__icon .app-icon {
+  width: 22px;
+  height: 22px;
+  stroke-width: 1.9;
+}
+
+/* Método: aislamiento completo de las reglas antiguas de .audit-roadmap. */
+.public-site--v50 #metodo .method-showcase-grid {
+  width: 100%;
+  max-width: 1100px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+.public-site--v50 #metodo .method-showcase-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(126, 225, 219, .17);
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(7, 30, 41, .97), rgba(4, 22, 32, .99));
+  box-shadow: 0 18px 38px rgba(0,0,0,.22);
+}
+.public-site--v50 #metodo .method-showcase-card__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.45 / 1;
+  overflow: hidden;
+  background: #061e2a;
+}
+.public-site--v50 #metodo .method-showcase-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 42%;
+  border-radius: 0;
+  transform: scale(1.02);
+}
+.public-site--v50 #metodo .method-showcase-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 54%, rgba(2,18,28,.26));
+}
+.public-site--v50 #metodo .method-showcase-card__number {
+  position: absolute;
+  z-index: 2;
+  top: 11px;
+  left: 11px;
+  min-width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  padding-inline: 7px;
+  border-radius: 12px;
+  border: 1px solid rgba(137, 239, 228, .24);
+  background: rgba(3, 35, 44, .9);
+  color: #8cf2e7;
+  font-size: .76rem;
+  font-weight: 900;
+  letter-spacing: .04em;
+  backdrop-filter: blur(8px);
+}
+.public-site--v50 #metodo .method-showcase-card__copy {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 38px minmax(0,1fr);
+  gap: 10px;
+  align-items: start;
+  padding: 13px 14px 15px;
+}
+.public-site--v50 #metodo .method-showcase-card__icon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(101, 224, 213, .12);
+  color: #84ece1;
+}
+.public-site--v50 #metodo .method-showcase-card__icon .app-icon {
+  width: 20px;
+  height: 20px;
+}
+.public-site--v50 #metodo .method-showcase-card__copy > div {
+  min-width: 0;
+}
+.public-site--v50 #metodo .method-showcase-card__copy h3 {
+  margin: 1px 0 5px;
+  color: #ffffff;
+  font-size: .98rem;
+  line-height: 1.18;
+  word-break: normal;
+  overflow-wrap: normal;
+  writing-mode: horizontal-tb;
+}
+.public-site--v50 #metodo .method-showcase-card__copy p {
+  margin: 0;
+  color: #bfd3da;
+  font-size: .72rem;
+  line-height: 1.42;
+  word-break: normal;
+  overflow-wrap: normal;
+  writing-mode: horizontal-tb;
+}
+.public-site--v50 #metodo .method-principles-grid article {
+  grid-template-columns: 40px minmax(0,1fr);
+  gap: 11px;
+}
+.public-site--v50 #metodo .method-principles-grid article > span {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(102, 221, 210, .12);
+  color: #83ebe0;
+}
+.public-site--v50 #metodo .method-principles-grid article > span .app-icon {
+  width: 21px;
+  height: 21px;
+}
+
+/* Equipo: retratos integrados sin convertir la sección en un CV. */
+.public-site--v50 .team-audit-grid--portraits {
+  width: 100%;
+  max-width: 1040px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 18px;
+}
+.public-site--v50 .team-audit-card--portrait {
+  min-width: 0;
+  min-height: 272px;
+  display: grid;
+  grid-template-columns: 142px minmax(0,1fr);
+  gap: 18px;
+  align-items: stretch;
+  padding: 15px;
+  overflow: hidden;
+}
+.public-site--v50 .team-audit-card__portrait {
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #20bbd0, #0ea6c0);
+}
+.public-site--v50 .team-audit-card__portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 35%;
+  transform: scale(1.03);
+}
+.public-site--v50 .team-audit-card--portrait .team-audit-card__body {
+  align-content: center;
+}
+.public-site--v50 .team-audit-card__tag--profession .app-icon,
+.public-site--v50 .team-audit-card__tag--institution .app-icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+}
+
+/* Selector del OS: enlaces reales para que Familiar funcione incluso tras recarga. */
+.workspace-switch a {
+  text-decoration: none;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.workspace-switch a:focus-visible {
+  outline: 3px solid rgba(38, 170, 157, .55);
+  outline-offset: 3px;
+}
+.admin-frame--family .workspace-switch a:focus-visible {
+  outline-color: rgba(232, 189, 62, .62);
+}
+
+/* En pantallas de notebook primero compactar; no estrechar textos hasta volverlos verticales. */
+@media (min-width: 900px) and (max-height: 820px) {
+  .public-site--v50 #metodo .method-showcase-card__media { aspect-ratio: 1.78 / 1; }
+  .public-site--v50 #metodo .method-showcase-card__copy { grid-template-columns: 34px minmax(0,1fr); padding: 9px 10px 10px; gap: 8px; }
+  .public-site--v50 #metodo .method-showcase-card__icon { width: 34px; height: 34px; }
+  .public-site--v50 #metodo .method-showcase-card__copy h3 { font-size: .84rem; }
+  .public-site--v50 #metodo .method-showcase-card__copy p { font-size: .63rem; line-height: 1.34; }
+  .public-site--v50 .team-audit-card--portrait { min-height: 220px; grid-template-columns: 112px minmax(0,1fr); padding: 11px; gap: 13px; }
+  .public-site--v50 .team-audit-card--portrait p { font-size: .69rem; }
+}
+
+@media (max-width: 1080px) {
+  .public-site--v50 #metodo .method-showcase-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .public-site--v50 .team-audit-grid--portraits { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 760px) {
+  .public-site--v50 #metodo .method-showcase-grid { grid-template-columns: 1fr; }
+  .public-site--v50 #metodo .method-showcase-card__media { aspect-ratio: 16 / 9; }
+  .public-site--v50 .team-audit-card--portrait { grid-template-columns: 96px minmax(0,1fr); min-height: 210px; }
+}

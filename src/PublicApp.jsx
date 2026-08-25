@@ -10,6 +10,8 @@ import methodUnderstandImage from './assets/images/lab-showcase/method-entender.
 import methodPrioritizeImage from './assets/images/lab-showcase/method-priorizar.webp';
 import methodInterveneImage from './assets/images/lab-showcase/method-intervenir.webp';
 import methodMeasureImage from './assets/images/lab-showcase/method-medir.webp';
+import teamFranciscaImage from './assets/images/team/francisca-carrasco.webp';
+import teamBenjaminImage from './assets/images/team/benjamin-sepulveda.webp';
 import { contact } from './data.js';
 import {
   activeOfferUseCases,
@@ -28,6 +30,7 @@ const PUBLIC_EVENTS_KEY = 'metamorfosis-public-events';
 
 const pillarIllustrations = [pillarOperationImage, pillarPeopleImage, pillarSystemsImage];
 const methodIllustrations = [methodUnderstandImage, methodPrioritizeImage, methodInterveneImage, methodMeasureImage];
+const teamPortraits = { 'Francisca Carrasco Marín': teamFranciscaImage, 'Benjamín Sepúlveda': teamBenjaminImage };
 
 
 function getVisitorSessionId() {
@@ -328,7 +331,7 @@ function QuoteForm() {
 
   const prepareFormalContact = async (event) => {
     event?.preventDefault();
-    if (!isValid || status.type === 'loading' || status.type === 'success') return;
+    if (!isValid || status.type === 'loading' || status.type === 'success' || status.saved) return;
     trackPublicEvent('formal_request_prepared', { label: form.serviceType, serviceTitle: form.serviceType, section: 'contacto' });
     setStatus({ type: 'loading', message: 'Registrando la solicitud y preparando el correo…' });
     const slowNotice = window.setTimeout(() => {
@@ -345,7 +348,7 @@ function QuoteForm() {
         return;
       }
       if (response.saved && !response.emailSent) {
-        setStatus({ type: 'warning', message: response.message || 'La solicitud quedó registrada en Metamorfosis OS, pero el correo institucional no pudo confirmarse. Puedes usar el envío manual sin volver a completar el formulario.' });
+        setStatus({ type: 'warning', saved: true, message: response.message || 'La solicitud quedó registrada en Metamorfosis OS, pero el correo institucional no pudo confirmarse. Puedes usar el envío manual sin volver a completar el formulario.' });
         trackPublicEvent('formal_request_saved_email_pending', { label: form.serviceType, serviceTitle: form.serviceType, section: 'contacto' });
         return;
       }
@@ -430,7 +433,7 @@ function QuoteForm() {
           <label className="check-line tpr-check"><input type="checkbox" name="consent" checked={form.consent} onChange={update} /> <span>Acepto ser contactado por Metamorfosis Lab para responder esta solicitud.</span></label>
           <div className="quote-step-actions">
             <button type="button" className="button button--ghost-light" onClick={() => setStep(2)}><Icon name="arrow_back" /> Volver</button>
-            <button className="button form-submit" type="submit" disabled={!isValid || status.type === 'loading' || status.type === 'success'}>
+            <button className="button form-submit" type="submit" disabled={!isValid || status.type === 'loading' || status.type === 'success' || status.saved}>
               <Icon name="mail" /> {status.type === 'loading' ? 'Enviando…' : status.type === 'success' ? 'Solicitud enviada' : stepThreeReady ? 'Enviar solicitud formal' : 'Completa los datos'}
             </button>
           </div>
@@ -445,18 +448,21 @@ function QuoteForm() {
 
 function TeamSection() {
   return (
-    <div className="team-audit-grid">
-      {team.map((person) => (
-        <article key={person.name} className="team-audit-card">
-          <span className="team-audit-card__avatar" aria-hidden="true">{person.initials}</span>
+    <div className="team-audit-grid team-audit-grid--portraits">
+      {team.map((person, index) => (
+        <article key={person.name} className="team-audit-card team-audit-card--portrait">
+          <div className="team-audit-card__portrait">
+            <img src={teamPortraits[person.name]} alt={`Retrato ilustrado de ${person.name}`} loading="lazy" />
+          </div>
           <div className="team-audit-card__body">
             <div className="team-audit-card__copy">
+              <span className="team-audit-card__eyebrow">Equipo Metamorfosis</span>
               <h3>{person.name}</h3>
               <strong>{person.role}</strong>
             </div>
             <div className="team-audit-card__meta" aria-label={`Perfil de ${person.name}`}>
               <span className="team-audit-card__tag team-audit-card__tag--profession"><Icon name="briefcase" /> {person.profession}</span>
-              <span className="team-audit-card__tag team-audit-card__tag--institution"><Icon name="menu_book" /> {person.institution}</span>
+              <span className="team-audit-card__tag team-audit-card__tag--institution"><Icon name="school" /> {person.institution}</span>
             </div>
             <p>{person.text}</p>
           </div>
@@ -550,25 +556,31 @@ function PublicSite() {
             <SectionHeading
               kicker="Método"
               title="Entender, priorizar, intervenir, medir y transferir"
-              description="Cada etapa reduce incertidumbre y acota la intervención: comprendemos el sistema, priorizamos lo crítico, implementamos lo suficiente y dejamos evidencia para continuar."
+              description="Cuatro etapas para reducir incertidumbre, intervenir con la complejidad justa y dejar capacidad en la organización."
             />
-            <div className="audit-roadmap audit-roadmap--showcase" aria-label="Etapas del método Metamorfosis">
+            <div className="method-showcase-grid" aria-label="Etapas del método Metamorfosis">
               {processRoadmap.map((item, index) => (
-                <article key={item.title} className="audit-roadmap__card">
-                  <div className="audit-roadmap__media">
+                <article key={item.title} className="method-showcase-card">
+                  <div className="method-showcase-card__media">
                     <img src={methodIllustrations[index]} alt={`Etapa ${index + 1}: ${item.title}`} loading="lazy" />
-                    <span>{String(index + 1).padStart(2, '0')}</span>
+                    <span className="method-showcase-card__number">{String(index + 1).padStart(2, '0')}</span>
                   </div>
-                  <div className="audit-roadmap__copy">
-                    <strong>{item.title}</strong>
-                    <p>{item.text}</p>
+                  <div className="method-showcase-card__copy">
+                    <span className="method-showcase-card__icon"><Icon name={item.icon} /></span>
+                    <div>
+                      <h3>{item.title}</h3>
+                      <p>{item.text}</p>
+                    </div>
                   </div>
                 </article>
               ))}
             </div>
-            <div className="audit-principles audit-principles--v50">
+            <div className="method-principles-grid" aria-label="Principios del método">
               {methodPrinciples.map((item) => (
-                <article key={item.title}><Icon name={item.icon} /><div><strong>{item.title}</strong><p>{item.text}</p></div></article>
+                <article key={item.title}>
+                  <span><Icon name={item.icon} /></span>
+                  <div><strong>{item.title}</strong><p>{item.text}</p></div>
+                </article>
               ))}
             </div>
           </div>

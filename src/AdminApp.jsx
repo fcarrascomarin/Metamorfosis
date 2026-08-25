@@ -75,11 +75,14 @@ function Brand({ compact = false, mode = 'business' }) {
   );
 }
 
-function WorkspaceSwitch({ mode, onSwitch }) {
+function WorkspaceSwitch({ mode }) {
+  const remember = (view) => {
+    try { window.localStorage.setItem('metamorfosis-admin-view', view); } catch { /* navegación igualmente funciona */ }
+  };
   return (
     <div className="workspace-switch" role="tablist" aria-label="Cambiar área del sistema">
-      <a href="#dashboard" role="tab" aria-selected={mode === 'business'} className={mode === 'business' ? 'is-active' : ''} onClick={() => onSwitch('business')}><Icon name="briefcase" /><span>Empresa</span></a>
-      <a href="#family-overview" role="tab" aria-selected={mode === 'family'} className={mode === 'family' ? 'is-active' : ''} onClick={() => onSwitch('family')}><Icon name="home" /><span>Familiar</span></a>
+      <a href="/?workspace=business#dashboard" role="tab" aria-selected={mode === 'business'} className={mode === 'business' ? 'is-active' : ''} onClick={() => remember('dashboard')}><Icon name="briefcase" /><span>Empresa</span></a>
+      <a href="/?workspace=family#family-overview" role="tab" aria-selected={mode === 'family'} className={mode === 'family' ? 'is-active' : ''} onClick={() => remember('family-overview')}><Icon name="home" /><span>Familiar</span></a>
     </div>
   );
 }
@@ -1241,7 +1244,6 @@ function AdminShell({ session, onLogout }) {
   };
   const mode = FAMILY_KEYS.has(active) ? 'family' : 'business';
   const menuGroups = mode === 'family' ? FAMILY_MENU_GROUPS : BUSINESS_MENU_GROUPS;
-  const switchWorkspace = (nextMode) => navigate(nextMode === 'family' ? 'family-overview' : 'dashboard');
   const openTask = (defaults = {}) => setTaskDraft({ id: '', date: osState.selectedDate, start: '09:00', end: '10:00', owner: 'Francisca', topic: 'Metamorfosis', title: '', explain: '', why: '', done_when: '', status: 'pending', comments: [], ...defaults });
   const saveTask = (task) => { setOsState((current) => ({ ...current, selectedDate: task.date, tasks: current.tasks.some((item) => item.id === task.id) ? current.tasks.map((item) => item.id === task.id ? task : item) : [...current.tasks, task] })); setTaskDraft(null); };
 
@@ -1275,7 +1277,7 @@ function AdminShell({ session, onLogout }) {
       <a className="skip-link" href="#admin-main">Saltar al contenido del panel</a>
       <header className="admin-header">
         <div className="admin-header__brand"><IconButton icon="menu" label="Abrir menú" className="admin-menu-button" onClick={() => setMenuOpen(true)} /><Brand mode={mode} /></div>
-        <WorkspaceSwitch mode={mode} onSwitch={switchWorkspace} />
+        <WorkspaceSwitch mode={mode} />
         <div className="admin-header__actions">
           <a className="admin-action-button admin-action-button--public" href={PUBLIC_SITE_URL}><Icon name="public" /><span>Sitio público</span></a>
           <IconButton icon="upload" label="Importar respaldo JSON" onClick={() => importRef.current?.click()} />
