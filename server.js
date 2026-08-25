@@ -52,6 +52,24 @@ const contactRecipient = cleanEnv(process.env.CONTACT_TO_EMAIL || 'contacto@meta
 const smtpPass = cleanEnv(process.env.SMTP_PASS || '', 500);
 const smtpPlaceholder = /CLAVE_|APP_PASSWORD|CAMBIAR|PLACEHOLDER|TU[_ -]?CLAVE/i.test(smtpPass);
 const smtpConfigured = Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && smtpPass && !smtpPlaceholder);
+const configuredAdminHash = cleanEnv(process.env.ADMIN_PASSWORD_HASH || '', 300);
+const configuredAdminPassword = cleanEnv(process.env.ADMIN_PASSWORD || '', 500);
+const bcryptHashPattern = /^\$2[aby]\$\d{2}\$[./A-Za-z0-9]{53}$/;
+const adminHashValid = bcryptHashPattern.test(configuredAdminHash);
+const adminAuthMode = adminHashValid ? 'bcrypt' : configuredAdminPassword ? 'environment-secret' : configuredAdminHash ? 'invalid-hash' : 'missing';
+
+function secureStringEqual(a, b) {
+  const digestA = crypto.createHash('sha256').update(String(a || '')).digest();
+  const digestB = crypto.createHash('sha256').update(String(b || '')).digest();
+  return crypto.timingSafeEqual(digestA, digestB);
+}
+
+if (isProduction && adminAuthMode === 'environment-secret') {
+  console.warn('Aviso: ADMIN_PASSWORD está habilitado como secreto de entorno. Funciona para recuperar acceso, pero se recomienda migrar luego a ADMIN_PASSWORD_HASH (bcrypt).');
+}
+if (isProduction && adminAuthMode === 'invalid-hash') {
+  console.warn('Aviso: ADMIN_PASSWORD_HASH existe pero no tiene formato bcrypt válido. El acceso administrativo quedará bloqueado hasta corregirlo o definir ADMIN_PASSWORD.');
+}
 const PUBLIC_SITE_URL = cleanEnv(process.env.PUBLIC_SITE_URL || 'https://metamorfosislab.cl', 300).replace(/\/$/, '');
 const OS_SITE_URL = 'https://os.metamorfosislab.cl';
 const publicOrigins = new Set([
@@ -317,7 +335,7 @@ async function establishSession(req, email, demo) {
 }
 
 app.get('/api/health', (_req, res) => {
-  res.json({ ok: true, database: hasDatabase ? 'configured' : 'development-only', smtp: smtpConfigured ? 'configured' : smtpPlaceholder ? 'placeholder' : 'missing' });
+  res.json({ ok: true, database: hasDatabase ? 'configured' : 'development-only', smtp: smtpConfigured ? 'configured' : smtpPlaceholder ? 'placeholder' : 'missing', adminAuth: adminAuthMode });
 });
 
 app.get('/api/session', (req, res) => {
@@ -335,16 +353,17 @@ app.post('/api/login', loginLimiter, async (req, res) => {
   }
 
   const configuredEmail = clean(process.env.ADMIN_EMAIL || '', 160).toLowerCase();
-  const configuredHash = process.env.ADMIN_PASSWORD_HASH || '';
-  if (!configuredEmail || !configuredHash) {
+  if (!configuredEmail || adminAuthMode === 'missing') {
     return res.status(503).json({ ok: false, message: 'El acceso administrativo aún no está configurado.' });
   }
+  if (adminAuthMode === 'invalid-hash') {
+    return res.status(503).json({ ok: false, message: 'ADMIN_PASSWORD_HASH no tiene formato bcrypt válido. Corrígelo en Render o define temporalmente ADMIN_PASSWORD como secreto de entorno.' });
+  }
 
-  const emailMatches = crypto.timingSafeEqual(
-    Buffer.from(email.padEnd(256).slice(0, 256)),
-    Buffer.from(configuredEmail.padEnd(256).slice(0, 256))
-  );
-  const passwordMatches = await bcrypt.compare(password, configuredHash);
+  const emailMatches = secureStringEqual(email, configuredEmail);
+  const passwordMatches = adminAuthMode === 'bcrypt'
+    ? await bcrypt.compare(password, configuredAdminHash)
+    : secureStringEqual(password, configuredAdminPassword);
   if (!emailMatches || !passwordMatches) {
     return res.status(401).json({ ok: false, message: 'Credenciales incorrectas.' });
   }
