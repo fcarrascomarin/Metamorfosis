@@ -8802,3 +8802,105 @@ textarea::placeholder { color: #7f98ac; }
   .public-site--v49 .quote-wizard textarea,
   .public-site--v49 .quote-wizard select { font-size: 16px; }
 }
+
+
+/* ======================================================================
+   4.9.2 · Retícula editorial y respiración lateral
+   Fondos full-bleed; contenido centrado, más estrecho y consistente.
+   ====================================================================== */
+.public-site--v49 {
+  --v492-content-max: 1120px;
+  --v492-reading-max: 760px;
+  --v492-gutter: clamp(48px, 10vw, 192px);
+}
+
+/* El paisaje visual puede ocupar todo el viewport; el contenido no. */
+.public-site--v49 .shell {
+  width: min(var(--v492-content-max), calc(100% - var(--v492-gutter)));
+  margin-inline: auto;
+}
+
+/* Ritmo horizontal: las escenas conservan aire incluso cuando el monitor crece. */
+.public-site--v49 .audit-hero__grid,
+.public-site--v49 .audit-scene__content,
+.public-site--v49 .audit-contact__grid,
+.public-site--v49 .audit-footer__grid,
+.public-site--v49 .site-footer__bottom {
+  max-width: var(--v492-content-max);
+  margin-inline: auto;
+}
+
+/* Hero: mayor equilibrio entre mensaje y bloque lateral. */
+.public-site--v49 .audit-hero__grid {
+  grid-template-columns: minmax(0, 1.08fr) minmax(270px, .54fr);
+  gap: clamp(42px, 5vw, 72px);
+}
+.public-site--v49 .audit-hero__copy { max-width: 650px; }
+.public-site--v49 .audit-hero__copy h1 { max-width: 14.5ch; }
+.public-site--v49 .audit-hero__aside { max-width: 330px; padding: 22px; }
+
+/* Los bloques densos no utilizan automáticamente todo el ancho disponible. */
+.public-site--v49 .audit-pillar-grid { max-width: 1030px; margin-inline: auto; }
+.public-site--v49 .audit-entry-strip { max-width: 1030px; margin-inline: auto; margin-top: 18px; }
+.public-site--v49 .audit-roadmap { max-width: 1060px; margin-inline: auto; }
+.public-site--v49 .audit-principles { max-width: 980px; margin-inline: auto; }
+.public-site--v49 .team-audit-grid { max-width: 900px; }
+.public-site--v49 .audit-team-note { max-width: 720px; }
+.public-site--v49 .audit-contact__grid { max-width: 1040px; }
+
+/* Líneas de lectura más cómodas y sin cortes tipográficos agresivos. */
+.public-site--v49 h1,
+.public-site--v49 h2,
+.public-site--v49 h3,
+.public-site--v49 .button,
+.public-site--v49 .site-nav button,
+.public-site--v49 .site-nav a {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+.public-site--v49 .section-heading { max-width: var(--v492-reading-max); }
+.public-site--v49 .section-heading p { max-width: 64ch; }
+
+/* Monitores anchos: más margen, no tarjetas más largas. */
+@media (min-width: 1440px) {
+  .public-site--v49 {
+    --v492-content-max: 1100px;
+    --v492-gutter: clamp(160px, 18vw, 360px);
+  }
+  .public-site--v49 .audit-hero__grid { max-width: 1080px; }
+  .public-site--v49 .audit-contact__grid { max-width: 1000px; }
+}
+
+/* Notebook: preservamos respiración sin sacrificar área útil. */
+@media (min-width: 861px) and (max-width: 1199px) {
+  .public-site--v49 {
+    --v492-content-max: 1040px;
+    --v492-gutter: clamp(44px, 7vw, 88px);
+  }
+  .public-site--v49 .audit-hero__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(250px, .5fr);
+    gap: 34px;
+  }
+  .public-site--v49 .audit-hero__aside { max-width: 310px; }
+}
+
+/* Tablet: margen cómodo, pero la composición ya pasa a una columna. */
+@media (max-width: 860px) {
+  .public-site--v49 {
+    --v492-gutter: 32px;
+  }
+  .public-site--v49 .shell {
+    width: min(680px, calc(100% - var(--v492-gutter)));
+  }
+}
+
+/* Móvil: 16px por lado es el mínimo funcional; 20px en teléfonos medianos. */
+@media (max-width: 620px) {
+  .public-site--v49 { --v492-gutter: 32px; }
+  .public-site--v49 .shell { width: calc(100% - var(--v492-gutter)); }
+}
+@media (max-width: 420px) {
+  .public-site--v49 { --v492-gutter: 24px; }
+  .public-site--v49 .shell { width: calc(100% - var(--v492-gutter)); }
+}
