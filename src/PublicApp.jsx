@@ -3,6 +3,8 @@ import Icon from './components/Icon.jsx';
 import heroImage from './assets/images/jardin/hero-jardin.webp';
 import mapImage from './assets/images/jardin/mapa-transformacion.webp';
 import contactImage from './assets/images/jardin/contacto-jardin.webp';
+import franciscaTeamImage from './assets/images/team/francisca-carrasco.jpg';
+import benjaminTeamImage from './assets/images/team/benjamin-sepulveda.jpg';
 import { contact } from './data.js';
 import {
   activeOfferUseCases,
@@ -20,7 +22,7 @@ const PUBLIC_EVENTS_KEY = 'metamorfosis-public-events';
 
 const pillarIllustrations = ['/pillar-operacion.webp', '/pillar-personas.webp', '/pillar-sistemas.webp'];
 const methodIllustrations = ['/method-entender.webp', '/method-priorizar.webp', '/method-intervenir.webp', '/method-medir.webp'];
-const teamPortraits = { 'Francisca Carrasco Marín': '/francisca-carrasco.jpg', 'Benjamín Sepúlveda': '/benjamin-sepulveda.jpg' };
+const teamPortraits = { 'Francisca Carrasco Marín': franciscaTeamImage, 'Benjamín Sepúlveda': benjaminTeamImage };
 
 
 function getVisitorSessionId() {
@@ -442,7 +444,7 @@ function TeamSection() {
       {team.map((person, index) => (
         <article key={person.name} className="team-audit-card team-audit-card--portrait">
           <div className="team-audit-card__portrait">
-            <img src={teamPortraits[person.name]} alt={`Retrato ilustrado de ${person.name}`} loading="lazy" />
+            <img src={teamPortraits[person.name]} alt={`Imagen asociada al perfil de ${person.name}`} loading="lazy" />
           </div>
           <div className="team-audit-card__body">
             <div className="team-audit-card__copy">

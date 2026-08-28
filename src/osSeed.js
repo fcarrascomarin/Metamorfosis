@@ -1,7 +1,7 @@
 import { createClubVeganExpediente } from './consultingTools.js';
 
 const iso = (date) => date.toISOString().slice(0, 10);
-export const OS_SCHEMA_VERSION = '10.1';
+export const OS_SCHEMA_VERSION = '10.2';
 
 const WEEK = {
   monday: '2026-08-24',
@@ -107,6 +107,24 @@ export function createDefaultOsState() {
       'El registro de horas es obligatorio para conocer costo, margen y viabilidad de cada experimento.'
     ],
     expedientes: [createClubVeganExpediente()],
+    repository: {
+      selectedExpedienteId: 'EXP-001',
+      documentsByExpediente: {
+        'EXP-001': {
+          'propuesta-comercial': {
+            status: 'Bloqueado', updatedAt: '2026-08-28',
+            content: 'No desarrollar todavía una propuesta formal. Estado real: Club Vegan solo indicó que le gustó el mockup. El 27-08 se envió un mensaje comentando que Metamorfosis tiene un servicio para pymes a bajo costo por si le interesa; al 28-08 ese mensaje aún no ha sido visto. Esperar lectura y respuesta antes de ofertar.'
+          },
+          'cotizacion': { status: 'Pendiente', updatedAt: '', content: 'No cotizar hasta que exista interés explícito en avanzar y alcance mínimo validado.' },
+          'minuta-reunion': { status: 'Pendiente', updatedAt: '', content: 'Se habilitará cuando exista una conversación de utilidad real con Club Vegan.' },
+          'plan-trabajo': { status: 'Pendiente', updatedAt: '', content: 'Se completa solo después de aceptación comercial.' },
+          'informe-avance': { status: 'No aplica', updatedAt: '', content: 'No corresponde mientras el piloto no esté contratado.' },
+          'acta-cierre': { status: 'Pendiente', updatedAt: '', content: 'Se utilizará al cerrar el piloto, haya o no continuidad, para registrar aprendizaje y entregables.' },
+          'mapa-transformacion': { status: 'No aplica', updatedAt: '', content: 'Vitrina Pyme es un experimento acotado. No convertirlo en diagnóstico integral salvo que aparezca una necesidad distinta y contratada.' },
+          'tiempo-rentabilidad': { status: 'En curso', updatedAt: '2026-08-28', content: 'Registrar desde el 28-08 todas las horas reales asociadas a Club Vegan. Hubo trabajo entre el 25 y 27 de agosto, pero no existe duración exacta registrada; no inventar horas históricas.' }
+        }
+      }
+    },
     fieldRegister: [
       { id: 'CAMPO-001', actor: 'Víctor Erices', organization: 'RUDEL', type: 'Informante', role: 'Tecnología y estandarización', access: 'Alta', priority: 'Muy alta', status: 'Por agendar', commercial: 'No prospecto', nextAction: 'Enviar mensaje y coordinar visita/reunión según su disponibilidad.', context: 'Encargado de Desarrollo y Tecnologías de la Información. Quiere mostrar lo desarrollado en RUDEL, cómo han estandarizado procesos y aparentemente automatizaciones con IA.', limit: 'Ir a aprender. No transformar la reunión en presentación comercial ni pedir acceso a clientes.' },
       { id: 'CAMPO-002', actor: 'Jorge Beltrán Torres', organization: 'CMPC · almacenamiento zona costa Biobío', type: 'Informante', role: 'Mirada de mandante', access: 'Alta', priority: 'Muy alta', status: 'Por agendar', commercial: 'No prospecto', nextAction: 'Enviar mensaje y coordinar llamada/videollamada de 30–45 minutos.', context: 'Relación cercana por amistad de años con el padre de Benjamín y cariño hacia Benjamín. Puede aportar patrones generales sobre exigencias, proveedores y fricciones.', limit: 'No pedir información confidencial, nombres de proveedores ni acceso comercial.' },
@@ -117,7 +135,7 @@ export function createDefaultOsState() {
       { id: 'CAMPO-007', actor: 'Panadería Nietos', organization: 'Laja', type: 'Radar', role: 'Empresa familiar', access: 'Alta', priority: 'Baja', status: 'No intervenir todavía', commercial: 'Prospecto condicionado', nextAction: 'Mantener en radar hasta que exista necesidad declarada y disposición a pagar.', context: 'Empresa de un tío de Francisca. Históricamente llegó a dos sucursales y hoy aparentemente opera una; existen señales percibidas de retroceso administrativo.', limit: 'Evitar síndrome de rescate y diagnóstico unilateral. El dueño debe reconocer el problema y querer cambiar.' },
       { id: 'CAMPO-008', actor: 'Mario Cárdenas', organization: 'Contratista de jardinería/ornato', type: 'Informante', role: 'Ventana al contratista pequeño', access: 'Media', priority: 'Media', status: 'Información insuficiente', commercial: 'No prospectar por ahora', nextAction: 'Solo si surge una conversación natural, aprender cómo vive exigencias de mandantes, personal, contratos y operación.', context: 'Vínculo familiar indirecto. Se sabe que ha trabajado con personal a cargo y actualmente opera ornato/jardinería en el aeropuerto de Concepción; nombre y tamaño de empresa no confirmados.', limit: 'No asumir apertura comercial ni reactivar conversaciones antiguas como venta.' },
       { id: 'CAMPO-009', actor: 'Rodrigo Díaz Morales', organization: 'Empresas Díaz / Transportes MDM', type: 'Exclusión', role: 'No-go comercial', access: 'Conocido', priority: 'Fuera', status: 'Descartado', commercial: 'No prospectar', nextAction: 'Ninguno salvo evidencia material futura que cambie riesgos.', context: 'Existen problemas internos potencialmente abordables, pero el equipo desconfía de su capacidad de pago y honestidad.', limit: 'La capacidad técnica de ayudar no compensa riesgo de cobro y confianza.' },
-      { id: 'CAMPO-010', actor: 'Club Vegan / Emporio', organization: 'Concepción', type: 'Piloto comercial', role: 'Vitrina Pyme · B2C/B2B pequeño', access: 'Directa', priority: 'En curso', status: 'En espera de lectura', commercial: 'Piloto potencial $50.000 + dominio', nextAction: 'No intervenir. Esperar que vea y responda el mensaje enviado el 27-08 antes de cualquier seguimiento.', context: 'Respondió positivamente al mockup ("wau estaa hermoso" + Me gusta). Francisca envió ayer el mensaje final explicando la línea piloto/servicio para pymes a bajo costo; al 28-08 ese último mensaje aún no ha sido visto.', limit: 'La reacción estética no valida necesidad ni compra. No enviar otro mensaje ni nuevo mockup mientras siga sin leer.' }
+      { id: 'CAMPO-010', actor: 'Club Vegan / Emporio', organization: 'Concepción', type: 'Piloto comercial', role: 'Vitrina Pyme · B2C/B2B pequeño', access: 'Directa', priority: 'En curso', status: 'En espera de lectura', commercial: 'Piloto potencial $50.000 + dominio', nextAction: 'No intervenir. Esperar que vea y responda el mensaje enviado el 27-08 antes de cualquier seguimiento.', context: 'La única señal validada hasta ahora es estética: respondió positivamente al mockup ("wau estaa hermoso" + Me gusta). El 27-08 Francisca envió un mensaje comentando que Metamorfosis tiene un servicio para pymes a bajo costo por si le interesa; al 28-08 ese mensaje aún no ha sido visto.', limit: 'La reacción estética no valida necesidad ni compra. No enviar otro mensaje ni nuevo mockup mientras siga sin leer.' }
     ],
     inbox: [],
     family: {

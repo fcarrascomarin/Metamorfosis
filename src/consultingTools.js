@@ -95,7 +95,7 @@ export function createClubVeganExpediente() {
     status: 'En espera',
     openedAt: '2026-08-24',
     lastUpdate: '2026-08-27',
-    notes: 'Estado al 28-08-2026: el mockup generó una reacción positiva (\"wau estaa hermoso\" + Me gusta). El 27-08 Francisca envió el mensaje de seguimiento explicando que existe una línea piloto/servicio para pymes a bajo costo y delimitando la Vitrina Pyme. Ese último mensaje todavía no ha sido visto. Próximo paso: esperar lectura/respuesta; no insistir ni enviar otro mockup.',
+    notes: 'Estado al 28-08-2026: la única señal validada es estética: el mockup generó una reacción positiva (\"wau estaa hermoso\" + Me gusta). El 27-08 Francisca envió un mensaje comentando que Metamorfosis tiene un servicio para pymes a bajo costo por si le interesa. Ese mensaje todavía no ha sido visto. Próximo paso: esperar lectura/respuesta; no insistir, no enviar otro mockup y no preparar una propuesta formal antes de interés explícito.',
     tools: {
       oportunidad: {
         status: 'Completa',
@@ -138,7 +138,7 @@ export function createClubVeganExpediente() {
           costOfDoingNothing: '',
           disposition: '',
           budget: '',
-          recommendedOffer: 'Vitrina Pyme como línea piloto/servicio de bajo costo para pymes. La reacción al mockup fue positiva, pero la necesidad y compra siguen sin validar.',
+          recommendedOffer: 'Posible Vitrina Pyme como servicio piloto de bajo costo para pymes. Por ahora solo existe agrado por el mockup; el mensaje que menciona el servicio aún no ha sido visto y no hay necesidad ni compra validadas.',
           nextStep: 'Esperar que vea el mensaje enviado el 27-08 y responda. Solo entonces avanzar a conversación de utilidad, condiciones y eventual propuesta.'
         }
       }

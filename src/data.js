@@ -80,3 +80,92 @@ export const documents = {
   Metodológicos: ['Ficha de oportunidad', 'Investigación previa', 'Mapa de Transformación y Activos', 'Matriz de riesgos', 'Mapa de mercado y clientes', 'Propuesta de valor y posicionamiento', 'Ficha de levantamiento ergonómico inicial', 'Registro de tiempo y rentabilidad', 'Registro de campo comercial'],
   'Expedientes comerciales': ['Ficha de oportunidad', 'Perfil preliminar de empresa', 'Pauta de conversación inicial']
 };
+
+
+export const repositoryTemplates = [
+  {
+    id: 'ficha-oportunidad', category: 'Expediente comercial', title: 'Ficha de oportunidad', icon: 'fact_check', sourceTool: 'oportunidad',
+    description: 'Filtro inicial para decidir si corresponde invertir tiempo y abrir una conversación. Separa señales, hipótesis, urgencia, capacidad de pago y encaje con Metamorfosis.',
+    activate: 'Al detectar una oportunidad y antes de investigar en profundidad.'
+  },
+  {
+    id: 'perfil-preliminar', category: 'Expediente comercial', title: 'Perfil preliminar de empresa', icon: 'domain', sourceTool: 'perfil',
+    description: 'Ordena hechos públicos, observaciones e hipótesis antes del primer contacto. Sirve para llegar con contexto sin convertir información visible en diagnóstico.',
+    activate: 'Cuando la oportunidad supera el filtro inicial.'
+  },
+  {
+    id: 'pauta-conversacion', category: 'Expediente comercial', title: 'Pauta de conversación inicial', icon: 'forum', sourceTool: 'conversacion',
+    description: 'Registra dolor real, urgencia, decisor, evidencia, costo de no actuar y próximo paso. Debe terminar en avanzar, pedir evidencia, reformular o cerrar.',
+    activate: 'Durante y justo después de la primera conversación.'
+  },
+  {
+    id: 'investigacion-previa', category: 'Expediente comercial', title: 'Investigación previa', icon: 'search',
+    description: 'Bitácora breve de fuentes, hechos comprobados, preguntas abiertas y límites de la investigación. Evita mezclar evidencia externa con inferencias internas.',
+    activate: 'Solo cuando una oportunidad justifica preparación adicional.'
+  },
+  {
+    id: 'minuta-reunion', category: 'Operativos', title: 'Minuta de reunión', icon: 'description',
+    description: 'Registro ejecutivo de una conversación: asistentes, temas, decisiones, compromisos, evidencia solicitada y siguiente acción.',
+    activate: 'Después de toda reunión que produzca una decisión o compromiso.'
+  },
+  {
+    id: 'plan-trabajo', category: 'Operativos', title: 'Plan de trabajo', icon: 'calendar_month',
+    description: 'Define objetivo, alcance, fases, responsables, hitos, entregables y criterios de cierre de una intervención ya acordada.',
+    activate: 'Después de aceptación comercial y antes de ejecutar.'
+  },
+  {
+    id: 'informe-avance', category: 'Operativos', title: 'Informe de avance', icon: 'monitoring',
+    description: 'Síntesis de trabajo ejecutado, evidencia obtenida, decisiones pendientes, riesgos y próximos hitos. Debe ser breve y accionable.',
+    activate: 'En intervenciones que requieren más de un hito o reunión de seguimiento.'
+  },
+  {
+    id: 'propuesta-comercial', category: 'Administrativos', title: 'Propuesta comercial', icon: 'request_quote',
+    description: 'Explica problema reconocido, alcance, entregables, límites, plazo y valor sin regalar el diagnóstico dentro de la propuesta.',
+    activate: 'Solo cuando existe necesidad reconocida y permiso para ofertar.'
+  },
+  {
+    id: 'cotizacion', category: 'Administrativos', title: 'Cotización', icon: 'payments',
+    description: 'Documento económico con precio, condiciones, vigencia, costos incluidos y forma de pago. Debe corresponder a un alcance ya definido.',
+    activate: 'Cuando la contraparte solicita o acepta revisar condiciones económicas.'
+  },
+  {
+    id: 'confidencialidad', category: 'Administrativos', title: 'Acuerdo de confidencialidad', icon: 'lock',
+    description: 'Protege información sensible cuando el levantamiento requiere acceso a datos, procesos o antecedentes que no deben circular fuera del proyecto.',
+    activate: 'Solo si el nivel de información lo justifica.'
+  },
+  {
+    id: 'acta-cierre', category: 'Administrativos', title: 'Acta de cierre', icon: 'task_alt',
+    description: 'Deja constancia de entregables, transferencia, pendientes aceptados y cierre de responsabilidades al terminar una intervención.',
+    activate: 'Al completar una intervención remunerada.'
+  },
+  {
+    id: 'mapa-transformacion', category: 'Metodológicos', title: 'Mapa de Transformación y Activos', icon: 'conversion_path',
+    description: 'Diagnóstico estructurado de situación actual, tensiones, activos, prioridades y ruta de transformación. Es una pieza pagada, no una propuesta gratuita.',
+    activate: 'Cuando el cliente contrata una etapa de diagnóstico.'
+  },
+  {
+    id: 'matriz-riesgos', category: 'Metodológicos', title: 'Matriz de riesgos', icon: 'warning',
+    description: 'Ordena riesgos operacionales, humanos, comerciales, tecnológicos y de implementación según probabilidad, impacto y control posible.',
+    activate: 'Cuando la intervención implica decisiones con riesgo material.'
+  },
+  {
+    id: 'mapa-mercado', category: 'Metodológicos', title: 'Mapa de mercado y clientes', icon: 'hub',
+    description: 'Representa segmentos, compradores, canales, presiones externas y relaciones relevantes para comprender dónde se genera valor y dónde se pierde.',
+    activate: 'Cuando el problema exige comprender mercado, mandantes o canales.'
+  },
+  {
+    id: 'propuesta-valor', category: 'Metodológicos', title: 'Propuesta de valor y posicionamiento', icon: 'campaign',
+    description: 'Traduce capacidades y activos de la organización a una propuesta comprensible para un comprador específico, sin reducir la empresa a marketing superficial.',
+    activate: 'Cuando existe una transición comercial o de posicionamiento real.'
+  },
+  {
+    id: 'ergonomia-inicial', category: 'Metodológicos', title: 'Ficha de levantamiento ergonómico inicial', icon: 'accessibility_new',
+    description: 'Registro opcional de condiciones de trabajo, carga, interacción persona-sistema y riesgos de uso cuando la intervención afecta puestos o rutinas.',
+    activate: 'Solo en proyectos donde la dimensión ergonómica sea material.'
+  },
+  {
+    id: 'tiempo-rentabilidad', category: 'Metodológicos', title: 'Registro de tiempo y rentabilidad', icon: 'schedule', navigateTo: 'metrics',
+    description: 'Conecta horas, responsable, trabajo facturable/no facturable, costos y honorarios para conocer el margen real de cada experimento.',
+    activate: 'Desde el primer minuto de trabajo asociado a una oportunidad o cliente.'
+  }
+];
