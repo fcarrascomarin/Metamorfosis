@@ -178,6 +178,109 @@ function migrateOsState(candidate, fallback) {
   };
 }
 
+
+function safeText(value, fallback = '') {
+  if (value === null || value === undefined) return fallback;
+  if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') return String(value);
+  if (typeof value === 'object') return safeText(value.title ?? value.name ?? value.text ?? value.label, fallback);
+  return fallback;
+}
+
+function safeObject(value) {
+  return value && typeof value === 'object' && !Array.isArray(value) ? value : {};
+}
+
+function safeArray(value) {
+  return Array.isArray(value) ? value : [];
+}
+
+function normalizeFamilyState(rawFamily, fallbackFamily) {
+  const family = safeObject(rawFamily);
+  const cycle = { ...fallbackFamily.cycle, ...safeObject(family.cycle) };
+  const homeRaw = safeObject(family.home);
+  return {
+    ...fallbackFamily,
+    ...family,
+    phase: safeText(family.phase, fallbackFamily.phase),
+    phaseNote: safeText(family.phaseNote, fallbackFamily.phaseNote),
+    weekLabel: safeText(family.weekLabel, fallbackFamily.weekLabel),
+    wellbeing: (Array.isArray(family.wellbeing) ? family.wellbeing : fallbackFamily.wellbeing).map((raw) => {
+      const item = safeObject(raw);
+      return {
+        ...item,
+        id: safeText(item.id) || crypto.randomUUID(),
+        name: safeText(item.name, 'Persona'),
+        area: safeText(item.area),
+        status: safeText(item.status, 'Bien'),
+        load: safeText(item.load, 'Media'),
+        note: safeText(item.note)
+      };
+    }),
+    weeklyActions: (Array.isArray(family.weeklyActions) ? family.weeklyActions : fallbackFamily.weeklyActions).map((raw) => {
+      const item = safeObject(raw);
+      return {
+        ...item,
+        id: safeText(item.id) || crypto.randomUUID(),
+        owner: safeText(item.owner, 'Compartido'),
+        title: safeText(item.title, 'Acción pendiente'),
+        load: safeText(item.load, 'Media'),
+        status: safeText(item.status, 'pending')
+      };
+    }),
+    workFronts: (Array.isArray(family.workFronts) ? family.workFronts : fallbackFamily.workFronts).map((raw) => {
+      const item = safeObject(raw);
+      return {
+        ...item,
+        id: safeText(item.id) || crypto.randomUUID(),
+        name: safeText(item.name, 'Frente familiar'),
+        leader: safeText(item.leader),
+        state: safeText(item.state, 'Activo'),
+        next: safeText(item.next),
+        limit: safeText(item.limit)
+      };
+    }),
+    cycle: {
+      ...cycle,
+      name: safeText(cycle.name, fallbackFamily.cycle.name),
+      startDate: safeText(cycle.startDate),
+      endDate: safeText(cycle.endDate),
+      nextIncomeLabel: safeText(cycle.nextIncomeLabel),
+      nextIncomeDate: safeText(cycle.nextIncomeDate),
+      nextIncomeStatus: safeText(cycle.nextIncomeStatus, fallbackFamily.cycle.nextIncomeStatus),
+      notes: safeText(cycle.notes)
+    },
+    home: {
+      ...fallbackFamily.home,
+      ...homeRaw,
+      phase: safeText(homeRaw.phase, fallbackFamily.home.phase),
+      intervention: safeText(homeRaw.intervention, fallbackFamily.home.intervention),
+      rule: safeText(homeRaw.rule, fallbackFamily.home.rule),
+      checklist: (Array.isArray(homeRaw.checklist) ? homeRaw.checklist : fallbackFamily.home.checklist).map((raw) => {
+        const item = safeObject(raw);
+        return {
+          ...item,
+          id: safeText(item.id) || crypto.randomUUID(),
+          title: safeText(item.title, 'Pendiente del hogar'),
+          status: safeText(item.status, 'pending')
+        };
+      })
+    },
+    inventory: (Array.isArray(family.inventory) ? family.inventory : fallbackFamily.inventory).map((raw) => {
+      const item = safeObject(raw);
+      return {
+        ...item,
+        id: safeText(item.id) || crypto.randomUUID(),
+        title: safeText(item.title, 'Elemento familiar'),
+        area: safeText(item.area, 'Familia'),
+        status: safeText(item.status, 'Próximo')
+      };
+    }),
+    exclusions: (Array.isArray(family.exclusions) ? family.exclusions : fallbackFamily.exclusions)
+      .map((item) => safeText(item))
+      .filter(Boolean)
+  };
+}
+
 function hydrateState(candidate) {
   const fallback = createDefaultOsState();
   const migrated = migrateOsState(candidate, fallback);
@@ -198,24 +301,10 @@ function hydrateState(candidate) {
       entries: (Array.isArray(candidate.timeTracking?.entries) ? candidate.timeTracking.entries : fallback.timeTracking.entries).map(normalizeId)
     },
     fronts: (Array.isArray(candidate.fronts) ? candidate.fronts : fallback.fronts).map(normalizeId),
-    decisions: Array.isArray(candidate.decisions) ? candidate.decisions : fallback.decisions,
+    decisions: (Array.isArray(candidate.decisions) ? candidate.decisions : fallback.decisions).map((item) => safeText(item)).filter(Boolean),
     inbox: (Array.isArray(candidate.inbox) ? candidate.inbox : fallback.inbox).map(normalizeId),
     expedientes: Array.isArray(candidate.expedientes) ? candidate.expedientes : fallback.expedientes,
-    family: {
-      ...fallback.family,
-      ...(candidate.family || {}),
-      wellbeing: (Array.isArray(candidate.family?.wellbeing) ? candidate.family.wellbeing : fallback.family.wellbeing).map(normalizeId),
-      weeklyActions: (Array.isArray(candidate.family?.weeklyActions) ? candidate.family.weeklyActions : fallback.family.weeklyActions).map(normalizeId),
-      workFronts: (Array.isArray(candidate.family?.workFronts) ? candidate.family.workFronts : fallback.family.workFronts).map(normalizeId),
-      cycle: { ...fallback.family.cycle, ...(candidate.family?.cycle || {}) },
-      home: {
-        ...fallback.family.home,
-        ...(candidate.family?.home || {}),
-        checklist: (Array.isArray(candidate.family?.home?.checklist) ? candidate.family.home.checklist : fallback.family.home.checklist).map(normalizeId)
-      },
-      inventory: (Array.isArray(candidate.family?.inventory) ? candidate.family.inventory : fallback.family.inventory).map(normalizeId),
-      exclusions: Array.isArray(candidate.family?.exclusions) ? candidate.family.exclusions : fallback.family.exclusions
-    }
+    family: normalizeFamilyState(candidate.family, fallback.family)
   };
 }
 
@@ -431,7 +520,7 @@ const FAMILY_LOADS = ['Ligera', 'Media', 'Alta'];
 const FAMILY_INVENTORY_STATES = ['Activo', 'Próximo', 'Esperando condición', 'Pausado', 'Futuro'];
 const FAMILY_FRONT_STATES = ['Activo', 'Preparar', 'Cierre', 'Validación', 'Esperando', 'Pausado'];
 
-function FamilyView({ osState, setOsState }) {
+function FamilyView({ osState, setOsState, section = 'family-overview' }) {
   const family = osState.family;
   const [actionForm, setActionForm] = useState({ owner: 'Benjamín', title: '', load: 'Media' });
   const [homeItem, setHomeItem] = useState('');
@@ -1050,8 +1139,8 @@ function AdminShell({ session, onLogout }) {
   const [active, setActive] = useState(() => {
     const hashView = window.location.hash.replace(/^#/, '');
     const queryWorkspace = new URLSearchParams(window.location.search).get('workspace');
-    const stored = window.localStorage.getItem('metamorfosis-admin-view');
-    const candidate = hashView || (queryWorkspace === 'family' ? 'family-overview' : '') || stored;
+    // El dominio raíz siempre abre Empresa. La vista Familiar se activa solo de forma explícita.
+    const candidate = hashView || (queryWorkspace === 'family' ? 'family-overview' : queryWorkspace === 'business' ? 'dashboard' : 'dashboard');
     const normalized = LEGACY_VIEW_MAP[candidate] || candidate;
     return normalized && ALL_ADMIN_KEYS.has(normalized) ? normalized : 'dashboard';
   });
@@ -1346,9 +1435,13 @@ class AdminErrorBoundary extends React.Component {
           <Brand />
           <span className="kicker">Recuperación del sistema</span>
           <h1>No fue posible cargar el panel</h1>
-          <p>El servidor respondió, pero la interfaz encontró un error de ejecución. Recarga el OS; si persiste, revisa el último despliegue de Render.</p>
-          <button className="button" type="button" onClick={() => window.location.reload()}><Icon name="refresh" /> Recargar OS</button>
-          <a href="/api/health" target="_blank" rel="noreferrer">Ver diagnóstico técnico</a>
+          <p>El servidor respondió, pero la interfaz encontró un error de ejecución. El diagnóstico siguiente permite identificarlo sin ocultarlo.</p>
+          <details className="admin-runtime-diagnostic" open><summary>Detalle técnico</summary><code>{this.state.error?.message || 'Error de renderizado sin mensaje'}</code></details>
+          <div className="admin-fatal-error__actions">
+            <button className="button" type="button" onClick={() => window.location.reload()}><Icon name="refresh" /> Recargar OS</button>
+            <button className="button button--ghost-light" type="button" onClick={() => { try { window.localStorage.removeItem('metamorfosis-admin-view'); } catch {} window.location.href = '/?workspace=business#dashboard'; }}><Icon name="dashboard" /> Abrir Empresa</button>
+            <a href="/api/health" target="_blank" rel="noreferrer">Ver diagnóstico del servidor</a>
+          </div>
         </div>
       </div>
     );
