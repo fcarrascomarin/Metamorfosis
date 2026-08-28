@@ -41,26 +41,42 @@ export const methodSteps = [
 
 export const initialProjects = [
   {
-    name: 'Validación comercial · 5 prospectos',
+    name: 'Inteligencia industrial · RUDEL / CMPC / Blumar',
     client: 'Metamorfosis Lab',
-    stage: 'Mercado · semana 24–28 agosto',
-    progress: 20,
-    next: 'Seleccionar 5 prospectos + 2 suplentes y preparar ofertas específicas',
+    stage: 'Campo · primera semana de septiembre',
+    progress: 15,
+    next: 'Agendar y realizar las primeras conversaciones informativas; completar ficha de campo el mismo día',
     status: 'Prioridad'
   },
   {
-    name: 'Ordenamiento y trazabilidad operacional',
-    client: 'Hipótesis comercial',
-    stage: 'Validación',
-    progress: 15,
-    next: 'Probar dolor y disposición a pagar en prospectos del Biobío',
-    status: 'Hipótesis'
+    name: 'Maquisant · discovery B2B',
+    client: 'Validación comercial',
+    stage: 'Esperar 1–2 entrevistas informativas',
+    progress: 10,
+    next: 'Preparar introducción con Víctor Santander sin presumir necesidad ni presentar propuesta anticipada',
+    status: 'Próxima prueba'
+  },
+  {
+    name: 'Transmarin · transición organizacional',
+    client: 'Validación estratégica',
+    stage: 'Preparación de discovery',
+    progress: 10,
+    next: 'Explorar crecimiento, continuidad, gestión remota, sistemas y sustentabilidad después del aprendizaje industrial',
+    status: 'Potencial alto'
+  },
+  {
+    name: 'Club Vegan · Vitrina Pyme',
+    client: 'Piloto comercial',
+    stage: 'En espera de lectura',
+    progress: 65,
+    next: 'No intervenir: esperar lectura y respuesta al mensaje enviado el 27-08 antes de cualquier seguimiento',
+    status: 'En espera'
   }
 ];
 
 export const documents = {
   Operativos: ['Pauta de conversación inicial', 'Minuta de reunión', 'Plan de trabajo', 'Informe de avance'],
   Administrativos: ['Propuesta comercial', 'Cotización', 'Acuerdo de confidencialidad', 'Acta de cierre'],
-  Metodológicos: ['Ficha de oportunidad', 'Investigación previa', 'Mapa de Transformación y Activos', 'Matriz de riesgos', 'Mapa de mercado y clientes', 'Propuesta de valor y posicionamiento', 'Ficha de levantamiento ergonómico inicial', 'Registro de tiempo y rentabilidad'],
+  Metodológicos: ['Ficha de oportunidad', 'Investigación previa', 'Mapa de Transformación y Activos', 'Matriz de riesgos', 'Mapa de mercado y clientes', 'Propuesta de valor y posicionamiento', 'Ficha de levantamiento ergonómico inicial', 'Registro de tiempo y rentabilidad', 'Registro de campo comercial'],
   'Expedientes comerciales': ['Ficha de oportunidad', 'Perfil preliminar de empresa', 'Pauta de conversación inicial']
 };

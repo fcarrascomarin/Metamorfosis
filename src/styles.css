@@ -10859,3 +10859,824 @@ textarea::placeholder { color: #7f98ac; }
   .public-site--v50 .team-audit-card--portrait .team-audit-card__body { padding: 18px; }
   .public-site--v50 #metodo .method-criterion-line { border-radius: 16px; }
 }
+
+/* ========================================================================== 
+   5.2.6 · separación cromática Empresa/Familiar + campo comercial legible
+   ========================================================================== */
+
+/* Empresa conserva el calipso como identidad funcional propia. */
+.admin-frame--business {
+  --workspace-accent: #69e2d5;
+  --workspace-accent-dark: #0d5f5a;
+}
+.admin-frame--business .workspace-switch a.is-active,
+.admin-frame--business .workspace-switch button.is-active {
+  background: var(--workspace-accent);
+  color: #082f2d;
+}
+
+/* Familiar: café + amarillo, sin calipso ni verde como acento principal. */
+.admin-frame--family {
+  --family-gold: #f0c34a;
+  --family-gold-strong: #dcae2f;
+  --family-gold-soft: #fff0b5;
+  --family-brown-deep: #2b190f;
+  --family-brown: #402719;
+  --family-brown-mid: #68462f;
+  --family-brown-soft: #9a7658;
+  --family-paper: #f3eadb;
+  --family-card: #fff9ed;
+  --family-card-2: #f8eedc;
+  --family-ink: #2d2017;
+  --family-muted: #6b5849;
+  --family-line: #d8c3a5;
+  background:
+    radial-gradient(circle at 88% 2%, rgba(240,195,74,.14), transparent 26%),
+    linear-gradient(180deg, #eadbc7 0%, #f5eddf 28%, #f1e7d7 100%);
+  color: var(--family-ink);
+}
+.admin-frame--family .admin-header {
+  background: rgba(43,25,15,.98);
+  border-color: rgba(240,195,74,.34);
+  box-shadow: 0 8px 26px rgba(43,25,15,.16);
+}
+.admin-frame--family .admin-sidebar {
+  background: linear-gradient(180deg, #352014 0%, #442a1b 58%, #2c1b12 100%);
+  border-color: rgba(240,195,74,.22);
+}
+.admin-frame--family .admin-main {
+  background: transparent;
+}
+.admin-frame--family .admin-breadcrumb {
+  border-color: var(--family-line);
+  background: rgba(255,249,237,.97);
+  color: var(--family-ink);
+  box-shadow: 0 5px 16px rgba(70,45,24,.05);
+}
+.admin-frame--family .admin-context-badge {
+  background: var(--family-gold);
+  color: var(--family-brown-deep);
+  border: 1px solid var(--family-gold-strong);
+}
+.admin-frame--family .workspace-switch {
+  border-color: rgba(240,195,74,.24);
+  background: rgba(255,249,237,.06);
+}
+.admin-frame--family .workspace-switch a,
+.admin-frame--family .workspace-switch button {
+  color: #f1dfc7;
+}
+.admin-frame--family .workspace-switch a.is-active,
+.admin-frame--family .workspace-switch button.is-active {
+  background: var(--family-gold);
+  color: var(--family-brown-deep);
+  box-shadow: 0 5px 16px rgba(240,195,74,.24);
+}
+.admin-frame--family .sidebar-section-label { color: #d3b896; }
+.admin-frame--family .sidebar-submenu button { color: #f0dfcb; }
+.admin-frame--family .sidebar-submenu button:hover {
+  background: rgba(240,195,74,.13);
+  color: #fff8ec;
+}
+.admin-frame--family .sidebar-submenu button.is-active {
+  background: var(--family-gold);
+  color: var(--family-brown-deep);
+  box-shadow: 0 8px 20px rgba(31,18,10,.24);
+}
+.admin-frame--family .sidebar-submenu button.is-active::before { background: var(--family-brown-deep); }
+.admin-frame--family .sidebar-submenu button.is-active .app-icon { color: var(--family-brown-deep); }
+.admin-frame--family .admin-view__heading {
+  border-color: var(--family-line);
+  background: rgba(255,249,237,.98);
+  box-shadow: 0 12px 30px rgba(75,48,26,.07);
+}
+.admin-frame--family .admin-view__heading .kicker { color: #8a681e; }
+.admin-frame--family .admin-view__heading h1,
+.admin-frame--family .admin-view__heading h2,
+.admin-frame--family .admin-view__heading h3 { color: var(--family-ink); }
+.admin-frame--family .admin-view__heading p { color: var(--family-muted); }
+.admin-frame--family .family-section,
+.admin-frame--family .family-identity-card,
+.admin-frame--family .panel-card {
+  border-color: var(--family-line);
+  background: rgba(255,249,237,.98);
+  color: var(--family-ink);
+  box-shadow: 0 10px 26px rgba(67,43,23,.07);
+}
+.admin-frame--family .family-section h2,
+.admin-frame--family .family-section h3,
+.admin-frame--family .family-section strong,
+.admin-frame--family .panel-card h2,
+.admin-frame--family .panel-card h3,
+.admin-frame--family .panel-card strong { color: var(--family-ink); }
+.admin-frame--family .family-section p,
+.admin-frame--family .family-section small,
+.admin-frame--family .panel-card p,
+.admin-frame--family .panel-card small { color: var(--family-muted); }
+.admin-frame--family .family-week-lane,
+.admin-frame--family .family-front-list article,
+.admin-frame--family .family-person,
+.admin-frame--family .family-money,
+.admin-frame--family .family-inventory-grid article {
+  border-color: #dfc9ab;
+  background: #fffaf1;
+}
+.admin-frame--family .family-money {
+  background: linear-gradient(180deg, #fffaf1, #f8eac9);
+}
+.admin-frame--family .family-check {
+  background: var(--family-gold-soft);
+  color: #624913;
+}
+.admin-frame--family .family-progress span {
+  background: linear-gradient(90deg, #a97024, var(--family-gold));
+}
+.admin-frame--family .family-progress-number,
+.admin-frame--family .family-week-lane > header > div > span,
+.admin-frame--family .family-money-result {
+  background: var(--family-brown);
+  color: #fff2c2;
+}
+.admin-frame--family .button:not(.button--ghost):not(.button--ghost-light) {
+  border-color: var(--family-gold-strong);
+  background: var(--family-gold);
+  color: var(--family-brown-deep);
+}
+.admin-frame--family .button:not(.button--ghost):not(.button--ghost-light):hover {
+  border-color: #c99821;
+  background: #e5b536;
+  color: #24150d;
+}
+.admin-frame--family .button--ghost {
+  border-color: #9b7757;
+  color: var(--family-brown);
+  background: #fffaf1;
+}
+.admin-frame--family .text-button { color: #6c472c; }
+.admin-frame--family .family-section input,
+.admin-frame--family .family-section select,
+.admin-frame--family .family-section textarea,
+.admin-frame--family .family-person input,
+.admin-frame--family .family-person select,
+.admin-frame--family .family-person textarea,
+.admin-frame--family .panel-card input,
+.admin-frame--family .panel-card select,
+.admin-frame--family .panel-card textarea {
+  border-color: #cdb596;
+  background: #fffdf8;
+  color: #2d2017;
+}
+.admin-frame--family .family-section input:focus,
+.admin-frame--family .family-section select:focus,
+.admin-frame--family .family-section textarea:focus,
+.admin-frame--family .panel-card input:focus,
+.admin-frame--family .panel-card select:focus,
+.admin-frame--family .panel-card textarea:focus {
+  border-color: #a87832;
+  box-shadow: 0 0 0 3px rgba(240,195,74,.22);
+}
+.admin-frame--family .family-command-bar {
+  border-color: rgba(240,195,74,.36);
+  background: linear-gradient(135deg, #2b190f 0%, #4b2e1d 62%, #67422a 100%);
+  color: #fff4d2;
+  box-shadow: 0 14px 32px rgba(47,28,16,.16);
+}
+.admin-frame--family .family-command-bar .kicker,
+.admin-frame--family .family-command-stat small { color: #ffd966; }
+.admin-frame--family .family-command-bar p,
+.admin-frame--family .family-command-stat span { color: #f2dfc2; }
+.admin-frame--family .family-command-stat { background: rgba(255,220,109,.10); }
+.admin-frame--family .family-command-bar input {
+  border-color: rgba(255,220,109,.34);
+  background: rgba(255,255,255,.09);
+  color: #fff9ee;
+}
+.admin-frame--family .family-phase-control label { color: #6c5848; }
+.admin-frame--family .family-phase-control select {
+  border-color: #75513a;
+  background: #493020;
+  color: #fff4dc;
+}
+
+/* Botones y accesos: el texto debe verse completo; nunca recortado por ancho. */
+.admin-frame .quick-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(156px, 1fr));
+  gap: 9px;
+  width: 100%;
+  overflow: visible;
+}
+.admin-frame .quick-actions button {
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  height: auto;
+  justify-content: center;
+  padding: 9px 12px;
+  white-space: normal;
+  line-height: 1.18;
+  text-align: center;
+  overflow: visible;
+  text-overflow: clip;
+}
+.admin-frame .sidebar-submenu button {
+  min-width: 0;
+  min-height: 40px;
+  height: auto;
+  white-space: normal;
+}
+.admin-frame .sidebar-submenu button span {
+  min-width: 0;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  line-height: 1.2;
+}
+.admin-frame .workspace-switch a,
+.admin-frame .workspace-switch button {
+  min-width: 0;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+/* Registro de campo comercial. */
+.field-view { display: grid; gap: 16px; }
+.field-summary-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 9px;
+}
+.field-summary-strip > span {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+  padding: 12px 14px;
+  border: 1px solid var(--os-border);
+  border-radius: 15px;
+  background: #fff;
+  color: var(--os-text-body);
+  font-size: .72rem;
+  line-height: 1.25;
+}
+.field-summary-strip b { color: var(--os-primary-dark); font-size: 1.12rem; }
+.field-register-rule {
+  display: grid;
+  grid-template-columns: 28px minmax(0,1fr);
+  align-items: start;
+  gap: 10px;
+  margin: 0;
+  padding: 13px 15px;
+  border: 1px solid #bcdcd7;
+  border-radius: 15px;
+  background: #eff9f7;
+  color: #355e5b;
+  font-size: .78rem;
+  line-height: 1.45;
+}
+.field-register-rule .app-icon { width: 22px; height: 22px; color: #0d766e; }
+.field-register-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.field-record {
+  min-width: 0;
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--os-border);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 10px 26px rgba(15,44,55,.06);
+}
+.field-record > header,
+.field-record__title,
+.field-record__facts {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.field-type,
+.field-priority,
+.field-record__title > span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 27px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: .63rem;
+  font-weight: 900;
+  line-height: 1.15;
+}
+.field-type { background: #dff5f1; color: #0d665f; }
+.field-priority { background: #f3f1eb; color: #635d4d; }
+.field-record--discovery .field-type { background: #fff0d7; color: #805515; }
+.field-record--piloto-comercial .field-type { background: #e9e2ff; color: #56439a; }
+.field-record--exclusion .field-type { background: #fce5e5; color: #8c3434; }
+.field-record--radar .field-type { background: #eef0f2; color: #566069; }
+.field-record__title { align-items: flex-start; }
+.field-record__title > div { min-width: 0; }
+.field-record__title small {
+  display: block;
+  margin-bottom: 3px;
+  color: #687c82;
+  font-size: .66rem;
+  font-weight: 750;
+}
+.field-record__title h2 {
+  margin: 0;
+  color: var(--os-text);
+  font-size: 1.08rem;
+  line-height: 1.15;
+}
+.field-record__title > span { flex: 0 0 auto; background: #edf4f2; color: #375c57; }
+.field-record__facts {
+  align-items: stretch;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+}
+.field-record__facts > span {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+  border-radius: 12px;
+  background: #f7faf9;
+}
+.field-record__facts small { color: #718188; font-size: .6rem; font-weight: 850; text-transform: uppercase; letter-spacing: .04em; }
+.field-record__facts strong { color: #284a48; font-size: .72rem; line-height: 1.3; }
+.field-record label { display: grid; gap: 5px; color: #42605f; font-size: .67rem; font-weight: 850; }
+.field-record input,
+.field-record textarea {
+  width: 100%;
+  border: 1px solid #cbdad7;
+  border-radius: 11px;
+  background: #fbfdfc;
+  color: #153f3d;
+  font: inherit;
+  font-size: .75rem;
+  line-height: 1.4;
+}
+.field-record input { min-height: 39px; padding: 8px 10px; }
+.field-record textarea { min-height: 76px; padding: 9px 10px; resize: vertical; }
+.field-record details { border-top: 1px solid #e1e9e7; padding-top: 10px; }
+.field-record summary { cursor: pointer; color: #235f5a; font-size: .7rem; font-weight: 850; }
+.field-record details p { margin: 9px 0 0; color: #5f7479; font-size: .71rem; line-height: 1.48; }
+.field-record__limit { padding: 9px 10px; border-radius: 10px; background: #f6f3ea; color: #665b44 !important; }
+
+@media (max-width: 1050px) {
+  .field-summary-strip { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .field-register-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 700px) {
+  .admin-frame .quick-actions { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .field-summary-strip { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 480px) {
+  .admin-frame .quick-actions { grid-template-columns: 1fr; }
+  .field-summary-strip { grid-template-columns: 1fr; }
+  .field-record__facts { grid-template-columns: 1fr; }
+}
+
+/* Semántica familiar sin arrastrar verdes/calipsos del espacio Empresa. */
+.admin-frame--family .family-section label,
+.admin-frame--family .family-person label { color: #6b4a32; }
+.admin-frame--family .family-status-dot {
+  background: #8a6549;
+  box-shadow: 0 0 0 4px rgba(138,101,73,.14);
+}
+.admin-frame--family .family-person--atencion .family-status-dot {
+  background: #d5a52f;
+  box-shadow: 0 0 0 4px rgba(213,165,47,.16);
+}
+.admin-frame--family .family-person--intervenir .family-status-dot {
+  background: #a65e43;
+  box-shadow: 0 0 0 4px rgba(166,94,67,.14);
+}
+.admin-frame--family .family-person--atencion {
+  border-color: #dfc06d;
+  background: #fff7df;
+}
+.admin-frame--family .family-person--intervenir {
+  border-color: #d6aa96;
+  background: #fff3ec;
+}
+.admin-frame--family .family-income-status {
+  background: #fff0bd;
+  color: #735112;
+}
+.admin-frame--family .family-income-status.is-confirmed {
+  background: #ead2a6;
+  color: #56351f;
+}
+.admin-frame--family .family-inventory-grid header span {
+  background: #f5df91;
+  color: #5c3c22;
+}
+.admin-frame--family .family-money-result span { color: #f8d76d; }
+
+/* Captura rápida del registro de campo: formulario legible y adaptable. */
+.field-capture {
+  display: grid;
+  grid-template-columns: minmax(210px, 1.35fr) repeat(3, minmax(135px, 1fr));
+  gap: 10px 12px;
+  align-items: end;
+  padding: 15px;
+  border: 1px solid #cbdedb;
+  border-radius: 18px;
+  background: #fbfdfc;
+  box-shadow: 0 8px 22px rgba(15,44,55,.045);
+}
+.field-capture > div {
+  grid-row: span 2;
+  align-self: stretch;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 13px;
+  background: #eff8f6;
+}
+.field-capture > div strong {
+  color: #194c48;
+  font-size: .94rem;
+  line-height: 1.2;
+}
+.field-capture > div small {
+  color: #667c80;
+  font-size: .68rem;
+  line-height: 1.35;
+}
+.field-capture label {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+  color: #42605f;
+  font-size: .66rem;
+  font-weight: 850;
+}
+.field-capture input,
+.field-capture select {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid #cbdad7;
+  border-radius: 11px;
+  background: #fff;
+  color: #153f3d;
+  font: inherit;
+  font-size: .74rem;
+}
+.field-capture input:focus,
+.field-capture select:focus {
+  outline: none;
+  border-color: #62b9ae;
+  box-shadow: 0 0 0 3px rgba(105,226,213,.18);
+}
+.field-capture__next { grid-column: span 2; }
+.field-capture .button {
+  min-width: 0;
+  min-height: 40px;
+  height: auto;
+  white-space: normal;
+  line-height: 1.15;
+  text-align: center;
+  justify-content: center;
+}
+
+@media (max-width: 1120px) {
+  .field-capture { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .field-capture > div { grid-row: auto; grid-column: 1 / -1; }
+  .field-capture__next { grid-column: auto; }
+}
+@media (max-width: 620px) {
+  .field-capture { grid-template-columns: 1fr; }
+  .field-capture > div,
+  .field-capture__next { grid-column: auto; }
+}
+
+/* ========================================================================== 
+   5.2.7 · contraste reforzado + textos visibles en botones y métricas
+   ========================================================================== */
+
+/* El encabezado puede respirar y envolver acciones antes que cortar texto. */
+.admin-header {
+  flex-wrap: wrap;
+  row-gap: 10px;
+}
+.admin-header__brand,
+.admin-header__actions {
+  min-width: 0;
+}
+.admin-header__actions {
+  flex-wrap: wrap;
+}
+.admin-action-button,
+.workspace-switch a,
+.workspace-switch button,
+.quick-actions button,
+.sidebar-submenu button,
+.panel-card__heading .text-button,
+.text-button {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Las métricas deben leerse completas, especialmente en notebook. */
+.metrics-grid {
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  align-items: stretch;
+}
+.metric-card,
+.admin-frame .metric-card,
+.admin-frame--family .metric-card {
+  align-items: flex-start;
+  min-height: 100px;
+}
+.metric-card > div,
+.admin-frame .metric-card > div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.metric-card > div small,
+.metric-card > div strong,
+.metric-card > div span,
+.admin-frame .metric-card > div small,
+.admin-frame .metric-card > div strong,
+.admin-frame .metric-card > div span {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.metric-card > div small,
+.admin-frame .metric-card > div small {
+  line-height: 1.25;
+}
+.metric-card > div strong,
+.admin-frame .metric-card > div strong {
+  font-size: clamp(1rem, 1.25vw, 1.2rem);
+  line-height: 1.12;
+}
+.metric-card > div span,
+.admin-frame .metric-card > div span {
+  line-height: 1.3;
+}
+
+/* También las tareas y líneas de proyecto deben mostrarse completas. */
+.compact-task {
+  grid-template-columns: 58px minmax(0, 1fr);
+  align-items: flex-start;
+}
+.compact-task strong,
+.compact-task small,
+.project-line strong,
+.project-line small,
+.field-record__title h2,
+.field-record__facts strong {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.project-line {
+  align-items: flex-start;
+}
+
+/* Breadcrumb y avisos: permitir segunda línea antes que truncar. */
+.admin-breadcrumb {
+  flex-wrap: wrap;
+  align-items: center;
+}
+.admin-breadcrumb > span,
+.save-notice {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Familia: café + amarillo bien definidos. El calipso queda para Empresa. */
+.admin-frame--family {
+  --family-gold: #f2c84b;
+  --family-gold-strong: #d6a42a;
+  --family-gold-soft: #fff1ba;
+  --family-brown-deep: #2a190f;
+  --family-brown: #4a2d1c;
+  --family-brown-mid: #6a432a;
+  --family-brown-soft: #8f6b4f;
+  --family-paper: #f5ecdd;
+  --family-card: #fff9ee;
+  --family-card-2: #fbf1df;
+  --family-ink: #2e2118;
+  --family-muted: #675546;
+  --family-line: #dbc3a1;
+}
+.admin-frame--family .admin-header {
+  background: linear-gradient(180deg, #2d1b12 0%, #3a2418 100%);
+  border-color: rgba(242,200,75,.34);
+}
+.admin-frame--family .admin-header .admin-brand strong,
+.admin-frame--family .admin-header .admin-brand small,
+.admin-frame--family .admin-header .admin-action-button,
+.admin-frame--family .admin-header .icon-button,
+.admin-frame--family .admin-header .workspace-switch a,
+.admin-frame--family .admin-header .workspace-switch button {
+  color: #fff5de;
+}
+.admin-frame--family .admin-action-button,
+.admin-frame--family .icon-button {
+  border-color: rgba(242,200,75,.24);
+  background: rgba(255,249,237,.08);
+  color: #fff4de;
+}
+.admin-frame--family .admin-action-button:hover,
+.admin-frame--family .icon-button:hover {
+  border-color: rgba(242,200,75,.48);
+  background: rgba(242,200,75,.12);
+  color: #fff8eb;
+}
+.admin-frame--family .admin-action-button.is-dirty {
+  border-color: var(--family-gold-strong);
+  background: var(--family-gold);
+  color: var(--family-brown-deep);
+}
+.admin-frame--family .admin-action-button--exit {
+  border-color: rgba(255,244,222,.18);
+  background: rgba(255,249,237,.06);
+  color: #fff5de;
+}
+.admin-frame--family .admin-breadcrumb {
+  background: rgba(255,249,237,.98);
+  border: 1px solid var(--family-line);
+}
+.admin-frame--family .admin-breadcrumb > span {
+  color: #6b5a49;
+}
+.admin-frame--family .admin-breadcrumb .save-notice {
+  background: #50311f;
+  color: #fff1c6;
+  border: 1px solid rgba(242,200,75,.24);
+}
+.admin-frame--family .admin-breadcrumb .save-notice.is-error {
+  background: #6c3d2e;
+  color: #fff1ec;
+  border-color: rgba(255,195,170,.28);
+}
+.admin-frame--family .workspace-switch {
+  border-color: rgba(242,200,75,.22);
+  background: rgba(255,249,237,.06);
+}
+.admin-frame--family .workspace-switch a,
+.admin-frame--family .workspace-switch button {
+  color: #ecd9b9;
+}
+.admin-frame--family .workspace-switch a.is-active,
+.admin-frame--family .workspace-switch button.is-active {
+  background: var(--family-gold);
+  color: var(--family-brown-deep);
+  box-shadow: 0 6px 18px rgba(242,200,75,.22);
+}
+.admin-frame--family .sidebar-submenu button {
+  color: #f0dec6;
+}
+.admin-frame--family .sidebar-submenu button:hover {
+  background: rgba(242,200,75,.11);
+  color: #fff8eb;
+}
+.admin-frame--family .sidebar-submenu button.is-active {
+  background: var(--family-gold);
+  color: var(--family-brown-deep);
+}
+.admin-frame--family .sidebar-submenu button.is-active::before {
+  background: var(--family-brown-deep);
+}
+.admin-frame--family .admin-view__heading,
+.admin-frame--family .family-section,
+.admin-frame--family .family-identity-card,
+.admin-frame--family .panel-card {
+  border-color: var(--family-line);
+  background: rgba(255,249,237,.98);
+}
+.admin-frame--family .family-command-bar {
+  border-color: rgba(242,200,75,.34);
+  background: linear-gradient(135deg, #2d1b12 0%, #4a2d1c 62%, #6a432a 100%);
+  color: #fff2cd;
+}
+.admin-frame--family .family-command-bar .kicker,
+.admin-frame--family .family-command-stat small {
+  color: #ffe27d;
+}
+.admin-frame--family .family-command-bar p,
+.admin-frame--family .family-command-stat span {
+  color: #f1dfbf;
+}
+.admin-frame--family .family-command-stat {
+  background: rgba(255,226,125,.10);
+}
+.admin-frame--family .family-phase-control select,
+.admin-frame--family .family-command-bar input {
+  border-color: rgba(255,226,125,.30);
+  background: rgba(255,249,237,.10);
+  color: #fff7ea;
+}
+.admin-frame--family .family-money-result,
+.admin-frame--family .family-progress-number,
+.admin-frame--family .family-week-lane > header > div > span {
+  background: var(--family-brown);
+  color: #fff1c4;
+}
+.admin-frame--family .button:not(.button--ghost):not(.button--ghost-light) {
+  border-color: var(--family-gold-strong);
+  background: var(--family-gold);
+  color: var(--family-brown-deep);
+}
+.admin-frame--family .button:not(.button--ghost):not(.button--ghost-light):hover {
+  background: #e6b641;
+  color: #24150d;
+}
+
+/* Ajustes de legibilidad en pantallas intermedias. */
+@media (max-width: 1440px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  .panel-card--wide {
+    grid-row: auto;
+  }
+}
+@media (max-width: 1180px) {
+  .admin-header {
+    align-items: flex-start;
+  }
+  .admin-header__actions {
+    justify-content: flex-start;
+  }
+}
+@media (max-width: 820px) {
+  .metrics-grid {
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  }
+  .quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .quick-actions button {
+    justify-content: flex-start;
+  }
+}
+@media (max-width: 560px) {
+  .quick-actions {
+    grid-template-columns: 1fr;
+  }
+  .workspace-switch a,
+  .workspace-switch button,
+  .admin-action-button {
+    font-size: .7rem;
+  }
+}
+
+/* 5.2.7 · quitar calipso heredado dentro del espacio Familiar. */
+.admin-frame--family .quick-actions button {
+  border-color: #cdb28f;
+  background: #fffaf1;
+  color: var(--family-brown);
+  box-shadow: 0 4px 12px rgba(67,43,23,.055);
+}
+.admin-frame--family .quick-actions button:first-child,
+.admin-frame--family .quick-actions button:nth-child(2) {
+  border-color: var(--family-brown);
+  background: var(--family-brown);
+  color: #fff1c4;
+}
+.admin-frame--family .quick-actions button:hover:not(:disabled) {
+  border-color: var(--family-gold-strong);
+  background: var(--family-gold-soft);
+  color: var(--family-brown-deep);
+}
+.admin-frame--family .quick-actions button:first-child:hover,
+.admin-frame--family .quick-actions button:nth-child(2):hover {
+  border-color: var(--family-brown-deep);
+  background: var(--family-brown-deep);
+  color: #ffe89a;
+}
+.admin-frame--family .metric-card__icon,
+.admin-frame--family .metric-card--warning .metric-card__icon,
+.admin-frame--family .metric-card--danger .metric-card__icon,
+.admin-frame--family .metric-card--success .metric-card__icon {
+  background: var(--family-gold-soft);
+  color: var(--family-brown);
+}
+.admin-frame--family .metric-card {
+  border-color: var(--family-line);
+  background: #fffaf1;
+  box-shadow: 0 7px 20px rgba(67,43,23,.055);
+}
+.admin-frame--family .metric-card > div small,
+.admin-frame--family .metric-card small { color: #6f5844; }
+.admin-frame--family .metric-card > div strong,
+.admin-frame--family .metric-card strong { color: var(--family-ink); }
+.admin-frame--family .metric-card > div span,
+.admin-frame--family .metric-card span { color: var(--family-muted); }

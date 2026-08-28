@@ -4,8 +4,8 @@ import { documents, initialProjects } from './data.js';
 import { createDefaultOsState, OS_SCHEMA_VERSION, OWNERS, TOPICS } from './osSeed.js';
 import { CONSULTING_TOOLS, EXPEDIENTE_STATUSES, createEmptyExpediente, expedienteProgress } from './consultingTools.js';
 
-const STORAGE_KEY = 'metamorfosis-os-draft-v9';
-const LEGACY_STORAGE_KEYS = ['metamorfosis-os-draft-v8', 'metamorfosis-os-draft-v7', 'metamorfosis-os-draft-v6'];
+const STORAGE_KEY = 'metamorfosis-os-draft-v10';
+const LEGACY_STORAGE_KEYS = ['metamorfosis-os-draft-v9', 'metamorfosis-os-draft-v8', 'metamorfosis-os-draft-v7', 'metamorfosis-os-draft-v6'];
 const PUBLIC_QUOTES_KEY = 'metamorfosis-public-quotes';
 const PUBLIC_EVENTS_KEY = 'metamorfosis-public-events';
 const PUBLIC_SITE_URL = String(import.meta.env.VITE_PUBLIC_SITE_URL || 'https://metamorfosislab.cl').replace(/\/$/, '');
@@ -24,6 +24,7 @@ const BUSINESS_MENU_GROUPS = [
     id: 'comercial',
     label: 'Comercial',
     items: [
+      ['field', 'Campo comercial', 'map'],
       ['expedientes', 'Expedientes', 'folder_open'],
       ['quotes', 'Oportunidades', 'request_quote']
     ]
@@ -119,9 +120,22 @@ const LEGACY_SEED_TASK_TITLES = new Set([
   'Revisar estado comercial y próximos contactos',
   'Cerrar una mejora del sistema Metamorfosis OS',
   'Revisar próximo hito de Consolidación CM',
-  'Cierre semanal del sistema'
+  'Cierre semanal del sistema',
+  'Construir y puntuar el universo de prospectos del Biobío',
+  'Seleccionar 5 prospectos definitivos y 2 suplentes',
+  'Completar expediente preliminar de ClubVegan',
+  'Completar fichas previas de los otros 4 prospectos',
+  'Diseñar las 5 ofertas específicas',
+  'Cerrar alcance, precio y canal de cada propuesta',
+  'Enviar las 5 ofertas al mercado',
+  'Registrar contactos y próximos seguimientos',
+  'Leer respuestas, silencios y objeciones',
+  'Cerrar aprendizaje comercial de la semana'
 ]);
+const LEGACY_FRONT_NAMES = new Set(['Validación comercial · 5 prospectos', 'Ordenamiento y trazabilidad operacional', 'Ciclo Seguro']);
+const LEGACY_DECISION_PATTERN = /24 al 28 de agosto|5 prospectos|cinco prospectos|cinco ofertas|5 ofertas/i;
 const RETIRED_PROJECT_PATTERN = /CM|Banquetería|Consolidación/i;
+const RETIRED_TIME_PROJECT_PATTERN = /CM|Banquetería|Consolidación|Juana de Arco|Experiencias/i;
 
 function migrateOsState(candidate, fallback) {
   if (!candidate || typeof candidate !== 'object') return fallback;
@@ -135,13 +149,19 @@ function migrateOsState(candidate, fallback) {
   const tasks = [...existingTasks, ...campaignTasks.filter((task) => !existingTitles.has(task.title))];
 
   const currentTracking = candidate.timeTracking || {};
-  const timeProjects = Array.isArray(currentTracking.projects)
-    ? currentTracking.projects.filter((project) => !RETIRED_PROJECT_PATTERN.test(`${project?.name || ''} ${project?.client || ''}`))
-    : fallback.timeTracking.projects;
+  const candidateTimeProjects = Array.isArray(currentTracking.projects)
+    ? currentTracking.projects.filter((project) => !RETIRED_TIME_PROJECT_PATTERN.test(`${project?.name || ''} ${project?.client || ''}`))
+    : [];
+  const timeProjects = [...candidateTimeProjects];
+  fallback.timeTracking.projects.forEach((project) => {
+    if (!timeProjects.some((item) => item.name === project.name)) timeProjects.push(project);
+  });
   const projectIds = new Set(timeProjects.map((project) => project.id));
-  const timeEntries = Array.isArray(currentTracking.entries)
+  const candidateEntries = Array.isArray(currentTracking.entries)
     ? currentTracking.entries.filter((entry) => projectIds.has(entry.projectId))
-    : fallback.timeTracking.entries;
+    : [];
+  const historicalNotes = new Set(candidateEntries.map((entry) => entry.note));
+  const timeEntries = [...candidateEntries, ...fallback.timeTracking.entries.filter((entry) => !historicalNotes.has(entry.note))];
 
   const family = candidate.family && typeof candidate.family === 'object' ? candidate.family : {};
   const workFronts = (Array.isArray(family.workFronts) ? family.workFronts : fallback.family.workFronts)
@@ -152,21 +172,47 @@ function migrateOsState(candidate, fallback) {
     .filter((item) => !RETIRED_PROJECT_PATTERN.test(item?.title || ''));
 
   const candidateFronts = (Array.isArray(candidate.fronts) ? candidate.fronts : [])
-    .filter((front) => !RETIRED_PROJECT_PATTERN.test(front?.name || ''));
+    .filter((front) => !RETIRED_PROJECT_PATTERN.test(front?.name || '') && !LEGACY_FRONT_NAMES.has(front?.name));
   const frontsByName = new Map([...fallback.fronts, ...candidateFronts].map((front) => [front.name, front]));
   const decisions = (Array.isArray(candidate.decisions) ? candidate.decisions : fallback.decisions)
-    .filter((decision) => !RETIRED_PROJECT_PATTERN.test(decision || ''));
+    .filter((decision) => !RETIRED_PROJECT_PATTERN.test(decision || '') && !LEGACY_DECISION_PATTERN.test(decision || ''));
+  const candidateField = Array.isArray(candidate.fieldRegister) ? candidate.fieldRegister : [];
+  const fieldById = new Map([...fallback.fieldRegister, ...candidateField].map((item) => [item.id || `${item.actor}-${item.organization}`, item]));
+  const candidateExpedientes = Array.isArray(candidate.expedientes) ? candidate.expedientes : [];
+  const fallbackClub = fallback.expedientes.find((item) => item.id === 'EXP-001');
+  const expedientes = candidateExpedientes.length ? candidateExpedientes.map((item) => {
+    if (item.id !== 'EXP-001' || !fallbackClub) return item;
+    return {
+      ...item,
+      status: fallbackClub.status,
+      lastUpdate: fallbackClub.lastUpdate,
+      notes: fallbackClub.notes,
+      tools: {
+        ...item.tools,
+        oportunidad: {
+          ...(item.tools?.oportunidad || fallbackClub.tools.oportunidad),
+          data: { ...(item.tools?.oportunidad?.data || {}), ...fallbackClub.tools.oportunidad.data }
+        },
+        perfil: { ...fallbackClub.tools.perfil, ...(item.tools?.perfil || {}) },
+        conversacion: fallbackClub.tools.conversacion
+      }
+    };
+  }) : fallback.expedientes;
+  const trackingNote = currentTracking.note && currentTracking.note !== fallback.timeTracking.note
+    ? `${fallback.timeTracking.note}\n\nNota previa: ${currentTracking.note}`
+    : fallback.timeTracking.note;
 
   return {
     ...candidate,
     version: OS_SCHEMA_VERSION,
-    selectedDate: candidate.selectedDate && candidate.selectedDate >= '2026-08-24' ? candidate.selectedDate : '2026-08-24',
+    selectedDate: candidate.selectedDate && candidate.selectedDate >= '2026-09-01' ? candidate.selectedDate : '2026-09-01',
     tasks,
     guides: { ...(candidate.guides || {}), ...fallback.guides },
     fronts: [...frontsByName.values()],
     decisions: [...fallback.decisions, ...decisions.filter((decision) => !fallback.decisions.includes(decision))],
-    expedientes: Array.isArray(candidate.expedientes) && candidate.expedientes.length ? candidate.expedientes : fallback.expedientes,
-    timeTracking: { ...fallback.timeTracking, ...currentTracking, projects: timeProjects, entries: timeEntries },
+    fieldRegister: [...fieldById.values()],
+    expedientes,
+    timeTracking: { ...fallback.timeTracking, ...currentTracking, note: trackingNote, projects: timeProjects, entries: timeEntries },
     family: {
       ...fallback.family,
       ...family,
@@ -303,6 +349,7 @@ function hydrateState(candidate) {
     fronts: (Array.isArray(candidate.fronts) ? candidate.fronts : fallback.fronts).map(normalizeId),
     decisions: (Array.isArray(candidate.decisions) ? candidate.decisions : fallback.decisions).map((item) => safeText(item)).filter(Boolean),
     inbox: (Array.isArray(candidate.inbox) ? candidate.inbox : fallback.inbox).map(normalizeId),
+    fieldRegister: (Array.isArray(candidate.fieldRegister) ? candidate.fieldRegister : fallback.fieldRegister).map(normalizeId),
     expedientes: Array.isArray(candidate.expedientes) ? candidate.expedientes : fallback.expedientes,
     family: normalizeFamilyState(candidate.family, fallback.family)
   };
@@ -360,13 +407,14 @@ function DashboardView({ osState, quotes, dirty, onNavigate, onAddTask }) {
   const openQuotes = quotes.filter((quote) => !['cerrada', 'descartada'].includes(quote.status)).length;
   const expedientes = Array.isArray(osState.expedientes) ? osState.expedientes : [];
   const activeExpedientes = expedientes.filter((item) => !['Cerrado', 'Descartado'].includes(item.status));
-  const conversationPending = activeExpedientes.filter((item) => item.tools?.conversation?.status !== 'Completa').length;
+  const conversationPending = activeExpedientes.filter((item) => item.tools?.conversacion?.status !== 'Completa').length;
 
   return (
     <div className="admin-view">
       <ViewHeading kicker="Panel diario" title="Panel de control Metamorfosis" description="Accesos rápidos y señales que requieren una decisión concreta hoy." action={<button type="button" className="button button--small" onClick={() => onAddTask({ date: today })}><Icon name="add" /> Nueva tarea</button>} />
       <div className="quick-actions" aria-label="Acciones frecuentes">
         <button type="button" onClick={() => onNavigate('day')}><Icon name="today" />Agenda de hoy</button>
+        <button type="button" onClick={() => onNavigate('field')}><Icon name="map" />Campo comercial</button>
         <button type="button" onClick={() => onNavigate('expedientes')}><Icon name="folder_open" />Expedientes</button>
         <button type="button" onClick={() => onNavigate('quotes')}><Icon name="request_quote" />Oportunidades</button>
         <button type="button" onClick={() => onNavigate('finance')}><Icon name="payments" />Finanzas</button>
@@ -913,6 +961,79 @@ function TimeTrackingView({ osState, setOsState }) {
 }
 
 
+function FieldRegisterView({ osState, setOsState }) {
+  const records = Array.isArray(osState.fieldRegister) ? osState.fieldRegister : [];
+  const [newRecord, setNewRecord] = useState({ actor: '', organization: '', type: 'Informante', role: '', status: 'Nuevo', nextAction: '' });
+  const updateRecord = (id, patch) => setOsState((current) => ({
+    ...current,
+    fieldRegister: (current.fieldRegister || []).map((item) => item.id === id ? { ...item, ...patch } : item)
+  }));
+  const addRecord = (event) => {
+    event.preventDefault();
+    if (!newRecord.actor.trim()) return;
+    const item = {
+      id: crypto.randomUUID(),
+      actor: newRecord.actor.trim(),
+      organization: newRecord.organization.trim() || 'Organización por confirmar',
+      type: newRecord.type,
+      role: newRecord.role.trim() || 'Rol por precisar',
+      access: 'Por definir',
+      priority: 'Por definir',
+      status: newRecord.status.trim() || 'Nuevo',
+      commercial: newRecord.type === 'Informante' ? 'No prospecto' : newRecord.type === 'Exclusión' ? 'No prospectar' : 'Por validar',
+      nextAction: newRecord.nextAction.trim() || 'Definir próximo paso antes de contactar.',
+      context: 'Registro incorporado desde campo. Completar contexto cuando exista evidencia suficiente.',
+      limit: 'No confundir vínculo, intuición o acceso con necesidad comercial.'
+    };
+    setOsState((current) => ({ ...current, fieldRegister: [...(current.fieldRegister || []), item] }));
+    setNewRecord({ actor: '', organization: '', type: 'Informante', role: '', status: 'Nuevo', nextAction: '' });
+  };
+  const informants = records.filter((item) => item.type === 'Informante').length;
+  const commercial = records.filter((item) => ['Discovery', 'Piloto comercial'].includes(item.type)).length;
+  const waiting = records.filter((item) => /espera|agendar|preparación/i.test(item.status || '')).length;
+  const excluded = records.filter((item) => item.type === 'Exclusión' || /descartado|no prospectar/i.test(`${item.status} ${item.commercial}`)).length;
+
+  return (
+    <div className="admin-view field-view">
+      <ViewHeading kicker="Inteligencia y validación" title="Registro de campo comercial" description="Un solo mapa para distinguir informantes, discovery, pilotos y exclusiones. El vínculo abre una conversación; nunca se confunde con necesidad, demanda o permiso para vender." />
+      <div className="field-summary-strip">
+        <span><b>{records.length}</b> actores registrados</span>
+        <span><b>{informants}</b> informantes</span>
+        <span><b>{commercial}</b> pruebas comerciales</span>
+        <span><b>{waiting}</b> por coordinar / en espera</span>
+        <span><b>{excluded}</b> exclusiones</span>
+      </div>
+      <p className="field-register-rule"><Icon name="rule" /><span><b>Regla de campo:</b> primero comprender. Solo se pasa a venta cuando la organización reconoce un problema, existe intención de actuar y Metamorfosis puede aportar sin traicionar su identidad.</span></p>
+      <form className="field-capture" onSubmit={addRecord}>
+        <div><span className="kicker">Captura rápida</span><strong>Agregar actor al campo</strong><small>Registrar primero; clasificar mejor cuando exista evidencia.</small></div>
+        <label>Persona / actor<input value={newRecord.actor} onChange={(event) => setNewRecord({ ...newRecord, actor: event.target.value })} placeholder="Nombre" required /></label>
+        <label>Organización<input value={newRecord.organization} onChange={(event) => setNewRecord({ ...newRecord, organization: event.target.value })} placeholder="Empresa o institución" /></label>
+        <label>Tipo<select value={newRecord.type} onChange={(event) => setNewRecord({ ...newRecord, type: event.target.value })}><option>Informante</option><option>Discovery</option><option>Piloto comercial</option><option>Radar</option><option>Exclusión</option></select></label>
+        <label>Función<input value={newRecord.role} onChange={(event) => setNewRecord({ ...newRecord, role: event.target.value })} placeholder="Qué puede enseñarnos o validar" /></label>
+        <label>Estado<input value={newRecord.status} onChange={(event) => setNewRecord({ ...newRecord, status: event.target.value })} /></label>
+        <label className="field-capture__next">Próximo paso<input value={newRecord.nextAction} onChange={(event) => setNewRecord({ ...newRecord, nextAction: event.target.value })} placeholder="Acción concreta" /></label>
+        <button type="submit" className="button button--small"><Icon name="add" /> Agregar al registro</button>
+      </form>
+      <div className="field-register-grid">
+        {records.map((item) => (
+          <article className={`field-record field-record--${String(item.type || '').toLowerCase().replaceAll(' ', '-').replaceAll('ó', 'o')}`} key={item.id}>
+            <header><span className="field-type">{item.type}</span><span className="field-priority">{item.priority}</span></header>
+            <div className="field-record__title"><div><small>{item.organization}</small><h2>{item.actor}</h2></div><span>{item.access}</span></div>
+            <div className="field-record__facts">
+              <span><small>Función</small><strong>{item.role}</strong></span>
+              <span><small>Lectura comercial</small><strong>{item.commercial}</strong></span>
+            </div>
+            <label>Estado actual<input value={item.status || ''} onChange={(event) => updateRecord(item.id, { status: event.target.value })} /></label>
+            <label>Próximo paso<textarea rows="3" value={item.nextAction || ''} onChange={(event) => updateRecord(item.id, { nextAction: event.target.value })} /></label>
+            <details><summary>Contexto y límite</summary><p>{item.context}</p><p className="field-record__limit"><b>Límite:</b> {item.limit}</p></details>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+
 function ExpedientesView({ osState, setOsState }) {
   const expedientes = Array.isArray(osState.expedientes) ? osState.expedientes : [];
   const [selectedId, setSelectedId] = useState(expedientes[0]?.id || '');
@@ -998,7 +1119,7 @@ function ExpedientesView({ osState, setOsState }) {
         {selected ? <section className="expediente-detail">
           <header className="expediente-detail__header">
             <div><span className="kicker">{selected.id}</span><input className="expediente-title-input" value={selected.name} onChange={(event) => updateExpediente(selected.id, { name: event.target.value })} aria-label="Nombre del expediente" /><p>{selected.sector} · {selected.territory}</p></div>
-            <div className="expediente-detail__controls"><span className="progress-badge">{expedienteProgress(selected)}% completo</span><select value={selected.status} onChange={(event) => updateExpediente(selected.id, { status: event.target.value })}><option>Prospecto</option><option>Preparación previa</option><option>Conversación</option><option>Propuesta</option><option>En pausa</option><option>Descartado</option></select><IconButton icon="delete" label={`Eliminar ${selected.id}`} className="icon-button--danger" onClick={() => removeExpediente(selected)} /></div>
+            <div className="expediente-detail__controls"><span className="progress-badge">{expedienteProgress(selected)}% completo</span><select value={selected.status} onChange={(event) => updateExpediente(selected.id, { status: event.target.value })}><option>Prospecto</option><option>Preparación previa</option><option>Conversación</option><option>En espera</option><option>Propuesta</option><option>En pausa</option><option>Descartado</option></select><IconButton icon="delete" label={`Eliminar ${selected.id}`} className="icon-button--danger" onClick={() => removeExpediente(selected)} /></div>
           </header>
           <div className="expediente-meta-grid">
             <label>Responsable<select value={selected.owner} onChange={(event) => updateExpediente(selected.id, { owner: event.target.value })}>{OWNERS.map((owner) => <option key={owner}>{owner}</option>)}</select></label>
@@ -1185,7 +1306,7 @@ function AdminShell({ session, onLogout }) {
           setOsStateRaw(hydrateState(payload.state));
           if (needsMigration) {
             setDirty(true);
-            setNotice({ type: 'success', message: 'Metamorfosis OS fue actualizado a la arquitectura comercial 9.0. Guarda los cambios para persistir la migración.' });
+            setNotice({ type: 'success', message: 'Metamorfosis OS fue actualizado a la arquitectura comercial 10.1: agenda de septiembre, campo comercial y registro histórico de tiempo. Guarda los cambios para persistir la migración.' });
           }
         } else {
           const key = [STORAGE_KEY, ...LEGACY_STORAGE_KEYS].find((item) => window.localStorage.getItem(item));
@@ -1196,7 +1317,7 @@ function AdminShell({ session, onLogout }) {
             setOsStateRaw(hydrateState(parsed));
             if (needsMigration) {
               setDirty(true);
-              setNotice({ type: 'success', message: 'Se recuperó tu borrador anterior y se migró a Metamorfosis OS 9.0. Guarda los cambios para consolidarlo.' });
+              setNotice({ type: 'success', message: 'Se recuperó tu borrador anterior y se migró a Metamorfosis OS 10.1. Guarda los cambios para consolidarlo.' });
             }
           }
         }
@@ -1363,6 +1484,7 @@ function AdminShell({ session, onLogout }) {
   const view = active === 'dashboard' ? <DashboardView osState={osState} quotes={quotes} dirty={dirty} onNavigate={navigate} onAddTask={openTask} />
     : active === 'month' ? <MonthView osState={osState} setOsState={setOsState} onNavigate={navigate} onAddTask={openTask} />
       : active === 'day' ? <DayView osState={osState} setOsState={setOsState} onAddTask={openTask} onEditTask={setTaskDraft} />
+        : active === 'field' ? <FieldRegisterView osState={osState} setOsState={setOsState} />
         : active === 'expedientes' ? <ExpedientesView osState={osState} setOsState={setOsState} />
           : active === 'quotes' ? <QuotesView quotes={quotes} loading={loadingQuotes} onStatusChange={updateQuoteStatus} onRetryEmail={retryQuoteEmail} notice={notice} />
             : active === 'finance' ? <FinanceView osState={osState} setOsState={setOsState} />

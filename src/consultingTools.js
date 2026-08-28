@@ -88,14 +88,14 @@ export function createEmptyExpediente(index = 1) {
 export function createClubVeganExpediente() {
   return {
     id: 'EXP-001',
-    name: 'ClubVegan',
+    name: 'Club Vegan',
     sector: 'Repostería vegana artesanal',
     territory: 'Concepción, Región del Biobío',
     owner: 'Francisca',
-    status: 'Preparación previa',
+    status: 'En espera',
     openedAt: '2026-08-24',
-    lastUpdate: '2026-08-24',
-    notes: 'Primer expediente comercial del ciclo de validación. Mantener separados datos observados, hipótesis y conclusiones validadas con la organización.',
+    lastUpdate: '2026-08-27',
+    notes: 'Estado al 28-08-2026: el mockup generó una reacción positiva (\"wau estaa hermoso\" + Me gusta). El 27-08 Francisca envió el mensaje de seguimiento explicando que existe una línea piloto/servicio para pymes a bajo costo y delimitando la Vitrina Pyme. Ese último mensaje todavía no ha sido visto. Próximo paso: esperar lectura/respuesta; no insistir ni enviar otro mockup.',
     tools: {
       oportunidad: {
         status: 'Completa',
@@ -104,12 +104,12 @@ export function createClubVeganExpediente() {
           sector: 'Repostería vegana artesanal',
           territory: 'Concepción',
           source: 'Prospección directa · Instagram @clubveganconce',
-          declaredPain: 'Hipótesis: la conversión y entrega de información dependen fuertemente de Instagram/DM; validar si una presencia web simple puede reducir fricción y ordenar la oferta sin agregar carga operativa.',
+          declaredPain: 'Aún no hay dolor declarado. Hipótesis a validar: una vitrina web simple podría ordenar información y apoyar tanto venta directa como relación con locales/puntos de venta sin agregar carga operativa.',
           urgency: 'Por validar',
           paymentCapacity: 'Desconocida',
           fit: 4,
           dispersionRisk: 2,
-          nextAction: 'Completar perfil preliminar y preparar primer contacto con una propuesta de entrada concreta.'
+          nextAction: 'Esperar lectura/respuesta al mensaje de seguimiento enviado el 27-08. No intervenir mientras siga sin ver.'
         }
       },
       perfil: {
@@ -128,7 +128,7 @@ export function createClubVeganExpediente() {
         }
       },
       conversacion: {
-        status: 'Pendiente',
+        status: 'En curso',
         data: {
           sixMonthGoal: '',
           realPain: '',
@@ -138,8 +138,8 @@ export function createClubVeganExpediente() {
           costOfDoingNothing: '',
           disposition: '',
           budget: '',
-          recommendedOffer: 'Hipótesis previa: Vitrina Pyme como intervención mínima. Validar antes de ofrecer como solución definitiva.',
-          nextStep: 'Realizar contacto inicial durante la semana del 24 al 28 de agosto.'
+          recommendedOffer: 'Vitrina Pyme como línea piloto/servicio de bajo costo para pymes. La reacción al mockup fue positiva, pero la necesidad y compra siguen sin validar.',
+          nextStep: 'Esperar que vea el mensaje enviado el 27-08 y responda. Solo entonces avanzar a conversación de utilidad, condiciones y eventual propuesta.'
         }
       }
     }
