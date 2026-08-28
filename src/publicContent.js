@@ -83,7 +83,7 @@ export const team = [
   },
   {
     initials: 'BS',
-    name: 'Benjamín Sepúlveda',
+    name: 'Benjamín Sepúlveda Méndez',
     role: 'Estrategia, investigación y desarrollo metodológico',
     profession: 'Abogado · investigación aplicada',
     institution: 'Pontificia Universidad Católica de Valparaíso · Magíster UBA en curso',
