@@ -500,9 +500,9 @@ function PublicSite() {
             <aside className="audit-hero__aside" aria-label="Señales para conversar">
               <span className="audit-aside-label">Vale la pena conversar cuando</span>
               <ul>
-                <li>la operación depende demasiado de memoria, mensajes o una sola persona;</li>
-                <li>hay registros, pero cuesta seguir lo que ocurrió o demostrarlo;</li>
-                <li>el crecimiento está trayendo errores, pérdidas, duplicación o desorden.</li>
+                <li>La operación depende demasiado de memoria, mensajes o una sola persona.</li>
+                <li>Hay registros, pero cuesta seguir lo que ocurrió o demostrarlo.</li>
+                <li>El crecimiento está trayendo errores, pérdidas, duplicación o desorden.</li>
               </ul>
             </aside>
           </div>
