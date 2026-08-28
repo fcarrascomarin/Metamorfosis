@@ -12246,3 +12246,64 @@ textarea::placeholder { color: #7f98ac; }
     grid-row: 1 / 3;
   }
 }
+
+/* ========================================================================== 
+   5.2.9 · Equipo público — imágenes conceptuales completas y legibles
+   La imagen es parte del mensaje del perfil: evitar recortes que eliminen
+   elementos centrales (p. ej. la balanza del perfil de Benjamín).
+   ========================================================================== */
+.public-site--v50 .team-audit-card--portrait {
+  min-height: 330px;
+  grid-template-columns: minmax(220px, .46fr) minmax(0, .54fr);
+}
+
+.public-site--v50 .team-audit-card__portrait {
+  min-height: 330px;
+  display: grid;
+  place-items: center;
+  padding: 8px;
+  background: #031923;
+}
+
+.public-site--v50 .team-audit-card__portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 18px 0 0 18px;
+}
+
+/* En pantallas de escritorio de poca altura, preservar la lectura de la imagen
+   en vez de convertirla en una franja vertical. */
+@media (min-width: 1100px) and (max-height: 820px) {
+  .public-site--v50 .team-audit-card--portrait {
+    min-height: 270px;
+    grid-template-columns: minmax(170px, .42fr) minmax(0, .58fr);
+  }
+  .public-site--v50 .team-audit-card__portrait {
+    min-height: 270px;
+    padding: 6px;
+  }
+}
+
+@media (max-width: 1080px) {
+  .public-site--v50 .team-audit-card--portrait {
+    grid-template-columns: minmax(210px, .42fr) minmax(0, .58fr);
+    min-height: 300px;
+  }
+  .public-site--v50 .team-audit-card__portrait { min-height: 300px; }
+}
+
+@media (max-width: 620px) {
+  .public-site--v50 .team-audit-card--portrait { grid-template-columns: 1fr; }
+  .public-site--v50 .team-audit-card__portrait {
+    height: min(76vw, 360px);
+    min-height: 280px;
+    padding: 8px;
+  }
+  .public-site--v50 .team-audit-card__portrait img {
+    object-fit: contain;
+    object-position: center;
+    border-radius: 18px 18px 0 0;
+  }
+}
