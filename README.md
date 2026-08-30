@@ -10,7 +10,7 @@ La web pública no expone el OS ni usa clientes, logos, testimonios o casos sin 
 
 ## Versión operativa actual
 
-**5.3.1 · OS 10.5**. Corrige responsive público (hero, títulos y textos bajo imágenes), incorpora agenda comercial de septiembre con reuniones confirmadas sin inventar contraparte, criterios estratégicos vigentes y una vista Familiar más calmada y cotidiana.
+**5.3.2 · OS 10.6**. Añade una agenda mensual móvil táctil y legible, normaliza iconografía y mantiene la lógica de Empresa orientada a acción y Familiar orientada a calma y uso cotidiano. Conserva las mejoras responsive, agenda comercial real y criterios vigentes de 5.3.1.
 
 ## Comandos
 
