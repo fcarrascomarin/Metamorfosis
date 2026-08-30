@@ -92,54 +92,47 @@ export function createClubVeganExpediente() {
     sector: 'Repostería vegana artesanal',
     territory: 'Concepción, Región del Biobío',
     owner: 'Francisca',
-    status: 'En espera',
+    status: 'Cerrado sin conversión',
     openedAt: '2026-08-24',
-    lastUpdate: '2026-08-27',
-    notes: 'Estado al 28-08-2026: la única señal validada es estética: el mockup generó una reacción positiva (\"wau estaa hermoso\" + Me gusta). El 27-08 Francisca envió un mensaje comentando que Metamorfosis tiene un servicio para pymes a bajo costo por si le interesa. Ese mensaje todavía no ha sido visto. Próximo paso: esperar lectura/respuesta; no insistir, no enviar otro mockup y no preparar una propuesta formal antes de interés explícito.',
+    lastUpdate: '2026-08-30',
+    notes: 'Cierre al 30-08-2026: Club Vegan reaccionó positivamente al mockup ("wau estaa hermoso" + Me gusta), pero no se validó necesidad, intención de compra ni contratación. El contacto no avanzó a conversación comercial. Decisión vigente: cerrar sin conversión, no insistir ni enviar seguimiento adicional. Reabrir solo si Club Vegan retoma espontáneamente el contacto.',
     tools: {
       oportunidad: {
         status: 'Completa',
         data: {
-          decisionMaker: 'Por confirmar en contacto directo',
+          decisionMaker: 'No validado',
           sector: 'Repostería vegana artesanal',
           territory: 'Concepción',
           source: 'Prospección directa · Instagram @clubveganconce',
-          declaredPain: 'Aún no hay dolor declarado. Hipótesis a validar: una vitrina web simple podría ordenar información y apoyar tanto venta directa como relación con locales/puntos de venta sin agregar carga operativa.',
-          urgency: 'Por validar',
+          declaredPain: 'No hubo dolor declarado. La única señal positiva fue estética respecto del mockup; la hipótesis de utilidad de una vitrina no alcanzó validación comercial.',
+          urgency: 'Baja',
           paymentCapacity: 'Desconocida',
-          fit: 4,
+          fit: 3,
           dispersionRisk: 2,
-          nextAction: 'Esperar lectura/respuesta al mensaje de seguimiento enviado el 27-08. No intervenir mientras siga sin ver.'
+          nextAction: 'Ninguno. Mantener el expediente cerrado y reabrir únicamente si Club Vegan vuelve por iniciativa propia.'
         }
       },
       perfil: {
         status: 'Completa',
         data: {
           channels: 'Instagram @clubveganconce. Canal visible de contacto: mensaje directo.',
-          visibleOffer: 'Repostería vegana artesanal en Concepción. El perfil comunica agenda con 2 días de anticipación y operación de lunes a sábado.',
-          conversionPath: 'CTA visible: escribir “CATÁLOGO” por DM. La compra parece iniciar mediante conversación privada; debe validarse.',
-          observedSignals: '44 publicaciones y 14,2 mil seguidores en la captura revisada. Identidad visual reconocible. Destacados de recetas, información y contenido de comunidad. No se observa en la evidencia revisada un sitio web propio como ruta principal de conversión.',
-          hypotheses: '1) Puede existir fricción por concentrar catálogo y contacto en DM.\n2) Una vitrina web muy simple podría ordenar información repetitiva.\n3) La comunidad digital es un activo relevante que conviene no alterar con una solución sobrediseñada.',
-          initialRisks: 'Sobrediseñar una solución que agregue administración. Confundir seguidores con capacidad de pago. Concluir sobre la operación interna solo desde redes sociales.',
-          initialOpportunities: 'Validar si una Vitrina Pyme reduce preguntas repetidas, centraliza catálogo/información y deriva pedidos al canal que ya usan.',
-          possibleAssets: 'Marca ClubVegan, comunidad digital visible, identidad gráfica, catálogo/productos, contenido y conocimiento artesanal.',
-          priorityQuestions: '¿Qué información preguntan más por DM?\n¿Cómo comparten hoy el catálogo?\n¿Qué parte del proceso de pedido consume más tiempo?\n¿Qué información cambia con frecuencia?\n¿Qué tendría que resolver una web para valer la pena?\n¿Quién toma la decisión de contratar?\n¿Qué canal quieren mantener como principal?',
-          materialsToRequest: 'Catálogo vigente, información de pedidos/entregas que ya comparten con clientes y, solo si avanzan, materiales gráficos autorizados.'
+          visibleOffer: 'Repostería vegana artesanal en Concepción; además existe una dimensión B2B potencial con locales/puntos de venta que no alcanzó validación comercial en este piloto.',
+          conversionPath: 'La compra visible se articula principalmente por conversación privada/DM. No se validó necesidad de un sitio propio como ruta de conversión.',
+          observedSignals: 'Identidad visual reconocible y reacción positiva al mockup. Esa reacción no se interpreta como señal de compra.',
+          hypotheses: 'La Vitrina Pyme podía ordenar información repetitiva y apoyar B2C/B2B sin transformarse en ecommerce. El piloto no avanzó lo suficiente para probar esa hipótesis.',
+          initialRisks: 'Sobrediseñar; confundir agrado estético con demanda; invertir más trabajo sin permiso comercial.',
+          initialOpportunities: 'Aprendizaje para Metamorfosis: separar validación estética, utilidad, necesidad e intención de compra.',
+          possibleAssets: 'Marca, comunidad digital, catálogo/productos, contenido y conocimiento artesanal.',
+          priorityQuestions: 'Quedan como preguntas de aprendizaje para futuros pilotos, no como tareas pendientes con Club Vegan.',
+          materialsToRequest: 'Ninguno mientras el expediente permanezca cerrado.'
         }
       },
       conversacion: {
-        status: 'En curso',
+        status: 'No aplica',
         data: {
-          sixMonthGoal: '',
-          realPain: '',
-          dependency: '',
-          decision: '',
-          existingEvidence: '',
-          costOfDoingNothing: '',
-          disposition: '',
-          budget: '',
-          recommendedOffer: 'Posible Vitrina Pyme como servicio piloto de bajo costo para pymes. Por ahora solo existe agrado por el mockup; el mensaje que menciona el servicio aún no ha sido visto y no hay necesidad ni compra validadas.',
-          nextStep: 'Esperar que vea el mensaje enviado el 27-08 y responda. Solo entonces avanzar a conversación de utilidad, condiciones y eventual propuesta.'
+          sixMonthGoal: '', realPain: '', dependency: '', decision: '', existingEvidence: '', costOfDoingNothing: '', disposition: '', budget: '',
+          recommendedOffer: 'Vitrina Pyme fue planteada como experimento de bajo costo, pero no llegó a propuesta aceptada ni contratación.',
+          nextStep: 'Cerrado sin conversión. Reabrir solo si la contraparte retoma espontáneamente el contacto.'
         }
       }
     }

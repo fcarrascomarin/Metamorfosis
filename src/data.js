@@ -43,10 +43,10 @@ export const initialProjects = [
   {
     name: 'Inteligencia industrial · RUDEL / CMPC / Blumar',
     client: 'Metamorfosis Lab',
-    stage: 'Campo · primera semana de septiembre',
-    progress: 15,
-    next: 'Agendar y realizar las primeras conversaciones informativas; completar ficha de campo el mismo día',
-    status: 'Prioridad'
+    stage: 'Dos reuniones informativas calendarizadas · 04/09 y 11/09',
+    progress: 35,
+    next: 'Realizar las reuniones confirmadas, completar ficha de campo el mismo día y cerrar la tercera conversación informativa solo si sigue aportando valor',
+    status: 'En ejecución'
   },
   {
     name: 'Maquisant · discovery B2B',
@@ -67,10 +67,10 @@ export const initialProjects = [
   {
     name: 'Club Vegan · Vitrina Pyme',
     client: 'Piloto comercial',
-    stage: 'En espera de lectura',
-    progress: 65,
-    next: 'No intervenir: esperar lectura y respuesta al mensaje enviado el 27-08 antes de cualquier seguimiento',
-    status: 'En espera'
+    stage: 'Cerrado sin conversión · 30/08',
+    progress: 100,
+    next: 'Ninguno. Reabrir solo si Club Vegan retoma espontáneamente el contacto',
+    status: 'Cerrado'
   }
 ];
 
