@@ -10,7 +10,7 @@ La web pública no expone el OS ni usa clientes, logos, testimonios o casos sin 
 
 ## Versión operativa actual
 
-**5.3.0 · OS 10.4**. El OS prioriza información cotidiana útil: los registros creados por el equipo son editables/eliminables cuando corresponde; las plantillas estructurales del repositorio se pueden limpiar sin borrar la herramienta base. El espacio Familiar incluye Hogar y compras, con listas de necesarios a corto plazo y supermercado.
+**5.3.1 · OS 10.5**. Corrige responsive público (hero, títulos y textos bajo imágenes), incorpora agenda comercial de septiembre con reuniones confirmadas sin inventar contraparte, criterios estratégicos vigentes y una vista Familiar más calmada y cotidiana.
 
 ## Comandos
 
