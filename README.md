@@ -7,6 +7,11 @@ Repositorio único con dos superficies separadas:
 
 La web pública no expone el OS ni usa clientes, logos, testimonios o casos sin autorización expresa. El OS concentra agenda, oportunidades, herramientas metodológicas, expedientes comerciales, finanzas, tiempo/rentabilidad, repositorio y sistema familiar.
 
+
+## Versión operativa actual
+
+**5.3.0 · OS 10.4**. El OS prioriza información cotidiana útil: los registros creados por el equipo son editables/eliminables cuando corresponde; las plantillas estructurales del repositorio se pueden limpiar sin borrar la herramienta base. El espacio Familiar incluye Hogar y compras, con listas de necesarios a corto plazo y supermercado.
+
 ## Comandos
 
 ```bash

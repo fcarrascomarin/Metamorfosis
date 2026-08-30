@@ -225,7 +225,7 @@ app.use('/api', (req, res, next) => {
   if (origin && publicOrigins.has(origin.replace(/\/$/, ''))) {
     res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Vary', 'Origin');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,PUT,OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,PUT,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   }
   if (req.method === 'OPTIONS') return res.sendStatus(204);
@@ -631,6 +631,62 @@ app.get('/api/quotes', requireAdmin, async (_req, res) => {
   } catch (error) {
     console.error('Error al consultar cotizaciones:', error.message);
     return res.status(500).json({ ok: false, message: 'No fue posible cargar las cotizaciones.' });
+  }
+});
+
+app.patch('/api/quotes/:id', requireAdmin, requireSameOrigin, async (req, res) => {
+  if (!pool) return res.status(503).json({ ok: false, message: 'Base de datos no conectada.' });
+  const id = clean(req.params.id, 80);
+  const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  const allowed = new Set(['nueva', 'contactada', 'evaluacion', 'propuesta', 'cerrada', 'descartada']);
+  const quote = {
+    serviceType: clean(req.body?.service_type, 120),
+    projectStage: clean(req.body?.project_stage, 120),
+    desiredDate: clean(req.body?.desired_date, 80),
+    teamSize: clean(req.body?.team_size, 80),
+    details: clean(req.body?.details, 1800),
+    contactName: clean(req.body?.contact_name, 140),
+    company: clean(req.body?.company, 160),
+    city: clean(req.body?.city, 140),
+    email: clean(req.body?.email, 180),
+    phone: clean(req.body?.phone, 80),
+    preferredContact: clean(req.body?.preferred_contact, 60),
+    status: clean(req.body?.status || 'nueva', 40)
+  };
+  if (!uuidPattern.test(id) || !quote.serviceType || !quote.contactName || !allowed.has(quote.status)) {
+    return res.status(400).json({ ok: false, message: 'La oportunidad contiene datos no válidos.' });
+  }
+  if (quote.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(quote.email)) {
+    return res.status(400).json({ ok: false, message: 'El correo no tiene un formato válido.' });
+  }
+  try {
+    const result = await pool.query(`
+      UPDATE metamorfosis_quotes SET
+        service_type=$1, project_stage=$2, desired_date=$3, team_size=$4, details=$5,
+        contact_name=$6, company=$7, city=$8, email=$9, phone=$10, preferred_contact=$11, status=$12
+      WHERE id=$13
+    `, [quote.serviceType, quote.projectStage, quote.desiredDate, quote.teamSize, quote.details, quote.contactName, quote.company, quote.city, quote.email, quote.phone, quote.preferredContact, quote.status, id]);
+    if (result.rowCount === 0) return res.status(404).json({ ok: false, message: 'Solicitud no encontrada.' });
+    return res.json({ ok: true });
+  } catch (error) {
+    console.error('Error al editar cotización:', error.message);
+    return res.status(500).json({ ok: false, message: 'No fue posible editar la oportunidad.' });
+  }
+});
+
+app.delete('/api/quotes/:id', requireAdmin, requireSameOrigin, async (req, res) => {
+  if (!pool) return res.status(503).json({ ok: false, message: 'Base de datos no conectada.' });
+  const id = clean(req.params.id, 80);
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)) {
+    return res.status(400).json({ ok: false, message: 'Solicitud no válida.' });
+  }
+  try {
+    const result = await pool.query('DELETE FROM metamorfosis_quotes WHERE id = $1', [id]);
+    if (result.rowCount === 0) return res.status(404).json({ ok: false, message: 'Solicitud no encontrada.' });
+    return res.json({ ok: true });
+  } catch (error) {
+    console.error('Error al eliminar cotización:', error.message);
+    return res.status(500).json({ ok: false, message: 'No fue posible eliminar la oportunidad.' });
   }
 });
 
