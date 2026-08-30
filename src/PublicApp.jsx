@@ -558,7 +558,10 @@ function PublicSite() {
                     <span className="method-showcase-card__number">{String(index + 1).padStart(2, '0')}</span>
                   </div>
                   <div className="method-showcase-card__copy">
-                    <h3>{item.title}</h3>
+                    <div className="method-showcase-card__title">
+                      <span className="method-showcase-card__icon"><Icon name={item.icon} /></span>
+                      <h3>{item.title}</h3>
+                    </div>
                     <p>{item.text}</p>
                   </div>
                 </article>

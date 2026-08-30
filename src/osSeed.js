@@ -1,7 +1,7 @@
 import { createClubVeganExpediente } from './consultingTools.js';
 
 const iso = (date) => date.toISOString().slice(0, 10);
-export const OS_SCHEMA_VERSION = '10.5';
+export const OS_SCHEMA_VERSION = '10.6';
 
 const WEEK = {
   monday: '2026-08-24',

@@ -526,6 +526,15 @@ function getMonthDays(cursor) {
   return days;
 }
 
+function agendaTaskIcon(task) {
+  if (task.confirmed) return 'event_available';
+  const topic = String(task.topic || '').toLowerCase();
+  if (topic.includes('famil')) return 'home';
+  if (topic.includes('sercotec') || topic.includes('postul')) return 'request_quote';
+  if (topic.includes('comercial') || topic.includes('metamorfosis')) return 'briefcase';
+  return 'calendar_month';
+}
+
 function MonthView({ osState, setOsState, onNavigate, onAddTask }) {
   const selected = new Date(`${osState.selectedDate}T12:00:00`);
   const [cursor, setCursor] = useState(new Date(selected.getFullYear(), selected.getMonth(), 1, 12));
@@ -534,18 +543,63 @@ function MonthView({ osState, setOsState, onNavigate, onAddTask }) {
   const tasksByDate = useMemo(() => osState.tasks.reduce((acc, task) => { (acc[task.date] ||= []).push(task); return acc; }, {}), [osState.tasks]);
   const selectDate = (iso) => setOsState((current) => ({ ...current, selectedDate: iso }));
   const move = (delta) => setCursor((current) => new Date(current.getFullYear(), current.getMonth() + delta, 1, 12));
+  const selectedTasks = useMemo(() => (tasksByDate[osState.selectedDate] || []).slice().sort((a, b) => String(a.start).localeCompare(String(b.start))), [tasksByDate, osState.selectedDate]);
 
   return (
     <div className="admin-view">
       <ViewHeading kicker="Sistema operativo" title="Vista mensual" description="Un calendario único para saber quién hace qué, cuándo y con qué criterio de cierre." action={<button type="button" className="button button--small" onClick={() => onAddTask({ date: osState.selectedDate })}><Icon name="add" /> Agregar tarea</button>} />
       <section className="panel-card calendar-panel">
         <div className="calendar-toolbar"><div><IconButton icon="chevron_left" label="Mes anterior" onClick={() => move(-1)} /><button type="button" className="calendar-title" onClick={() => setCursor(new Date())}>{title}</button><IconButton icon="chevron_right" label="Mes siguiente" onClick={() => move(1)} /></div><button type="button" className="button button--ghost button--small" onClick={() => onNavigate('day')}><Icon name="today" /> Ver día seleccionado</button></div>
-        <div className="calendar-weekdays" aria-hidden="true">{['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'].map((day) => <span key={day}>{day}</span>)}</div>
-        <div className="month-grid">
-          {days.map((day) => {
-            const tasks = (tasksByDate[day.iso] || []).sort((a, b) => String(a.start).localeCompare(String(b.start)));
-            return <button type="button" key={day.iso} className={`month-day ${!day.current ? 'is-outside' : ''} ${day.iso === osState.selectedDate ? 'is-selected' : ''}`} onClick={() => selectDate(day.iso)} aria-label={`${formatDate(day.iso)}; ${tasks.length} tareas`}><span className="month-day__number">{day.day}</span>{osState.guides[day.iso]?.name && <small className="month-day__guide">{osState.guides[day.iso].name}</small>}<div>{tasks.slice(0, 4).map((task) => <span key={task.id} className={`mini-task mini-task--${task.status} ${task.confirmed ? 'is-confirmed' : ''}`}><b>{task.start}</b> {task.title}</span>)}{tasks.length > 4 && <span className="mini-task mini-task--more">+{tasks.length - 4} más</span>}</div></button>;
-          })}
+
+        <div className="calendar-desktop-view">
+          <div className="calendar-weekdays" aria-hidden="true">{['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'].map((day) => <span key={day}>{day}</span>)}</div>
+          <div className="month-grid">
+            {days.map((day) => {
+              const tasks = (tasksByDate[day.iso] || []).sort((a, b) => String(a.start).localeCompare(String(b.start)));
+              return <button type="button" key={day.iso} className={`month-day ${!day.current ? 'is-outside' : ''} ${day.iso === osState.selectedDate ? 'is-selected' : ''}`} onClick={() => selectDate(day.iso)} aria-label={`${formatDate(day.iso)}; ${tasks.length} tareas`}><span className="month-day__number">{day.day}</span>{osState.guides[day.iso]?.name && <small className="month-day__guide">{osState.guides[day.iso].name}</small>}<div>{tasks.slice(0, 4).map((task) => <span key={task.id} className={`mini-task mini-task--${task.status} ${task.confirmed ? 'is-confirmed' : ''}`}><b>{task.start}</b> {task.title}</span>)}{tasks.length > 4 && <span className="mini-task mini-task--more">+{tasks.length - 4} más</span>}</div></button>;
+            })}
+          </div>
+        </div>
+
+        <div className="calendar-mobile-view">
+          <div className="calendar-mobile-weekdays" aria-hidden="true">{['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((day, index) => <span key={`${day}-${index}`}>{day}</span>)}</div>
+          <div className="calendar-mobile-grid" role="grid" aria-label={`Calendario de ${title}`}>
+            {days.map((day) => {
+              const tasks = tasksByDate[day.iso] || [];
+              const pending = tasks.filter((task) => task.status !== 'done').length;
+              return (
+                <button
+                  type="button"
+                  key={day.iso}
+                  className={`calendar-mobile-day ${!day.current ? 'is-outside' : ''} ${day.iso === osState.selectedDate ? 'is-selected' : ''}`}
+                  onClick={() => selectDate(day.iso)}
+                  aria-label={`${formatDate(day.iso)}; ${tasks.length} tareas`}
+                  aria-pressed={day.iso === osState.selectedDate}
+                >
+                  <span>{day.day}</span>
+                  {tasks.length > 0 && <small className={pending ? 'has-pending' : 'is-complete'}>{tasks.length}</small>}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="calendar-mobile-detail" aria-live="polite">
+            <div className="calendar-mobile-detail__heading">
+              <div><span className="kicker">Día seleccionado</span><h2>{formatDate(osState.selectedDate, { weekday: 'long', day: 'numeric', month: 'long' })}</h2></div>
+              <button type="button" className="icon-button calendar-mobile-detail__open" onClick={() => onNavigate('day')} aria-label="Abrir detalle del día"><Icon name="arrow_forward" /></button>
+            </div>
+            <div className="calendar-mobile-agenda">
+              {selectedTasks.length ? selectedTasks.map((task) => (
+                <button type="button" key={task.id} className={`calendar-mobile-task ${task.status === 'done' ? 'is-done' : ''}`} onClick={() => onNavigate('day')}>
+                  <span className="calendar-mobile-task__icon"><Icon name={agendaTaskIcon(task)} /></span>
+                  <span className="calendar-mobile-task__time">{task.start || '—'}</span>
+                  <span className="calendar-mobile-task__copy"><strong>{task.title}</strong><small>{task.owner} · {task.topic}{task.confirmed ? ' · Confirmada' : ''}</small></span>
+                  <Icon name="chevron_right" className="calendar-mobile-task__arrow" />
+                </button>
+              )) : <div className="calendar-mobile-empty"><span><Icon name="check_circle" /></span><div><strong>Día despejado</strong><small>No hay tareas registradas para esta fecha.</small></div></div>}
+            </div>
+            <button type="button" className="button button--small calendar-mobile-add" onClick={() => onAddTask({ date: osState.selectedDate })}><Icon name="add" /> Agregar en este día</button>
+          </div>
         </div>
       </section>
       <GuideCard osState={osState} />
@@ -1641,7 +1695,7 @@ function AdminShell({ session, onLogout }) {
           setOsStateRaw(hydrateState(payload.state));
           if (needsMigration) {
             setDirty(true);
-            setNotice({ type: 'success', message: 'Metamorfosis OS fue actualizado a la arquitectura 10.5: agenda comercial real, criterios vigentes, responsive público corregido y Familiar simplificado. Guarda los cambios para persistir la migración.' });
+            setNotice({ type: 'success', message: 'Metamorfosis OS fue actualizado a la arquitectura 10.6: agenda móvil utilizable, iconografía consistente y lectura táctil optimizada. Guarda los cambios para persistir la migración.' });
           }
         } else {
           const key = [STORAGE_KEY, ...LEGACY_STORAGE_KEYS].find((item) => window.localStorage.getItem(item));
@@ -1652,7 +1706,7 @@ function AdminShell({ session, onLogout }) {
             setOsStateRaw(hydrateState(parsed));
             if (needsMigration) {
               setDirty(true);
-              setNotice({ type: 'success', message: 'Se recuperó tu borrador anterior y se migró a Metamorfosis OS 10.5. Guarda los cambios para consolidarlo.' });
+              setNotice({ type: 'success', message: 'Se recuperó tu borrador anterior y se migró a Metamorfosis OS 10.6. Guarda los cambios para consolidarlo.' });
             }
           }
         }
