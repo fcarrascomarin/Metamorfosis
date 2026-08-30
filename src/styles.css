@@ -12307,3 +12307,573 @@ textarea::placeholder { color: #7f98ac; }
     border-radius: 18px 18px 0 0;
   }
 }
+
+/* ========================================================================== 
+   5.3.0 · Responsive integral + OS familiar cotidiano + acciones editables
+   Objetivo: información completa sin cortes, jerarquía natural y controles
+   siempre visibles tanto en escritorio como en móvil.
+   ========================================================================== */
+
+/* ---------- Jerarquía y botones públicos: reducir antes que cortar ---------- */
+.public-site--v50 .button,
+.public-site--v50 .site-nav > button,
+.public-site--v50 .site-nav__os,
+.public-site--v50 .site-nav__conversation {
+  min-width: 0;
+  height: auto;
+  min-height: 42px;
+  white-space: normal;
+  line-height: 1.2;
+  text-align: center;
+  justify-content: center;
+}
+.public-site--v50 .section-heading h2 {
+  font-size: clamp(2rem, 4.1vw, 3.6rem);
+  line-height: 1.02;
+  text-wrap: balance;
+}
+.public-site--v50 .section-heading p {
+  font-size: clamp(.96rem, 1.25vw, 1.08rem);
+  line-height: 1.52;
+}
+.public-site--v50 .section-heading .kicker,
+.public-site--v50 .team-audit-card__eyebrow {
+  font-size: clamp(.61rem, .75vw, .72rem);
+}
+.public-site--v50 h3 {
+  text-wrap: balance;
+}
+
+/* Imágenes informativas: el encuadre nunca debe eliminar el mensaje. */
+@media (max-width: 760px) {
+  .public-site--v50 .audit-pillar-showcase__media,
+  .public-site--v50 #metodo .method-showcase-card__media {
+    aspect-ratio: 16 / 10;
+    background: #052633;
+  }
+  .public-site--v50 .audit-pillar-showcase__media img,
+  .public-site--v50 #metodo .method-showcase-card__media img {
+    object-fit: contain;
+    object-position: center;
+    transform: none;
+  }
+  .public-site--v50 .team-audit-card__portrait {
+    height: clamp(220px, 72vw, 330px);
+    min-height: 220px;
+    padding: 6px;
+    background: #031923;
+  }
+  .public-site--v50 .team-audit-card__portrait img {
+    object-fit: contain;
+    object-position: center;
+    transform: none;
+  }
+}
+
+@media (max-width: 820px) {
+  .public-site--v50 .section-heading {
+    margin-bottom: 22px;
+  }
+  .public-site--v50 .section-heading h2 {
+    font-size: clamp(1.85rem, 8vw, 2.55rem);
+  }
+  .public-site--v50 .section-heading p {
+    font-size: .94rem;
+  }
+  .public-site--v50 .hero__panel h1,
+  .public-site--v50 .hero__panel--open h1 {
+    max-width: 12ch;
+    font-size: clamp(2.35rem, 11vw, 3.55rem);
+    line-height: .98;
+  }
+  .public-site--v50 .hero__panel p {
+    font-size: .96rem;
+    line-height: 1.5;
+  }
+  .public-site--v50 .team-audit-card--portrait .team-audit-card__body {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 620px) {
+  .public-site--v50 .story-section__content,
+  .public-site--v50 .audit-section .container,
+  .public-site--v50 .site-footer .container {
+    padding-inline: 16px;
+  }
+  .public-site--v50 .hero__actions,
+  .public-site--v50 .compact-actions {
+    width: 100%;
+  }
+  .public-site--v50 .hero__actions .button,
+  .public-site--v50 .compact-actions .button {
+    width: 100%;
+    padding-inline: 14px;
+  }
+  .public-site--v50 .team-audit-card--portrait {
+    border-radius: 20px;
+  }
+  .public-site--v50 .team-audit-card__copy h3 {
+    font-size: 1.28rem;
+  }
+  .public-site--v50 .team-audit-card__copy > strong {
+    font-size: .75rem;
+  }
+  .public-site--v50 .team-audit-card--portrait p {
+    font-size: .76rem;
+  }
+}
+
+/* ---------- OS general: controles no truncados y acciones siempre accesibles ---------- */
+.admin-frame .button,
+.admin-frame .admin-action-button,
+.admin-frame .workspace-switch a,
+.admin-frame .sidebar-submenu button,
+.admin-frame .table-actions .icon-button {
+  min-width: 0;
+}
+.admin-frame .button,
+.admin-frame .admin-action-button,
+.admin-frame .workspace-switch a,
+.admin-frame .sidebar-submenu button {
+  height: auto;
+  white-space: normal;
+  line-height: 1.2;
+}
+.admin-frame .admin-view__heading h1,
+.admin-frame .admin-view__heading h2 {
+  line-height: 1.05;
+  text-wrap: balance;
+}
+.admin-frame .admin-view__heading h1 {
+  font-size: clamp(1.8rem, 3vw, 2.55rem);
+}
+.admin-frame .admin-view__heading p {
+  max-width: 78ch;
+  font-size: clamp(.82rem, 1vw, .95rem);
+  line-height: 1.5;
+}
+.admin-frame .panel-card__heading h2,
+.admin-frame .family-section__heading h2 {
+  font-size: clamp(1.15rem, 1.8vw, 1.5rem);
+  line-height: 1.12;
+}
+.admin-frame .panel-card__heading p,
+.admin-frame .family-section__heading p {
+  font-size: .78rem;
+  line-height: 1.45;
+}
+.admin-frame .icon-button--danger {
+  border-color: rgba(166, 55, 40, .34);
+  background: #fff1ed;
+  color: #9b2f22;
+}
+.admin-frame .icon-button--danger:hover {
+  border-color: #9b2f22;
+  background: #9b2f22;
+  color: #fff;
+}
+.admin-frame .table-actions {
+  min-width: 116px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+/* Campo comercial: todos los actores creados se pueden retirar. */
+.field-record > header {
+  grid-template-columns: auto minmax(0, 1fr) 34px;
+  align-items: center;
+}
+.field-record__delete {
+  justify-self: end;
+}
+
+/* Repositorio: un documento desarrollado por error puede volver a su estado base. */
+.repository-document__delete {
+  border-color: #d5aaa3 !important;
+  color: #8c382e !important;
+}
+.repository-document__delete:hover {
+  border-color: #8c382e !important;
+  background: #fff0ed !important;
+  color: #742d25 !important;
+}
+
+/* Cotizaciones: tabla y editor utilizables también desde móvil. */
+.quote-edit-modal {
+  width: min(94vw, 860px);
+  max-height: min(92svh, 860px);
+  overflow: auto;
+}
+.quotes-view .table-page {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ---------- Familiar: contraste alto, café/amarillo y cero controles perdidos ---------- */
+.admin-frame--family .admin-main,
+.admin-frame--family .admin-view {
+  color: var(--family-ink);
+}
+.admin-frame--family .admin-view__heading h1,
+.admin-frame--family .admin-view__heading h2,
+.admin-frame--family .family-section h2,
+.admin-frame--family .family-section h3,
+.admin-frame--family .family-section strong,
+.admin-frame--family .family-identity-card h2 {
+  color: var(--family-ink);
+}
+.admin-frame--family .admin-view__heading p,
+.admin-frame--family .family-section p,
+.admin-frame--family .family-section small,
+.admin-frame--family .family-identity-card p,
+.admin-frame--family .family-person span,
+.admin-frame--family .empty-copy {
+  color: #5f4b3c;
+}
+.admin-frame--family .kicker {
+  color: #7b4c20;
+}
+.admin-frame--family .family-section label,
+.admin-frame--family .family-person label,
+.admin-frame--family .family-add-row label,
+.admin-frame--family .family-capture label {
+  color: #4b321f;
+}
+.admin-frame--family .family-section input,
+.admin-frame--family .family-section select,
+.admin-frame--family .family-section textarea,
+.admin-frame--family .family-person input,
+.admin-frame--family .family-person select,
+.admin-frame--family .family-person textarea {
+  border-color: #c7aa83;
+  background: #fffdf8;
+  color: #2f2117;
+}
+.admin-frame--family .family-section input::placeholder,
+.admin-frame--family .family-section textarea::placeholder {
+  color: #846e59;
+  opacity: 1;
+}
+.admin-frame--family .icon-button--danger {
+  border: 1px solid #a94a36;
+  background: #fff3ed;
+  color: #8d2f21;
+  box-shadow: 0 2px 7px rgba(97, 42, 30, .1);
+}
+.admin-frame--family .icon-button--danger:hover {
+  border-color: #7d281d;
+  background: #7d281d;
+  color: #fff9ed;
+}
+.admin-frame--family .family-check {
+  border-color: #8b612d;
+  background: #fff4c9;
+  color: #573719;
+}
+.admin-frame--family .family-check:hover {
+  background: var(--family-gold);
+  color: var(--family-brown-deep);
+}
+.admin-frame--family .family-command-bar--compact {
+  grid-template-columns: minmax(240px, 1.5fr) repeat(2, minmax(120px, .5fr));
+  align-items: stretch;
+}
+.admin-frame--family .family-command-bar--compact > label {
+  display: grid;
+  align-content: center;
+  gap: 6px;
+  color: #ffe595;
+  font-size: .68rem;
+  font-weight: 850;
+  letter-spacing: .045em;
+  text-transform: uppercase;
+}
+
+/* Listas domésticas: rápidas, editables y eliminables. */
+.family-shopping-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.family-shopping-card {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--family-line);
+  border-radius: 16px;
+  background: #fffaf1;
+}
+.family-shopping-card > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2ceb1;
+}
+.family-shopping-card > header > div {
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+.family-shopping-card > header .app-icon {
+  width: 22px;
+  height: 22px;
+  color: #6d451f;
+}
+.family-shopping-card > header span {
+  display: grid;
+  gap: 2px;
+}
+.family-shopping-card > header strong {
+  font-size: .9rem;
+}
+.family-shopping-card > header small {
+  font-size: .67rem;
+  line-height: 1.35;
+}
+.family-shopping-card > header > b {
+  min-width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--family-gold-soft);
+  color: var(--family-brown-deep);
+  font-size: .72rem;
+}
+.family-simple-list {
+  display: grid;
+  gap: 7px;
+  margin: 11px 0;
+}
+.family-simple-list > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 36px;
+  gap: 7px;
+  align-items: center;
+}
+.admin-frame--family .family-simple-list input {
+  min-height: 38px;
+  padding: 7px 9px;
+  font-size: .78rem;
+}
+.family-simple-list .icon-button {
+  width: 36px;
+  height: 36px;
+}
+.family-simple-add {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: end;
+}
+.family-simple-add input {
+  min-width: 0;
+  min-height: 40px;
+}
+.family-simple-add .button {
+  min-height: 40px;
+}
+
+@media (max-width: 900px) {
+  .family-shopping-grid {
+    grid-template-columns: 1fr;
+  }
+  .admin-frame--family .family-command-bar--compact {
+    grid-template-columns: 1fr repeat(2, minmax(0, 1fr));
+  }
+  .admin-frame--family .family-command-bar--compact > label {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ---------- OS móvil: conservar armonía reduciendo densidad, no contenido ---------- */
+@media (max-width: 820px) {
+  .admin-frame .admin-header {
+    gap: 8px;
+    padding: 10px 12px;
+  }
+  .admin-frame .admin-header__brand,
+  .admin-frame .admin-header__actions {
+    min-width: 0;
+  }
+  .admin-frame .admin-brand strong {
+    font-size: .82rem;
+  }
+  .admin-frame .admin-brand small {
+    font-size: .58rem;
+  }
+  .admin-frame .workspace-switch {
+    max-width: 100%;
+  }
+  .admin-frame .workspace-switch a {
+    min-height: 38px;
+    padding: 7px 10px;
+  }
+  .admin-frame .admin-action-button,
+  .admin-frame .admin-header .icon-button {
+    min-height: 38px;
+  }
+  .admin-frame .admin-main {
+    padding-inline: 12px;
+  }
+  .admin-frame .admin-view__heading,
+  .admin-frame .panel-card,
+  .admin-frame .family-section,
+  .admin-frame .family-identity-card {
+    border-radius: 16px;
+  }
+  .admin-frame .admin-view__heading h1 {
+    font-size: clamp(1.55rem, 7vw, 2rem);
+  }
+  .admin-frame .admin-view__heading p {
+    font-size: .8rem;
+  }
+  .admin-frame .panel-card__heading,
+  .admin-frame .family-section__heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .admin-frame .button {
+    min-height: 40px;
+    padding: 8px 12px;
+    font-size: .78rem;
+  }
+  .admin-frame .table-page {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 560px) {
+  .admin-frame .admin-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .admin-frame .admin-header__brand {
+    grid-column: 1;
+  }
+  .admin-frame .workspace-switch {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+  }
+  .admin-frame .workspace-switch a {
+    flex: 1;
+  }
+  .admin-frame .admin-header__actions {
+    grid-column: 2;
+    grid-row: 1;
+    flex-wrap: nowrap;
+  }
+  .admin-frame .admin-header__actions .admin-action-button:not(.is-dirty):not(.admin-action-button--exit),
+  .admin-frame .admin-action-button--exit span {
+    display: none;
+  }
+  .admin-frame .admin-header__actions .icon-button,
+  .admin-frame .admin-action-button--exit {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    min-height: 36px;
+    padding: 0;
+  }
+  .admin-frame .admin-action-button.is-dirty {
+    min-height: 36px;
+    padding: 0 9px;
+    font-size: .65rem;
+  }
+  .admin-frame .admin-brand--family img {
+    width: 48px;
+    height: 34px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  .admin-frame .admin-brand small {
+    display: none;
+  }
+  .admin-frame .family-identity-card {
+    grid-template-columns: 1fr;
+  }
+  .admin-frame .family-identity-card img {
+    width: 100%;
+    max-height: 220px;
+    object-fit: contain;
+    background: #362215;
+    border-radius: 12px;
+  }
+  .admin-frame--family .family-command-bar--compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 13px;
+  }
+  .admin-frame--family .family-command-bar--compact > label {
+    grid-column: 1 / -1;
+  }
+  .family-simple-add {
+    grid-template-columns: 1fr;
+  }
+  .family-simple-add .button {
+    width: 100%;
+  }
+  .quote-edit-modal .compact-form {
+    grid-template-columns: 1fr;
+  }
+  .quote-edit-modal .field-full {
+    grid-column: 1;
+  }
+}
+
+/* 5.3.0b · edición compacta de campo + móvil sin recortes */
+.field-record__editor > summary {
+  color: #315c63;
+  font-size: .68rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+.field-record__editor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  margin-top: 10px;
+}
+.field-record__editor-grid label {
+  min-width: 0;
+}
+.field-record__editor-grid input,
+.field-record__editor-grid select,
+.field-record__editor-grid textarea {
+  width: 100%;
+}
+.field-record__editor-grid .field-full {
+  grid-column: 1 / -1;
+}
+
+/* La imagen de equipo debe reducirse con la pantalla, nunca recortarse. */
+@media (max-width: 620px) {
+  .public-site--v50 .team-audit-card__portrait {
+    height: clamp(205px, 67vw, 285px);
+    min-height: 205px;
+  }
+  .public-site--v50 .team-audit-card--portrait {
+    min-height: 0;
+  }
+  .public-site--v50 .team-audit-card__portrait img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  .public-site--v50 .audit-pillar-showcase__media,
+  .public-site--v50 #metodo .method-showcase-card__media {
+    min-height: 0;
+    height: auto;
+  }
+  .field-record__editor-grid {
+    grid-template-columns: 1fr;
+  }
+  .field-record__editor-grid .field-full {
+    grid-column: 1;
+  }
+}

@@ -48,7 +48,7 @@ const FAMILY_MENU_GROUPS = [
       ['family-overview', 'Resumen', 'home'],
       ['family-week', 'Semana y bienestar', 'calendar_month'],
       ['family-money', 'Caja familiar', 'savings'],
-      ['family-home', 'Hogar y pendientes', 'construction']
+      ['family-home', 'Hogar y compras', 'construction']
     ]
   }
 ];
@@ -319,6 +319,14 @@ function normalizeFamilyState(rawFamily, fallbackFamily) {
         };
       })
     },
+    shortTermNeeds: (Array.isArray(family.shortTermNeeds) ? family.shortTermNeeds : fallbackFamily.shortTermNeeds || []).map((raw) => {
+      const item = safeObject(raw);
+      return { ...item, id: safeText(item.id) || crypto.randomUUID(), title: safeText(item.title, 'Necesario') };
+    }),
+    groceryList: (Array.isArray(family.groceryList) ? family.groceryList : fallbackFamily.groceryList || []).map((raw) => {
+      const item = safeObject(raw);
+      return { ...item, id: safeText(item.id) || crypto.randomUUID(), title: safeText(item.title, 'Producto') };
+    }),
     inventory: (Array.isArray(family.inventory) ? family.inventory : fallbackFamily.inventory).map((raw) => {
       const item = safeObject(raw);
       return {
@@ -588,6 +596,8 @@ function FamilyView({ osState, setOsState, section = 'family-overview' }) {
   const family = osState.family;
   const [actionForm, setActionForm] = useState({ owner: 'Benjamín', title: '', load: 'Media' });
   const [homeItem, setHomeItem] = useState('');
+  const [needItem, setNeedItem] = useState('');
+  const [groceryItem, setGroceryItem] = useState('');
   const [captureForm, setCaptureForm] = useState({ title: '', area: 'Familia', status: 'Próximo' });
   const [frontForm, setFrontForm] = useState({ name: '', leader: 'Francisca', state: 'Activo', next: '', limit: '' });
   const [exclusion, setExclusion] = useState('');
@@ -650,6 +660,22 @@ function FamilyView({ osState, setOsState, section = 'family-overview' }) {
     home: { ...current.home, checklist: current.home.checklist.filter((item) => item.id !== id) }
   }));
 
+  const addSimpleFamilyListItem = (event, key, value, setValue) => {
+    event.preventDefault();
+    const title = value.trim();
+    if (!title) return;
+    updateFamily((current) => ({ ...current, [key]: [...(current[key] || []), { id: crypto.randomUUID(), title }] }));
+    setValue('');
+  };
+  const updateSimpleFamilyListItem = (key, id, title) => updateFamily((current) => ({
+    ...current,
+    [key]: (current[key] || []).map((item) => item.id === id ? { ...item, title } : item)
+  }));
+  const removeSimpleFamilyListItem = (key, id) => updateFamily((current) => ({
+    ...current,
+    [key]: (current[key] || []).filter((item) => item.id !== id)
+  }));
+
   const addCapture = (event) => {
     event.preventDefault();
     if (!captureForm.title.trim()) return;
@@ -684,7 +710,7 @@ function FamilyView({ osState, setOsState, section = 'family-overview' }) {
     'family-overview': ['Resumen familiar', 'Una vista de contexto para saber en qué etapa están, qué frentes siguen activos y qué deliberadamente queda fuera.'],
     'family-week': ['Semana y bienestar', 'Carga, prioridades y acciones concretas de la semana, sin confundir cantidad de tareas con capacidad real.'],
     'family-money': ['Caja familiar', 'Un espacio económico separado de la empresa para decidir con claridad qué está disponible, comprometido y protegido.'],
-    'family-home': ['Hogar y pendientes', 'Mejoras domésticas, microacciones e inventario familiar sin mezclarlos con la operación de Metamorfosis.']
+    'family-home': ['Hogar y compras', 'Pendientes domésticos y listas de compra simples para saber qué resolver y qué falta antes de salir.']
   };
   const [sectionTitle, sectionDescription] = sectionTitles[section] || sectionTitles['family-overview'];
 
@@ -694,7 +720,6 @@ function FamilyView({ osState, setOsState, section = 'family-overview' }) {
         kicker="Espacio familiar"
         title={sectionTitle}
         description={sectionDescription}
-        action={section === 'family-overview' ? <div className="family-phase-control"><label>Verbo actual<select value={family.phase} onChange={(event) => updateFamily({ phase: event.target.value })}><option>PREPARAR</option><option>MERCADO</option><option>ESTABILIZAR</option></select></label></div> : null}
       />
 
       {section === 'family-overview' && <>
@@ -703,9 +728,8 @@ function FamilyView({ osState, setOsState, section = 'family-overview' }) {
           <div><span className="kicker">Otro contexto, otras reglas</span><h2>La familia no es una unidad de negocio</h2><p>Este espacio usa otra identidad visual y otra lógica de decisión. Aquí importan caja, carga, hogar y prioridades compartidas; no indicadores comerciales.</p></div>
         </section>
 
-        <section className="family-command-bar">
-          <div><span className="kicker">Frontera vigente</span><strong>{family.phase}</strong><p>{family.phaseNote}</p></div>
-          <label>Nombre de la semana<input value={family.weekLabel || ''} onChange={(event) => updateFamily({ weekLabel: event.target.value })} /></label>
+        <section className="family-command-bar family-command-bar--compact">
+          <label>Semana en curso<input value={family.weekLabel || ''} onChange={(event) => updateFamily({ weekLabel: event.target.value })} /></label>
           <div className="family-command-stat"><small>Semana</small><strong>{completedWeekly}/{family.weeklyActions.length}</strong><span>acciones cerradas</span></div>
           <div className="family-command-stat"><small>Casa</small><strong>{homeProgress}%</strong><span>intervención actual</span></div>
         </section>
@@ -796,6 +820,28 @@ function FamilyView({ osState, setOsState, section = 'family-overview' }) {
             {family.home.checklist.map((item) => <article className={item.status === 'done' ? 'is-done' : ''} key={item.id}><button type="button" className="family-check" onClick={() => toggleHome(item.id)}><Icon name={item.status === 'done' ? 'check_circle' : 'construction'} /></button><div><strong>{item.title}</strong></div><IconButton icon="delete" label={`Eliminar ${item.title}`} className="icon-button--danger" onClick={() => removeHome(item.id)} /></article>)}
           </div>
           <form className="family-add-row family-add-row--simple" onSubmit={addHomeItem}><label className="family-grow">Nueva microacción<input value={homeItem} onChange={(event) => setHomeItem(event.target.value)} placeholder="Algo pequeño y cerrable" /></label><button className="button button--small" type="submit"><Icon name="add" /> Agregar</button></form>
+        </section>
+
+        <section className="family-section family-shopping-section">
+          <div className="family-section__heading"><div><span className="kicker">Compras cotidianas</span><h2>Lo que falta, listo para comprar</h2></div><p>Dos listas simples: necesidades de corto plazo y supermercado. Se editan en línea y se eliminan cuando ya no hacen falta.</p></div>
+          <div className="family-shopping-grid">
+            <article className="family-shopping-card">
+              <header><div><Icon name="inventory_2" /><span><strong>Necesarios a corto plazo</strong><small>Objetos o soluciones domésticas que conviene comprar pronto.</small></span></div><b>{(family.shortTermNeeds || []).length}</b></header>
+              <div className="family-simple-list">
+                {(family.shortTermNeeds || []).map((item) => <div key={item.id}><input aria-label={`Editar ${item.title}`} value={item.title} onChange={(event) => updateSimpleFamilyListItem('shortTermNeeds', item.id, event.target.value)} /><IconButton icon="delete" label={`Eliminar ${item.title}`} className="icon-button--danger" onClick={() => removeSimpleFamilyListItem('shortTermNeeds', item.id)} /></div>)}
+                {!(family.shortTermNeeds || []).length && <p className="empty-copy">Sin necesarios cargados.</p>}
+              </div>
+              <form className="family-simple-add" onSubmit={(event) => addSimpleFamilyListItem(event, 'shortTermNeeds', needItem, setNeedItem)}><input value={needItem} onChange={(event) => setNeedItem(event.target.value)} placeholder="Agregar necesario" aria-label="Agregar necesario a corto plazo" /><button type="submit" className="button button--small"><Icon name="add" /> Agregar</button></form>
+            </article>
+            <article className="family-shopping-card">
+              <header><div><Icon name="inventory_2" /><span><strong>Supermercado</strong><small>Productos que se van acabando para revisar antes de salir a comprar.</small></span></div><b>{(family.groceryList || []).length}</b></header>
+              <div className="family-simple-list">
+                {(family.groceryList || []).map((item) => <div key={item.id}><input aria-label={`Editar ${item.title}`} value={item.title} onChange={(event) => updateSimpleFamilyListItem('groceryList', item.id, event.target.value)} /><IconButton icon="delete" label={`Eliminar ${item.title}`} className="icon-button--danger" onClick={() => removeSimpleFamilyListItem('groceryList', item.id)} /></div>)}
+                {!(family.groceryList || []).length && <p className="empty-copy">Lista vacía. Agrega algo cuando se esté acabando.</p>}
+              </div>
+              <form className="family-simple-add" onSubmit={(event) => addSimpleFamilyListItem(event, 'groceryList', groceryItem, setGroceryItem)}><input value={groceryItem} onChange={(event) => setGroceryItem(event.target.value)} placeholder="Ej. avena, detergente, tomates…" aria-label="Agregar producto de supermercado" /><button type="submit" className="button button--small"><Icon name="add" /> Agregar</button></form>
+            </article>
+          </div>
         </section>
 
         <section className="family-section">
@@ -984,6 +1030,10 @@ function FieldRegisterView({ osState, setOsState }) {
     ...current,
     fieldRegister: (current.fieldRegister || []).map((item) => item.id === id ? { ...item, ...patch } : item)
   }));
+  const removeRecord = (id, actor) => {
+    if (!window.confirm(`¿Eliminar ${actor} del registro de campo?`)) return;
+    setOsState((current) => ({ ...current, fieldRegister: (current.fieldRegister || []).filter((item) => item.id !== id) }));
+  };
   const addRecord = (event) => {
     event.preventDefault();
     if (!newRecord.actor.trim()) return;
@@ -1033,7 +1083,7 @@ function FieldRegisterView({ osState, setOsState }) {
       <div className="field-register-grid">
         {records.map((item) => (
           <article className={`field-record field-record--${String(item.type || '').toLowerCase().replaceAll(' ', '-').replaceAll('ó', 'o')}`} key={item.id}>
-            <header><span className="field-type">{item.type}</span><span className="field-priority">{item.priority}</span></header>
+            <header><span className="field-type">{item.type}</span><span className="field-priority">{item.priority}</span><IconButton icon="delete" label={`Eliminar ${item.actor}`} className="icon-button--danger field-record__delete" onClick={() => removeRecord(item.id, item.actor)} /></header>
             <div className="field-record__title"><div><small>{item.organization}</small><h2>{item.actor}</h2></div><span>{item.access}</span></div>
             <div className="field-record__facts">
               <span><small>Función</small><strong>{item.role}</strong></span>
@@ -1041,7 +1091,17 @@ function FieldRegisterView({ osState, setOsState }) {
             </div>
             <label>Estado actual<input value={item.status || ''} onChange={(event) => updateRecord(item.id, { status: event.target.value })} /></label>
             <label>Próximo paso<textarea rows="3" value={item.nextAction || ''} onChange={(event) => updateRecord(item.id, { nextAction: event.target.value })} /></label>
-            <details><summary>Contexto y límite</summary><p>{item.context}</p><p className="field-record__limit"><b>Límite:</b> {item.limit}</p></details>
+            <details className="field-record__editor"><summary>Ver / editar detalle</summary><div className="field-record__editor-grid">
+              <label>Persona / actor<input value={item.actor || ''} onChange={(event) => updateRecord(item.id, { actor: event.target.value })} /></label>
+              <label>Organización<input value={item.organization || ''} onChange={(event) => updateRecord(item.id, { organization: event.target.value })} /></label>
+              <label>Tipo<select value={item.type || 'Informante'} onChange={(event) => updateRecord(item.id, { type: event.target.value })}><option>Informante</option><option>Discovery</option><option>Piloto comercial</option><option>Radar</option><option>Exclusión</option></select></label>
+              <label>Prioridad<input value={item.priority || ''} onChange={(event) => updateRecord(item.id, { priority: event.target.value })} /></label>
+              <label>Acceso<input value={item.access || ''} onChange={(event) => updateRecord(item.id, { access: event.target.value })} /></label>
+              <label>Función<input value={item.role || ''} onChange={(event) => updateRecord(item.id, { role: event.target.value })} /></label>
+              <label className="field-full">Lectura comercial<input value={item.commercial || ''} onChange={(event) => updateRecord(item.id, { commercial: event.target.value })} /></label>
+              <label className="field-full">Contexto<textarea rows="4" value={item.context || ''} onChange={(event) => updateRecord(item.id, { context: event.target.value })} /></label>
+              <label className="field-full">Límite<textarea rows="3" value={item.limit || ''} onChange={(event) => updateRecord(item.id, { limit: event.target.value })} /></label>
+            </div></details>
           </article>
         ))}
       </div>
@@ -1169,9 +1229,9 @@ function ExpedientesView({ osState, setOsState }) {
   );
 }
 
-function QuotesView({ quotes, loading, onStatusChange, onRetryEmail, notice }) {
-  return <div className="admin-view">
-    <ViewHeading kicker="Comercial" title="Oportunidades y cotizaciones" description="Cada formulario público debe quedar registrado aquí aunque el correo tenga una incidencia. El estado de envío permite distinguir registro comercial de notificación SMTP." />
+function QuotesView({ quotes, loading, onStatusChange, onRetryEmail, onEdit, onDelete, notice }) {
+  return <div className="admin-view quotes-view">
+    <ViewHeading kicker="Comercial" title="Oportunidades y cotizaciones" description="Cada solicitud puede revisarse, editarse y eliminarse. El registro comercial es una herramienta viva: corrige datos, agrega contexto y retira entradas que ya no sirven." />
     {notice && <p className={`admin-notice ${notice.type === 'error' ? 'admin-notice--error' : ''}`} role="status">{notice.message}</p>}
     <section className="panel-card">
       <div className="table-page"><table><thead><tr><th>Fecha</th><th>Contacto</th><th>Necesidad</th><th>Correo</th><th>Estado</th><th><span className="sr-only">Acciones</span></th></tr></thead><tbody>
@@ -1181,7 +1241,7 @@ function QuotesView({ quotes, loading, onStatusChange, onRetryEmail, notice }) {
           <td><details><summary>{quote.service_type}</summary><p>{quote.details}</p>{(quote.project_stage || quote.team_size || quote.desired_date) && <small>{[quote.project_stage, quote.team_size, quote.desired_date].filter(Boolean).join(' · ')}</small>}</details></td>
           <td><span className={`mail-state ${quote.email_sent ? 'is-sent' : 'is-pending'}`}><Icon name={quote.email_sent ? 'check_circle' : 'warning'} />{quote.email_sent ? 'Enviado' : 'Pendiente'}</span>{quote.email_error && <small className="mail-state__error">{quote.email_error}</small>}</td>
           <td><select className="status-select" aria-label={`Cambiar estado de ${quote.contact_name}`} value={quote.status || 'nueva'} onChange={(event) => onStatusChange(quote.id, event.target.value)}>{STATUS_OPTIONS.map((status) => <option key={status} value={status}>{status === 'evaluacion' ? 'En evaluación' : status.charAt(0).toUpperCase() + status.slice(1)}</option>)}</select></td>
-          <td className="table-actions">{!quote.email_sent && !String(quote.id).startsWith('web-') && <button type="button" className="icon-button" aria-label={`Reintentar correo de ${quote.contact_name}`} title="Reintentar correo" onClick={() => onRetryEmail(quote.id)}><Icon name="refresh" /></button>}{quote.email && <a className="icon-button" aria-label={`Enviar correo a ${quote.contact_name}`} title="Correo" href={`mailto:${quote.email}`}><Icon name="mail" /></a>}{quote.phone && <a className="icon-button" aria-label={`Llamar a ${quote.contact_name}`} title="Teléfono" href={`tel:${String(quote.phone || '').replace(/\D/g, '')}`}><Icon name="phone" /></a>}</td>
+          <td className="table-actions"><IconButton icon="edit" label={`Editar ${quote.contact_name}`} onClick={() => onEdit(quote)} />{!quote.email_sent && !String(quote.id).startsWith('web-') && <button type="button" className="icon-button" aria-label={`Reintentar correo de ${quote.contact_name}`} title="Reintentar correo" onClick={() => onRetryEmail(quote.id)}><Icon name="refresh" /></button>}{quote.email && <a className="icon-button" aria-label={`Enviar correo a ${quote.contact_name}`} title="Correo" href={`mailto:${quote.email}`}><Icon name="mail" /></a>}{quote.phone && <a className="icon-button" aria-label={`Llamar a ${quote.contact_name}`} title="Teléfono" href={`tel:${String(quote.phone || '').replace(/\D/g, '')}`}><Icon name="phone" /></a>}<IconButton icon="delete" label={`Eliminar ${quote.contact_name}`} className="icon-button--danger" onClick={() => onDelete(quote)} /></td>
         </tr>)}
         {!loading && !quotes.length && <tr><td colSpan="6"><div className="empty-state-inline"><Icon name="request_quote" /><p>No hay oportunidades registradas.</p></div></td></tr>}
       </tbody></table>{loading && <p className="loading-line">Cargando oportunidades…</p>}</div>
@@ -1189,6 +1249,32 @@ function QuotesView({ quotes, loading, onStatusChange, onRetryEmail, notice }) {
   </div>;
 }
 
+function QuoteEditModal({ quote, onClose, onSave }) {
+  const [form, setForm] = useState({ ...quote });
+  const dialogRef = useRef(null);
+  useEffect(() => { dialogRef.current?.focus(); }, []);
+  const update = (event) => setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
+  const submit = (event) => {
+    event.preventDefault();
+    if (!String(form.contact_name || '').trim() || !String(form.service_type || '').trim()) return;
+    onSave({ ...form, contact_name: String(form.contact_name || '').trim(), service_type: String(form.service_type || '').trim(), details: String(form.details || '').trim() });
+  };
+  return <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><section className="modal-card quote-edit-modal" role="dialog" aria-modal="true" aria-labelledby="quote-edit-title" tabIndex="-1" ref={dialogRef}><div className="modal-heading"><div><span className="kicker">Registro comercial</span><h2 id="quote-edit-title">Editar oportunidad</h2></div><IconButton icon="close" label="Cerrar ventana" onClick={onClose} /></div><form className="compact-form" onSubmit={submit}>
+    <label>Contacto<input name="contact_name" value={form.contact_name || ''} onChange={update} required /></label>
+    <label>Empresa<input name="company" value={form.company || ''} onChange={update} /></label>
+    <label>Correo<input name="email" type="email" value={form.email || ''} onChange={update} /></label>
+    <label>Teléfono<input name="phone" value={form.phone || ''} onChange={update} /></label>
+    <label>Ciudad<input name="city" value={form.city || ''} onChange={update} /></label>
+    <label>Canal preferido<input name="preferred_contact" value={form.preferred_contact || ''} onChange={update} /></label>
+    <label className="field-full">Necesidad / servicio<input name="service_type" value={form.service_type || ''} onChange={update} required /></label>
+    <label>Etapa del proyecto<input name="project_stage" value={form.project_stage || ''} onChange={update} /></label>
+    <label>Tamaño del equipo<input name="team_size" value={form.team_size || ''} onChange={update} /></label>
+    <label>Fecha deseada<input name="desired_date" value={form.desired_date || ''} onChange={update} /></label>
+    <label>Estado<select name="status" value={form.status || 'nueva'} onChange={update}>{STATUS_OPTIONS.map((status) => <option key={status} value={status}>{status === 'evaluacion' ? 'En evaluación' : status.charAt(0).toUpperCase() + status.slice(1)}</option>)}</select></label>
+    <label className="field-full">Detalle y contexto<textarea name="details" rows="6" value={form.details || ''} onChange={update} placeholder="Necesidad, observaciones, información agregada después de la conversación…" /></label>
+    <div className="modal-actions field-full"><button type="button" className="button button--ghost" onClick={onClose}>Cancelar</button><button type="submit" className="button"><Icon name="save" /> Guardar cambios</button></div>
+  </form></section></div>;
+}
 
 function AnalyticsView({ events, loading }) {
   const stats = useMemo(() => {
@@ -1328,6 +1414,23 @@ function DocumentsView({ osState, setOsState, onNavigate }) {
     updateDoc(template, { content, status: repositoryToolStatus(selected, template), updatedAt: today });
   };
 
+  const clearDoc = (template) => {
+    if (!window.confirm(`¿Limpiar ${template.title} para ${selected?.name || 'esta empresa'}?`)) return;
+    setOsState((current) => {
+      const currentRepository = current.repository || {};
+      const byExpediente = currentRepository.documentsByExpediente || {};
+      const currentCompany = { ...(byExpediente[selectedId] || {}) };
+      delete currentCompany[template.id];
+      return {
+        ...current,
+        repository: {
+          ...currentRepository,
+          documentsByExpediente: { ...byExpediente, [selectedId]: currentCompany }
+        }
+      };
+    });
+  };
+
   const templateStates = repositoryTemplates.map((template) => ({ template, ...effectiveDoc(template) }));
   const ready = templateStates.filter((item) => item.status === 'Listo').length;
   const inProgress = templateStates.filter((item) => item.status === 'En curso').length;
@@ -1392,6 +1495,7 @@ function DocumentsView({ osState, setOsState, onNavigate }) {
                       <label>Última edición<input type="date" value={doc.updatedAt || ''} onChange={(event) => updateDoc(template, { updatedAt: event.target.value })} /></label>
                       {template.sourceTool && <button type="button" className="button button--ghost button--small" onClick={() => syncFromExpediente(template)}><Icon name="sync" /> Sincronizar expediente</button>}
                       {template.navigateTo && <button type="button" className="button button--ghost button--small" onClick={() => onNavigate(template.navigateTo)}><Icon name="open_in_new" /> Abrir módulo</button>}
+                      <button type="button" className="button button--ghost button--small repository-document__delete" onClick={() => clearDoc(template)}><Icon name="delete" /> Limpiar documento</button>
                     </div>
                     <label className="repository-document__editor">Contenido de trabajo<textarea rows="9" value={doc.content || ''} onChange={(event) => updateDoc(template, { content: event.target.value })} placeholder="Desarrollar este documento cuando el proceso lo requiera…" /></label>
                   </div>
@@ -1443,6 +1547,7 @@ function AdminShell({ session, onLogout }) {
   const [webEvents, setWebEvents] = useState([]);
   const [loadingWebEvents, setLoadingWebEvents] = useState(false);
   const [taskDraft, setTaskDraft] = useState(null);
+  const [quoteDraft, setQuoteDraft] = useState(null);
   const importRef = useRef(null);
 
   useEffect(() => {
@@ -1473,7 +1578,7 @@ function AdminShell({ session, onLogout }) {
           setOsStateRaw(hydrateState(payload.state));
           if (needsMigration) {
             setDirty(true);
-            setNotice({ type: 'success', message: 'Metamorfosis OS fue actualizado a la arquitectura comercial 10.1: agenda de septiembre, campo comercial y registro histórico de tiempo. Guarda los cambios para persistir la migración.' });
+            setNotice({ type: 'success', message: 'Metamorfosis OS fue actualizado a la arquitectura 10.4: responsive reforzado, listas familiares cotidianas y edición/eliminación transversal. Guarda los cambios para persistir la migración.' });
           }
         } else {
           const key = [STORAGE_KEY, ...LEGACY_STORAGE_KEYS].find((item) => window.localStorage.getItem(item));
@@ -1484,7 +1589,7 @@ function AdminShell({ session, onLogout }) {
             setOsStateRaw(hydrateState(parsed));
             if (needsMigration) {
               setDirty(true);
-              setNotice({ type: 'success', message: 'Se recuperó tu borrador anterior y se migró a Metamorfosis OS 10.1. Guarda los cambios para consolidarlo.' });
+              setNotice({ type: 'success', message: 'Se recuperó tu borrador anterior y se migró a Metamorfosis OS 10.4. Guarda los cambios para consolidarlo.' });
             }
           }
         }
@@ -1609,6 +1714,52 @@ function AdminShell({ session, onLogout }) {
     }
   };
 
+  const saveQuote = async (quote) => {
+    const previous = quotes;
+    const nextQuotes = quotes.map((item) => item.id === quote.id ? { ...item, ...quote } : item);
+    setQuotes(nextQuotes);
+    const localQuotes = readPublicQuotes();
+    if (localQuotes.some((item) => item.id === quote.id)) {
+      writePublicQuotes(localQuotes.map((item) => item.id === quote.id ? { ...item, ...quote } : item));
+    }
+    if (String(quote.id).startsWith('web-')) {
+      setQuoteDraft(null);
+      setNotice({ type: 'success', message: 'Oportunidad editada en este navegador.' });
+      return;
+    }
+    try {
+      const response = await fetch(`/api/quotes/${quote.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(quote) });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.message || 'No fue posible editar la oportunidad.');
+      setQuoteDraft(null);
+      setNotice({ type: 'success', message: 'Oportunidad actualizada.' });
+    } catch (error) {
+      setQuotes(previous);
+      setNotice({ type: 'error', message: error.message || 'No fue posible editar la oportunidad.' });
+    }
+  };
+
+  const deleteQuote = async (quote) => {
+    if (!window.confirm(`¿Eliminar la oportunidad de ${quote.contact_name}? Esta acción no se puede deshacer.`)) return;
+    const previous = quotes;
+    setQuotes((current) => current.filter((item) => item.id !== quote.id));
+    const localQuotes = readPublicQuotes();
+    if (localQuotes.some((item) => item.id === quote.id)) writePublicQuotes(localQuotes.filter((item) => item.id !== quote.id));
+    if (String(quote.id).startsWith('web-')) {
+      setNotice({ type: 'success', message: 'Oportunidad eliminada de este navegador.' });
+      return;
+    }
+    try {
+      const response = await fetch(`/api/quotes/${quote.id}`, { method: 'DELETE' });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.message || 'No fue posible eliminar la oportunidad.');
+      setNotice({ type: 'success', message: 'Oportunidad eliminada.' });
+    } catch (error) {
+      setQuotes(previous);
+      setNotice({ type: 'error', message: error.message || 'No fue posible eliminar la oportunidad.' });
+    }
+  };
+
   const retryQuoteEmail = async (id) => {
     setNotice({ type: 'success', message: 'Reintentando envío de correo…' });
     try {
@@ -1653,7 +1804,7 @@ function AdminShell({ session, onLogout }) {
       : active === 'day' ? <DayView osState={osState} setOsState={setOsState} onAddTask={openTask} onEditTask={setTaskDraft} />
         : active === 'field' ? <FieldRegisterView osState={osState} setOsState={setOsState} />
         : active === 'expedientes' ? <ExpedientesView osState={osState} setOsState={setOsState} />
-          : active === 'quotes' ? <QuotesView quotes={quotes} loading={loadingQuotes} onStatusChange={updateQuoteStatus} onRetryEmail={retryQuoteEmail} notice={notice} />
+          : active === 'quotes' ? <QuotesView quotes={quotes} loading={loadingQuotes} onStatusChange={updateQuoteStatus} onRetryEmail={retryQuoteEmail} onEdit={setQuoteDraft} onDelete={deleteQuote} notice={notice} />
             : active === 'finance' ? <FinanceView osState={osState} setOsState={setOsState} />
               : active === 'metrics' ? <TimeTrackingView osState={osState} setOsState={setOsState} />
                 : active === 'documents' ? <DocumentsView osState={osState} setOsState={setOsState} onNavigate={navigate} />
@@ -1697,6 +1848,7 @@ function AdminShell({ session, onLogout }) {
         </main>
       </div>
       {taskDraft && <TaskModal draft={taskDraft} onClose={() => setTaskDraft(null)} onSave={saveTask} />}
+      {quoteDraft && <QuoteEditModal quote={quoteDraft} onClose={() => setQuoteDraft(null)} onSave={saveQuote} />}
     </div>
   );
 

@@ -1,7 +1,7 @@
 import { createClubVeganExpediente } from './consultingTools.js';
 
 const iso = (date) => date.toISOString().slice(0, 10);
-export const OS_SCHEMA_VERSION = '10.2';
+export const OS_SCHEMA_VERSION = '10.4';
 
 const WEEK = {
   monday: '2026-08-24',
@@ -179,6 +179,11 @@ export function createDefaultOsState() {
         mandatoryPayments: 0, protectedAmount: 0, monthlyBase: 3000000,
         notes: 'No comprometer ingresos no abonados. Mantener separadas las finanzas familiares de las del negocio.'
       },
+      shortTermNeeds: [
+        { id: crypto.randomUUID(), title: 'Porcionadores en ml' },
+        { id: crypto.randomUUID(), title: 'Seguro plástico para cerrar puertas del refrigerador' }
+      ],
+      groceryList: [],
       inventory: [
         { id: crypto.randomUUID(), title: 'Sistema Familiar V1.0', area: 'Familia', status: 'Activo' },
         { id: crypto.randomUUID(), title: 'Magíster e investigación', area: 'Académico', status: 'Activo' },
