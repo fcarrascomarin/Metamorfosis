@@ -10,7 +10,7 @@ La web pública no expone el OS ni usa clientes, logos, testimonios o casos sin 
 
 ## Versión operativa actual
 
-**5.3.2 · OS 10.6**. Añade una agenda mensual móvil táctil y legible, normaliza iconografía y mantiene la lógica de Empresa orientada a acción y Familiar orientada a calma y uso cotidiano. Conserva las mejoras responsive, agenda comercial real y criterios vigentes de 5.3.1.
+**5.3.3 · OS 10.7**. Actualiza la planificación vigente del 31/08 al 04/09, integra compromisos externos y seminarios de Benjamín en la agenda compartida para visualizar disponibilidad, y reduce Inicio de Empresa a un resumen operativo. Mantiene la agenda móvil táctil, la iconografía consistente y la lógica Familiar orientada a calma y uso cotidiano.
 
 ## Comandos
 
