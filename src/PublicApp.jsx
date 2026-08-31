@@ -491,7 +491,7 @@ function PublicSite() {
           <div className="shell audit-hero__grid">
             <div className="audit-hero__copy">
               <span className="kicker">Metamorfosis Lab · Biobío</span>
-              <h1>Ordenamos operaciones cuando la informalidad empieza a costar</h1>
+              <h2>Ordenamos operaciones cuando la forma de trabajar necesita evolucionar</h2>
               <p>Ayudamos a pymes y organizaciones a comprender un problema operativo, ordenar procesos y registros e implementar cambios acotados que puedan sostenerse.</p>
               <div className="hero__actions">
                 <SectionLink className="button audit-primary-cta" id="contacto">Conversemos</SectionLink>
