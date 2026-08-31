@@ -13500,3 +13500,171 @@ textarea::placeholder { color: #7f98ac; }
   .calendar-mobile-task { grid-template-columns: 32px 34px minmax(0, 1fr) 16px; gap: 7px; padding-inline: 8px; }
   .calendar-mobile-task__icon { width: 32px; height: 32px; }
 }
+
+/* === OS 10.7 · Inicio resumido y agenda compartida === */
+.admin-view--dashboard-summary .admin-view__heading {
+  margin-bottom: 1rem;
+}
+
+.dashboard-summary-actions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .75rem;
+  margin-bottom: 1rem;
+}
+
+.dashboard-summary-actions button {
+  min-width: 0;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  padding: .85rem 1rem;
+  border: 1px solid var(--admin-border, rgba(10, 73, 78, .16));
+  border-radius: 18px;
+  background: var(--admin-surface, #fff);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dashboard-summary-actions button:hover,
+.dashboard-summary-actions button:focus-visible {
+  border-color: var(--admin-accent, #52d7cf);
+  box-shadow: 0 8px 24px rgba(8, 48, 55, .08);
+}
+
+.dashboard-summary-actions .app-icon {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  color: var(--admin-accent-strong, #087d78);
+}
+
+.dashboard-summary-actions span {
+  display: grid;
+  gap: .15rem;
+  min-width: 0;
+}
+
+.dashboard-summary-actions strong,
+.dashboard-summary-actions small {
+  overflow-wrap: anywhere;
+}
+
+.dashboard-summary-actions small {
+  opacity: .68;
+  line-height: 1.25;
+}
+
+.dashboard-summary-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) repeat(2, minmax(220px, .75fr));
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.dashboard-summary-grid .panel-card {
+  min-width: 0;
+  margin: 0;
+}
+
+.dashboard-next-title,
+.dashboard-signal-card > strong {
+  display: block;
+  margin: .35rem 0 .35rem;
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.dashboard-next-card p,
+.dashboard-signal-card p {
+  margin: 0 0 .7rem;
+  line-height: 1.45;
+}
+
+.dashboard-save-state {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  margin-top: .75rem;
+  padding: .42rem .65rem;
+  border-radius: 999px;
+  font-size: .78rem;
+  color: rgba(20, 45, 48, .72);
+}
+
+.dashboard-save-state .app-icon { width: 16px; height: 16px; }
+.dashboard-save-state.is-dirty { color: #8c5a00; background: #fff3ce; }
+.dashboard-more-link { margin-top: .55rem; }
+
+.calendar-availability-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .7rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(10, 73, 78, .12);
+}
+
+.calendar-availability-strip > div {
+  display: flex;
+  gap: .65rem;
+  align-items: flex-start;
+  min-width: 0;
+  padding: .75rem;
+  border-radius: 14px;
+  background: rgba(83, 215, 207, .08);
+}
+
+.calendar-availability-strip .app-icon {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  color: var(--admin-accent-strong, #087d78);
+}
+
+.calendar-availability-strip span { min-width: 0; display: grid; gap: .2rem; }
+.calendar-availability-strip strong { font-size: .84rem; }
+.calendar-availability-strip small { line-height: 1.35; opacity: .72; }
+
+@media (max-width: 980px) {
+  .dashboard-summary-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dashboard-summary-grid { grid-template-columns: 1fr 1fr; }
+  .dashboard-today-card { grid-column: 1 / -1; }
+}
+
+@media (max-width: 640px) {
+  .admin-view--dashboard-summary .admin-view__heading p { max-width: 34rem; }
+  .dashboard-summary-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .55rem;
+  }
+  .dashboard-summary-actions button {
+    min-height: 66px;
+    padding: .72rem .75rem;
+    border-radius: 15px;
+  }
+  .dashboard-summary-actions .app-icon { width: 19px; height: 19px; }
+  .dashboard-summary-actions strong { font-size: .86rem; }
+  .dashboard-summary-actions small { font-size: .69rem; }
+  .dashboard-summary-grid { grid-template-columns: 1fr; gap: .7rem; }
+  .dashboard-today-card { grid-column: auto; }
+  .calendar-availability-strip { grid-template-columns: 1fr; gap: .5rem; }
+  .calendar-availability-strip > div { padding: .65rem; }
+}
+
+.mini-task.is-personal {
+  border-left-color: #7865b4;
+  background: rgba(120, 101, 180, .09);
+}
+
+.calendar-mobile-task.is-personal {
+  background: rgba(120, 101, 180, .065);
+  border-color: rgba(120, 101, 180, .18);
+}
+
+.calendar-mobile-task.is-personal .calendar-mobile-task__icon {
+  color: #65529f;
+  background: rgba(120, 101, 180, .12);
+}

@@ -1,7 +1,7 @@
 import { createClubVeganExpediente } from './consultingTools.js';
 
 const iso = (date) => date.toISOString().slice(0, 10);
-export const OS_SCHEMA_VERSION = '10.6';
+export const OS_SCHEMA_VERSION = '10.7';
 
 const WEEK = {
   monday: '2026-08-24',
@@ -25,36 +25,55 @@ export function createDefaultOsState() {
 
   return {
     version: OS_SCHEMA_VERSION,
-    selectedDate: today < '2026-09-01' ? '2026-09-01' : today,
+    selectedDate: today < '2026-08-31' ? '2026-08-31' : today,
     tasks: [
-      task('2026-08-28', '—', '', 'Benjamín', 'Contacto informativo preparado · Víctor Erices / RUDEL', 'Se definió el objetivo y guion para conocer tecnologías internas, estandarización de procesos y automatización/IA. El OS no presume que el mensaje haya sido enviado si no hay registro verificable.', 'Guion y propósito quedaron preparados.', { status: 'done' }),
-      task('2026-08-28', '—', '', 'Benjamín', 'Contacto informativo preparado · Jorge Beltrán / CMPC', 'Se definió el objetivo y guion para comprender exigencias de mandantes y fricciones con proveedores. El OS no presume que el mensaje haya sido enviado si no hay registro verificable.', 'Guion y propósito quedaron preparados.', { status: 'done' }),
-      task('2026-08-28', '—', '', 'Benjamín', 'Contacto informativo preparado · Cristian Méndez / Blumar', 'Se definió el objetivo y guion sobre procesos, excelencia operacional y apoyo externo. El OS no presume que el mensaje haya sido enviado si no hay registro verificable.', 'Guion y propósito quedaron preparados.', { status: 'done' }),
-      task('2026-08-28', '14:00', '14:30', 'Francisca', 'Registro de horas y campo comercial activados', 'Mantener desde aquí registro de conversaciones, estados y horas reales, sean o no facturables.', 'Sistema habilitado para alimentar evidencia.', { status: 'done', topic: 'Sistema' }),
+      task('2026-08-28', '—', '', 'Benjamín', 'Contacto informativo preparado · Víctor Erices / RUDEL', 'Se definió el objetivo y guion para conocer tecnologías internas, estandarización de procesos y automatización/IA.', 'Guion y propósito quedaron preparados.', { status: 'done' }),
+      task('2026-08-28', '—', '', 'Benjamín', 'Contacto informativo preparado · Jorge Beltrán / CMPC', 'Se definió el objetivo y guion para comprender exigencias de mandantes y fricciones con proveedores.', 'Guion y propósito quedaron preparados.', { status: 'done' }),
+      task('2026-08-28', '—', '', 'Benjamín', 'Contacto informativo preparado · Cristian Méndez / Blumar', 'Se definió el objetivo y guion sobre procesos, excelencia operacional y apoyo externo.', 'Guion y propósito quedaron preparados.', { status: 'done' }),
+      task('2026-08-28', '14:00', '14:30', 'Francisca', 'Registro de horas y campo comercial activados', 'Mantener registro de conversaciones, estados y horas reales, sean o no facturables.', 'Sistema habilitado para alimentar evidencia.', { status: 'done', topic: 'Sistema' }),
       task('2026-08-30', '—', '', 'Ambos', 'Club Vegan · cierre sin conversión', 'La reacción positiva al mockup no se convirtió en necesidad ni compra. No corresponde insistir.', 'Expediente y campo comercial quedan cerrados; solo se reabre si la contraparte vuelve espontáneamente.', { status: 'done' }),
-      task('2026-09-01', '09:30', '10:15', 'Francisca', 'Abrir septiembre con agenda real', 'Revisar únicamente reuniones ya confirmadas, tareas administrativas y horas. No volver a abrir decisiones cerradas ni ampliar prospección por inercia.', 'La semana queda organizada con fechas reales y sin tareas duplicadas.', { topic: 'Dirección' }),
-      task('2026-09-01', '10:15', '10:35', 'Benjamín', 'Completar contraparte de reuniones 04/09 y 11/09', 'Las dos fechas ya están fijadas. Completar en el OS el nombre exacto de cada contraparte desde la confirmación original; no volver a tratarlas como pendientes de agenda.', 'Ambas reuniones quedan identificadas con actor y modalidad.', { topic: 'Sistema' }),
-      task('2026-09-02', '—', '', 'Ambos', 'Reunión confirmada · abogada Sercotec', 'Resolver la consulta de elegibilidad de Capital Semilla/Modo Empleo y qué puede o no hacer Metamorfosis antes de una eventual postulación.', 'Criterio administrativo documentado y decisión sobre inicio de actividades actualizada.', { topic: 'Dirección', confirmed: true }),
-      task('2026-09-04', '—', '', 'Ambos', 'Reunión informativa Metamorfosis · confirmada 1', 'Fecha confirmada. La reunión debe producir inteligencia de mercado utilizable y una ficha de campo, no una venta forzada. Contraparte exacta pendiente de completar en el OS.', 'Ficha de campo completada el mismo día y siguiente paso definido.', { confirmed: true }),
-      task('2026-09-08', '15:00', '15:10', 'Francisca', 'Hito Sercotec · cierre convocatoria', 'Cierre de Capital Semilla Modo Empleo Biobío. Actuar únicamente según el criterio de elegibilidad ya resuelto; no iniciar actividades antes por ansiedad.', 'Postulación/decisión cerrada y registrada.', { topic: 'Dirección', confirmed: true }),
-      task('2026-09-11', '—', '', 'Ambos', 'Reunión informativa Metamorfosis · confirmada 2', 'Fecha confirmada. Buscar patrones sobre operación, exigencias, procesos, tecnología y cuándo una pyme realmente necesita apoyo externo. Contraparte exacta pendiente de completar en el OS.', 'Ficha de campo completada y hallazgos comparados con la primera reunión.', { confirmed: true }),
-      task('2026-09-14', '09:30', '10:30', 'Ambos', 'Sintetizar inteligencia de mercado', 'Cruzar lo aprendido en las reuniones confirmadas con la investigación externa y el ecosistema propio. Mantener solo hipótesis que hayan ganado evidencia.', 'Síntesis de 3–5 hallazgos accionables, no otro documento maestro.', { topic: 'Dirección' }),
-      task('2026-09-15', '10:00', '11:00', 'Ambos', 'Decidir si Maquisant pasa a discovery', 'Solo si las conversaciones informativas fortalecen el encaje: preparar una conversación con Víctor Santander sin diagnosticar anticipadamente.', 'Decisión avanzar/no avanzar registrada.'),
-      task('2026-09-16', '10:00', '11:00', 'Ambos', 'Preparar siguiente discovery comercial', 'Elegir Maquisant o Transmarin según evidencia, sentido Metamorfosis, apertura y potencial económico. No activar ambos por obligación.', 'Existe un solo siguiente discovery prioritario y un guion acotado.'),
-      task('2026-09-21', '10:00', '10:45', 'Ambos', 'Revisión comercial de mitad de mes', 'Revisar reuniones, aprendizajes, horas y capacidad. Todo trabajo interno nuevo debe justificar ventas, evidencia, ejecución o margen.', 'Se mantiene, corrige o descarta la hipótesis comercial principal.', { topic: 'Dirección' }),
-      task('2026-09-23', '10:00', '11:30', 'Ambos', 'Diseñar diagnóstico pagado solo si existe permiso', 'Si una organización reconoció un problema y quiere actuar, definir diagnóstico acotado con alcance, entregables, horas internas y rango inicial de $250.000–$450.000.', 'Existe oferta defendible o decisión consciente de no ofertar.'),
+
+      task('2026-08-31', '—', '', 'Ambos', 'Jornada comercial concentrada · prospección selectiva', 'Confirmar la reunión del 04/09, revisar brevemente el tablero comercial y buscar solo 3–5 candidatos que cumplan necesidad actual, apertura legítima, encaje con capacidades, capacidad económica y comprensión suficiente del dominio. Francisca lidera la búsqueda; Benjamín apoya con criterio, hipótesis y descarte.', 'Quedan 3–5 candidatos defendibles como máximo, solo los sobrevivientes se registran en Campo comercial y se anotan lenguaje, problemas y patrones útiles para el viernes.', { topic: 'Comercial' }),
+      task('2026-08-31', '18:30', '19:30', 'Benjamín', 'Barrios Saludables · sesión 1', 'Compromiso formativo personal de Benjamín. Se muestra en la agenda compartida para evitar sobreposición de trabajo.', 'Bloque horario considerado como no disponible.', { topic: 'Agenda personal', confirmed: true }),
+
+      task('2026-09-01', '—', '', 'Ambos', 'Convertir prospección en decisiones', 'Revisar y descartar candidatos débiles, identificar puertas reales de entrada y clasificar cada candidato como conversación informacional, contacto comercial, investigación adicional o radar. Preparar o activar solo 1–2 movimientos con permiso legítimo.', 'Cada candidato superviviente tiene clasificación y siguiente paso; no queda una lista inflada de nombres.', { topic: 'Comercial' }),
+
+      task('2026-09-02', '—', '', 'Ambos', 'Preparar ficha de la reunión del 04/09', 'Usar lo aprendido en la prospección para construir una ficha breve: qué sabemos, qué queremos aprender, hipótesis a contrastar y 5–7 preguntas. No preparar presentación larga ni propuesta anticipada.', 'Ficha de conversación lista, breve y orientada a aprendizaje comercial.', { topic: 'Comercial' }),
+      task('2026-09-02', '—', '', 'Ambos', 'Seminario Internacional Basura Cero · online', 'Actividad externa confirmada. Se incluye para visualizar carga y disponibilidad de ambos.', 'Actividad considerada en la agenda; horario exacto se completa cuando esté disponible.', { topic: 'Agenda personal', confirmed: true }),
+      task('2026-09-02', '19:00', '', 'Benjamín', 'Justicia animal en acción · radar', 'Actividad de interés de Benjamín registrada como radar; no desplaza prioridades de Metamorfosis salvo decisión explícita.', 'Se decide asistir o descartar sin abrir trabajo adicional.', { topic: 'Agenda personal', status: 'waiting' }),
+
+      task('2026-09-03', '—', '', 'Ambos', 'Ajuste mínimo para la reunión del 04/09', 'Revisar ficha, roles y logística. No sobrepreparar ni convertir la reunión en pitch. La prioridad es llegar con preguntas claras y capacidad de escuchar.', 'Reunión operativamente lista con roles y logística definidos.', { topic: 'Comercial' }),
+      task('2026-09-03', '—', '', 'Benjamín', 'Centro Jean Monnet UdeC · actividad presencial', 'Actividad externa confirmada de Benjamín. Se incorpora a la agenda para mostrar disponibilidad real.', 'Actividad considerada al distribuir horas de Metamorfosis.', { topic: 'Agenda personal', confirmed: true }),
+
+      task('2026-09-04', '—', '', 'Ambos', 'Reunión informativa Metamorfosis · confirmada', 'Escuchar, contrastar hipótesis y registrar problema, consecuencia, urgencia, decisor, apertura externa y lenguaje de la contraparte. No forzar venta.', 'Ficha de campo completada el mismo día y reunión clasificada como oportunidad, inteligencia o hipótesis debilitada.', { topic: 'Comercial', confirmed: true }),
+      task('2026-09-04', '—', '', 'Ambos', 'Debrief inmediato de la reunión', 'Separar hechos de inferencias y decidir un único siguiente paso. Incorporar aprendizaje al Campo comercial y a la preparación de la reunión del 11/09.', 'Hallazgos y próximo paso quedan registrados sin abrir tareas accesorias.', { topic: 'Dirección' }),
+
+      task('2026-09-06', '12:00', '13:00', 'Benjamín', 'Reunión Pasantía Benjamín Sepúlveda', 'Compromiso externo encontrado en el calendario conectado. Se incluye únicamente para representar disponibilidad.', 'Bloque horario considerado como no disponible.', { topic: 'Agenda personal', confirmed: true }),
+      task('2026-09-07', '—', '', 'Benjamín', 'Construcción de Paz · online', 'Actividad externa confirmada. Mantenerla como compromiso de agenda, no como frente adicional de Metamorfosis.', 'Actividad considerada en la disponibilidad.', { topic: 'Agenda personal', confirmed: true }),
+      task('2026-09-07', '18:30', '19:30', 'Benjamín', 'Barrios Saludables · sesión 2', 'Compromiso formativo personal de Benjamín.', 'Bloque horario considerado como no disponible.', { topic: 'Agenda personal', confirmed: true }),
+      task('2026-09-08', '15:00', '15:10', 'Francisca', 'Hito Sercotec · cierre convocatoria', 'Cierre de Capital Semilla Modo Empleo Biobío. Actuar únicamente según el criterio de elegibilidad ya resuelto; no iniciar actividades por ansiedad.', 'Postulación o decisión cerrada y registrada.', { topic: 'Dirección', confirmed: true }),
+      task('2026-09-09', '—', '', 'Benjamín', 'Seminario de Investigación · profesora Böhm', 'Seminario de investigación confirmado de Benjamín.', 'Actividad considerada en la disponibilidad del día.', { topic: 'Agenda personal', confirmed: true }),
+      task('2026-09-10', '—', '', 'Benjamín', 'Foro Planificación y Gestión Territorial Sustentable · UdeC', 'Actividad presencial de prioridad alta ya inscrita.', 'Actividad considerada en la disponibilidad del día.', { topic: 'Agenda personal', confirmed: true }),
+      task('2026-09-11', '—', '', 'Ambos', 'Reunión informativa Metamorfosis · confirmada 2', 'Segunda conversación informativa ya fijada. Comparar patrones con la reunión del 04/09 y registrar hechos separados de inferencias.', 'Ficha de campo completada y patrones comparados.', { topic: 'Comercial', confirmed: true }),
+      task('2026-09-14', '18:30', '19:30', 'Benjamín', 'Barrios Saludables · sesión 3', 'Compromiso formativo personal de Benjamín.', 'Bloque horario considerado como no disponible.', { topic: 'Agenda personal', confirmed: true }),
+      task('2026-09-17', '—', '', 'Ambos', 'Feriado · sin jornada Metamorfosis', 'Día no laborable considerado en capacidad mensual.', 'No programar trabajo ordinario.', { topic: 'Agenda personal', confirmed: true }),
+      task('2026-09-18', '—', '', 'Ambos', 'Feriado · sin jornada Metamorfosis', 'Día no laborable considerado en capacidad mensual.', 'No programar trabajo ordinario.', { topic: 'Agenda personal', confirmed: true }),
+      task('2026-09-21', '12:00', '13:00', 'Benjamín', 'Reunión Pasantía Benjamín Sepúlveda', 'Compromiso externo encontrado en el calendario conectado.', 'Bloque horario considerado como no disponible.', { topic: 'Agenda personal', confirmed: true }),
+      task('2026-09-21', '18:30', '19:30', 'Benjamín', 'Barrios Saludables · sesión 4', 'Última sesión del ciclo registrado.', 'Bloque horario considerado como no disponible.', { topic: 'Agenda personal', confirmed: true }),
+      task('2026-09-23', '—', '', 'Benjamín', 'Seminario de Investigación · profesora Böhm', 'Segunda fecha confirmada del seminario de investigación.', 'Actividad considerada en la disponibilidad del día.', { topic: 'Agenda personal', confirmed: true }),
+
       task('2026-09-28', '09:30', '10:30', 'Francisca', 'Cerrar registro de horas y costos de septiembre', 'Completar horas conocidas, costos directos, traslados y trabajo no facturable.', 'El mes permite calcular esfuerzo y economía real.', { topic: 'Finanzas' }),
       task('2026-09-29', '09:30', '10:30', 'Ambos', 'Evaluar qué transacción puede repetirse', 'Determinar qué problema, comprador, detonante, entrega y precio mostraron evidencia suficiente.', 'Existe decisión de foco comercial para octubre.', { topic: 'Dirección' }),
       task('2026-09-30', '09:30', '11:00', 'Ambos', 'Cierre de septiembre y plan de octubre', 'Cerrar septiembre desde evidencia económica e identitaria. Elegir máximo tres prioridades.', 'Septiembre queda cerrado con aprendizajes, métricas y próximos pasos.', { topic: 'Dirección' })
     ],
     guides: {
-      '2026-09-01': { name: 'Agenda real, no ruido', why: 'Septiembre parte ejecutando lo ya calendarizado y cerrando estados, no inventando nuevos frentes.', limit: 'No reabrir arquitectura ni prospección genérica.' },
-      '2026-09-02': { name: 'Resolver Sercotec', why: 'La reunión con la abogada debe despejar elegibilidad y límites administrativos.', limit: 'No iniciar actividades antes de contar con criterio claro.' },
-      '2026-09-04': { name: 'Reunión confirmada', why: 'La inteligencia de mercado vale si modifica una hipótesis o decisión concreta.', limit: 'No convertir una entrevista informativa en pitch.' },
+      '2026-08-31': { name: 'Prospectar con criterio', why: 'Una jornada comercial concentrada debe producir pocos candidatos defendibles y lenguaje útil para la reunión del viernes.', limit: '3–5 candidatos como máximo; no registrar nombres débiles por volumen.' },
+      '2026-09-01': { name: 'Convertir búsqueda en decisiones', why: 'La prospección vale cuando termina en clasificación, descarte y una puerta real de entrada.', limit: 'Activar solo 1–2 movimientos legítimos; no ampliar la lista por inercia.' },
+      '2026-09-02': { name: 'Preparar conversación, no presentación', why: 'La ficha del 04/09 debe incorporar lo aprendido en mercado y orientar la escucha.', limit: '5–7 preguntas; sin propuesta ni deck largo.' },
+      '2026-09-03': { name: 'Ajuste mínimo', why: 'La preparación suficiente mejora la conversación; la sobrepreparación la rigidiza.', limit: 'Solo roles, logística y revisión de ficha.' },
+      '2026-09-04': { name: 'Aprender del mercado', why: 'La reunión debe producir evidencia que cambie o fortalezca una decisión comercial.', limit: 'No convertir una conversación informativa en pitch.' },
       '2026-09-08': { name: 'Hito Sercotec', why: 'Cierre de la convocatoria a las 15:00.', limit: 'Solo actuar según elegibilidad resuelta.' },
-      '2026-09-11': { name: 'Segunda reunión confirmada', why: 'Comparar patrones reduce el riesgo de construir oferta desde una sola anécdota.', limit: 'Registrar hechos separados de inferencias.' },
-      '2026-09-14': { name: 'Convertir conversación en evidencia', why: 'El campo debe terminar en decisiones, no en acumulación de notas.', limit: 'Máximo 3–5 hallazgos accionables.' },
-      '2026-09-23': { name: 'Cobrar pensamiento cuando hay permiso', why: 'El siguiente hito superior es un diagnóstico pagado, no otro prototipo gratuito.', limit: 'No regalar diagnóstico dentro de una propuesta.' },
+      '2026-09-11': { name: 'Comparar patrones', why: 'Una segunda conversación permite separar patrón de anécdota.', limit: 'Registrar hechos separados de inferencias.' },
       '2026-09-30': { name: 'Cerrar antes de ampliar', why: 'Octubre debe partir de evidencia económica e identitaria.', limit: 'Máximo tres prioridades.' }
     },
     finance: {
@@ -86,6 +105,8 @@ export function createDefaultOsState() {
       { id: crypto.randomUUID(), name: 'Textil y circularidad · aprendizaje', leader: 'Ambos', state: 'Radar', next: 'Mantener Roxana/Trapos como fuente sectorial; no convertirla en prospecto por inferencia propia.', limit: 'Cualquier servicio debe surgir de necesidad declarada.' }
     ],
     decisions: [
+      'Semana 31/08–04/09: producir aprendizaje comercial real y validación. No reabrir arquitectura, branding, metodología o documentación salvo necesidad directa.',
+      'Capacidad septiembre: Francisca dedica jornada completa a Metamorfosis; Benjamín 2,5–4 h diarias con máximo 18 h semanales. Feriados 17 y 18 sin jornada ordinaria.',
       'Identidad primero: toda oportunidad se evalúa por sentido Metamorfosis, necesidad legítima, capacidad real y viabilidad económica; la caja no puede deformar la empresa.',
       'La Arquitectura Maestra, el método y el OS están suficientemente construidos para validar mercado. No reabrir identidad o arquitectura salvo evidencia material nueva.',
       'Durante esta etapa, todo trabajo interno relevante debe justificar cómo aumenta ventas, evidencia, capacidad de ejecución o margen.',
@@ -186,5 +207,5 @@ export function createDefaultOsState() {
   };
 }
 
-export const TOPICS = ['Metamorfosis', 'Comercial', 'Sistema', 'Familia', 'Hogar', 'Finanzas', 'Documentos', 'Dirección', 'Otro'];
+export const TOPICS = ['Metamorfosis', 'Comercial', 'Sistema', 'Agenda personal', 'Familia', 'Hogar', 'Finanzas', 'Documentos', 'Dirección', 'Otro'];
 export const OWNERS = ['Francisca', 'Benjamín', 'Ambos', 'Externo'];

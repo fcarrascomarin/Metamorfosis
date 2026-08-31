@@ -148,7 +148,22 @@ const LEGACY_SEED_TASK_TITLES = new Set([
   'Revisión comercial semanal',
   'Mensaje enviado · Víctor Erices / RUDEL',
   'Mensaje enviado · Jorge Beltrán / CMPC',
-  'Mensaje enviado · Cristian Méndez / Blumar'
+  'Mensaje enviado · Cristian Méndez / Blumar',
+  'Abrir septiembre con agenda real',
+  'Completar contraparte de reuniones 04/09 y 11/09',
+  'Reunión confirmada · abogada Sercotec',
+  'Reunión informativa Metamorfosis · confirmada 1',
+  'Sintetizar inteligencia de mercado',
+  'Decidir si Maquisant pasa a discovery',
+  'Preparar siguiente discovery comercial',
+  'Revisión comercial de mitad de mes',
+  'Diseñar diagnóstico pagado solo si existe permiso',
+  'Jornada comercial concentrada · prospección selectiva',
+  'Convertir prospección en decisiones',
+  'Preparar ficha de la reunión del 04/09',
+  'Ajuste mínimo para la reunión del 04/09',
+  'Reunión informativa Metamorfosis · confirmada',
+  'Debrief inmediato de la reunión'
 ]);
 const LEGACY_FRONT_NAMES = new Set(['Validación comercial · 5 prospectos', 'Ordenamiento y trazabilidad operacional', 'Ciclo Seguro']);
 const LEGACY_DECISION_PATTERN = /24 al 28 de agosto|5 prospectos|cinco prospectos|cinco ofertas|5 ofertas/i;
@@ -229,7 +244,7 @@ function migrateOsState(candidate, fallback) {
   return {
     ...candidate,
     version: OS_SCHEMA_VERSION,
-    selectedDate: candidate.selectedDate && candidate.selectedDate >= '2026-09-01' ? candidate.selectedDate : '2026-09-01',
+    selectedDate: candidate.selectedDate && candidate.selectedDate >= '2026-08-31' ? candidate.selectedDate : '2026-08-31',
     tasks,
     guides: { ...(candidate.guides || {}), ...fallback.guides },
     fronts: [...frontsByName.values()],
@@ -453,61 +468,53 @@ function ViewHeading({ kicker, title, description, action }) {
   return <div className="admin-view__heading"><div><span className="kicker">{kicker}</span><h1>{title}</h1><p>{description}</p></div>{action}</div>;
 }
 
-function DashboardView({ osState, quotes, dirty, onNavigate, onAddTask }) {
+function DashboardView({ osState, dirty, onNavigate, onAddTask }) {
   const today = new Date().toISOString().slice(0, 10);
-  const todayTasks = osState.tasks.filter((task) => task.date === today);
-  const pendingToday = todayTasks.filter((task) => task.status !== 'done');
-  const nextSeven = new Date(`${today}T12:00:00`); nextSeven.setDate(nextSeven.getDate() + 7);
-  const nextSevenIso = nextSeven.toISOString().slice(0, 10);
-  const upcoming = osState.tasks.filter((task) => task.status !== 'done' && task.date >= today && task.date <= nextSevenIso);
-  const openQuotes = quotes.filter((quote) => !['cerrada', 'descartada'].includes(quote.status)).length;
-  const expedientes = Array.isArray(osState.expedientes) ? osState.expedientes : [];
-  const activeExpedientes = expedientes.filter((item) => !/cerrad|descartad/i.test(item.status || ''));
-  const conversationPending = activeExpedientes.filter((item) => item.tools?.conversacion?.status !== 'Completa').length;
+  const todayTasks = osState.tasks
+    .filter((task) => task.date === today && task.status !== 'done')
+    .sort((a, b) => String(a.start).localeCompare(String(b.start)));
+  const nextTask = osState.tasks
+    .filter((task) => task.status !== 'done' && task.date >= today)
+    .sort((a, b) => `${a.date}-${a.start || ''}`.localeCompare(`${b.date}-${b.start || ''}`))[0];
+  const commercialSignal = osState.fieldRegister
+    .filter((item) => !/cerrado|descartado|fuera/i.test(`${item.status || ''} ${item.priority || ''}`))
+    .sort((a, b) => String(a.priority).localeCompare(String(b.priority)))[0];
 
   return (
-    <div className="admin-view">
-      <ViewHeading kicker="Panel diario" title="Panel de control Metamorfosis" description="Accesos rápidos y señales que requieren una decisión concreta hoy." action={<button type="button" className="button button--small" onClick={() => onAddTask({ date: today })}><Icon name="add" /> Nueva tarea</button>} />
-      <div className="quick-actions" aria-label="Acciones frecuentes">
-        <button type="button" onClick={() => onNavigate('day')}><Icon name="today" />Agenda de hoy</button>
-        <button type="button" onClick={() => onNavigate('field')}><Icon name="map" />Campo comercial</button>
-        <button type="button" onClick={() => onNavigate('expedientes')}><Icon name="folder_open" />Expedientes</button>
-        <button type="button" onClick={() => onNavigate('quotes')}><Icon name="request_quote" />Oportunidades</button>
-        <button type="button" onClick={() => onNavigate('finance')}><Icon name="payments" />Finanzas</button>
-        <button type="button" onClick={() => onNavigate('metrics')}><Icon name="query_stats" />Tiempo y rentabilidad</button>
-        <button type="button" onClick={() => onNavigate('documents')}><Icon name="folder_open" />Repositorio</button>
+    <div className="admin-view admin-view--dashboard-summary">
+      <ViewHeading
+        kicker="Resumen"
+        title="Lo importante ahora"
+        description="Inicio muestra solo el estado necesario para orientarse. El detalle vive en Agenda, Campo comercial y las demás herramientas."
+        action={<button type="button" className="button button--small" onClick={() => onAddTask({ date: today })}><Icon name="add" /> Nueva tarea</button>}
+      />
+
+      <div className="dashboard-summary-actions" aria-label="Accesos principales">
+        <button type="button" onClick={() => onNavigate('day')}><Icon name="today" /><span><strong>Hoy</strong><small>{todayTasks.length ? `${todayTasks.length} pendiente${todayTasks.length === 1 ? '' : 's'}` : 'Sin pendientes'}</small></span></button>
+        <button type="button" onClick={() => onNavigate('month')}><Icon name="calendar_month" /><span><strong>Agenda</strong><small>Disponibilidad compartida</small></span></button>
+        <button type="button" onClick={() => onNavigate('field')}><Icon name="map" /><span><strong>Campo comercial</strong><small>Actores y próximos pasos</small></span></button>
+        <button type="button" onClick={() => onNavigate('metrics')}><Icon name="query_stats" /><span><strong>Tiempo</strong><small>Horas y rentabilidad</small></span></button>
       </div>
-      <div className="metrics-grid">
-        <MetricCard icon="task_alt" label="Pendientes de hoy" value={pendingToday.length} note={`${todayTasks.length} tareas cargadas`} />
-        <MetricCard icon="schedule" label="Próximos 7 días" value={upcoming.length} note="Tareas sin cerrar" />
-        <MetricCard icon="request_quote" label="Oportunidades abiertas" value={openQuotes} note={`${quotes.length} registros totales`} tone="accent" />
-        <MetricCard icon="folder_open" label="Expedientes activos" value={activeExpedientes.length} note={`${expedientes.length} expedientes registrados`} />
-        <MetricCard icon="forum" label="Conversaciones pendientes" value={conversationPending} note="Prospectos que aún deben validarse" tone={conversationPending ? 'warning' : ''} />
-        <MetricCard icon={dirty ? 'warning' : 'save'} label="Estado del sistema" value={dirty ? 'Sin guardar' : 'Guardado'} note="Persistencia del panel" tone={dirty ? 'warning' : ''} />
-      </div>
-      <div className="dashboard-grid">
-        <section className="panel-card panel-card--wide">
-          <div className="panel-card__heading"><div><span className="kicker">Operación diaria</span><h2>Lo que debe cerrarse hoy</h2></div><button type="button" className="text-button" onClick={() => onNavigate('day')}>Ver día completo</button></div>
-          <div className="compact-task-list">
-            {pendingToday.length ? pendingToday.map((task) => <div className="compact-task" key={task.id}><span>{task.start || '—'}</span><div><strong>{task.title}</strong><small>{task.owner} · {task.topic}</small></div></div>) : <div className="empty-inline"><Icon name="check_circle" /><span>No hay tareas pendientes registradas para hoy.</span></div>}
-          </div>
+
+      <div className="dashboard-summary-grid">
+        <section className="panel-card panel-card--wide dashboard-today-card">
+          <div className="panel-card__heading"><div><span className="kicker">Hoy</span><h2>{todayTasks.length ? 'Qué requiere atención' : 'Día despejado'}</h2></div><button type="button" className="text-button" onClick={() => onNavigate('day')}>Abrir día</button></div>
+          {todayTasks.length ? <div className="compact-task-list">{todayTasks.slice(0, 3).map((task) => <div className="compact-task" key={task.id}><span>{task.start || '—'}</span><div><strong>{task.title}</strong><small>{task.owner} · {task.topic}</small></div></div>)}</div> : <div className="empty-inline"><Icon name="check_circle" /><span>No hay pendientes cargados para hoy.</span></div>}
+          {todayTasks.length > 3 && <button type="button" className="text-button dashboard-more-link" onClick={() => onNavigate('day')}>+{todayTasks.length - 3} más</button>}
         </section>
-        <section className="panel-card">
-          <div className="panel-card__heading"><div><span className="kicker">Dirección</span><h2>Criterios vigentes</h2></div><button type="button" className="text-button" onClick={() => onNavigate('fronts')}>Ver todos</button></div>
-          <div className="decision-list">{osState.decisions.slice(0, 5).map((decision, index) => <div key={`${decision}-${index}`}><span>{index + 1}</span><p>{decision}</p></div>)}</div>
+
+        <section className="panel-card dashboard-next-card">
+          <div className="panel-card__heading"><div><span className="kicker">Próximo hito</span><h2>{nextTask ? formatDate(nextTask.date, { weekday: 'short', day: 'numeric', month: 'short' }) : 'Sin hitos'}</h2></div><Icon name={nextTask ? agendaTaskIcon(nextTask) : 'event_available'} /></div>
+          {nextTask ? <><strong className="dashboard-next-title">{nextTask.title}</strong><p>{nextTask.start && nextTask.start !== '—' ? `${nextTask.start}${nextTask.end ? `–${nextTask.end}` : ''} · ` : ''}{nextTask.owner}</p><button type="button" className="text-button" onClick={() => { setTimeout(() => onNavigate('month'), 0); }}>Ver agenda</button></> : <p>No hay próximos hitos registrados.</p>}
         </section>
-        <section className="panel-card">
-          <div className="panel-card__heading"><div><span className="kicker">Comercial</span><h2>Expedientes en curso</h2></div><button type="button" className="text-button" onClick={() => onNavigate('expedientes')}>Abrir expedientes</button></div>
-          {activeExpedientes.length ? activeExpedientes.slice(0, 4).map((item) => {
-            const progress = expedienteProgress(item);
-            return <div className="project-line" key={item.id}><div><strong>{item.id} · {item.name}</strong><small>{item.status} · {item.territory || 'Territorio por definir'}</small></div><span>{progress}%</span></div>;
-          }) : <p className="empty-copy">Todavía no hay expedientes comerciales activos.</p>}
-        </section>
-        <section className="panel-card">
-          <div className="panel-card__heading"><div><span className="kicker">Validación</span><h2>Próximas acciones</h2></div><button type="button" className="text-button" onClick={() => onNavigate('expedientes')}>Ver avance</button></div>
-          {initialProjects.map((project) => <div className="project-line" key={project.name}><div><strong>{project.name}</strong><small>{project.stage}</small></div><span>{project.progress}%</span></div>)}
+
+        <section className="panel-card dashboard-signal-card">
+          <div className="panel-card__heading"><div><span className="kicker">Señal comercial</span><h2>{commercialSignal?.organization || 'Sin señal prioritaria'}</h2></div><Icon name="insights" /></div>
+          {commercialSignal ? <><strong>{commercialSignal.actor}</strong><p>{commercialSignal.nextAction}</p><button type="button" className="text-button" onClick={() => onNavigate('field')}>Abrir campo</button></> : <p>Campo comercial sin actores activos.</p>}
         </section>
       </div>
+
+      <div className={`dashboard-save-state ${dirty ? 'is-dirty' : ''}`}><Icon name={dirty ? 'warning' : 'save'} /><span>{dirty ? 'Hay cambios sin guardar.' : 'OS guardado.'}</span></div>
     </div>
   );
 }
@@ -527,8 +534,14 @@ function getMonthDays(cursor) {
 }
 
 function agendaTaskIcon(task) {
-  if (task.confirmed) return 'event_available';
   const topic = String(task.topic || '').toLowerCase();
+  const title = String(task.title || '').toLowerCase();
+  if (topic.includes('agenda personal')) {
+    if (/seminario|foro|barrios|pasant[ií]a|paz|jean monnet|basura cero/.test(title)) return 'school';
+    if (/feriado/.test(title)) return 'weekend';
+    return 'event';
+  }
+  if (task.confirmed) return 'event_available';
   if (topic.includes('famil')) return 'home';
   if (topic.includes('sercotec') || topic.includes('postul')) return 'request_quote';
   if (topic.includes('comercial') || topic.includes('metamorfosis')) return 'briefcase';
@@ -556,7 +569,7 @@ function MonthView({ osState, setOsState, onNavigate, onAddTask }) {
           <div className="month-grid">
             {days.map((day) => {
               const tasks = (tasksByDate[day.iso] || []).sort((a, b) => String(a.start).localeCompare(String(b.start)));
-              return <button type="button" key={day.iso} className={`month-day ${!day.current ? 'is-outside' : ''} ${day.iso === osState.selectedDate ? 'is-selected' : ''}`} onClick={() => selectDate(day.iso)} aria-label={`${formatDate(day.iso)}; ${tasks.length} tareas`}><span className="month-day__number">{day.day}</span>{osState.guides[day.iso]?.name && <small className="month-day__guide">{osState.guides[day.iso].name}</small>}<div>{tasks.slice(0, 4).map((task) => <span key={task.id} className={`mini-task mini-task--${task.status} ${task.confirmed ? 'is-confirmed' : ''}`}><b>{task.start}</b> {task.title}</span>)}{tasks.length > 4 && <span className="mini-task mini-task--more">+{tasks.length - 4} más</span>}</div></button>;
+              return <button type="button" key={day.iso} className={`month-day ${!day.current ? 'is-outside' : ''} ${day.iso === osState.selectedDate ? 'is-selected' : ''}`} onClick={() => selectDate(day.iso)} aria-label={`${formatDate(day.iso)}; ${tasks.length} tareas`}><span className="month-day__number">{day.day}</span>{osState.guides[day.iso]?.name && <small className="month-day__guide">{osState.guides[day.iso].name}</small>}<div>{tasks.slice(0, 4).map((task) => <span key={task.id} className={`mini-task mini-task--${task.status} ${task.confirmed ? 'is-confirmed' : ''} ${task.topic === 'Agenda personal' ? 'is-personal' : ''}`}><b>{task.start}</b> {task.title}</span>)}{tasks.length > 4 && <span className="mini-task mini-task--more">+{tasks.length - 4} más</span>}</div></button>;
             })}
           </div>
         </div>
@@ -590,7 +603,7 @@ function MonthView({ osState, setOsState, onNavigate, onAddTask }) {
             </div>
             <div className="calendar-mobile-agenda">
               {selectedTasks.length ? selectedTasks.map((task) => (
-                <button type="button" key={task.id} className={`calendar-mobile-task ${task.status === 'done' ? 'is-done' : ''}`} onClick={() => onNavigate('day')}>
+                <button type="button" key={task.id} className={`calendar-mobile-task ${task.status === 'done' ? 'is-done' : ''} ${task.topic === 'Agenda personal' ? 'is-personal' : ''}`} onClick={() => onNavigate('day')}>
                   <span className="calendar-mobile-task__icon"><Icon name={agendaTaskIcon(task)} /></span>
                   <span className="calendar-mobile-task__time">{task.start || '—'}</span>
                   <span className="calendar-mobile-task__copy"><strong>{task.title}</strong><small>{task.owner} · {task.topic}{task.confirmed ? ' · Confirmada' : ''}</small></span>
@@ -600,6 +613,10 @@ function MonthView({ osState, setOsState, onNavigate, onAddTask }) {
             </div>
             <button type="button" className="button button--small calendar-mobile-add" onClick={() => onAddTask({ date: osState.selectedDate })}><Icon name="add" /> Agregar en este día</button>
           </div>
+        </div>
+        <div className="calendar-availability-strip">
+          <div><Icon name="groups" /><span><strong>Disponibilidad compartida</strong><small>Francisca: jornada completa en Metamorfosis durante septiembre. Benjamín: 2,5–4 h diarias, máximo 18 h/semana.</small></span></div>
+          <div><Icon name="event_busy" /><span><strong>{selectedTasks.filter((task) => task.topic === 'Agenda personal').length} compromiso(s) externo(s) este día</strong><small>Los eventos personales y seminarios se muestran aquí para evitar sobreposiciones. Horarios sin confirmar no bloquean una franja exacta.</small></span></div>
         </div>
       </section>
       <GuideCard osState={osState} />
@@ -1695,7 +1712,7 @@ function AdminShell({ session, onLogout }) {
           setOsStateRaw(hydrateState(payload.state));
           if (needsMigration) {
             setDirty(true);
-            setNotice({ type: 'success', message: 'Metamorfosis OS fue actualizado a la arquitectura 10.6: agenda móvil utilizable, iconografía consistente y lectura táctil optimizada. Guarda los cambios para persistir la migración.' });
+            setNotice({ type: 'success', message: 'Metamorfosis OS fue actualizado a la arquitectura 10.7: planificación vigente 31/08–04/09, agenda compartida con compromisos de Benjamín e Inicio reducido a resumen. Guarda los cambios para persistir la migración.' });
           }
         } else {
           const key = [STORAGE_KEY, ...LEGACY_STORAGE_KEYS].find((item) => window.localStorage.getItem(item));
@@ -1706,7 +1723,7 @@ function AdminShell({ session, onLogout }) {
             setOsStateRaw(hydrateState(parsed));
             if (needsMigration) {
               setDirty(true);
-              setNotice({ type: 'success', message: 'Se recuperó tu borrador anterior y se migró a Metamorfosis OS 10.6. Guarda los cambios para consolidarlo.' });
+              setNotice({ type: 'success', message: 'Se recuperó tu borrador anterior y se migró a Metamorfosis OS 10.7. Guarda los cambios para consolidarlo.' });
             }
           }
         }
