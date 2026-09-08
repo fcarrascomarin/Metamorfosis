@@ -396,7 +396,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--pine-3); outline
 .admin-main { padding: 24px; }
 .admin-view { width: min(1500px, 100%); margin-inline: auto; }
 .admin-view__heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 22px; margin-bottom: 20px; }
-.admin-view__heading h1 { margin-bottom: 5px; font-family: "DM Sans", sans-serif; font-size: clamp(1.65rem, 2.6vw, 2.45rem); letter-spacing: -.045em; }
+.admin-view__heading h1 { margin-bottom: 5px; font-family: "DM Sans", sans-serif; font-size: clamp(1.65rem, 2.6vw, 2.0 rem); letter-spacing: -.045em; }
 .admin-view__heading p { margin-bottom: 0; font-size: .9rem; }
 .admin-view__heading .kicker { margin-bottom: 7px; }
 
