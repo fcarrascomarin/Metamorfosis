@@ -22,7 +22,6 @@ const PUBLIC_EVENTS_KEY = 'metamorfosis-public-events';
 
 const pillarIllustrations = ['/pillar-operacion.webp', '/pillar-personas.webp', '/pillar-sistemas.webp'];
 const methodIllustrations = ['/method-entender.webp', '/method-priorizar.webp', '/method-intervenir.webp', '/method-medir.webp'];
-const teamPortraits = { 'Francisca Carrasco Marín': franciscaTeamImage, 'Benjamín Sepúlveda Méndez': benjaminTeamImage };
 
 
 function getVisitorSessionId() {
