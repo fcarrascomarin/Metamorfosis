@@ -9538,7 +9538,7 @@ textarea::placeholder { color: #7f98ac; }
 
 .public-site--v50 .audit-contact__grid {
   grid-template-columns: minmax(0, .9fr) minmax(0, 1.08fr);
-  gap: 22px;
+  gap: 40px;
   align-items: center;
 }
 
