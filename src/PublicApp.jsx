@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Icon from './components/Icon.jsx';
-import heroImage from './assets/images/jardin/hero-jardin.webp';
+import heroImage from './assets/images/jardin/hero-jardin.png';
 import mapImage from './assets/images/jardin/mapa-transformacion.webp';
 import contactImage from './assets/images/jardin/contacto-jardin.webp';
 import franciscaTeamImage from './assets/images/team/francisca-carrasco.jpg';
