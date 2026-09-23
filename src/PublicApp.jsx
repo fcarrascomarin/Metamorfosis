@@ -8,7 +8,6 @@ import {
   activeOfferUseCases,
   processRoadmap,
   publicNavigation,
-  team,
   transformationPillars
 } from './publicContent.js';
 
@@ -440,9 +439,6 @@ function TeamSection() {
     <div className="team-audit-grid team-audit-grid--portraits">
       {team.map((person, index) => (
         <article key={person.name} className="team-audit-card team-audit-card--portrait">
-          <div className="team-audit-card__portrait">
-            <img src={teamPortraits[person.name]} alt={`Imagen asociada al perfil de ${person.name}`} loading="lazy" />
-          </div>
           <div className="team-audit-card__body">
             <div className="team-audit-card__copy">
               <span className="team-audit-card__eyebrow">Equipo Metamorfosis</span>
