@@ -9487,7 +9487,7 @@ textarea::placeholder { color: #7f98ac; }
 
 .public-site--v50 .team-audit-card__body {
   display: grid;
-  gap: 12px;
+  gap: 50px;
 }
 
 .public-site--v50 .team-audit-card__copy h3 {
