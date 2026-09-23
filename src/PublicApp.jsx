@@ -489,14 +489,14 @@ function PublicSite() {
           <div className="lab-orbit lab-orbit--two" aria-hidden="true" />
           <div className="shell audit-hero__grid">
             <div className="audit-hero__copy">
-              <span className="kicker">Metamorfosis Lab · Biobío</span>
-              <h1>Detectamos qué está frenando a tu organización y trabajamos contigo para resolverlo</h1>
-              <p>Ayudamos a pymes y organizaciones a comprender un problema operativo, ordenar procesos y registros e implementar cambios acotados que puedan sostenerse.</p>
+              <span className="kicker">Laboratorio de eficiencia e innovación de sistemas vivos</span>
+              <h1>Metamorfosis Lab · Biobío</h1>
+              <p>Detectamos qué está frenando a tu organización y trabajamos contigo para resolverlo</p>
               <div className="hero__actions">
                 <SectionLink className="button audit-primary-cta" id="contacto">Conversemos</SectionLink>
                 <SectionLink className="button button--ghost-light" id="metodo">Ver el método</SectionLink>
               </div>
-              <p className="hero-proofline">Primera conversación de 30 minutos · sin costo · si el problema no encaja con nuestras capacidades, lo diremos.</p>
+              <p className="hero-proofline">Ayudamos a pymes y organizaciones a comprender un problema operativo, ordenar procesos y registros e implementar cambios acotados que puedan sostenerse.</p>
             </div>
             <aside className="audit-hero__aside" aria-label="Señales para conversar">
               <span className="audit-aside-label">Vale la pena conversar cuando</span>
