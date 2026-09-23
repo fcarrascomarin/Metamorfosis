@@ -8,6 +8,7 @@ import {
   activeOfferUseCases,
   processRoadmap,
   publicNavigation,
+  team,
   transformationPillars
 } from './publicContent.js';
 

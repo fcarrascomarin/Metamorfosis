@@ -3,7 +3,7 @@ export const contact = {
   phoneDigits: '56923770543',
   email: 'contacto@metamorfosislab.cl',
   location: 'Biobío, Chile',
-  coverage: 'Concepción, Laja, Los Ángeles y atención remota'
+  coverage: 'Concepción y atención remota'
 };
 
 export const services = [
