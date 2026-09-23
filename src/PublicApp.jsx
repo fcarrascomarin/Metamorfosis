@@ -485,7 +485,7 @@ function PublicSite() {
           <div className="shell audit-hero__grid">
             <div className="audit-hero__copy">
               <span className="kicker">Laboratorio de eficiencia e innovación de sistemas vivos</span>
-              <h1>Metamorfosis Lab · Biobío</h1>
+              <h1>Metamorfosis Lab</h1>
               <p>Detectamos qué está frenando a tu organización y trabajamos contigo para resolverlo</p>
               <div className="hero__actions">
                 <SectionLink className="button audit-primary-cta" id="contacto">Conversemos</SectionLink>
