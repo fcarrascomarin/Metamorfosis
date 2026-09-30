@@ -5,6 +5,8 @@ import contactImage from './assets/images/jardin/contacto-jardin.webp';
 import { contact } from './data.js';
 import {
   activeOfferUseCases,
+  cultivationAreas,
+  innovationEngines,
   laboratoryPrinciples,
   processRoadmap,
   publicNavigation,
@@ -537,6 +539,70 @@ function SystemsMap() {
 }
 
 
+
+// -----------------------------------------------------------------------------
+// 04B.1 · DOS MOTORES · Qué produce Metamorfosis
+// -----------------------------------------------------------------------------
+function InnovationEnginesSection() {
+  return (
+    <section id="hacemos" className="v514-engines section-anchor" aria-labelledby="v514-engines-title">
+      <div className="shell v514-engines__layout">
+        <header className="v514-section-head v514-engines__head">
+          <span className="v54-kicker">Qué hacemos</span>
+          <h2 id="v514-engines-title">Dos maneras de convertir una posibilidad en solución</h2>
+          <p>Metamorfosis puede crear una respuesta nueva o ayudar a que una capacidad existente encuentre una forma más útil de crecer.</p>
+        </header>
+        <div className="v514-engines__grid">
+          {innovationEngines.map((item) => (
+            <article key={item.id} className="v514-engine-card">
+              <span className="v514-engine-card__icon"><Icon name={item.icon} /></span>
+              <span className="v54-eyebrow">{item.eyebrow}</span>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+              <SectionLink id="contacto" className="v514-text-link">Conversemos <Icon name="arrow_forward" /></SectionLink>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// 04B.2 · QUÉ CULTIVAMOS · Evidencia de trabajo propio, sin catálogo
+// -----------------------------------------------------------------------------
+function CultivationSection() {
+  const [openArea, setOpenArea] = useState(null);
+  return (
+    <section id="exploramos" className="v514-cultivation section-anchor" aria-labelledby="v514-cultivation-title">
+      <div className="shell v514-cultivation__layout">
+        <header className="v514-section-head v514-cultivation__head">
+          <span className="v54-kicker">Qué cultivamos</span>
+          <h2 id="v514-cultivation-title">Preguntas que ya estamos convirtiendo en trabajo</h2>
+          <p>El jardín sigue activo incluso antes de un encargo. Observamos líneas donde una buena pregunta puede convertirse en una solución, un proyecto o una nueva capacidad.</p>
+        </header>
+        <div className="v514-cultivation__grid">
+          {cultivationAreas.map((item, index) => {
+            const isOpen = openArea === index;
+            return (
+              <article key={item.title} className={`v514-cultivation-card ${isOpen ? 'is-open' : ''}`}>
+                <button type="button" className="v514-cultivation-card__trigger" onClick={() => setOpenArea((current) => current === index ? null : index)} aria-expanded={isOpen} aria-controls={`cultivation-${index}`}>
+                  <span className="v514-cultivation-card__icon"><Icon name={item.icon} /></span>
+                  <strong>{item.title}</strong>
+                  <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v514-cultivation-card__arrow" />
+                </button>
+                <div id={`cultivation-${index}`} className="v514-cultivation-card__panel" hidden={!isOpen}>
+                  <p>{item.text}</p>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // -----------------------------------------------------------------------------
 // 04C · CÓMO TRABAJA METAMORFOSIS · DOS CAPAS, DOS LÓGICAS
 //      1) Qué observamos  2) Cómo trabajamos
@@ -778,7 +844,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
@@ -789,73 +855,58 @@ function PublicSite() {
           <div className="shell v54-hero__grid">
             <div className="v54-hero__copy">
               <span className="v54-kicker">Jardín de innovación · Concepción</span>
-              <h1>Crecer con claridad</h1>
-              <p className="v512-hero-tagline">Operar con precisión</p>
-              <p className="v54-hero__lead">Estudiamos cómo funcionan organizaciones, actividades productivas y sus entornos para transformar información dispersa en mejores decisiones, capacidades y mejoras que puedan sostenerse.</p>
+              <h1>Convertimos problemas reales en soluciones que pueden crecer</h1>
+              <p className="v54-hero__lead">Conectamos conocimiento, capacidades y condiciones de operación para crear respuestas nuevas o hacer crecer iniciativas que ya tienen valor.</p>
               <div className="hero__actions">
                 <SectionLink className="button audit-primary-cta" id="contacto">Conversemos</SectionLink>
-                <SectionLink className="button button--ghost-light" id="jardin">Conocer el jardín</SectionLink>
+                <SectionLink className="button button--ghost-light" id="hacemos">Qué hacemos</SectionLink>
               </div>
-              <div className="v54-hero__location"><Icon name="location_on" /> Desde Concepción, con la Región del Biobío como principal espacio de observación y trabajo aplicado.</div>
+              <div className="v54-hero__location"><Icon name="location_on" /> Con base en Concepción, trabajamos principalmente en la Región del Biobío.</div>
             </div>
             <aside className="v54-hero__manifesto" aria-label="Forma de trabajo de Metamorfosis">
-              <span className="v54-eyebrow">Una forma de trabajar</span>
-              <blockquote>“No partimos desde una solución predeterminada.”</blockquote>
-              <p>Observamos la situación, delimitamos lo relevante, probamos con proporcionalidad y usamos la evidencia para decidir qué sostener, ajustar o ampliar.</p>
-              <div className="v54-signal-row">
-                <span>investigación aplicada</span>
-                <span>experimentación</span>
-                <span>transferencia</span>
-              </div>
+              <span className="v54-eyebrow">Qué nos mueve</span>
+              <blockquote>Una buena solución no siempre existe de antemano</blockquote>
+              <p>Observamos, conectamos capacidades y probamos respuestas antes de decidir qué vale la pena sostener, ajustar o escalar.</p>
             </aside>
           </div>
         </section>
 
-        {/* 05.2 · JARDÍN DE INNOVACIÓN · Identidad, criterio y señales de entrada */}
-        <section id="jardin" className="v54-section v54-section--paper section-anchor v512-garden">
-          <div className="shell v512-garden__shell">
-            {/* TÍTULO PRINCIPAL · Una sola línea en escritorio */}
-            <header className="v512-garden__head">
-              <span className="v54-kicker">Metamorfosis</span>
-              <h2>Un jardín para observar, probar y crecer</h2>
-            </header>
-
-            {/* CONTEXTO · Dos ideas breves para entender la identidad sin saturar */}
-            <div className="v512-garden__context v513-garden__context">
-              <p>Desde Concepción trabajamos sobre situaciones reales para distinguir qué relaciones importan, qué conviene observar y cuándo una intervención tiene sentido.</p>
-              <span>Biobío es nuestro principal espacio de aprendizaje aplicado, no una plantilla universal.</span>
+        {/* 05.2 · JARDÍN DE INNOVACIÓN · Identidad y lógica de crecimiento */}
+        <section id="jardin" className="v514-garden section-anchor">
+          <div className="shell v514-garden__layout">
+            <div className="v514-garden__statement">
+              <span className="v54-kicker">Jardín de innovación</span>
+              <h2>Sembramos preguntas y hacemos crecer lo que demuestra valor</h2>
             </div>
-
-            {/* POR QUÉ JARDÍN · Franja compacta, no una sección adicional */}
-            <div className="v512-garden__definition">
-              <span className="v512-garden__word">JARDÍN</span>
-              <div>
-                <span className="v54-eyebrow">¿Por qué jardín?</span>
-                <p>Sembramos preguntas, observamos en contexto y hacemos crecer solo aquello que demuestra valor.</p>
+            <div className="v514-garden__copy">
+              <p>Trabajamos sobre problemas donde conocimiento, información, recursos o capacidades todavía no consiguen producir una respuesta suficientemente útil.</p>
+              <p>El jardín no obliga a que todo crezca. Primero observa, después prueba y solo entonces decide qué merece más espacio.</p>
+              <div className="v514-garden__principle">
+                <span>Concepción</span><strong>→</strong><span>Biobío como campo principal de aprendizaje aplicado</span>
               </div>
             </div>
-
-            {/* CUÁNDO INTERVENIR · Señales de entrada, desplegables y completas */}
-            <GardenEntrySituations />
           </div>
         </section>
+
+        {/* 05.3 · QUÉ HACEMOS · Dos motores de Metamorfosis */}
+        <InnovationEnginesSection />
 
         {/* 05.3 + 05.4 · CÓMO TRABAJA METAMORFOSIS · Mapa + método integrados */}
         <IntegratedMethodSection />
 
-        {/* 05.5 · PRINCIPIOS · Criterios de intervención, separados de las situaciones de entrada */}
-        <PrinciplesSection />
+        {/* 05.5 · QUÉ CULTIVAMOS · Trabajo propio y líneas abiertas */}
+        <CultivationSection />
 
-        {/* 05.6 · PREGUNTAS QUE CULTIVAMOS · Investigación aplicada compacta */}
-        <ResearchGardenSection />
+        {/* 05.6 · PRINCIPIOS · Criterios que ordenan una intervención */}
+        <PrinciplesSection />
 
         {/* 05.8 · EQUIPO · Diferenciación conjunta + perfiles en columna */}
         <section id="equipo" className="v59-team section-anchor">
           <div className="shell v59-team__layout">
             <div className="v59-team__value">
               <span className="v54-kicker">Equipo</span>
-              <h2>Capacidades que se complementan</h2>
-              <p>Integramos procesos, capacidades, reglas y relaciones externas para leer una misma situación desde ángulos complementarios.</p>
+              <h2>Dos capacidades técnicas, una lectura integrada</h2>
+              <p>Ingeniería y derecho se combinan para comprender cómo funciona una situación, quién puede actuar, bajo qué reglas y qué relaciones pueden cambiar el resultado.</p>
               <div className="v59-team__strengths">
                 <span><Icon name="schema" /><strong>Procesos y capacidades</strong><small>Cómo funciona realmente el trabajo</small></span>
                 <span><Icon name="rule" /><strong>Reglas y responsabilidades</strong><small>Bajo qué condiciones puede actuar cada actor</small></span>
@@ -891,7 +942,7 @@ function PublicSite() {
       <footer className="site-footer audit-footer v54-footer">
         <div className="shell audit-footer__grid">
           <div className="site-footer__brand"><Brand /><p>Jardín de innovación con base en Concepción. Transformamos la manera en que las organizaciones generan valor, integrando eficiencia operacional, condiciones humanas y una relación responsable con los sistemas vivos.</p></div>
-          <div><span className="footer-title">Navegación</span><SectionLink id="jardin">Jardín</SectionLink><SectionLink id="metodo">Cómo trabajamos</SectionLink><SectionLink id="exploramos">Qué exploramos</SectionLink><SectionLink id="equipo">Equipo</SectionLink></div>
+          <div><span className="footer-title">Navegación</span><SectionLink id="jardin">Jardín</SectionLink><SectionLink id="hacemos">Qué hacemos</SectionLink><SectionLink id="metodo">Cómo trabajamos</SectionLink><SectionLink id="exploramos">Qué cultivamos</SectionLink><SectionLink id="equipo">Equipo</SectionLink></div>
           <div><span className="footer-title">Contacto</span><a className="footer-icon-link" href={`mailto:${contact.email}`}><Icon name="mail" /><span>{contact.email}</span></a><a className="footer-icon-link" href={OS_SITE_URL}><Icon name="lock" /><span>Acceso OS</span></a></div>
         </div>
         <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis</span><span>Concepción · Región del Biobío · Chile</span></div>

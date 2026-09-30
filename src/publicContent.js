@@ -7,8 +7,9 @@
 // 01 · NAVEGACIÓN PRINCIPAL
 export const publicNavigation = [
   { id: 'jardin', label: 'Jardín', icon: 'query_stats' },
+  { id: 'hacemos', label: 'Qué hacemos', icon: 'design_services' },
   { id: 'metodo', label: 'Cómo trabajamos', icon: 'timeline' },
-  { id: 'exploramos', label: 'Qué exploramos', icon: 'search' },
+  { id: 'exploramos', label: 'Qué cultivamos', icon: 'search' },
   { id: 'equipo', label: 'Equipo', icon: 'group' }
 ];
 
@@ -69,6 +70,50 @@ export const activeOfferUseCases = [
     icon: 'search',
     title: 'Cuando falta claridad para decidir',
     text: 'antes de invertir, intervenir, escalar o diseñar una solución.'
+  }
+];
+
+
+
+// 03A · DOS MOTORES · Qué produce Metamorfosis
+export const innovationEngines = [
+  {
+    id: 'soluciones',
+    icon: 'design_services',
+    eyebrow: 'Creamos',
+    title: 'Soluciones propias',
+    text: 'Observamos problemas reales, desarrollamos respuestas, las probamos en contexto y convertimos lo aprendido en soluciones utilizables y replicables cuando tiene sentido.'
+  },
+  {
+    id: 'incubacion',
+    icon: 'conversion_path',
+    eyebrow: 'Hacemos crecer',
+    title: 'Incubación de impacto',
+    text: 'Trabajamos con organizaciones e iniciativas que ya poseen capacidades valiosas para transformarlas en propuestas sostenibles, financiables y comercialmente viables.'
+  }
+];
+
+// 03B · QUÉ CULTIVAMOS · Líneas abiertas del jardín
+export const cultivationAreas = [
+  {
+    icon: 'account_tree',
+    title: 'Capacidades y cadenas de valor',
+    text: 'Cómo conectar capacidades existentes con necesidades productivas, nuevas oportunidades y exigencias reales.'
+  },
+  {
+    icon: 'conversion_path',
+    title: 'Trazabilidad y circularidad',
+    text: 'Cómo convertir información, materiales y recorridos dispersos en decisiones y soluciones verificables.'
+  },
+  {
+    icon: 'verified_user',
+    title: 'Nuevas exigencias organizacionales',
+    text: 'Cómo responder a cambios regulatorios, productivos, humanos o ambientales sin añadir complejidad innecesaria.'
+  },
+  {
+    icon: 'query_stats',
+    title: 'Modelos de impacto sostenibles',
+    text: 'Cómo transformar iniciativas con propósito en soluciones que puedan sostenerse, financiarse y crecer.'
   }
 ];
 

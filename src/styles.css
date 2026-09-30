@@ -19140,3 +19140,511 @@ textarea::placeholder { color: #7f98ac; }
   .public-site--v513 .v511-garden-entry__cta { align-items:stretch; flex-direction:column; }
   .public-site--v513 .v511-garden-entry__cta .button { width:100%; }
 }
+
+/* =============================================================================
+   WEB PÚBLICA V5.14 · ARQUITECTURA DE MARCA · MENOS TEXTO, MÁS JERARQUÍA
+   -----------------------------------------------------------------------------
+   Objetivo:
+   1) Explicar primero qué es Metamorfosis y qué produce.
+   2) Mostrar después cómo trabaja.
+   3) Reservar la profundidad para el clic.
+   4) Recuperar aire, sofisticación y prioridad de lectura.
+
+   ORDEN VISUAL
+   01 Hero
+   02 Jardín
+   03 Qué hacemos · dos motores
+   04 Cómo trabajamos · mapa + método
+   05 Qué cultivamos
+   06 Principios
+   07 Equipo
+   08 Contacto
+   09 Responsive
+   ============================================================================= */
+
+/* 01 · BASE Y ESCALA EDITORIAL --------------------------------------------- */
+.public-site--v514 {
+  --v514-shell: 1180px;
+  --v514-section-y: clamp(88px, 9vw, 136px);
+  --v514-title: clamp(2.25rem, 3.3vw, 3.8rem);
+  --v514-copy: #4a6265;
+  --v514-ink: #10282a;
+  --v514-accent: #167a70;
+  --v514-line: rgba(16,40,42,.12);
+  --v514-soft: #edf6f2;
+}
+
+.public-site--v514 .shell {
+  width: min(calc(100% - clamp(56px, 8vw, 128px)), var(--v514-shell));
+}
+
+.public-site--v514 .v54-kicker,
+.public-site--v514 .v54-eyebrow {
+  letter-spacing: .13em;
+}
+
+.public-site--v514 h2,
+.public-site--v514 h3 {
+  text-wrap: balance;
+}
+
+/* 02 · HERO ---------------------------------------------------------------- */
+.public-site--v514 .v54-hero__grid {
+  grid-template-columns: minmax(0, 1.08fr) minmax(300px, .72fr);
+  gap: clamp(64px, 8vw, 120px);
+}
+
+.public-site--v514 .v54-hero h1 {
+  max-width: 11.5ch;
+  font-size: clamp(3.4rem, 5.9vw, 6.5rem);
+  line-height: .92;
+}
+
+.public-site--v514 .v54-hero__lead {
+  max-width: 58ch;
+  margin-top: 26px;
+}
+
+.public-site--v514 .v54-hero__manifesto {
+  max-width: 410px;
+  justify-self: end;
+}
+
+.public-site--v514 .v54-hero__manifesto blockquote {
+  font-size: clamp(1.6rem, 2.1vw, 2.3rem);
+  line-height: 1.08;
+}
+
+/* 03 · JARDÍN · IDENTIDAD -------------------------------------------------- */
+.public-site--v514 .v514-garden {
+  padding-block: var(--v514-section-y);
+  background: #f7f8f4;
+}
+
+.public-site--v514 .v514-garden__layout {
+  display: grid;
+  grid-template-columns: minmax(0, .95fr) minmax(360px, 1.05fr);
+  gap: clamp(72px, 9vw, 132px);
+  align-items: center;
+}
+
+.public-site--v514 .v514-garden__statement h2 {
+  margin: 12px 0 0;
+  color: var(--v514-ink);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: var(--v514-title);
+  font-weight: 540;
+  line-height: 1.01;
+  letter-spacing: -.042em;
+}
+
+.public-site--v514 .v514-garden__copy {
+  display: grid;
+  gap: 18px;
+}
+
+.public-site--v514 .v514-garden__copy p {
+  margin: 0;
+  color: var(--v514-copy);
+  font-size: 1rem;
+  line-height: 1.72;
+}
+
+.public-site--v514 .v514-garden__principle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 18px;
+  border-top: 1px solid var(--v514-line);
+  color: var(--v514-accent);
+  font-size: .82rem;
+  font-weight: 750;
+}
+
+/* 04 · QUÉ HACEMOS · DOS MOTORES ------------------------------------------ */
+.public-site--v514 .v514-engines {
+  padding-block: var(--v514-section-y);
+  background:
+    radial-gradient(circle at 82% 18%, rgba(105,229,216,.10), transparent 25%),
+    linear-gradient(180deg, #eef4f0 0%, #f6f8f4 100%);
+}
+
+.public-site--v514 .v514-engines__layout {
+  display: grid;
+  grid-template-columns: minmax(300px, .72fr) minmax(0, 1.28fr);
+  gap: clamp(72px, 9vw, 128px);
+  align-items: center;
+}
+
+.public-site--v514 .v514-section-head h2 {
+  margin: 10px 0 14px;
+  color: var(--v514-ink);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: var(--v514-title);
+  font-weight: 540;
+  line-height: 1.02;
+  letter-spacing: -.04em;
+}
+
+.public-site--v514 .v514-section-head p {
+  max-width: 54ch;
+  margin: 0;
+  color: var(--v514-copy);
+  font-size: .98rem;
+  line-height: 1.68;
+}
+
+.public-site--v514 .v514-engines__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 20px;
+}
+
+.public-site--v514 .v514-engine-card {
+  min-height: 330px;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(28px, 3vw, 38px);
+  border: 1px solid var(--v514-line);
+  border-radius: 28px;
+  background: rgba(255,255,255,.82);
+  box-shadow: 0 18px 48px rgba(26,64,60,.06);
+}
+
+.public-site--v514 .v514-engine-card__icon {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 28px;
+  border-radius: 18px;
+  background: var(--v514-soft);
+  color: var(--v514-accent);
+}
+
+.public-site--v514 .v514-engine-card__icon .app-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.public-site--v514 .v514-engine-card h3 {
+  margin: 10px 0 14px;
+  color: var(--v514-ink);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: clamp(1.7rem, 2vw, 2.1rem);
+  font-weight: 550;
+  line-height: 1.05;
+}
+
+.public-site--v514 .v514-engine-card p {
+  margin: 0;
+  color: var(--v514-copy);
+  font-size: .94rem;
+  line-height: 1.65;
+}
+
+.public-site--v514 .v514-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin-top: auto;
+  padding-top: 24px;
+  color: var(--v514-accent);
+  font-size: .84rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.public-site--v514 .v514-text-link .app-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* 05 · CÓMO TRABAJAMOS · DEJAR RESPIRAR EL ESQUEMA ------------------------ */
+.public-site--v514 .v513-work {
+  padding-block: var(--v514-section-y);
+}
+
+.public-site--v514 .v513-work__shell {
+  gap: clamp(48px, 6vw, 80px);
+}
+
+.public-site--v514 .v513-work__head {
+  max-width: 760px;
+}
+
+.public-site--v514 .v513-work__head h2 {
+  font-size: var(--v514-title);
+}
+
+.public-site--v514 .v513-observation__label,
+.public-site--v514 .v513-method__label {
+  margin-bottom: 28px;
+}
+
+.public-site--v514 .v513-observation__map {
+  gap: 22px clamp(34px, 4vw, 58px);
+}
+
+.public-site--v514 .v513-lens__trigger {
+  min-height: 82px;
+}
+
+.public-site--v514 .v513-method {
+  padding-top: 6px;
+}
+
+.public-site--v514 .v513-method__grid {
+  gap: 14px;
+}
+
+.public-site--v514 .v513-step__trigger {
+  min-height: 82px;
+}
+
+.public-site--v514 .v513-work__close {
+  margin-top: 2px;
+}
+
+/* 06 · QUÉ CULTIVAMOS ------------------------------------------------------ */
+.public-site--v514 .v514-cultivation {
+  padding-block: var(--v514-section-y);
+  background: #0c2a2f;
+  color: #fff;
+}
+
+.public-site--v514 .v514-cultivation__layout {
+  display: grid;
+  grid-template-columns: minmax(300px, .78fr) minmax(0, 1.22fr);
+  gap: clamp(72px, 9vw, 128px);
+  align-items: start;
+}
+
+.public-site--v514 .v514-cultivation__head h2 {
+  color: #fff;
+}
+
+.public-site--v514 .v514-cultivation__head p {
+  color: #bfd3d6;
+}
+
+.public-site--v514 .v514-cultivation .v54-kicker {
+  color: #69e5d8;
+}
+
+.public-site--v514 .v514-cultivation__grid {
+  display: grid;
+  gap: 12px;
+}
+
+.public-site--v514 .v514-cultivation-card {
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 20px;
+  background: rgba(255,255,255,.025);
+  overflow: hidden;
+}
+
+.public-site--v514 .v514-cultivation-card.is-open {
+  background: rgba(255,255,255,.05);
+  border-color: rgba(105,229,216,.30);
+}
+
+.public-site--v514 .v514-cultivation-card__trigger {
+  width: 100%;
+  min-height: 74px;
+  display: grid;
+  grid-template-columns: 46px minmax(0,1fr) 18px;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 18px;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.public-site--v514 .v514-cultivation-card__icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: rgba(105,229,216,.10);
+  color: #69e5d8;
+}
+
+.public-site--v514 .v514-cultivation-card__icon .app-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.public-site--v514 .v514-cultivation-card__trigger strong {
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+.public-site--v514 .v514-cultivation-card__arrow {
+  color: #69e5d8;
+}
+
+.public-site--v514 .v514-cultivation-card__panel {
+  padding: 0 18px 18px 78px;
+}
+
+.public-site--v514 .v514-cultivation-card__panel p {
+  max-width: 58ch;
+  margin: 0;
+  color: #c5d8da;
+  font-size: .9rem;
+  line-height: 1.62;
+}
+
+/* 07 · PRINCIPIOS ---------------------------------------------------------- */
+.public-site--v514 .v511-principles {
+  padding-block: var(--v514-section-y);
+  background: #f7f8f4;
+}
+
+.public-site--v514 .v511-principles__layout {
+  display: grid;
+  grid-template-columns: minmax(300px,.72fr) minmax(0,1.28fr);
+  gap: clamp(72px, 9vw, 128px);
+  align-items: center;
+}
+
+.public-site--v514 .v511-principles__head {
+  max-width: none;
+}
+
+.public-site--v514 .v511-principles__head h2 {
+  font-size: var(--v514-title);
+}
+
+.public-site--v514 .v511-principles__grid {
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.public-site--v514 .v511-principle__trigger {
+  min-height: 68px;
+}
+
+/* 08 · EQUIPO -------------------------------------------------------------- */
+.public-site--v514 .v59-team {
+  padding-block: var(--v514-section-y);
+}
+
+.public-site--v514 .v59-team__layout {
+  grid-template-columns: minmax(320px,.76fr) minmax(0,1.24fr);
+  gap: clamp(92px, 10vw, 144px);
+}
+
+.public-site--v514 .v59-team__value h2 {
+  font-size: var(--v514-title);
+}
+
+.public-site--v514 .v59-team__value > p {
+  max-width: 44ch;
+  font-size: .98rem;
+  line-height: 1.72;
+}
+
+.public-site--v514 .v59-team__strengths {
+  margin-top: 34px;
+}
+
+.public-site--v514 .v59-team__profiles .v54-team-grid {
+  gap: 28px;
+}
+
+/* 09 · CONTACTO ------------------------------------------------------------ */
+.public-site--v514 .v54-contact {
+  padding-block: var(--v514-section-y);
+}
+
+.public-site--v514 .v54-contact .audit-contact__intro h2 {
+  font-size: var(--v514-title);
+}
+
+/* 10 · RESPONSIVE ---------------------------------------------------------- */
+@media (max-width: 1100px) {
+  .public-site--v514 .v514-engines__layout,
+  .public-site--v514 .v514-cultivation__layout,
+  .public-site--v514 .v511-principles__layout,
+  .public-site--v514 .v59-team__layout {
+    gap: 64px;
+  }
+}
+
+@media (max-width: 900px) {
+  .public-site--v514 .shell {
+    width: min(calc(100% - 40px), var(--v514-shell));
+  }
+
+  .public-site--v514 .v54-hero__grid,
+  .public-site--v514 .v514-garden__layout,
+  .public-site--v514 .v514-engines__layout,
+  .public-site--v514 .v514-cultivation__layout,
+  .public-site--v514 .v511-principles__layout,
+  .public-site--v514 .v59-team__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .public-site--v514 .v54-hero__manifesto {
+    justify-self: start;
+  }
+
+  .public-site--v514 .v514-engines__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .public-site--v514 .v514-engine-card {
+    min-height: auto;
+  }
+
+  .public-site--v514 .v511-principles__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .public-site--v514 {
+    --v514-section-y: 64px;
+    --v514-title: clamp(1.9rem, 8vw, 2.6rem);
+  }
+
+  .public-site--v514 .shell {
+    width: min(calc(100% - 28px), var(--v514-shell));
+  }
+
+  .public-site--v514 .v54-hero h1 {
+    max-width: 100%;
+    font-size: clamp(2.6rem, 12vw, 4rem);
+  }
+
+  .public-site--v514 .v514-garden__principle {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .public-site--v514 .v514-engines__grid {
+    gap: 14px;
+  }
+
+  .public-site--v514 .v514-engine-card {
+    padding: 24px;
+  }
+
+  .public-site--v514 .v514-cultivation-card__trigger {
+    grid-template-columns: 42px minmax(0,1fr) 18px;
+    padding: 12px;
+  }
+
+  .public-site--v514 .v514-cultivation-card__panel {
+    padding: 0 14px 16px 66px;
+  }
+}
