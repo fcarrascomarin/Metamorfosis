@@ -14676,3 +14676,476 @@ textarea::placeholder { color: #7f98ac; }
   }
   .public-site--v54 .v54-hero__glow { display: none; }
 }
+
+/* =============================================================================
+   WEB PÚBLICA V5.5 · SISTEMA DE LECTURA, RESPONSIVE Y ESCENAS COMPLETAS
+   -----------------------------------------------------------------------------
+   Índice de edición rápida
+   01. Variables de ritmo y legibilidad
+   02. Tipografía y controles: nunca cortar palabras
+   03. Escenas de escritorio: una sección = una lectura completa
+   04. Hero
+   05. Laboratorio
+   06. Cómo miramos / mapa interactivo
+   07. Método
+   08. Situaciones
+   09. Investigación aplicada
+   10. Principios
+   11. Equipo
+   12. Contacto
+   13. Notebook y pantallas bajas
+   14. Tablet
+   15. Móvil
+   16. Movimiento reducido
+
+   Nota de diseño:
+   - En escritorio, cada sección se dimensiona para caber completa dentro del
+     viewport disponible, sin recortar contenido ni obligar a ver media escena.
+   - En tablet/móvil se prioriza legibilidad: se desactiva la lógica de "una
+     pantalla exacta" y cada bloque fluye completo, evitando cortes internos.
+   ============================================================================= */
+
+/* 01 · VARIABLES DE RITMO Y LEGIBILIDAD ------------------------------------- */
+.public-site--v54 {
+  --v55-view: calc(100svh - var(--header-height));
+  --v55-pad-y: clamp(30px, 4.5vh, 58px);
+  --v55-gap: clamp(18px, 2.4vw, 34px);
+  --v55-title: clamp(2rem, 3.2vw, 3.65rem);
+  --v55-copy: clamp(.94rem, 1vw, 1.04rem);
+}
+
+/* 02 · TIPOGRAFÍA Y CONTROLES: NUNCA CORTAR PALABRAS ------------------------ */
+.public-site--v54 h1,
+.public-site--v54 h2,
+.public-site--v54 h3,
+.public-site--v54 p,
+.public-site--v54 li,
+.public-site--v54 blockquote,
+.public-site--v54 .v54-kicker,
+.public-site--v54 .v54-eyebrow,
+.public-site--v54 .v54-system__criterion,
+.public-site--v54 .v54-team-card__meta span {
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: none;
+}
+
+.public-site--v54 h1,
+.public-site--v54 h2,
+.public-site--v54 h3,
+.public-site--v54 blockquote { text-wrap: balance; }
+.public-site--v54 p,
+.public-site--v54 li { text-wrap: pretty; }
+
+.public-site--v54 .button,
+.public-site--v54 button,
+.public-site--v54 .site-nav__os,
+.public-site--v54 .form-mail-fallback {
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
+  hyphens: none;
+}
+
+.public-site--v54 .button,
+.public-site--v54 .site-nav__os {
+  max-width: 100%;
+}
+
+.public-site--v54 a[href^="mailto:"] {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.public-site--v54 .section-heading {
+  max-width: 860px;
+  margin-bottom: clamp(20px, 3vh, 34px);
+}
+
+.public-site--v54 .section-heading h2,
+.public-site--v54 .v54-intro-grid h2,
+.public-site--v54 .v54-method-head h2,
+.public-site--v54 .v54-research-head h2,
+.public-site--v54 .v54-principles-intro h2 {
+  font-size: var(--v55-title);
+  line-height: 1.02;
+  margin-top: 8px;
+}
+
+.public-site--v54 .section-heading p,
+.public-site--v54 .v54-intro-copy p,
+.public-site--v54 .v54-method-head > p,
+.public-site--v54 .v54-research-head > p,
+.public-site--v54 .v54-principles-intro > p {
+  font-size: var(--v55-copy);
+  line-height: 1.55;
+}
+
+/* 03 · ESCENAS DE ESCRITORIO: UNA SECCIÓN = UNA LECTURA COMPLETA ----------- */
+@media (min-width: 901px) {
+  .public-site--v54 main > .section-anchor {
+    scroll-margin-top: var(--header-height);
+  }
+
+  .public-site--v54 .v54-section,
+  .public-site--v54 .v54-contact {
+    min-height: var(--v55-view);
+    display: flex;
+    align-items: center;
+    padding-top: var(--v55-pad-y);
+    padding-bottom: var(--v55-pad-y);
+    overflow: clip;
+  }
+
+  .public-site--v54 .v54-section > .shell,
+  .public-site--v54 .v54-contact > .shell {
+    width: min(1240px, calc(100% - 48px));
+  }
+
+  .public-site--v54 .v54-section > .shell {
+    max-height: calc(var(--v55-view) - (var(--v55-pad-y) * 2));
+  }
+
+  .public-site--v54 .v54-hero {
+    min-height: var(--v55-view);
+    height: var(--v55-view);
+    display: flex;
+    align-items: center;
+    overflow: clip;
+  }
+
+  .public-site--v54 .v54-hero__grid {
+    min-height: 0;
+    align-items: center;
+    padding-top: clamp(26px, 4vh, 48px);
+    padding-bottom: clamp(26px, 4vh, 48px);
+  }
+}
+
+/* 04 · HERO ---------------------------------------------------------------- */
+@media (min-width: 901px) {
+  .public-site--v54 .v54-hero__grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(300px, .65fr);
+    gap: clamp(34px, 5vw, 70px);
+  }
+
+  .public-site--v54 .v54-hero h1 {
+    max-width: 13ch;
+    font-size: clamp(3.2rem, 5.2vw, 5.7rem);
+    line-height: .94;
+  }
+
+  .public-site--v54 .v54-hero__lead {
+    margin-top: 20px;
+    font-size: clamp(1rem, 1.15vw, 1.16rem);
+    line-height: 1.55;
+  }
+
+  .public-site--v54 .v54-hero__manifesto {
+    padding: clamp(22px, 2.4vw, 30px);
+  }
+
+  .public-site--v54 .v54-hero__manifesto blockquote {
+    margin: 14px 0 12px;
+    font-size: clamp(1.5rem, 2vw, 2.15rem);
+  }
+
+  .public-site--v54 .v54-signal-row { margin-top: 16px; }
+}
+
+/* 05 · LABORATORIO --------------------------------------------------------- */
+@media (min-width: 901px) {
+  .public-site--v54 .v54-intro-grid {
+    gap: clamp(42px, 7vw, 92px);
+    align-items: center;
+  }
+
+  .public-site--v54 .v54-intro-copy {
+    gap: 14px;
+    padding-top: 0;
+  }
+
+  .public-site--v54 .v54-lab-definition {
+    margin-top: clamp(28px, 5vh, 52px);
+    padding: clamp(18px, 2.5vh, 25px) 24px;
+  }
+}
+
+/* 06 · CÓMO MIRAMOS / MAPA INTERACTIVO ------------------------------------ */
+@media (min-width: 901px) {
+  .public-site--v54 #como-miramos .section-heading {
+    max-width: 780px;
+    margin-bottom: clamp(14px, 2vh, 24px);
+  }
+
+  .public-site--v54 .v54-system {
+    grid-template-columns: minmax(0, 1.28fr) minmax(280px, .72fr);
+    gap: clamp(22px, 3vw, 42px);
+    align-items: center;
+  }
+
+  .public-site--v54 .v54-system__canvas {
+    min-height: 0;
+    height: clamp(360px, 48vh, 500px);
+  }
+
+  .public-site--v54 .v54-system__core {
+    width: 200px;
+    min-height: 160px;
+    padding: 20px;
+  }
+
+  .public-site--v54 .v54-system__node {
+    padding: 12px 14px;
+  }
+
+  .public-site--v54 .v54-system__explanation {
+    min-height: 0;
+    padding: clamp(22px, 2.5vw, 30px);
+  }
+}
+
+/* 07 · MÉTODO -------------------------------------------------------------- */
+@media (min-width: 901px) {
+  .public-site--v54 .v54-method-head {
+    align-items: end;
+    margin-bottom: clamp(18px, 2.4vh, 28px);
+  }
+
+  .public-site--v54 .v54-method-flow {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .public-site--v54 .v54-method-step {
+    min-height: 220px;
+    padding: clamp(17px, 1.7vw, 22px);
+  }
+
+  .public-site--v54 .v54-method-step__top { margin-bottom: 18px; }
+  .public-site--v54 .v54-method-step h3 { font-size: 1.35rem; }
+  .public-site--v54 .v54-method-step p { font-size: .84rem; line-height: 1.45; }
+  .public-site--v54 .v54-method-close { margin-top: clamp(18px, 2.5vh, 28px); }
+}
+
+/* 08 · SITUACIONES --------------------------------------------------------- */
+@media (min-width: 901px) {
+  .public-site--v54 #situaciones .section-heading { margin-bottom: 24px; }
+
+  .public-site--v54 .v54-situation-card {
+    min-height: 225px;
+    padding: 20px;
+  }
+
+  .public-site--v54 .v54-situation-card__icon {
+    width: 42px;
+    height: 42px;
+    margin: 28px 0 22px;
+  }
+
+  .public-site--v54 .v54-situation-card h3 {
+    font-size: clamp(1.25rem, 1.55vw, 1.55rem);
+  }
+}
+
+/* 09 · INVESTIGACIÓN APLICADA --------------------------------------------- */
+@media (min-width: 901px) {
+  .public-site--v54 .v54-research-head {
+    margin-bottom: clamp(16px, 2.2vh, 24px);
+  }
+
+  .public-site--v54 .v54-question-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    border-top: 0;
+  }
+
+  .public-site--v54 .v54-question-card {
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 10px 16px;
+    min-height: 170px;
+    padding: 18px;
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 20px;
+    background: rgba(255,255,255,.025);
+  }
+
+  .public-site--v54 .v54-question-card:hover { padding-left: 18px; }
+  .public-site--v54 .v54-question-card p { grid-column: 2; font-size: .82rem; line-height: 1.45; }
+  .public-site--v54 .v54-question-card h3 { font-size: clamp(1.25rem, 1.7vw, 1.72rem); line-height: 1.08; }
+  .public-site--v54 .v54-question-card__meta span { font-size: 1.25rem; }
+}
+
+/* 10 · PRINCIPIOS ---------------------------------------------------------- */
+@media (min-width: 901px) {
+  .public-site--v54 .v54-principles-layout {
+    align-items: center;
+    gap: clamp(38px, 6vw, 84px);
+  }
+
+  .public-site--v54 .v54-principles-intro { position: static; }
+  .public-site--v54 .v54-principles-intro p { margin-top: 16px; }
+  .public-site--v54 .v54-principles-grid article { padding: 16px 0; }
+}
+
+/* 11 · EQUIPO -------------------------------------------------------------- */
+@media (min-width: 901px) {
+  .public-site--v54 #equipo .section-heading { margin-bottom: 22px; }
+  .public-site--v54 .v54-team-card { padding: 22px; }
+  .public-site--v54 .v54-team-card > p { margin-top: 16px; font-size: .9rem; line-height: 1.5; }
+  .public-site--v54 .v54-team-card__meta { margin-top: 16px; padding-top: 14px; }
+  .public-site--v54 .v54-team-synthesis { margin-top: 16px; }
+}
+
+/* 12 · CONTACTO ------------------------------------------------------------ */
+@media (min-width: 901px) {
+  .public-site--v54 .v54-contact .audit-contact__grid {
+    min-height: 0;
+    align-items: center;
+    gap: clamp(28px, 4vw, 58px);
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .public-site--v54 .v54-contact .audit-contact__intro h2 {
+    font-size: clamp(2.1rem, 3.3vw, 3.7rem);
+    line-height: 1.02;
+  }
+
+  .public-site--v54 .v54-contact .quote-wizard { min-height: 0; }
+}
+
+/* 13 · NOTEBOOK Y PANTALLAS BAJAS ----------------------------------------- */
+@media (min-width: 901px) and (max-height: 820px) {
+  .public-site--v54 {
+    --v55-pad-y: clamp(20px, 3vh, 34px);
+    --v55-title: clamp(1.8rem, 2.75vw, 3rem);
+    --v55-copy: .92rem;
+  }
+
+  .public-site--v54 .section-heading { margin-bottom: 16px; }
+  .public-site--v54 .v54-hero h1 { font-size: clamp(2.85rem, 4.7vw, 4.8rem); }
+  .public-site--v54 .v54-hero__lead { margin-top: 14px; line-height: 1.45; }
+  .public-site--v54 .v54-hero__location { margin-top: 14px; }
+  .public-site--v54 .v54-hero__manifesto { padding: 20px 24px; }
+  .public-site--v54 .v54-system__canvas { height: clamp(320px, 43vh, 390px); }
+  .public-site--v54 .v54-system__core { width: 184px; min-height: 142px; }
+  .public-site--v54 .v54-method-step { min-height: 190px; padding: 15px; }
+  .public-site--v54 .v54-method-step p { font-size: .78rem; }
+  .public-site--v54 .v54-situation-card { min-height: 190px; padding: 17px; }
+  .public-site--v54 .v54-situation-card__icon { margin: 22px 0 15px; }
+  .public-site--v54 .v54-question-card { min-height: 145px; padding: 15px; }
+  .public-site--v54 .v54-question-card:hover { padding-left: 15px; }
+  .public-site--v54 .v54-team-card { padding: 18px; }
+  .public-site--v54 .v54-team-card__initials { width: 50px; height: 50px; }
+}
+
+@media (min-width: 901px) and (max-height: 690px) {
+  .public-site--v54 {
+    --v55-pad-y: 18px;
+    --v55-title: clamp(1.65rem, 2.35vw, 2.5rem);
+  }
+
+  .public-site--v54 .v54-kicker,
+  .public-site--v54 .v54-eyebrow { font-size: .68rem; }
+  .public-site--v54 .v54-hero__manifesto p,
+  .public-site--v54 .v54-intro-copy p,
+  .public-site--v54 .section-heading p { font-size: .86rem; }
+  .public-site--v54 .v54-lab-definition { margin-top: 20px; padding: 14px 18px; }
+  .public-site--v54 .v54-system__canvas { height: 300px; }
+  .public-site--v54 .v54-method-step { min-height: 166px; }
+  .public-site--v54 .v54-method-step__top { margin-bottom: 10px; }
+  .public-site--v54 .v54-situation-card { min-height: 166px; }
+  .public-site--v54 .v54-situation-card__icon { margin: 16px 0 10px; width: 36px; height: 36px; }
+  .public-site--v54 .v54-question-card { min-height: 126px; padding: 12px 14px; }
+  .public-site--v54 .v54-question-card h3 { font-size: 1.15rem; }
+  .public-site--v54 .v54-question-card p { font-size: .75rem; }
+  .public-site--v54 .v54-principles-grid article { padding: 11px 0; }
+  .public-site--v54 .v54-team-card > p { font-size: .82rem; }
+}
+
+/* 14 · TABLET -------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .public-site--v54 {
+    --v55-title: clamp(1.9rem, 6.2vw, 2.9rem);
+  }
+
+  .public-site--v54 .v54-section,
+  .public-site--v54 .v54-contact,
+  .public-site--v54 .v54-hero {
+    min-height: auto;
+    height: auto;
+    overflow: visible;
+  }
+
+  .public-site--v54 .v54-section { padding: 62px 0; }
+  .public-site--v54 .v54-hero__grid { gap: 28px; }
+  .public-site--v54 .v54-hero h1 { max-width: 12ch; font-size: clamp(2.9rem, 9vw, 4.8rem); }
+  .public-site--v54 .v54-system { grid-template-columns: 1fr; }
+  .public-site--v54 .v54-system__explanation { min-height: auto; }
+  .public-site--v54 .v54-method-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .public-site--v54 .v54-method-step:last-child { grid-column: 1 / -1; }
+  .public-site--v54 .v54-question-list { display: grid; gap: 0; }
+
+  /* Cada bloque visual queda íntegro antes del siguiente, sin cortes incómodos. */
+  .public-site--v54 .v54-system,
+  .public-site--v54 .v54-method-step,
+  .public-site--v54 .v54-situation-card,
+  .public-site--v54 .v54-question-card,
+  .public-site--v54 .v54-team-card,
+  .public-site--v54 .v54-lab-definition,
+  .public-site--v54 .quote-wizard {
+    break-inside: avoid;
+  }
+}
+
+/* 15 · MÓVIL --------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .public-site--v54 {
+    --v55-title: clamp(1.75rem, 8vw, 2.35rem);
+    --v55-copy: .96rem;
+  }
+
+  .public-site--v54 .shell { width: min(100% - 32px, 1240px); }
+  .public-site--v54 .v54-section { padding: 50px 0; }
+  .public-site--v54 .section-heading { margin-bottom: 24px; }
+  .public-site--v54 .section-heading h2 { max-width: 100%; }
+  .public-site--v54 .v54-hero { padding: 42px 0; }
+  .public-site--v54 .v54-hero h1 { max-width: 11ch; font-size: clamp(2.55rem, 12vw, 3.55rem); }
+  .public-site--v54 .v54-hero__lead { font-size: 1rem; line-height: 1.5; }
+  .public-site--v54 .hero__actions { display: grid; grid-template-columns: 1fr; }
+  .public-site--v54 .hero__actions .button { width: 100%; }
+  .public-site--v54 .v54-system__canvas { min-height: 560px; }
+  .public-site--v54 .v54-method-flow,
+  .public-site--v54 .v54-situations-grid,
+  .public-site--v54 .v54-team-grid { grid-template-columns: 1fr; }
+  .public-site--v54 .v54-method-step:last-child { grid-column: auto; }
+  .public-site--v54 .v54-situation-card { min-height: auto; }
+  .public-site--v54 .v54-situation-card__icon { margin: 26px 0 18px; }
+  .public-site--v54 .v54-question-card { grid-template-columns: 1fr; }
+  .public-site--v54 .v54-question-card p { grid-column: 1; }
+  .public-site--v54 .v54-team-card__head { grid-template-columns: 52px minmax(0, 1fr); }
+  .public-site--v54 .v54-team-card__initials { width: 48px; height: 48px; }
+  .public-site--v54 .quote-step-actions { display: grid; grid-template-columns: 1fr; }
+  .public-site--v54 .quote-step-actions .button { width: 100%; min-width: 0; font-size: .9rem; }
+  .public-site--v54 .site-nav .button,
+  .public-site--v54 .site-nav__os { white-space: nowrap; }
+}
+
+@media (max-width: 390px) {
+  .public-site--v54 .shell { width: min(100% - 24px, 1240px); }
+  .public-site--v54 .v54-section { padding: 44px 0; }
+  .public-site--v54 .v54-hero h1 { font-size: clamp(2.25rem, 11.5vw, 3rem); }
+  .public-site--v54 .button { padding-inline: 14px; font-size: .86rem; }
+  .public-site--v54 .v54-system__node { width: 45%; }
+  .public-site--v54 .v54-system__node small { display: none; }
+  .public-site--v54 .v54-team-card { padding: 18px; }
+  .public-site--v54 .v54-team-card__head { grid-template-columns: 1fr; }
+}
+
+/* 16 · MOVIMIENTO REDUCIDO ------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .public-site--v54 .v54-system__core::after,
+  .public-site--v54 .v54-hero__glow { animation: none !important; }
+}

@@ -13,6 +13,24 @@ import {
   transformationPillars
 } from './publicContent.js';
 
+// =============================================================================
+// WEB PÚBLICA · METAMORFOSIS LAB
+// Orden de edición rápida
+// 01. Configuración y analítica
+// 02. Navegación y marca
+// 03. Formulario de conversación
+// 04. Componentes visuales (equipo + mapa de sistemas)
+// 05. Secciones públicas, en el orden real de lectura
+//     Inicio → Laboratorio → Cómo miramos → Método → Situaciones →
+//     Investigación aplicada → Principios → Equipo → Contacto → Footer
+//
+// Los textos repetibles (método, preguntas, equipo, etc.) se editan en
+// src/publicContent.js. Los textos narrativos de cada sección viven aquí.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// 01 · CONFIGURACIÓN Y ANALÍTICA
+// -----------------------------------------------------------------------------
 const OS_SITE_URL = 'https://os.metamorfosislab.cl';
 const apiBase = String(import.meta.env.DEV ? (import.meta.env.VITE_API_BASE || 'http://localhost:4173') : OS_SITE_URL).replace(/\/$/, '');
 const PUBLIC_QUOTES_KEY = 'metamorfosis-public-quotes';
@@ -133,6 +151,9 @@ function IconButton({ label, icon, onClick, className = '', type = 'button', ari
   );
 }
 
+// -----------------------------------------------------------------------------
+// 02 · NAVEGACIÓN Y MARCA
+// -----------------------------------------------------------------------------
 function PublicHeader() {
   const [open, setOpen] = useState(false);
 
@@ -287,6 +308,9 @@ async function postQuoteToApi(form) {
   }
 }
 
+// -----------------------------------------------------------------------------
+// 03 · FORMULARIO DE CONVERSACIÓN
+// -----------------------------------------------------------------------------
 function QuoteForm() {
   const empty = {
     serviceType: '',
@@ -433,6 +457,9 @@ function QuoteForm() {
 }
 
 
+// -----------------------------------------------------------------------------
+// 04A · COMPONENTE EQUIPO
+// -----------------------------------------------------------------------------
 function TeamSection() {
   return (
     <div className="v54-team-grid">
@@ -457,6 +484,9 @@ function TeamSection() {
   );
 }
 
+// -----------------------------------------------------------------------------
+// 04B · MAPA INTERACTIVO · CÓMO MIRAMOS
+// -----------------------------------------------------------------------------
 function SystemsMap() {
   const [activeId, setActiveId] = useState('operacion');
   const active = transformationPillars.find((item) => item.id === activeId) || transformationPillars[0];
@@ -506,6 +536,9 @@ function SystemsMap() {
   );
 }
 
+// -----------------------------------------------------------------------------
+// 05 · COMPOSICIÓN DE LA WEB PÚBLICA · ORDEN REAL DE LECTURA
+// -----------------------------------------------------------------------------
 function PublicSite() {
   useEffect(() => {
     warmPrivateApi();
@@ -524,6 +557,7 @@ function PublicSite() {
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
+        {/* 05.1 · INICIO / HERO · Promesa + definición breve del laboratorio */}
         <section id="inicio" className="v54-hero section-anchor" style={{ '--section-image': `url(${heroImage})` }} onPointerMove={handleHeroMove}>
           <div className="v54-hero__shade" aria-hidden="true" />
           <div className="v54-hero__glow" aria-hidden="true" />
@@ -551,6 +585,7 @@ function PublicSite() {
           </div>
         </section>
 
+        {/* 05.2 · LABORATORIO · Qué somos y por qué trabajamos como laboratorio */}
         <section id="laboratorio" className="v54-section v54-section--paper section-anchor">
           <div className="shell">
             <div className="v54-intro-grid">
@@ -574,6 +609,7 @@ function PublicSite() {
           </div>
         </section>
 
+        {/* 05.3 · CÓMO MIRAMOS · Mapa interactivo de dimensiones de análisis */}
         <section id="como-miramos" className="v54-section v54-section--mist section-anchor">
           <div className="shell">
             <SectionHeading
@@ -585,6 +621,7 @@ function PublicSite() {
           </div>
         </section>
 
+        {/* 05.4 · CÓMO TRABAJAMOS · Método en cinco etapas */}
         <section id="metodo" className="v54-section v54-section--dark section-anchor">
           <div className="shell">
             <div className="v54-method-head">
@@ -614,6 +651,7 @@ function PublicSite() {
           </div>
         </section>
 
+        {/* 05.5 · DÓNDE PODEMOS APORTAR · Situaciones, no catálogo de servicios */}
         <section id="situaciones" className="v54-section v54-section--paper section-anchor">
           <div className="shell">
             <SectionHeading
@@ -634,6 +672,7 @@ function PublicSite() {
           </div>
         </section>
 
+        {/* 05.6 · INVESTIGACIÓN APLICADA · Preguntas propias del laboratorio */}
         <section id="exploramos" className="v54-section v54-section--research section-anchor">
           <div className="shell">
             <div className="v54-research-head">
@@ -655,6 +694,7 @@ function PublicSite() {
           </div>
         </section>
 
+        {/* 05.7 · PRINCIPIOS · Límites y criterios de trabajo */}
         <section id="principios" className="v54-section v54-section--paper section-anchor">
           <div className="shell v54-principles-layout">
             <div className="v54-principles-intro">
@@ -673,6 +713,7 @@ function PublicSite() {
           </div>
         </section>
 
+        {/* 05.8 · EQUIPO · Capacidad conjunta de ingeniería + derecho */}
         <section id="equipo" className="v54-section v54-section--mist section-anchor">
           <div className="shell">
             <SectionHeading
@@ -685,6 +726,7 @@ function PublicSite() {
           </div>
         </section>
 
+        {/* 05.9 · CONTACTO · Apertura de conversación */}
         <section id="contacto" className="audit-scene audit-scene--dark audit-contact section-anchor v54-contact" style={{ '--section-image': `url(${contactImage})` }}>
           <div className="audit-scene__shade" aria-hidden="true" />
           <div className="shell audit-contact__grid">
@@ -702,6 +744,7 @@ function PublicSite() {
           </div>
         </section>
       </main>
+      {/* 05.10 · FOOTER · Cierre institucional */}
       <footer className="site-footer audit-footer v54-footer">
         <div className="shell audit-footer__grid">
           <div className="site-footer__brand"><Brand /><p>Laboratorio de innovación con base en Concepción. Transformamos la manera en que las organizaciones generan valor, integrando eficiencia operacional, condiciones humanas y una relación responsable con los sistemas vivos.</p></div>

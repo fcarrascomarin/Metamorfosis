@@ -1,3 +1,10 @@
+// =============================================================================
+// CONTENIDO EDITABLE DE LA WEB PÚBLICA
+// Este archivo concentra listas y textos modulares para editar la web sin tocar
+// la estructura JSX. Mantener el orden de las secciones indicado a continuación.
+// =============================================================================
+
+// 01 · NAVEGACIÓN PRINCIPAL
 export const publicNavigation = [
   { id: 'laboratorio', label: 'Laboratorio', icon: 'query_stats' },
   { id: 'metodo', label: 'Cómo trabajamos', icon: 'timeline' },
@@ -5,6 +12,7 @@ export const publicNavigation = [
   { id: 'equipo', label: 'Equipo', icon: 'group' }
 ];
 
+// 02 · CÓMO MIRAMOS · Dimensiones del mapa interactivo
 export const transformationPillars = [
   {
     id: 'operacion',
@@ -40,6 +48,7 @@ export const transformationPillars = [
   }
 ];
 
+// 03 · DÓNDE PODEMOS APORTAR · Situaciones de entrada
 export const activeOfferUseCases = [
   {
     icon: 'trending_up',
@@ -63,6 +72,7 @@ export const activeOfferUseCases = [
   }
 ];
 
+// 04 · CÓMO TRABAJAMOS · Método del laboratorio
 export const processRoadmap = [
   {
     icon: 'visibility',
@@ -96,6 +106,7 @@ export const processRoadmap = [
   }
 ];
 
+// 05 · PRINCIPIOS DE TRABAJO
 export const laboratoryPrinciples = [
   {
     icon: 'visibility',
@@ -119,6 +130,7 @@ export const laboratoryPrinciples = [
   }
 ];
 
+// 06 · INVESTIGACIÓN APLICADA · Preguntas en exploración
 export const researchQuestions = [
   {
     index: '01',
@@ -146,6 +158,7 @@ export const researchQuestions = [
   }
 ];
 
+// 07 · EQUIPO · Perfiles y complementariedad profesional
 export const team = [
   {
     initials: 'FC',
