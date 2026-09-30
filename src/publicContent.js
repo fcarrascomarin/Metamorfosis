@@ -6,7 +6,7 @@
 
 // 01 · NAVEGACIÓN PRINCIPAL
 export const publicNavigation = [
-  { id: 'laboratorio', label: 'Laboratorio', icon: 'query_stats' },
+  { id: 'jardin', label: 'Jardín', icon: 'query_stats' },
   { id: 'metodo', label: 'Cómo trabajamos', icon: 'timeline' },
   { id: 'exploramos', label: 'Qué exploramos', icon: 'search' },
   { id: 'equipo', label: 'Equipo', icon: 'group' }
@@ -72,7 +72,7 @@ export const activeOfferUseCases = [
   }
 ];
 
-// 04 · CÓMO TRABAJAMOS · Método del laboratorio
+// 04 · CÓMO TRABAJAMOS · Método de Metamorfosis
 export const processRoadmap = [
   {
     icon: 'visibility',

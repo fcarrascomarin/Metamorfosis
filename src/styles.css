@@ -16330,3 +16330,577 @@ textarea::placeholder { color: #7f98ac; }
     white-space: nowrap;
   }
 }
+
+/* =============================================================================
+   WEB PÚBLICA V5.8 · JARDÍN DE INNOVACIÓN · CONCEPTOS DESPLEGABLES
+   -----------------------------------------------------------------------------
+   Esta capa reemplaza la lógica V5.7 del panel explicativo compartido.
+
+   CRITERIO DE DISEÑO
+   - “Qué observamos” y “Cómo trabajamos” son dos capas distintas.
+   - Cada concepto contiene y despliega su propia explicación.
+   - Solo un bloque de cada grupo permanece abierto a la vez.
+   - No existe un panel común que mezcle dimensiones con etapas del método.
+   - “Preguntas que cultivamos” deja de ocupar una pantalla completa y se
+     convierte en evidencia intelectual compacta.
+
+   ÍNDICE DE EDICIÓN RÁPIDA
+   01. Escena general
+   02. Encabezado
+   03. Cabecera de cada capa
+   04. Núcleo / jardín central
+   05. Dimensiones desplegables
+   06. Método desplegable
+   07. Cierre de método
+   08. Preguntas que cultivamos
+   09. Ajustes del bloque Jardín de innovación
+   10. Desktop bajo
+   11. Tablet
+   12. Móvil
+   ============================================================================= */
+
+/* 01 · ESCENA GENERAL -------------------------------------------------------- */
+.public-site--v58 .v58-work {
+  position: relative;
+  padding: clamp(58px, 7vw, 92px) 0;
+  overflow: clip;
+  background:
+    radial-gradient(circle at 50% 16%, rgba(105,229,216,.12), transparent 28%),
+    linear-gradient(180deg, #eef5f1 0%, #f8faf6 58%, #eef6f2 100%);
+  color: var(--v54-ink);
+  border-top: 1px solid rgba(16,40,42,.08);
+  border-bottom: 1px solid rgba(16,40,42,.08);
+}
+
+.public-site--v58 .v58-work__shell {
+  display: grid;
+  gap: clamp(28px, 4vw, 46px);
+}
+
+.public-site--v58 .v57-hidden-anchor {
+  position: absolute;
+  top: 0;
+}
+
+/* 02 · ENCABEZADO ------------------------------------------------------------ */
+/* Editar aquí el ancho, tamaño de título y texto introductorio del esquema. */
+.public-site--v58 .v58-work__head {
+  max-width: 900px;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.public-site--v58 .v58-work__head h2 {
+  max-width: none;
+  margin: 8px 0 10px;
+  color: var(--v54-ink);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: clamp(2rem, 3vw, 3.25rem);
+  font-weight: 560;
+  line-height: 1.02;
+  letter-spacing: -.04em;
+  text-wrap: balance;
+}
+
+.public-site--v58 .v58-work__head p {
+  max-width: 72ch;
+  margin: 0 auto;
+  color: var(--v54-copy);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+/* 03 · CABECERA DE CADA CAPA ------------------------------------------------ */
+/* Editar aquí títulos “Qué observamos” y “Cómo trabajamos”. */
+.public-site--v58 .v58-layer {
+  display: grid;
+  gap: 18px;
+}
+
+.public-site--v58 .v58-layer__heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: 980px;
+}
+
+.public-site--v58 .v58-layer__number {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  place-items: center;
+  border: 1px solid rgba(22,122,112,.24);
+  border-radius: 50%;
+  background: rgba(255,255,255,.78);
+  color: var(--v54-accent-deep);
+  font-size: .72rem;
+  font-weight: 900;
+}
+
+.public-site--v58 .v58-layer__heading h3 {
+  margin: 4px 0 0;
+  color: var(--v54-ink);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: clamp(1.45rem, 2vw, 2rem);
+  line-height: 1.05;
+  letter-spacing: -.025em;
+}
+
+/* 04 · NÚCLEO / JARDÍN CENTRAL --------------------------------------------- */
+/* Editar aquí el tamaño del logo central y la relación con las dimensiones. */
+.public-site--v58 .v58-dimensions {
+  display: grid;
+  grid-template-columns: minmax(220px,.62fr) minmax(0,1.38fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.public-site--v58 .v58-garden-core {
+  position: relative;
+  min-height: 250px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 8px;
+  padding: 26px;
+  border: 1px solid rgba(22,122,112,.18);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(105,229,216,.18), transparent 38%),
+    rgba(255,255,255,.75);
+  box-shadow: 0 20px 48px rgba(23,83,76,.08);
+  text-align: center;
+  overflow: hidden;
+}
+
+.public-site--v58 .v58-garden-core::before,
+.public-site--v58 .v58-garden-core::after {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border: 1px solid rgba(62,188,172,.10);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.public-site--v58 .v58-garden-core::after { width: 250px; height: 250px; }
+
+.public-site--v58 .v58-garden-core img {
+  position: relative;
+  z-index: 1;
+  width: 82px;
+  height: 82px;
+  object-fit: contain;
+}
+
+.public-site--v58 .v58-garden-core strong {
+  position: relative;
+  z-index: 1;
+  color: var(--v54-ink);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 1.75rem;
+}
+
+.public-site--v58 .v58-garden-core small {
+  position: relative;
+  z-index: 1;
+  color: var(--v54-accent-deep);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+/* 05 · DIMENSIONES DESPLEGABLES -------------------------------------------- */
+/* Cada tarjeta abre SU explicación debajo de SU título. */
+.public-site--v58 .v58-dimension-grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 12px;
+  align-content: start;
+}
+
+.public-site--v58 .v58-accordion-card {
+  min-width: 0;
+  border: 1px solid rgba(16,40,42,.12);
+  border-radius: 22px;
+  background: rgba(255,255,255,.80);
+  box-shadow: 0 8px 24px rgba(22,66,61,.04);
+  overflow: hidden;
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.public-site--v58 .v58-accordion-card.is-open {
+  border-color: rgba(22,122,112,.34);
+  box-shadow: 0 16px 36px rgba(22,66,61,.08);
+}
+
+.public-site--v58 .v58-accordion-trigger {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 50px minmax(0,1fr) 24px;
+  gap: 12px;
+  align-items: center;
+  min-height: 92px;
+  padding: 16px 18px;
+  border: 0;
+  background: transparent;
+  color: var(--v54-ink);
+  text-align: left;
+  white-space: normal;
+}
+
+.public-site--v58 .v58-accordion-icon {
+  display: grid;
+  width: 50px;
+  height: 50px;
+  place-items: center;
+  border-radius: 15px;
+  background: #e8f5f1;
+  color: var(--v54-accent-deep);
+}
+
+.public-site--v58 .v58-accordion-icon .app-icon {
+  width: 25px;
+  height: 25px;
+}
+
+.public-site--v58 .v58-accordion-title {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.public-site--v58 .v58-accordion-title strong {
+  color: var(--v54-ink);
+  font-size: 1.02rem;
+  line-height: 1.15;
+}
+
+.public-site--v58 .v58-accordion-title small {
+  overflow: hidden;
+  color: var(--v54-muted);
+  font-size: .66rem;
+  font-weight: 750;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.public-site--v58 .v58-accordion-arrow {
+  color: var(--v54-accent-deep);
+}
+
+.public-site--v58 .v58-accordion-panel {
+  padding: 0 18px 18px 80px;
+}
+
+.public-site--v58 .v58-accordion-panel p {
+  margin: 0;
+  color: var(--v54-copy);
+  font-size: .88rem;
+  line-height: 1.55;
+}
+
+/* 06 · MÉTODO DESPLEGABLE ---------------------------------------------------- */
+/* El método se presenta aparte para no mezclar “qué observamos” con “qué hacemos”. */
+.public-site--v58 .v58-layer--method {
+  padding-top: 4px;
+}
+
+.public-site--v58 .v58-steps {
+  display: grid;
+  grid-template-columns: repeat(5,minmax(0,1fr));
+  gap: 10px;
+}
+
+.public-site--v58 .v58-step-card {
+  min-width: 0;
+  border: 1px solid rgba(16,40,42,.12);
+  border-radius: 20px;
+  background: rgba(255,255,255,.76);
+  overflow: hidden;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.public-site--v58 .v58-step-card.is-open {
+  border-color: rgba(22,122,112,.34);
+  box-shadow: 0 14px 32px rgba(22,66,61,.07);
+}
+
+.public-site--v58 .v58-step-trigger {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 36px 38px minmax(0,1fr) 20px;
+  gap: 8px;
+  align-items: center;
+  min-height: 92px;
+  padding: 13px;
+  border: 0;
+  background: transparent;
+  color: var(--v54-ink);
+  text-align: left;
+  white-space: normal;
+}
+
+.public-site--v58 .v58-step-number {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 50%;
+  background: #0d4b46;
+  color: #aaf2e9;
+  font-size: .66rem;
+  font-weight: 900;
+}
+
+.public-site--v58 .v58-step-icon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 12px;
+  background: #e8f5f1;
+  color: var(--v54-accent-deep);
+}
+
+.public-site--v58 .v58-step-icon .app-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.public-site--v58 .v58-step-title {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.public-site--v58 .v58-step-title strong {
+  color: var(--v54-ink);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 1.12rem;
+  line-height: 1;
+}
+
+.public-site--v58 .v58-step-title small {
+  overflow: hidden;
+  color: var(--v54-muted);
+  font-size: .58rem;
+  font-weight: 800;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.public-site--v58 .v58-step-arrow { color: var(--v54-accent-deep); }
+
+.public-site--v58 .v58-step-panel {
+  padding: 0 14px 15px;
+}
+
+.public-site--v58 .v58-step-panel p {
+  margin: 0;
+  color: var(--v54-copy);
+  font-size: .78rem;
+  line-height: 1.5;
+}
+
+/* 07 · CIERRE DE MÉTODO ------------------------------------------------------ */
+.public-site--v58 .v58-work__close {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px 8px;
+  padding: 18px 22px;
+  border: 1px solid rgba(22,122,112,.20);
+  border-radius: 999px;
+  background: rgba(255,255,255,.78);
+  text-align: center;
+}
+
+.public-site--v58 .v58-work__close strong,
+.public-site--v58 .v58-work__close > span {
+  font-family: "Newsreader", Georgia, serif;
+  font-size: clamp(1.1rem,1.6vw,1.55rem);
+}
+
+.public-site--v58 .v58-work__close strong { color: var(--v54-ink); }
+.public-site--v58 .v58-work__close > span { color: var(--v54-accent-deep); font-weight: 650; }
+.public-site--v58 .v58-work__close small { width: 100%; color: var(--v54-muted); font-size: .72rem; }
+
+/* 08 · PREGUNTAS QUE CULTIVAMOS -------------------------------------------- */
+/* Esta sección ya no rellena una pantalla: evidencia pensamiento propio. */
+.public-site--v58 .v58-research {
+  padding: clamp(54px,6vw,78px) 0;
+  background: #0c2a2f;
+  color: #fff;
+}
+
+.public-site--v58 .v58-research__shell {
+  display: grid;
+  grid-template-columns: minmax(250px,.65fr) minmax(0,1.35fr);
+  gap: clamp(28px,5vw,70px);
+  align-items: start;
+}
+
+.public-site--v58 .v58-research__head h2 {
+  margin: 8px 0 12px;
+  color: #fff;
+  font-family: "Newsreader", Georgia, serif;
+  font-size: clamp(1.75rem,2.6vw,2.7rem);
+  line-height: 1.04;
+}
+
+.public-site--v58 .v58-research__head p {
+  margin: 0;
+  color: #bfd3d6;
+  font-size: .9rem;
+  line-height: 1.55;
+}
+
+.public-site--v58 .v58-research__grid {
+  display: grid;
+  gap: 8px;
+}
+
+.public-site--v58 .v58-research-card {
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 16px;
+  background: rgba(255,255,255,.025);
+  overflow: hidden;
+}
+
+.public-site--v58 .v58-research-card.is-open {
+  border-color: rgba(105,229,216,.30);
+  background: rgba(255,255,255,.04);
+}
+
+.public-site--v58 .v58-research-trigger {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 42px minmax(0,1fr) 22px;
+  gap: 12px;
+  align-items: center;
+  min-height: 66px;
+  padding: 12px 14px;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  text-align: left;
+  white-space: normal;
+}
+
+.public-site--v58 .v58-research-index {
+  color: var(--v54-accent);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 1.15rem;
+}
+
+.public-site--v58 .v58-research-title {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.public-site--v58 .v58-research-title small {
+  color: #8eb5b7;
+  font-size: .58rem;
+  font-weight: 850;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.public-site--v58 .v58-research-title strong {
+  color: #fff;
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.15;
+}
+
+.public-site--v58 .v58-research-trigger > .app-icon { color: var(--v54-accent); }
+
+.public-site--v58 .v58-research-panel {
+  padding: 0 48px 14px 68px;
+}
+
+.public-site--v58 .v58-research-panel p {
+  max-width: 70ch;
+  margin: 0;
+  color: #bdd0d2;
+  font-size: .82rem;
+  line-height: 1.55;
+}
+
+/* 09 · AJUSTES DEL BLOQUE JARDÍN DE INNOVACIÓN ----------------------------- */
+/* Mantiene la sección institucional, pero elimina el lenguaje de laboratorio. */
+.public-site--v58 .v54-lab-definition {
+  grid-template-columns: 150px 1fr;
+}
+
+.public-site--v58 .v54-lab-definition__number {
+  font-size: 1.35rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+/* 10 · DESKTOP BAJO --------------------------------------------------------- */
+@media (min-width: 901px) and (max-height: 760px) {
+  .public-site--v58 .v58-work { padding: 34px 0; }
+  .public-site--v58 .v58-work__shell { gap: 20px; }
+  .public-site--v58 .v58-work__head p { font-size: .88rem; }
+  .public-site--v58 .v58-garden-core { min-height: 200px; }
+  .public-site--v58 .v58-accordion-trigger { min-height: 72px; padding-block: 11px; }
+  .public-site--v58 .v58-step-trigger { min-height: 72px; }
+  .public-site--v58 .v58-work__close { padding-block: 12px; }
+}
+
+/* 11 · TABLET --------------------------------------------------------------- */
+@media (max-width: 980px) {
+  .public-site--v58 .v58-dimensions,
+  .public-site--v58 .v58-research__shell {
+    grid-template-columns: 1fr;
+  }
+
+  .public-site--v58 .v58-garden-core {
+    min-height: 180px;
+  }
+
+  .public-site--v58 .v58-steps {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+
+  .public-site--v58 .v58-step-card:last-child { grid-column: 1 / -1; }
+}
+
+/* 12 · MÓVIL --------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .public-site--v58 .v58-work { padding: 48px 0; }
+  .public-site--v58 .v58-work__head { text-align: left; }
+  .public-site--v58 .v58-work__head h2 { font-size: clamp(1.8rem,8vw,2.3rem); }
+
+  .public-site--v58 .v58-dimension-grid,
+  .public-site--v58 .v58-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .public-site--v58 .v58-step-card:last-child { grid-column: auto; }
+
+  .public-site--v58 .v58-layer__heading { align-items: flex-start; }
+
+  .public-site--v58 .v58-accordion-title small,
+  .public-site--v58 .v58-step-title small {
+    white-space: normal;
+    text-overflow: clip;
+  }
+
+  .public-site--v58 .v58-accordion-panel { padding-left: 18px; }
+  .public-site--v58 .v58-research { padding: 48px 0; }
+  .public-site--v58 .v58-research-panel { padding-left: 14px; padding-right: 14px; }
+  .public-site--v58 .v58-work__close { border-radius: 24px; }
+  .public-site--v58 .v54-lab-definition { grid-template-columns: 1fr; }
+}

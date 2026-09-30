@@ -21,7 +21,7 @@ import {
 // 03. Formulario de conversación
 // 04. Componentes visuales (equipo + mapa de sistemas)
 // 05. Secciones públicas, en el orden real de lectura
-//     Inicio → Laboratorio → Cómo miramos → Método → Situaciones →
+//     Inicio → Jardín → Cómo miramos → Método → Situaciones →
 //     Investigación aplicada → Principios → Equipo → Contacto → Footer
 //
 // Los textos repetibles (método, preguntas, equipo, etc.) se editan en
@@ -128,16 +128,16 @@ function Brand({ compact = false }) {
     <a
       className={`brand ${compact ? 'brand--compact' : ''}`}
       href="#inicio"
-      aria-label="Metamorfosis Lab, ir al inicio"
+      aria-label="Metamorfosis, ir al inicio"
       onClick={(event) => {
         event.preventDefault();
         scrollToPublicSection('inicio');
       }}
     >
-      <img className="brand-logo" src="/logo-metamorfosis-transparente.png" alt="Isotipo de Metamorfosis Lab" width="44" height="44" />
+      <img className="brand-logo" src="/logo-metamorfosis-transparente.png" alt="Isotipo de Metamorfosis" width="44" height="44" />
       <span className="brand-copy">
         <strong>METAMORFOSIS LAB</strong>
-        <small>laboratorio de innovación · Concepción</small>
+        <small>jardín de innovación · Concepción</small>
       </span>
     </a>
   );
@@ -193,7 +193,7 @@ function PublicHeader() {
             ))}
           </div>
           <div className="site-nav__actions">
-            <a className="site-nav__os" href={OS_SITE_URL} onClick={openOs} onMouseEnter={warmPrivateApi} onFocus={warmPrivateApi} aria-label="Acceso al sistema interno de Metamorfosis Lab">
+            <a className="site-nav__os" href={OS_SITE_URL} onClick={openOs} onMouseEnter={warmPrivateApi} onFocus={warmPrivateApi} aria-label="Acceso al sistema interno de Metamorfosis">
               <Icon name="lock" /> <span>Acceso OS</span>
             </a>
             <button className="button button--small site-nav__conversation" type="button" onClick={() => goTo('contacto')}>
@@ -225,9 +225,9 @@ function SectionHeading({ kicker, title, description, align = 'center' }) {
 }
 
 function getMailtoUrl(form) {
-  const subject = `Solicitud formal Metamorfosis Lab · ${form.company || form.contactName || 'Nueva organización'}`;
+  const subject = `Solicitud formal Metamorfosis · ${form.company || form.contactName || 'Nueva organización'}`;
   const body = [
-    'Hola Metamorfosis Lab,',
+    'Hola Metamorfosis,',
     '',
     'Quiero solicitar una evaluación inicial por correo.',
     '',
@@ -441,7 +441,7 @@ function QuoteForm() {
               <input name="phone" inputMode="tel" value={form.phone} onChange={update} placeholder="+56 9..." />
             </label>
           </div>
-          <label className="check-line tpr-check"><input type="checkbox" name="consent" checked={form.consent} onChange={update} /> <span>Acepto ser contactado por Metamorfosis Lab para responder esta solicitud.</span></label>
+          <label className="check-line tpr-check"><input type="checkbox" name="consent" checked={form.consent} onChange={update} /> <span>Acepto ser contactado por Metamorfosis para responder esta solicitud.</span></label>
           <div className="quote-step-actions">
             <button type="button" className="button button--ghost-light" onClick={() => setStep(2)}><Icon name="arrow_back" /> Volver</button>
             <button className="button form-submit" type="submit" disabled={!isValid || status.type === 'loading' || status.type === 'success' || status.saved}>
@@ -538,99 +538,166 @@ function SystemsMap() {
 
 
 // -----------------------------------------------------------------------------
-// 04C · CÓMO TRABAJA METAMORFOSIS · MAPA + MÉTODO EN UNA SOLA ESCENA
+// 04C · CÓMO TRABAJA METAMORFOSIS · DOS CAPAS, DOS LÓGICAS
+//      1) Qué observamos  2) Cómo trabajamos
+//      Cada concepto despliega su propia explicación debajo del título.
 // -----------------------------------------------------------------------------
 function IntegratedMethodSection() {
-  const [activeDimension, setActiveDimension] = useState('operacion');
-  const [activeStep, setActiveStep] = useState(null);
+  const [openDimension, setOpenDimension] = useState('operacion');
+  const [openStep, setOpenStep] = useState(0);
 
-  const dimension = transformationPillars.find((item) => item.id === activeDimension) || transformationPillars[0];
-  const step = activeStep !== null ? processRoadmap[activeStep] : null;
-
-  const openDimension = (id) => {
-    setActiveDimension(id);
-    setActiveStep(null);
+  const toggleDimension = (id) => {
+    setOpenDimension((current) => current === id ? null : id);
   };
 
-  const openStep = (index) => {
-    setActiveStep((current) => current === index ? null : index);
+  const toggleStep = (index) => {
+    setOpenStep((current) => current === index ? null : index);
   };
 
   return (
-    <section id="metodo" className="v57-work section-anchor" aria-labelledby="v57-work-title">
+    <section id="metodo" className="v58-work section-anchor" aria-labelledby="v58-work-title">
       <span id="como-miramos" className="section-anchor v57-hidden-anchor" aria-hidden="true" />
-      <div className="shell v57-work__shell">
-        {/* 04C.1 · ENCABEZADO */}
-        <header className="v57-work__head">
-          <span className="v54-kicker">Cómo trabajamos</span>
-          <h2 id="v57-work-title">Cómo trabaja Metamorfosis</h2>
-          <p>Comprendemos una situación desde sus conexiones y aplicamos un método para convertir información dispersa en decisiones, capacidades y mejoras sostenibles.</p>
+      <div className="shell v58-work__shell">
+        {/* 04C.1 · ENCABEZADO · Una sola idea principal */}
+        <header className="v58-work__head">
+          <span className="v54-kicker">Cómo trabaja Metamorfosis</span>
+          <h2 id="v58-work-title">Observar mejor para intervenir mejor</h2>
+          <p>Primero distinguimos qué dimensiones explican una situación. Después aplicamos un método para convertir esa comprensión en una intervención verificable.</p>
         </header>
 
-        {/* 04C.2 · MAPA DE DIMENSIONES · Clic para abrir explicación */}
-        <div className="v57-map" aria-label="Dimensiones de análisis de Metamorfosis">
-          <div className="v57-map__center">
-            <img src="/logo-metamorfosis-transparente.png" alt="" aria-hidden="true" />
-            <strong>Metamorfosis</strong>
-            <small>Laboratorio de innovación · Concepción</small>
+        {/* 04C.2 · QUÉ OBSERVAMOS · Cada dimensión abre su propio contenido */}
+        <section className="v58-layer v58-layer--dimensions" aria-labelledby="v58-dimensions-title">
+          <div className="v58-layer__heading">
+            <span className="v58-layer__number">01</span>
+            <div>
+              <span className="v54-eyebrow">Qué observamos</span>
+              <h3 id="v58-dimensions-title">Cuatro lentes para leer una situación</h3>
+            </div>
           </div>
 
-          {transformationPillars.map((item, index) => (
-            <button
-              type="button"
-              key={item.id}
-              className={`v57-dimension v57-dimension--${index + 1} ${activeDimension === item.id && activeStep === null ? 'is-active' : ''}`}
-              onClick={() => openDimension(item.id)}
-              aria-expanded={activeDimension === item.id && activeStep === null}
-              aria-controls="v57-detail-panel"
-            >
-              <span className="v57-dimension__icon"><Icon name={item.icon} /></span>
-              <span className="v57-dimension__copy">
-                <strong>{item.title}</strong>
-                <small>{item.signal}</small>
-              </span>
-              <Icon name="chevron_right" className="v57-dimension__arrow" />
-            </button>
-          ))}
-        </div>
+          <div className="v58-dimensions">
+            <div className="v58-garden-core" aria-label="Metamorfosis Jardín de innovación">
+              <img src="/logo-metamorfosis-transparente.png" alt="" aria-hidden="true" />
+              <strong>Metamorfosis</strong>
+              <small>Jardín de innovación · Concepción</small>
+            </div>
 
-        {/* 04C.3 · PANEL DE EXPLICACIÓN · Cambia al clickear dimensión o etapa */}
-        <div id="v57-detail-panel" className={`v57-detail ${step ? 'is-step' : 'is-dimension'}`} aria-live="polite">
-          <div className="v57-detail__label">
-            <span>{step ? `0${activeStep + 1}` : dimension.title}</span>
-            <small>{step ? step.eyebrow : 'Dimensión de análisis'}</small>
+            <div className="v58-dimension-grid">
+              {transformationPillars.map((item, index) => {
+                const isOpen = openDimension === item.id;
+                return (
+                  <article key={item.id} className={`v58-accordion-card v58-dimension-card ${isOpen ? 'is-open' : ''}`}>
+                    <button
+                      type="button"
+                      className="v58-accordion-trigger"
+                      onClick={() => toggleDimension(item.id)}
+                      aria-expanded={isOpen}
+                      aria-controls={`dimension-${item.id}`}
+                    >
+                      <span className="v58-accordion-icon"><Icon name={item.icon} /></span>
+                      <span className="v58-accordion-title">
+                        <strong>{item.title}</strong>
+                        <small>{item.signal}</small>
+                      </span>
+                      <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v58-accordion-arrow" />
+                    </button>
+                    <div id={`dimension-${item.id}`} className="v58-accordion-panel" hidden={!isOpen}>
+                      <p>{item.text}</p>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
           </div>
-          <div className="v57-detail__body">
-            <strong>{step ? step.title : dimension.short}</strong>
-            <p>{step ? step.text : dimension.text}</p>
+        </section>
+
+        {/* 04C.3 · CÓMO TRABAJAMOS · El método no se mezcla con las dimensiones */}
+        <section className="v58-layer v58-layer--method" aria-labelledby="v58-method-title">
+          <div className="v58-layer__heading">
+            <span className="v58-layer__number">02</span>
+            <div>
+              <span className="v54-eyebrow">Cómo trabajamos</span>
+              <h3 id="v58-method-title">Cinco etapas para convertir comprensión en capacidad</h3>
+            </div>
           </div>
-          <span className="v57-detail__hint">Haz clic en otro elemento para cambiar la explicación</span>
-        </div>
 
-        {/* 04C.4 · MÉTODO EN CINCO ETAPAS · Clic para abrir explicación */}
-        <div className="v57-steps" aria-label="Método de trabajo de Metamorfosis">
-          {processRoadmap.map((item, index) => (
-            <button
-              type="button"
-              key={item.title}
-              className={`v57-step ${activeStep === index ? 'is-active' : ''}`}
-              onClick={() => openStep(index)}
-              aria-expanded={activeStep === index}
-              aria-controls="v57-detail-panel"
-            >
-              <span className="v57-step__number">0{index + 1}</span>
-              <span className="v57-step__icon"><Icon name={item.icon} /></span>
-              <strong>{item.title}</strong>
-              <small>{item.eyebrow}</small>
-            </button>
-          ))}
-        </div>
+          <div className="v58-steps">
+            {processRoadmap.map((item, index) => {
+              const isOpen = openStep === index;
+              return (
+                <article key={item.title} className={`v58-step-card ${isOpen ? 'is-open' : ''}`}>
+                  <button
+                    type="button"
+                    className="v58-step-trigger"
+                    onClick={() => toggleStep(index)}
+                    aria-expanded={isOpen}
+                    aria-controls={`step-${index}`}
+                  >
+                    <span className="v58-step-number">0{index + 1}</span>
+                    <span className="v58-step-icon"><Icon name={item.icon} /></span>
+                    <span className="v58-step-title">
+                      <strong>{item.title}</strong>
+                      <small>{item.eyebrow}</small>
+                    </span>
+                    <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v58-step-arrow" />
+                  </button>
+                  <div id={`step-${index}`} className="v58-step-panel" hidden={!isOpen}>
+                    <p>{item.text}</p>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </section>
 
-        {/* 04C.5 · CIERRE */}
-        <div className="v57-work__close">
+        {/* 04C.4 · CIERRE · La promesa del método, sin agregar una tercera explicación */}
+        <div className="v58-work__close">
           <strong>Transformamos información dispersa</strong>
           <span>en decisiones, capacidades y mejoras sostenibles</span>
           <small>La intervención termina · La capacidad queda</small>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// 04D · PREGUNTAS QUE CULTIVAMOS · Investigación aplicada compacta
+//      Ya no ocupa una pantalla completa: funciona como evidencia intelectual.
+// -----------------------------------------------------------------------------
+function ResearchGardenSection() {
+  const [openQuestion, setOpenQuestion] = useState(null);
+
+  return (
+    <section id="exploramos" className="v58-research section-anchor" aria-labelledby="v58-research-title">
+      <div className="shell v58-research__shell">
+        <div className="v58-research__head">
+          <span className="v54-kicker">Preguntas que cultivamos</span>
+          <h2 id="v58-research-title">Investigar también es parte de nuestro trabajo</h2>
+          <p>Algunas preguntas nacen de proyectos y otras los preceden. Las seguimos, las contrastamos y buscamos situaciones reales donde puedan producir aprendizaje útil.</p>
+        </div>
+        <div className="v58-research__grid">
+          {researchQuestions.map((item, index) => {
+            const isOpen = openQuestion === index;
+            return (
+              <article key={item.index} className={`v58-research-card ${isOpen ? 'is-open' : ''}`}>
+                <button
+                  type="button"
+                  className="v58-research-trigger"
+                  onClick={() => setOpenQuestion((current) => current === index ? null : index)}
+                  aria-expanded={isOpen}
+                  aria-controls={`research-${index}`}
+                >
+                  <span className="v58-research-index">{item.index}</span>
+                  <span className="v58-research-title"><small>{item.tag}</small><strong>{item.question}</strong></span>
+                  <Icon name={isOpen ? 'expand_less' : 'expand_more'} />
+                </button>
+                <div id={`research-${index}`} className="v58-research-panel" hidden={!isOpen}>
+                  <p>{item.text}</p>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -654,26 +721,26 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
-        {/* 05.1 · INICIO / HERO · Promesa + definición breve del laboratorio */}
+        {/* 05.1 · INICIO / HERO · Promesa + definición breve del jardín de innovación */}
         <section id="inicio" className="v54-hero section-anchor" style={{ '--section-image': `url(${heroImage})` }} onPointerMove={handleHeroMove}>
           <div className="v54-hero__shade" aria-hidden="true" />
           <div className="v54-hero__glow" aria-hidden="true" />
           <div className="shell v54-hero__grid">
             <div className="v54-hero__copy">
-              <span className="v54-kicker">Laboratorio de innovación · Concepción</span>
-              <h1>Crecer con claridad.<br /><em>Operar con precisión.</em></h1>
+              <span className="v54-kicker">Jardín de innovación · Concepción</span>
+              <h1>Crecer con claridad<br /><em>Operar con precisión</em></h1>
               <p className="v54-hero__lead">Estudiamos cómo funcionan organizaciones, actividades productivas y sus entornos para transformar información dispersa en mejores decisiones, capacidades y mejoras que puedan sostenerse.</p>
               <div className="hero__actions">
                 <SectionLink className="button audit-primary-cta" id="contacto">Conversemos</SectionLink>
-                <SectionLink className="button button--ghost-light" id="laboratorio">Conocer el laboratorio</SectionLink>
+                <SectionLink className="button button--ghost-light" id="jardin">Conocer el jardín</SectionLink>
               </div>
               <div className="v54-hero__location"><Icon name="location_on" /> Desde Concepción, con la Región del Biobío como principal espacio de observación y trabajo aplicado.</div>
             </div>
-            <aside className="v54-hero__manifesto" aria-label="Forma de trabajo de Metamorfosis Lab">
+            <aside className="v54-hero__manifesto" aria-label="Forma de trabajo de Metamorfosis">
               <span className="v54-eyebrow">Una forma de trabajar</span>
               <blockquote>“No partimos desde una solución predeterminada.”</blockquote>
               <p>Observamos la situación, delimitamos lo relevante, probamos con proporcionalidad y usamos la evidencia para decidir qué sostener, ajustar o ampliar.</p>
@@ -686,25 +753,25 @@ function PublicSite() {
           </div>
         </section>
 
-        {/* 05.2 · LABORATORIO · Qué somos y por qué trabajamos como laboratorio */}
-        <section id="laboratorio" className="v54-section v54-section--paper section-anchor">
+        {/* 05.2 · JARDÍN DE INNOVACIÓN · Identidad y lógica de crecimiento */}
+        <section id="jardin" className="v54-section v54-section--paper section-anchor">
           <div className="shell">
             <div className="v54-intro-grid">
               <div>
-                <span className="v54-kicker">Metamorfosis Lab</span>
-                <h2>Un laboratorio para comprender antes de intervenir</h2>
+                <span className="v54-kicker">Metamorfosis</span>
+                <h2>Un jardín para sembrar preguntas y hacer crecer soluciones</h2>
               </div>
               <div className="v54-intro-copy">
-                <p>Trabajamos sobre situaciones reales donde operación, personas, información, regulación y entorno pueden estar interactuando. No asumimos que todas esas dimensiones importan por igual: investigamos cuáles explican la situación y qué intervención tiene sentido.</p>
+                <p>Trabajamos sobre situaciones reales donde operación, personas, información, regulación y entorno pueden estar interactuando. No forzamos una receta: observamos qué relaciones importan, qué conviene cultivar y qué intervención tiene sentido.</p>
                 <p>La Región del Biobío es hoy nuestro principal campo de aprendizaje aplicado. Desde Concepción desarrollamos proyectos con vocación de utilidad concreta, sin convertir un territorio, industria o tipo de organización en una plantilla universal.</p>
               </div>
             </div>
 
             <div className="v54-lab-definition">
-              <span className="v54-lab-definition__number">LAB</span>
+              <span className="v54-lab-definition__number">JARDÍN</span>
               <div>
-                <span className="v54-eyebrow">¿Por qué laboratorio?</span>
-                <p>Porque investigamos situaciones reales, formulamos hipótesis, diseñamos pruebas acotadas, observamos resultados y convertimos lo aprendido en capacidades, decisiones o modelos que puedan sostenerse.</p>
+                <span className="v54-eyebrow">¿Por qué jardín?</span>
+                <p>Porque una buena intervención no aparece terminada. Se siembra como pregunta, se observa en contexto, se prueba con cuidado y crece solo cuando la evidencia muestra que vale la pena sostenerla.</p>
               </div>
             </div>
           </div>
@@ -738,27 +805,8 @@ function PublicSite() {
           </div>
         </section>
 
-        {/* 05.6 · INVESTIGACIÓN APLICADA · Preguntas propias del laboratorio */}
-        <section id="exploramos" className="v54-section v54-section--research section-anchor">
-          <div className="shell">
-            <div className="v54-research-head">
-              <div>
-                <span className="v54-kicker">Investigación aplicada</span>
-                <h2>Preguntas que estamos explorando</h2>
-              </div>
-              <p>Metamorfosis no existe solo cuando recibe un encargo. El laboratorio desarrolla preguntas propias y busca contextos reales donde contrastarlas con rigor.</p>
-            </div>
-            <div className="v54-question-list">
-              {researchQuestions.map((item) => (
-                <article key={item.index} className="v54-question-card">
-                  <div className="v54-question-card__meta"><span>{item.index}</span><small>{item.tag}</small></div>
-                  <h3>{item.question}</h3>
-                  <p>{item.text}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* 05.6 · PREGUNTAS QUE CULTIVAMOS · Investigación aplicada compacta */}
+        <ResearchGardenSection />
 
         {/* 05.7 · PRINCIPIOS · Límites y criterios de trabajo */}
         <section id="principios" className="v54-section v54-section--paper section-anchor">
@@ -784,7 +832,7 @@ function PublicSite() {
           <div className="shell">
             <SectionHeading
               kicker="Equipo"
-              title="Dos trayectorias. Una capacidad de análisis."
+              title="Dos trayectorias para una capacidad de análisis"
               description="Ingeniería y derecho se encuentran en Metamorfosis para comprender cómo funciona una organización, qué capacidades existen, bajo qué condiciones puede actuar cada actor y qué relaciones externas afectan el resultado."
             />
             <TeamSection />
@@ -813,11 +861,11 @@ function PublicSite() {
       {/* 05.10 · FOOTER · Cierre institucional */}
       <footer className="site-footer audit-footer v54-footer">
         <div className="shell audit-footer__grid">
-          <div className="site-footer__brand"><Brand /><p>Laboratorio de innovación con base en Concepción. Transformamos la manera en que las organizaciones generan valor, integrando eficiencia operacional, condiciones humanas y una relación responsable con los sistemas vivos.</p></div>
-          <div><span className="footer-title">Navegación</span><SectionLink id="laboratorio">Laboratorio</SectionLink><SectionLink id="metodo">Cómo trabajamos</SectionLink><SectionLink id="exploramos">Qué exploramos</SectionLink><SectionLink id="equipo">Equipo</SectionLink></div>
+          <div className="site-footer__brand"><Brand /><p>Jardín de innovación con base en Concepción. Transformamos la manera en que las organizaciones generan valor, integrando eficiencia operacional, condiciones humanas y una relación responsable con los sistemas vivos.</p></div>
+          <div><span className="footer-title">Navegación</span><SectionLink id="jardin">Jardín</SectionLink><SectionLink id="metodo">Cómo trabajamos</SectionLink><SectionLink id="exploramos">Qué exploramos</SectionLink><SectionLink id="equipo">Equipo</SectionLink></div>
           <div><span className="footer-title">Contacto</span><a className="footer-icon-link" href={`mailto:${contact.email}`}><Icon name="mail" /><span>{contact.email}</span></a><a className="footer-icon-link" href={OS_SITE_URL}><Icon name="lock" /><span>Acceso OS</span></a></div>
         </div>
-        <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis Lab</span><span>Concepción · Región del Biobío · Chile</span></div>
+        <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis</span><span>Concepción · Región del Biobío · Chile</span></div>
       </footer>
     </div>
   );
