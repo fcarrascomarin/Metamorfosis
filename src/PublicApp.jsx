@@ -1,13 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Icon from './components/Icon.jsx';
 import heroImage from './assets/images/jardin/hero-jardin.png';
-import mapImage from './assets/images/jardin/mapa-transformacion.webp';
 import contactImage from './assets/images/jardin/contacto-jardin.webp';
 import { contact } from './data.js';
 import {
   activeOfferUseCases,
+  laboratoryPrinciples,
   processRoadmap,
   publicNavigation,
+  researchQuestions,
   team,
   transformationPillars
 } from './publicContent.js';
@@ -17,9 +18,6 @@ const apiBase = String(import.meta.env.DEV ? (import.meta.env.VITE_API_BASE || '
 const PUBLIC_QUOTES_KEY = 'metamorfosis-public-quotes';
 const PUBLIC_EVENTS_KEY = 'metamorfosis-public-events';
 
-
-const pillarIllustrations = ['/pillar-operacion.webp', '/pillar-personas.webp', '/pillar-sistemas.webp'];
-const methodIllustrations = ['/method-entender.webp', '/method-priorizar.webp', '/method-intervenir.webp', '/method-medir.webp'];
 
 
 function getVisitorSessionId() {
@@ -121,7 +119,7 @@ function Brand({ compact = false }) {
       <img className="brand-logo" src="/logo-metamorfosis-transparente.png" alt="Isotipo de Metamorfosis Lab" width="44" height="44" />
       <span className="brand-copy">
         <strong>METAMORFOSIS LAB</strong>
-        <small>operación · trazabilidad · capacidad</small>
+        <small>laboratorio de innovación · Concepción</small>
       </span>
     </a>
   );
@@ -376,14 +374,14 @@ function QuoteForm() {
 
       {step === 1 && (
         <div className="quote-step-panel">
-          <span className="quote-step-title"><Icon name="target" /> ¿Qué necesitas ordenar?</span>
+          <span className="quote-step-title"><Icon name="target" /> ¿Qué situación quieres conversar?</span>
           <div className="choice-grid choice-grid--compact">
-            {['Operación y procesos', 'Trazabilidad y registros', 'Presencia digital', 'Otro / no estoy seguro'].map((option) => (
+            {['Crecimiento o cambio organizacional', 'Procesos, información o trazabilidad', 'Nuevas exigencias o regulación', 'Proveedores, territorio o colaboración', 'Otro / aún no está claro'].map((option) => (
               <button type="button" key={option} className={form.serviceType === option ? 'is-selected' : ''} onClick={() => chooseService(option)}>{option}</button>
             ))}
           </div>
           <label className="field-label field-label--full"><span><Icon name="edit" /> Qué necesitas resolver</span>
-            <textarea name="details" value={form.details} onChange={update} placeholder="Describe brevemente qué está ocurriendo, qué se está haciendo difícil o qué necesitas ordenar." required aria-describedby="details-help" />
+            <textarea name="details" value={form.details} onChange={update} placeholder="Describe brevemente qué está ocurriendo, qué cambió o qué pregunta necesitas comprender mejor." required aria-describedby="details-help" />
             <small id="details-help" className="field-help">Selecciona una opción y escribe al menos 10 caracteres. {form.details.trim().length}/10 mínimo.</small>
           </label>
           <button type="button" className="button button--full" disabled={!stepOneReady} onClick={() => setStep(2)}>Continuar <Icon name="arrow_forward" /></button>
@@ -437,20 +435,21 @@ function QuoteForm() {
 
 function TeamSection() {
   return (
-    <div className="team-audit-grid team-audit-grid--portraits">
-      {team.map((person, index) => (
-        <article key={person.name} className="team-audit-card team-audit-card--portrait">
-          <div className="team-audit-card__body">
-            <div className="team-audit-card__copy">
-              <span className="team-audit-card__eyebrow">Equipo Metamorfosis</span>
+    <div className="v54-team-grid">
+      {team.map((person) => (
+        <article key={person.name} className="v54-team-card">
+          <div className="v54-team-card__head">
+            <span className="v54-team-card__initials" aria-hidden="true">{person.initials}</span>
+            <div>
+              <span className="v54-eyebrow">Equipo Metamorfosis</span>
               <h3>{person.name}</h3>
               <strong>{person.role}</strong>
             </div>
-            <div className="team-audit-card__meta" aria-label={`Perfil de ${person.name}`}>
-              <span className="team-audit-card__tag team-audit-card__tag--profession"><Icon name="briefcase" /> {person.profession}</span>
-              <span className="team-audit-card__tag team-audit-card__tag--institution"><Icon name="school" /> {person.institution}</span>
-            </div>
-            <p>{person.text}</p>
+          </div>
+          <p>{person.text}</p>
+          <div className="v54-team-card__meta">
+            <span><Icon name="briefcase" /> {person.profession}</span>
+            <span><Icon name="menu_book" /> {person.institution}</span>
           </div>
         </article>
       ))}
@@ -458,9 +457,57 @@ function TeamSection() {
   );
 }
 
+function SystemsMap() {
+  const [activeId, setActiveId] = useState('operacion');
+  const active = transformationPillars.find((item) => item.id === activeId) || transformationPillars[0];
+
+  return (
+    <div className="v54-system" aria-label="Mapa interactivo de observación de Metamorfosis">
+      <div className="v54-system__canvas">
+        <svg className="v54-system__lines" viewBox="0 0 1000 620" role="presentation" aria-hidden="true">
+          <path className={activeId === 'operacion' ? 'is-active' : ''} d="M500 315 C390 245 305 188 205 155" />
+          <path className={activeId === 'personas' ? 'is-active' : ''} d="M500 315 C610 245 695 188 795 155" />
+          <path className={activeId === 'entorno' ? 'is-active' : ''} d="M500 315 C390 385 305 442 205 475" />
+          <path className={activeId === 'condiciones' ? 'is-active' : ''} d="M500 315 C610 385 695 442 795 475" />
+        </svg>
+
+        <div className="v54-system__core" aria-live="polite">
+          <span className="v54-system__core-label">Situación concreta</span>
+          <strong>Metamorfosis</strong>
+          <p>{active.short}</p>
+          <small>{active.signal}</small>
+        </div>
+
+        {transformationPillars.map((item, index) => (
+          <button
+            type="button"
+            key={item.id}
+            className={`v54-system__node v54-system__node--${index + 1} ${activeId === item.id ? 'is-active' : ''}`}
+            onMouseEnter={() => setActiveId(item.id)}
+            onFocus={() => setActiveId(item.id)}
+            onClick={() => setActiveId(item.id)}
+            aria-pressed={activeId === item.id}
+          >
+            <span className="v54-system__node-icon"><Icon name={item.icon} /></span>
+            <span>
+              <strong>{item.title}</strong>
+              <small>{item.short}</small>
+            </span>
+          </button>
+        ))}
+      </div>
+      <div className="v54-system__explanation">
+        <span className="v54-eyebrow">{active.title}</span>
+        <h3>{active.short}</h3>
+        <p>{active.text}</p>
+        <div className="v54-system__criterion"><Icon name="filter_alt" /> No todas las situaciones requieren observar todas las dimensiones. Parte del trabajo es distinguir cuáles importan y cuáles no.</div>
+      </div>
+    </div>
+  );
+}
+
 function PublicSite() {
   useEffect(() => {
-    // La API privada puede entrar en reposo. Se despierta en segundo plano al cargar la web.
     warmPrivateApi();
   }, []);
 
@@ -473,122 +520,181 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
-        <section id="inicio" className="audit-scene audit-hero section-anchor" style={{ '--section-image': `url(${heroImage})` }} onPointerMove={handleHeroMove}>
-          <div className="audit-scene__shade" aria-hidden="true" />
-          <div className="lab-cursor-field" aria-hidden="true" />
-          <div className="lab-orbit lab-orbit--one" aria-hidden="true" />
-          <div className="lab-orbit lab-orbit--two" aria-hidden="true" />
-          <div className="shell audit-hero__grid">
-            <div className="audit-hero__copy">
-              <span className="kicker">Laboratorio de eficiencia e innovación de sistemas vivos</span>
-              <h1>Metamorfosis Lab</h1>
-              <p>Detectamos qué está frenando a tu organización y trabajamos contigo para resolverlo</p>
+        <section id="inicio" className="v54-hero section-anchor" style={{ '--section-image': `url(${heroImage})` }} onPointerMove={handleHeroMove}>
+          <div className="v54-hero__shade" aria-hidden="true" />
+          <div className="v54-hero__glow" aria-hidden="true" />
+          <div className="shell v54-hero__grid">
+            <div className="v54-hero__copy">
+              <span className="v54-kicker">Laboratorio de innovación · Concepción</span>
+              <h1>Crecer con claridad.<br /><em>Operar con precisión.</em></h1>
+              <p className="v54-hero__lead">Estudiamos cómo funcionan organizaciones, actividades productivas y sus entornos para transformar información dispersa en mejores decisiones, capacidades y mejoras que puedan sostenerse.</p>
               <div className="hero__actions">
                 <SectionLink className="button audit-primary-cta" id="contacto">Conversemos</SectionLink>
-                <SectionLink className="button button--ghost-light" id="metodo">Ver el método</SectionLink>
+                <SectionLink className="button button--ghost-light" id="laboratorio">Conocer el laboratorio</SectionLink>
               </div>
-              <p className="hero-proofline">Ayudamos a pymes y organizaciones a comprender un problema operativo, ordenar procesos y registros e implementar cambios acotados que puedan sostenerse.</p>
+              <div className="v54-hero__location"><Icon name="location_on" /> Desde Concepción, con la Región del Biobío como principal espacio de observación y trabajo aplicado.</div>
             </div>
-            <aside className="audit-hero__aside" aria-label="Señales para conversar">
-              <span className="audit-aside-label">Vale la pena conversar cuando</span>
-              <ul>
-                <li>La operación depende demasiado de memoria, mensajes o una sola persona.</li>
-                <li>Hay registros, pero cuesta seguir lo que ocurrió o demostrarlo.</li>
-                <li>El crecimiento está trayendo errores, pérdidas, duplicación o desorden.</li>
-              </ul>
+            <aside className="v54-hero__manifesto" aria-label="Forma de trabajo de Metamorfosis Lab">
+              <span className="v54-eyebrow">Una forma de trabajar</span>
+              <blockquote>“No partimos desde una solución predeterminada.”</blockquote>
+              <p>Observamos la situación, delimitamos lo relevante, probamos con proporcionalidad y usamos la evidencia para decidir qué sostener, ajustar o ampliar.</p>
+              <div className="v54-signal-row">
+                <span>investigación aplicada</span>
+                <span>experimentación</span>
+                <span>transferencia</span>
+              </div>
             </aside>
           </div>
         </section>
 
-        <section id="que-hacemos" className="audit-scene audit-scene--light section-anchor">
-          <div className="shell audit-scene__content">
-            <SectionHeading
-              kicker="Qué hacemos"
-              title="Tres ámbitos para ordenar cómo una organización genera valor"
-              description="Trabajamos donde procesos, información, personas y recursos empiezan a perder coordinación. La intervención se ajusta al problema real y al nivel de cambio necesario."
-            />
-            <div className="audit-pillar-showcase" aria-label="Ámbitos de transformación de Metamorfosis Lab">
-              {transformationPillars.map((item, index) => (
-                <article key={item.title} className="audit-pillar-showcase__card">
-                  <div className="audit-pillar-showcase__media">
-                    <img src={pillarIllustrations[index]} alt={`Ilustración de ${item.title}`} loading="lazy" />
-                  </div>
-                  <div className="audit-pillar-showcase__copy">
-                    <span className="audit-pill"><Icon name={item.icon} /> {item.accent}</span>
-                    <h3>{item.title}</h3>
-                    <p>{item.text}</p>
-                  </div>
-                </article>
-              ))}
+        <section id="laboratorio" className="v54-section v54-section--paper section-anchor">
+          <div className="shell">
+            <div className="v54-intro-grid">
+              <div>
+                <span className="v54-kicker">Metamorfosis Lab</span>
+                <h2>Un laboratorio para comprender antes de intervenir</h2>
+              </div>
+              <div className="v54-intro-copy">
+                <p>Trabajamos sobre situaciones reales donde operación, personas, información, regulación y entorno pueden estar interactuando. No asumimos que todas esas dimensiones importan por igual: investigamos cuáles explican la situación y qué intervención tiene sentido.</p>
+                <p>La Región del Biobío es hoy nuestro principal campo de aprendizaje aplicado. Desde Concepción desarrollamos proyectos con vocación de utilidad concreta, sin convertir un territorio, industria o tipo de organización en una plantilla universal.</p>
+              </div>
             </div>
-            <div className="audit-entry-strip audit-entry-strip--v50" aria-label="Problemas donde Metamorfosis puede entrar">
-              {activeOfferUseCases.map((item) => (
-                <article key={item.title}>
-                  <span className="audit-entry-strip__icon"><Icon name={item.icon || 'arrow_forward'} /></span>
-                  <div><strong>{item.title}</strong><span>{item.text}</span></div>
-                </article>
-              ))}
+
+            <div className="v54-lab-definition">
+              <span className="v54-lab-definition__number">LAB</span>
+              <div>
+                <span className="v54-eyebrow">¿Por qué laboratorio?</span>
+                <p>Porque investigamos situaciones reales, formulamos hipótesis, diseñamos pruebas acotadas, observamos resultados y convertimos lo aprendido en capacidades, decisiones o modelos que puedan sostenerse.</p>
+              </div>
             </div>
           </div>
         </section>
 
-        <section id="metodo" className="audit-scene audit-scene--dark audit-method section-anchor" style={{ '--section-image': `url(${mapImage})` }}>
-          <div className="audit-scene__shade" aria-hidden="true" />
-          <div className="shell audit-scene__content">
+        <section id="como-miramos" className="v54-section v54-section--mist section-anchor">
+          <div className="shell">
             <SectionHeading
-              kicker="Método"
-              title="Entender, priorizar, intervenir, medir y transferir"
-              description="Cuatro etapas para reducir incertidumbre, intervenir con la complejidad justa y dejar capacidad en la organización."
+              kicker="Cómo miramos"
+              title="Comprender una situación requiere observar también sus conexiones"
+              description="Estas dimensiones funcionan como lentes de análisis. Se activan solo cuando ayudan a explicar una situación concreta."
             />
-            <div className="method-showcase-grid" aria-label="Etapas del método Metamorfosis">
+            <SystemsMap />
+          </div>
+        </section>
+
+        <section id="metodo" className="v54-section v54-section--dark section-anchor">
+          <div className="shell">
+            <div className="v54-method-head">
+              <div>
+                <span className="v54-kicker">Cómo trabajamos</span>
+                <h2>De una pregunta abierta a una intervención verificable</h2>
+              </div>
+              <p>El método reduce incertidumbre sin sobredimensionar el problema. Cada etapa debe justificar la siguiente.</p>
+            </div>
+            <div className="v54-method-flow" aria-label="Método de Metamorfosis Lab">
               {processRoadmap.map((item, index) => (
-                <article key={item.title} className="method-showcase-card">
-                  <div className="method-showcase-card__media">
-                    <img src={methodIllustrations[index]} alt={`Etapa ${index + 1}: ${item.title}`} loading="lazy" />
-                    <span className="method-showcase-card__number">{String(index + 1).padStart(2, '0')}</span>
+                <article key={item.title} className="v54-method-step">
+                  <div className="v54-method-step__top">
+                    <span className="v54-method-step__number">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="v54-method-step__icon"><Icon name={item.icon} /></span>
                   </div>
-                  <div className="method-showcase-card__copy">
-                    <div className="method-showcase-card__title">
-                      <span className="method-showcase-card__icon"><Icon name={item.icon} /></span>
-                      <h3>{item.title}</h3>
-                    </div>
-                    <p>{item.text}</p>
-                  </div>
+                  <span className="v54-eyebrow">{item.eyebrow}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
                 </article>
               ))}
             </div>
-            <p className="method-criterion-line">
-              <strong>Criterio transversal:</strong> evidencia antes que suposición · complejidad justa · capacidad instalada para continuar.
-            </p>
+            <div className="v54-method-close">
+              <span>La intervención termina.</span>
+              <strong>La capacidad queda.</strong>
+            </div>
           </div>
         </section>
 
-        <section id="equipo" className="audit-scene audit-scene--light audit-team section-anchor">
-          <div className="shell audit-scene__content">
+        <section id="situaciones" className="v54-section v54-section--paper section-anchor">
+          <div className="shell">
+            <SectionHeading
+              kicker="Dónde puede aportar"
+              title="Situaciones que vale la pena comprender antes de elegir una solución"
+              description="No vendemos una respuesta idéntica para problemas distintos. Estas son algunas condiciones en las que una conversación puede ser útil."
+            />
+            <div className="v54-situations-grid">
+              {activeOfferUseCases.map((item, index) => (
+                <article key={item.title} className="v54-situation-card">
+                  <span className="v54-situation-card__index">0{index + 1}</span>
+                  <span className="v54-situation-card__icon"><Icon name={item.icon} /></span>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="exploramos" className="v54-section v54-section--research section-anchor">
+          <div className="shell">
+            <div className="v54-research-head">
+              <div>
+                <span className="v54-kicker">Investigación aplicada</span>
+                <h2>Preguntas que estamos explorando</h2>
+              </div>
+              <p>Metamorfosis no existe únicamente cuando recibe un encargo. El laboratorio desarrolla preguntas propias y busca contextos reales donde contrastarlas con rigor.</p>
+            </div>
+            <div className="v54-question-list">
+              {researchQuestions.map((item) => (
+                <article key={item.index} className="v54-question-card">
+                  <div className="v54-question-card__meta"><span>{item.index}</span><small>{item.tag}</small></div>
+                  <h3>{item.question}</h3>
+                  <p>{item.text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="principios" className="v54-section v54-section--paper section-anchor">
+          <div className="shell v54-principles-layout">
+            <div className="v54-principles-intro">
+              <span className="v54-kicker">Principios de trabajo</span>
+              <h2>El profesionalismo también se demuestra en los límites</h2>
+              <p>La calidad no depende de prometer más. Depende de formular bien el problema, explicitar supuestos, trabajar con evidencia y reconocer qué corresponde —y qué no corresponde— hacer.</p>
+            </div>
+            <div className="v54-principles-grid">
+              {laboratoryPrinciples.map((item) => (
+                <article key={item.title}>
+                  <span><Icon name={item.icon} /></span>
+                  <div><h3>{item.title}</h3><p>{item.text}</p></div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="equipo" className="v54-section v54-section--mist section-anchor">
+          <div className="shell">
             <SectionHeading
               kicker="Equipo"
-              title="Responsabilidades visibles y especialidades cuando hacen falta"
-              description="Metamorfosis combina lectura operacional, investigación, diseño de intervención y documentación. Las especialidades externas se incorporan solo cuando el problema realmente las exige."
+              title="Dos trayectorias para observar una misma situación desde escalas diferentes"
+              description="Ingeniería y derecho se encuentran en Metamorfosis para comprender cómo funciona una organización, qué capacidades existen, bajo qué condiciones puede actuar cada actor y qué relaciones externas afectan el resultado."
             />
             <TeamSection />
-            <p className="audit-team-note"><Icon name="verified_user" /> El alcance, las responsabilidades y los límites de cada intervención se acuerdan antes de ejecutar.</p>
+            <div className="v54-team-synthesis"><Icon name="handshake" /><span>La multidisciplina no es una suma de profesiones. Es una forma de formular mejores preguntas antes de intervenir.</span></div>
           </div>
         </section>
 
-        <section id="contacto" className="audit-scene audit-scene--dark audit-contact section-anchor" style={{ '--section-image': `url(${contactImage})` }}>
+        <section id="contacto" className="audit-scene audit-scene--dark audit-contact section-anchor v54-contact" style={{ '--section-image': `url(${contactImage})` }}>
           <div className="audit-scene__shade" aria-hidden="true" />
           <div className="shell audit-contact__grid">
             <div className="audit-contact__intro">
               <span className="kicker">Conversemos</span>
-              <h2>Cuéntanos el problema antes de elegir una solución</h2>
-              <p>Con una descripción breve podemos decirte si vemos encaje y cuál sería el siguiente paso más pequeño que tenga sentido.</p>
+              <h2>No todas las conversaciones tienen que comenzar con un proyecto definido</h2>
+              <p>Podemos conversar a partir de una necesidad concreta, una pregunta todavía abierta, una oportunidad de colaboración o una hipótesis que valga la pena poner a prueba.</p>
               <div className="audit-contact__facts">
                 <span><Icon name="schedule" /><strong>30 min</strong><small>primera conversación</small></span>
-                <span><Icon name="payments" /><strong>Sin costo</strong><small>para evaluar encaje</small></span>
+                <span><Icon name="location_on" /><strong>Concepción</strong><small>Región del Biobío</small></span>
                 <span><Icon name="mail" /><strong>Correo formal</strong><small>{contact.email}</small></span>
               </div>
             </div>
@@ -596,13 +702,13 @@ function PublicSite() {
           </div>
         </section>
       </main>
-      <footer className="site-footer audit-footer">
+      <footer className="site-footer audit-footer v54-footer">
         <div className="shell audit-footer__grid">
-          <div className="site-footer__brand"><Brand /><p>Transformación organizacional con eficiencia operacional, condiciones humanas y responsabilidad con los sistemas vivos.</p></div>
-          <div><span className="footer-title">Navegación</span><SectionLink id="que-hacemos">Qué hacemos</SectionLink><SectionLink id="metodo">Método</SectionLink><SectionLink id="equipo">Equipo</SectionLink><SectionLink id="contacto">Conversemos</SectionLink></div>
-          <div><span className="footer-title">Acceso</span><a className="footer-icon-link" href={OS_SITE_URL}><Icon name="lock" /><span>Acceso OS</span></a><a className="footer-icon-link" href={`mailto:${contact.email}`}><Icon name="mail" /><span>{contact.email}</span></a></div>
+          <div className="site-footer__brand"><Brand /><p>Laboratorio de innovación con base en Concepción. Transformamos la manera en que las organizaciones generan valor, integrando eficiencia operacional, condiciones humanas y una relación responsable con los sistemas vivos.</p></div>
+          <div><span className="footer-title">Navegación</span><SectionLink id="laboratorio">Laboratorio</SectionLink><SectionLink id="metodo">Cómo trabajamos</SectionLink><SectionLink id="exploramos">Qué exploramos</SectionLink><SectionLink id="equipo">Equipo</SectionLink></div>
+          <div><span className="footer-title">Contacto</span><a className="footer-icon-link" href={`mailto:${contact.email}`}><Icon name="mail" /><span>{contact.email}</span></a><a className="footer-icon-link" href={OS_SITE_URL}><Icon name="lock" /><span>Acceso OS</span></a></div>
         </div>
-        <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis Lab</span><span>Biobío · Chile</span></div>
+        <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis Lab</span><span>Concepción · Región del Biobío · Chile</span></div>
       </footer>
     </div>
   );

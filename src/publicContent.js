@@ -1,75 +1,149 @@
 export const publicNavigation = [
-  { id: 'que-hacemos', label: 'Qué hacemos', icon: 'target' },
-  { id: 'metodo', label: 'Método', icon: 'timeline' },
+  { id: 'laboratorio', label: 'Laboratorio', icon: 'query_stats' },
+  { id: 'metodo', label: 'Cómo trabajamos', icon: 'timeline' },
+  { id: 'exploramos', label: 'Qué exploramos', icon: 'search' },
   { id: 'equipo', label: 'Equipo', icon: 'group' }
 ];
 
 export const transformationPillars = [
   {
-    icon: 'query_stats',
+    id: 'operacion',
+    icon: 'schema',
     title: 'Operación',
-    text: 'Ordenamos procesos, información y recursos para que las decisiones no dependan de improvisación.',
-    accent: 'Procesos, información y recursos'
+    short: 'Cómo ocurre el trabajo.',
+    text: 'Procesos, recursos, información, trazabilidad y puntos de decisión que sostienen la operación.',
+    signal: 'Procesos · recursos · información · trazabilidad'
   },
   {
+    id: 'personas',
     icon: 'group',
     title: 'Personas',
-    text: 'Diseñamos cambios que puedan ser usados y sostenidos por quienes realizan el trabajo.',
-    accent: 'Uso real y continuidad'
+    short: 'Quién puede actuar y cómo.',
+    text: 'Trabajo, capacidades, participación, responsabilidades y condiciones para que un cambio pueda sostenerse.',
+    signal: 'Trabajo · capacidades · participación · decisiones'
   },
   {
-    icon: 'public',
-    title: 'Sistemas vivos',
-    text: 'Integramos impactos y recursos materiales cuando son relevantes para la forma en que la organización genera valor.',
-    accent: 'Recursos, impactos y entorno'
+    id: 'entorno',
+    icon: 'account_tree',
+    title: 'Entorno',
+    short: 'Qué relaciones afectan el resultado.',
+    text: 'Proveedores, instituciones, comunidades, territorio y otras capacidades externas relevantes para la situación.',
+    signal: 'Proveedores · instituciones · comunidades · territorio'
+  },
+  {
+    id: 'condiciones',
+    icon: 'verified_user',
+    title: 'Condiciones de operación',
+    short: 'Bajo qué exigencias se decide.',
+    text: 'Regulación, nuevas exigencias, recursos e impactos sobre los sistemas vivos cuando son materialmente relevantes.',
+    signal: 'Regulación · exigencias · recursos · sistemas vivos'
   }
 ];
 
 export const activeOfferUseCases = [
   {
-    icon: 'schema',
-    title: 'Procesos y roles',
-    text: 'Cuando tareas, decisiones o responsabilidades dependen demasiado de la memoria o de una sola persona.'
+    icon: 'trending_up',
+    title: 'Cuando una organización crece o cambia',
+    text: 'y sus procesos, información o responsabilidades necesitan evolucionar con ella.'
   },
   {
-    icon: 'database',
-    title: 'Registros y trazabilidad',
-    text: 'Cuando existe información, pero está dispersa y cuesta seguir, demostrar o aprender de lo que ocurre.'
+    icon: 'verified_user',
+    title: 'Cuando aparecen nuevas exigencias',
+    text: 'de clientes, cadenas productivas, regulación, trazabilidad o debida diligencia.'
   },
   {
-    icon: 'open_in_new',
-    title: 'Presencia y conversión digital',
-    text: 'Cuando la oferta existe, pero no se explica con claridad o el contacto depende de canales improvisados.'
+    icon: 'account_tree',
+    title: 'Cuando existen capacidades desconectadas',
+    text: 'entre áreas, proveedores, instituciones, personas o territorio.'
   },
   {
-    icon: 'recycling',
-    title: 'Uso de recursos',
-    text: 'Cuando materiales, activos o residuos pueden gestionarse mejor sin separar eficiencia y responsabilidad.'
+    icon: 'search',
+    title: 'Cuando decidir exige comprender mejor',
+    text: 'antes de invertir, intervenir, escalar o diseñar una solución.'
   }
 ];
 
-export const methodPrinciples = [
-  { icon: 'visibility', title: 'Entender antes de intervenir', text: 'La operación real importa más que la solución de moda.' },
-  { icon: 'design_services', title: 'Complejidad justa', text: 'La solución debe ser suficiente para el problema, no más grande que él.' },
-  { icon: 'verified_user', title: 'Capacidad instalada', text: 'El trabajo debe quedar utilizable por la organización.' }
-];
-
 export const processRoadmap = [
-  { icon: 'visibility', title: 'Entender', text: 'Contexto, operación, restricciones y evidencia.' },
-  { icon: 'sort', title: 'Priorizar', text: 'Problema, urgencia, costo de no actuar y alcance.' },
-  { icon: 'construction', title: 'Intervenir', text: 'Solución mínima suficiente, implementación y prueba.' },
-  { icon: 'query_stats', title: 'Medir y transferir', text: 'Resultados observables, documentación y continuidad.' }
+  {
+    icon: 'visibility',
+    title: 'Entender',
+    eyebrow: 'Observar antes de asumir',
+    text: 'Reconstruimos la situación real, su contexto, restricciones y evidencia disponible.'
+  },
+  {
+    icon: 'filter_alt',
+    title: 'Delimitar',
+    eyebrow: 'Separar lo relevante',
+    text: 'Distinguimos qué explica el problema, qué es accesorio y dónde vale la pena concentrar el esfuerzo.'
+  },
+  {
+    icon: 'construction',
+    title: 'Probar',
+    eyebrow: 'Intervenir con proporción',
+    text: 'Diseñamos una respuesta acotada y aplicable antes de sobredimensionar una solución.'
+  },
+  {
+    icon: 'query_stats',
+    title: 'Medir',
+    eyebrow: 'Observar qué cambió',
+    text: 'Definimos resultados observables, contrastamos lo ocurrido y ajustamos cuando corresponde.'
+  },
+  {
+    icon: 'conversion_path',
+    title: 'Transferir',
+    eyebrow: 'Dejar capacidad',
+    text: 'Documentamos criterios, aprendizajes y herramientas para que la organización pueda continuar.'
+  }
 ];
 
-export const stackBadges = ['Procesos', 'Datos', 'Documentación', 'Diseño', 'Tecnología', 'Indicadores'];
+export const laboratoryPrinciples = [
+  {
+    icon: 'visibility',
+    title: 'Comprender antes de prescribir',
+    text: 'No partimos desde una solución ni suponemos que exista un déficit.'
+  },
+  {
+    icon: 'inventory_2',
+    title: 'Trabajar con lo que ya existe',
+    text: 'Antes de crear nuevas estructuras, observamos capacidades e instrumentos disponibles.'
+  },
+  {
+    icon: 'filter_alt',
+    title: 'Intervenir en la escala necesaria',
+    text: 'Preferimos una prueba útil y verificable a una solución más grande que el problema.'
+  },
+  {
+    icon: 'query_stats',
+    title: 'Aprender de la intervención',
+    text: 'El trabajo debe producir evidencia para decidir qué sostener, ajustar, ampliar o cerrar.'
+  }
+];
 
-export const resultIndicators = ['Tiempo', 'Errores', 'Trazabilidad', 'Coordinación', 'Uso de recursos', 'Continuidad'];
-
-export const resultOutcomes = [
-  { icon: 'schema', title: 'Procesos más claros', text: 'Responsables, pasos y puntos de decisión visibles.' },
-  { icon: 'database', title: 'Información utilizable', text: 'Registros que sirven para decidir, demostrar y aprender.' },
-  { icon: 'query_stats', title: 'Resultados observables', text: 'Indicadores definidos antes de atribuir éxito a la intervención.' },
-  { icon: 'verified_user', title: 'Continuidad', text: 'Herramientas y criterios que permanecen después del cierre.' }
+export const researchQuestions = [
+  {
+    index: '01',
+    tag: 'Organizaciones',
+    question: '¿Cómo puede una organización crecer sin que sus procesos, información y capacidades queden atrás?',
+    text: 'Exploramos qué necesita evolucionar para acompañar el crecimiento sin convertir la gestión en burocracia.'
+  },
+  {
+    index: '02',
+    tag: 'Cadenas productivas',
+    question: '¿Qué cambia cuando nuevas exigencias modifican las condiciones bajo las cuales una organización opera?',
+    text: 'Observamos trazabilidad, regulación, conducta empresarial responsable, debida diligencia y exigencias de clientes cuando resultan pertinentes.'
+  },
+  {
+    index: '03',
+    tag: 'Capacidades',
+    question: '¿Qué impide que una capacidad existente se transforme a tiempo en una respuesta efectiva?',
+    text: 'Estudiamos brechas de información, coordinación, preparación y acceso que pueden mantener capacidades valiosas fuera de una oportunidad real.'
+  },
+  {
+    index: '04',
+    tag: 'Decisiones',
+    question: '¿Qué información necesita una decisión antes de convertirse en una intervención?',
+    text: 'Buscamos disminuir incertidumbre y hacer visible qué sabemos, qué falta conocer y qué vale la pena probar.'
+  }
 ];
 
 export const team = [
@@ -78,55 +152,22 @@ export const team = [
     name: 'Francisca Carrasco Marín',
     role: 'Dirección operativa y diseño de intervención',
     profession: 'Ingeniera Civil Industrial · Universidad de Concepción',
-    institution: 'Diplomado Economía Cirular · Universidad de Chile',
-    text: 'Lidera la lectura operacional, el diseño de soluciones y la ejecución de las intervenciones.'
+    institution: 'Formación en economía circular, bioeconomía y transformación organizacional',
+    text: 'Estudia cómo funcionan los sistemas de trabajo y cómo pueden transformarse cuando cambian sus condiciones productivas, humanas, regulatorias o ambientales.'
   },
   {
     initials: 'BS',
     name: 'Benjamín Sepúlveda Méndez',
     role: 'Estrategia, investigación y desarrollo metodológico',
     profession: 'Abogado · Pontificia Universidad Católica de Valparaíso',
-    institution: 'Magíster Derecho Penal ·  Universidad de Buenos Aires',
-    text: 'Trabaja en investigación previa, estructuración de problemas, gobernanza, documentación y aprendizaje del método.'
+    institution: 'Magíster en Derecho Penal · Universidad de Buenos Aires, en curso',
+    text: 'Trabaja sobre instituciones, regulación, responsabilidades, prevención de daños y coordinación de actores en contextos organizacionales y territoriales complejos.'
   }
 ];
 
-export const servicePricing = [
-  {
-    id: 'conversacion-inicial', icon: 'schedule', title: 'Conversación inicial', compact: '30 minutos · sin costo', price: 'Sin costo',
-    scope: 'Primera conversación para comprender la situación general y decidir si existe un problema que Metamorfosis pueda abordar.',
-    includes: ['No constituye diagnóstico', 'No fuerza una solución predeterminada', 'Si el problema requiere otra especialidad, lo señalamos'],
-    result: 'Criterio inicial para decidir si corresponde avanzar.'
-  },
-  {
-    id: 'diagnostico-focalizado', icon: 'visibility', title: 'Diagnóstico focalizado', compact: 'Desde $210.000 · hasta 6 horas', price: 'Desde $210.000',
-    scope: 'Para una situación concreta que necesita comprensión antes de invertir en una solución.',
-    includes: ['Revisión de antecedentes', 'Levantamiento', 'Análisis y contraste', 'Devolución priorizada'],
-    result: 'Problema delimitado, evidencia, prioridades y próximos pasos.'
-  },
-  {
-    id: 'diagnostico-terreno', icon: 'location_on', title: 'Diagnóstico con terreno', compact: 'Desde $420.000 · hasta 12 horas', price: 'Desde $420.000',
-    scope: 'Para situaciones que requieren observación directa, entrevistas o levantamiento presencial.',
-    includes: ['Análisis previo', 'Trabajo en terreno acordado', 'Procesamiento de evidencia', 'Devolución de resultados'],
-    result: 'Diagnóstico sustentado en antecedentes y observación directa.'
-  },
-  {
-    id: 'diseno-intervencion', icon: 'design_services', title: 'Diseño de intervención', compact: 'Desde $175.000 · hasta 5 horas', price: 'Desde $175.000',
-    scope: 'Cuando ya existe diagnóstico suficiente y se necesita convertirlo en una solución ejecutable.',
-    includes: ['Qué cambiar y qué no', 'Responsables y recursos', 'Indicadores', 'Condición de cierre'],
-    result: 'Intervención delimitada y ejecutable.'
-  },
-  {
-    id: 'implementacion', icon: 'construction', title: 'Implementación y acompañamiento', compact: 'Desde $350.000 · bloques de 10 horas', price: 'Desde $350.000',
-    scope: 'Para ejecutar, probar o acompañar una transformación previamente definida.',
-    includes: ['Trabajo remoto o en terreno', 'Coordinación', 'Documentación', 'Herramientas según alcance'],
-    result: 'Cambio implementado con horas, alcance y continuidad visibles.'
-  }
-];
-
-export const pricingPrinciples = [
-  { icon: 'rule', title: 'Alcance definido', text: 'Indicamos qué incluye, qué queda fuera y qué resultado se espera.' },
-  { icon: 'schedule', title: 'Horas visibles', text: 'Presupuestamos y registramos el trabajo para aprender costos reales.' },
-  { icon: 'verified_user', title: 'Autorización previa', text: 'No agregamos horas ni gastos externos sin acuerdo.' },
-  { icon: 'conversion_path', title: 'Cierre y transferencia', text: 'Cada intervención debe explicar qué cambió y qué queda instalado.' }
-];
+export const servicePricing = [];
+export const pricingPrinciples = [];
+export const stackBadges = [];
+export const resultIndicators = [];
+export const resultOutcomes = [];
+export const methodPrinciples = laboratoryPrinciples;
