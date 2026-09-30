@@ -836,7 +836,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
@@ -847,11 +847,11 @@ function PublicSite() {
           <div className="shell v515-hero">
             <header className="v515-hero__headline">
               <span className="v54-kicker">Jardín de innovación · Concepción</span>
-              <h1>Convertimos problemas en soluciones que crecen</h1>
+              <h1>Convertimos problemas en soluciones</h1>
             </header>
             <div className="v515-hero__body">
               <div className="v54-hero__copy">
-                <p className="v54-hero__lead">Conectamos conocimiento, capacidades y condiciones de operación para crear respuestas nuevas o hacer crecer iniciativas que ya tienen valor.</p>
+                <p className="v54-hero__lead">Conectamos conocimiento, capacidades y condiciones de operación para crear respuestas nuevas y hacer crecer iniciativas que ya tienen valor.</p>
                 <div className="hero__actions">
                   <SectionLink className="button audit-primary-cta" id="contacto">Conversemos</SectionLink>
                   <SectionLink className="button button--ghost-light" id="hacemos">Qué hacemos</SectionLink>
@@ -875,8 +875,8 @@ function PublicSite() {
               <h2>Sembramos preguntas, cultivamos soluciones</h2>
             </div>
             <div className="v514-garden__copy">
-              <p>Trabajamos sobre problemas donde conocimiento, información, recursos o capacidades todavía no consiguen producir una respuesta suficientemente útil.</p>
-              <p>Primero observamos, después probamos y solo entonces decidimos qué merece crecer.</p>
+              <p>Trabajamos sobre problemas donde conocimiento, información o capacidades todavía no consiguen producir una respuesta suficientemente útil.</p>
+              <p>Observamos, probamos y hacemos crecer solo aquello que demuestra valor.</p>
             </div>
             <GardenKnowledgeSection />
           </div>
