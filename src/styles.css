@@ -17346,3 +17346,1106 @@ textarea::placeholder { color: #7f98ac; }
     padding: 16px 18px;
   }
 }
+
+/* =============================================================================
+   WEB PÚBLICA V5.10 · BOTONES LEGIBLES + RESPIRACIÓN EN APORTE/PRINCIPIOS
+   -----------------------------------------------------------------------------
+   Objetivo de esta capa:
+   - Los botones muestran solo lo esencial: icono + título + apertura.
+   - Los subtítulos dejan de truncarse y pasan al contenido desplegable.
+   - La sección “Cuándo conversar / Cómo cuidamos” recupera márgenes laterales,
+     reduce altura innecesaria y cabe mejor en una pantalla de escritorio.
+
+   ÍNDICE DE EDICIÓN RÁPIDA
+   01. Botones del esquema “Qué observamos”
+   02. Botones del método “Cómo trabajamos”
+   03. Etiquetas dentro de los desplegables
+   04. Escena “Cuándo conversar y cómo cuidamos”
+   05. Cabecera de esa escena
+   06. Grupos y tarjetas
+   07. CTA de cierre
+   08. Pantallas bajas
+   09. Tablet
+   10. Móvil
+   ============================================================================= */
+
+/* 01 · BOTONES DEL ESQUEMA “QUÉ OBSERVAMOS” -------------------------------- */
+.public-site--v510 .v58-accordion-trigger {
+  grid-template-columns: 46px minmax(0, 1fr) 20px;
+  min-height: 68px;
+  gap: 11px;
+  padding: 11px 14px;
+}
+
+.public-site--v510 .v58-accordion-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+}
+
+.public-site--v510 .v58-accordion-title {
+  display: flex;
+  align-items: center;
+}
+
+.public-site--v510 .v58-accordion-title strong {
+  font-size: .98rem;
+  line-height: 1.15;
+  white-space: normal;
+}
+
+/* El subtítulo ya no vive en el botón: evita texto cortado o sin contexto. */
+.public-site--v510 .v58-accordion-title small {
+  display: none;
+}
+
+.public-site--v510 .v58-accordion-panel {
+  padding: 4px 16px 15px 72px;
+}
+
+/* 02 · BOTONES DEL MÉTODO “CÓMO TRABAJAMOS” -------------------------------- */
+.public-site--v510 .v58-steps {
+  gap: 12px;
+}
+
+.public-site--v510 .v58-step-trigger {
+  grid-template-columns: 34px 36px minmax(0, 1fr) 18px;
+  min-height: 66px;
+  gap: 8px;
+  padding: 10px 11px;
+}
+
+.public-site--v510 .v58-step-number {
+  width: 32px;
+  height: 32px;
+}
+
+.public-site--v510 .v58-step-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.public-site--v510 .v58-step-title {
+  display: flex;
+  align-items: center;
+}
+
+.public-site--v510 .v58-step-title strong {
+  font-size: 1.08rem;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+/* No mostrar abreviaturas como “OBSERVAR A...” dentro del botón. */
+.public-site--v510 .v58-step-title small {
+  display: none;
+}
+
+.public-site--v510 .v58-step-panel {
+  padding: 4px 13px 14px;
+}
+
+/* 03 · ETIQUETAS DENTRO DE LOS DESPLEGABLES -------------------------------- */
+.public-site--v510 .v510-panel-label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--v54-accent-deep);
+  font-size: .62rem;
+  font-weight: 850;
+  line-height: 1.35;
+  letter-spacing: .065em;
+  text-transform: uppercase;
+}
+
+.public-site--v510 .v58-step-panel p,
+.public-site--v510 .v58-accordion-panel p {
+  font-size: .82rem;
+  line-height: 1.5;
+}
+
+/* 04 · ESCENA “CUÁNDO CONVERSAR Y CÓMO CUIDAMOS” --------------------------- */
+.public-site--v510 .v59-decision {
+  min-height: calc(100svh - var(--header-height));
+  padding: clamp(34px, 4.5vh, 54px) 0;
+  align-items: center;
+}
+
+/* IMPORTANTE: esta regla recupera el ancho contenido del sitio.
+   La V5.9 usaba width:100%, lo que hacía que la sección tocara los bordes. */
+.public-site--v510 .v59-decision__shell {
+  width: min(calc(100% - 48px), 1240px);
+  max-width: 1240px;
+  margin-inline: auto;
+}
+
+/* 05 · CABECERA DE ESA ESCENA ---------------------------------------------- */
+.public-site--v510 .v59-decision__head {
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
+  gap: clamp(24px, 4vw, 56px);
+  margin-bottom: 18px;
+}
+
+.public-site--v510 .v59-decision__head .v54-kicker {
+  margin-bottom: -4px;
+}
+
+.public-site--v510 .v59-decision__head h2 {
+  max-width: none;
+  font-size: clamp(1.9rem, 2.45vw, 2.65rem);
+  line-height: 1.02;
+}
+
+.public-site--v510 .v59-decision__head > p {
+  max-width: 48ch;
+  font-size: .92rem;
+  line-height: 1.5;
+}
+
+/* 06 · GRUPOS Y TARJETAS ---------------------------------------------------- */
+.public-site--v510 .v59-decision__columns {
+  gap: 16px;
+}
+
+.public-site--v510 .v59-decision__group {
+  padding: 16px;
+  border-radius: 22px;
+}
+
+.public-site--v510 .v59-decision__group-head {
+  grid-template-columns: 36px 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.public-site--v510 .v59-decision__number {
+  width: 34px;
+  height: 34px;
+  font-size: .66rem;
+}
+
+.public-site--v510 .v59-decision__group-head .v54-eyebrow {
+  font-size: .61rem;
+}
+
+.public-site--v510 .v59-decision__group-head h3 {
+  margin-top: 2px;
+  font-size: clamp(1.12rem, 1.35vw, 1.36rem);
+}
+
+/* En escritorio cada grupo usa una grilla 2x2: cuatro ideas visibles sin
+   convertir cada una en una tarjeta excesivamente alta. */
+.public-site--v510 .v59-decision__list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.public-site--v510 .v59-decision-card {
+  border-radius: 15px;
+}
+
+.public-site--v510 .v59-decision-trigger {
+  grid-template-columns: 36px minmax(0, 1fr) 18px;
+  min-height: 50px;
+  gap: 9px;
+  padding: 7px 9px;
+}
+
+.public-site--v510 .v59-decision-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+}
+
+.public-site--v510 .v59-decision-icon .app-icon {
+  width: 19px;
+  height: 19px;
+}
+
+.public-site--v510 .v59-decision-trigger strong {
+  font-size: .84rem;
+  line-height: 1.2;
+}
+
+.public-site--v510 .v59-decision-arrow {
+  width: 17px;
+  height: 17px;
+}
+
+.public-site--v510 .v59-decision-panel {
+  padding: 2px 10px 11px 54px;
+}
+
+.public-site--v510 .v59-decision-panel p {
+  font-size: .79rem;
+  line-height: 1.45;
+}
+
+/* 07 · CTA DE CIERRE -------------------------------------------------------- */
+.public-site--v510 .v59-decision__close {
+  margin-top: 12px;
+  padding: 11px 14px;
+  border-radius: 16px;
+}
+
+.public-site--v510 .v59-decision__close p {
+  font-size: .84rem;
+}
+
+/* 08 · PANTALLAS BAJAS ------------------------------------------------------ */
+@media (min-width: 981px) and (max-height: 760px) {
+  .public-site--v510 .v59-decision {
+    padding-block: 24px;
+  }
+
+  .public-site--v510 .v59-decision__head {
+    margin-bottom: 12px;
+  }
+
+  .public-site--v510 .v59-decision__head h2 {
+    font-size: clamp(1.7rem, 2.1vw, 2.25rem);
+  }
+
+  .public-site--v510 .v59-decision__group {
+    padding: 12px;
+  }
+
+  .public-site--v510 .v59-decision-trigger {
+    min-height: 44px;
+  }
+
+  .public-site--v510 .v58-step-trigger {
+    min-height: 58px;
+  }
+}
+
+/* 09 · TABLET --------------------------------------------------------------- */
+@media (max-width: 980px) {
+  .public-site--v510 .v59-decision__shell {
+    width: min(calc(100% - 36px), 1240px);
+  }
+
+  .public-site--v510 .v59-decision__head,
+  .public-site--v510 .v59-decision__columns {
+    grid-template-columns: 1fr;
+  }
+
+  .public-site--v510 .v59-decision__head {
+    gap: 10px;
+  }
+
+  .public-site--v510 .v59-decision__head > p {
+    max-width: 66ch;
+  }
+
+  .public-site--v510 .v59-decision__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .public-site--v510 .v58-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* 10 · MÓVIL --------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .public-site--v510 .v59-decision__shell {
+    width: min(calc(100% - 28px), 1240px);
+  }
+
+  .public-site--v510 .v59-decision {
+    min-height: auto;
+    padding-block: 42px;
+  }
+
+  .public-site--v510 .v59-decision__list,
+  .public-site--v510 .v58-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .public-site--v510 .v59-decision__group {
+    padding: 12px;
+  }
+
+  .public-site--v510 .v59-decision-trigger {
+    min-height: 52px;
+  }
+
+  .public-site--v510 .v59-decision-trigger strong {
+    font-size: .9rem;
+  }
+
+  /* En móvil el botón se vuelve táctil y limpio: título completo; el detalle
+     aparece solo tras tocarlo. */
+  .public-site--v510 .v58-step-trigger {
+    grid-template-columns: 34px 38px minmax(0, 1fr) 20px;
+    min-height: 64px;
+  }
+
+  .public-site--v510 .v58-step-title strong {
+    white-space: normal;
+  }
+}
+
+/* =============================================================================
+   WEB PÚBLICA V5.11 · JERARQUÍA, RESPIRACIÓN Y CONVERSIÓN
+   -----------------------------------------------------------------------------
+   OBJETIVO
+   - Ningún texto funcional debe aparecer cortado con "…".
+   - Las tarjetas cerradas muestran solo lo necesario para orientar.
+   - La segunda capa de información aparece completa al hacer clic.
+   - Cada sección conserva aire lateral y una ruta de lectura clara.
+   - La página conduce naturalmente hacia "Conversemos" sin parecer un catálogo.
+
+   ÍNDICE DE EDICIÓN RÁPIDA
+   01. Salvaguardas globales contra cortes de texto
+   02. Jardín · identidad y respiración
+   03. Jardín · cuándo puede valer la pena intervenir
+   04. Cómo trabaja · qué observamos
+   05. Cómo trabaja · cinco etapas
+   06. Promesa de método
+   07. Principios · cómo cuidamos la intervención
+   08. Preguntas que cultivamos
+   09. Equipo · diferenciación + perfiles
+   10. Desktop bajo / notebook
+   11. Tablet
+   12. Móvil
+   ============================================================================= */
+
+/* 01 · SALVAGUARDAS GLOBALES CONTRA CORTES DE TEXTO ------------------------- */
+.public-site--v511 .v58-accordion-trigger,
+.public-site--v511 .v58-step-trigger,
+.public-site--v511 .v511-entry-card__trigger,
+.public-site--v511 .v511-principle__trigger,
+.public-site--v511 .v58-research-trigger {
+  min-width: 0;
+}
+
+.public-site--v511 .v58-accordion-title,
+.public-site--v511 .v58-step-title,
+.public-site--v511 .v511-entry-card__trigger strong,
+.public-site--v511 .v511-principle__trigger strong,
+.public-site--v511 .v58-research-title,
+.public-site--v511 .v510-panel-label,
+.public-site--v511 .v58-accordion-panel p,
+.public-site--v511 .v58-step-panel p,
+.public-site--v511 .v511-entry-card__panel p,
+.public-site--v511 .v511-principle__panel p {
+  min-width: 0;
+  max-width: none;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: none;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+}
+
+/* Los subtítulos técnicos ya no se intentan mostrar dentro del botón cerrado.
+   Aparecen completos en el panel que se abre debajo del concepto. */
+.public-site--v511 .v510-panel-label {
+  display: block;
+  margin: 0 0 7px;
+  color: var(--v54-accent-deep);
+  font-size: .72rem;
+  font-weight: 800;
+  line-height: 1.4;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+}
+
+/* 02 · JARDÍN · IDENTIDAD Y RESPIRACIÓN ------------------------------------ */
+.public-site--v511 #jardin.v54-section {
+  min-height: auto;
+  padding-block: clamp(64px, 7vw, 94px);
+}
+
+.public-site--v511 #jardin > .shell {
+  display: grid;
+  gap: clamp(30px, 4vw, 52px);
+}
+
+.public-site--v511 #jardin .v54-intro-grid {
+  gap: clamp(42px, 7vw, 96px);
+  align-items: center;
+}
+
+.public-site--v511 #jardin .v54-intro-grid h2 {
+  max-width: 15ch;
+  font-size: clamp(2.2rem, 3.3vw, 3.85rem);
+}
+
+.public-site--v511 #jardin .v54-intro-copy {
+  gap: 14px;
+  padding-top: 0;
+}
+
+.public-site--v511 #jardin .v54-intro-copy p {
+  max-width: 66ch;
+  font-size: clamp(.98rem, 1vw, 1.05rem);
+  line-height: 1.62;
+}
+
+.public-site--v511 #jardin .v54-lab-definition {
+  margin-top: 0;
+  padding: 20px 24px;
+  grid-template-columns: 108px 1fr;
+}
+
+.public-site--v511 #jardin .v54-lab-definition__number {
+  font-size: 2.25rem;
+}
+
+/* 03 · JARDÍN · CUÁNDO PUEDE VALER LA PENA INTERVENIR ---------------------- */
+/* Esta capa reemplaza la antigua gran sección "Dónde puede aportar". */
+.public-site--v511 .v511-garden-entry {
+  display: grid;
+  grid-template-columns: minmax(250px, .72fr) minmax(0, 1.28fr);
+  gap: clamp(28px, 4vw, 58px);
+  align-items: start;
+  padding-top: clamp(28px, 4vw, 44px);
+  border-top: 1px solid var(--v54-line);
+}
+
+.public-site--v511 .v511-garden-entry__intro h3 {
+  max-width: 14ch;
+  margin: 8px 0 12px;
+  color: var(--v54-ink);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: clamp(1.75rem, 2.3vw, 2.7rem);
+  font-weight: 540;
+  line-height: 1.04;
+  letter-spacing: -.035em;
+}
+
+.public-site--v511 .v511-garden-entry__intro p {
+  max-width: 46ch;
+  margin: 0;
+  color: var(--v54-copy);
+  font-size: .94rem;
+  line-height: 1.6;
+}
+
+.public-site--v511 .v511-garden-entry__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.public-site--v511 .v511-entry-card {
+  border: 1px solid var(--v54-line);
+  border-radius: 18px;
+  background: rgba(255,255,255,.76);
+  overflow: hidden;
+  transition: border-color .22s ease, box-shadow .22s ease, transform .22s ease;
+}
+
+.public-site--v511 .v511-entry-card:hover,
+.public-site--v511 .v511-entry-card.is-open {
+  border-color: rgba(23,122,112,.30);
+  box-shadow: 0 14px 32px rgba(22,67,61,.07);
+}
+
+.public-site--v511 .v511-entry-card__trigger {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 32px 44px minmax(0,1fr) 22px;
+  gap: 10px;
+  align-items: center;
+  min-height: 72px;
+  padding: 12px 14px;
+  border: 0;
+  background: transparent;
+  color: var(--v54-ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.public-site--v511 .v511-entry-card__number {
+  color: var(--v54-accent-deep);
+  font-size: .68rem;
+  font-weight: 850;
+  letter-spacing: .04em;
+}
+
+.public-site--v511 .v511-entry-card__icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: #eaf6f2;
+  color: var(--v54-accent-deep);
+}
+
+.public-site--v511 .v511-entry-card__icon .app-icon {
+  width: 21px;
+  height: 21px;
+}
+
+.public-site--v511 .v511-entry-card__trigger strong {
+  font-size: .94rem;
+  line-height: 1.28;
+}
+
+.public-site--v511 .v511-entry-card__arrow {
+  color: var(--v54-accent-deep);
+}
+
+.public-site--v511 .v511-entry-card__panel {
+  padding: 0 18px 16px 98px;
+}
+
+.public-site--v511 .v511-entry-card__panel p {
+  margin: 0;
+  color: var(--v54-copy);
+  font-size: .88rem;
+  line-height: 1.55;
+}
+
+.public-site--v511 .v511-garden-entry__cta {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 2px;
+  padding: 14px 16px;
+  border-top: 1px solid var(--v54-line);
+  color: var(--v54-copy);
+  font-size: .88rem;
+  line-height: 1.5;
+}
+
+/* 04 · CÓMO TRABAJA · QUÉ OBSERVAMOS -------------------------------------- */
+.public-site--v511 .v58-work {
+  min-height: auto;
+  padding-block: clamp(58px, 6vw, 84px);
+}
+
+.public-site--v511 .v58-work__shell {
+  display: grid;
+  gap: clamp(28px, 3.5vw, 42px);
+}
+
+.public-site--v511 .v58-work__head {
+  max-width: 780px;
+  margin-inline: auto;
+}
+
+.public-site--v511 .v58-work__head h2 {
+  font-size: clamp(2.1rem, 3vw, 3.5rem);
+}
+
+.public-site--v511 .v58-layer {
+  gap: 18px;
+}
+
+.public-site--v511 .v58-layer__heading h3 {
+  margin-top: 4px;
+  font-size: clamp(1.65rem, 2.15vw, 2.45rem);
+  line-height: 1.08;
+}
+
+.public-site--v511 .v58-dimensions {
+  grid-template-columns: 280px minmax(0,1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.public-site--v511 .v58-garden-core {
+  min-height: 178px;
+  padding: 18px;
+}
+
+.public-site--v511 .v58-garden-core img {
+  width: 74px;
+  height: 74px;
+}
+
+.public-site--v511 .v58-dimension-grid {
+  gap: 10px;
+}
+
+.public-site--v511 .v58-accordion-card {
+  min-height: 0;
+  border-radius: 17px;
+}
+
+.public-site--v511 .v58-accordion-trigger {
+  min-height: 68px;
+  padding: 10px 14px;
+  grid-template-columns: 46px minmax(0,1fr) 22px;
+  gap: 12px;
+}
+
+.public-site--v511 .v58-accordion-icon {
+  width: 44px;
+  height: 44px;
+}
+
+.public-site--v511 .v58-accordion-icon .app-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.public-site--v511 .v58-accordion-title strong {
+  display: block;
+  font-size: .98rem;
+  line-height: 1.2;
+}
+
+.public-site--v511 .v58-accordion-panel {
+  padding: 0 18px 16px 72px;
+}
+
+.public-site--v511 .v58-accordion-panel p {
+  margin: 0;
+  color: var(--v54-copy);
+  font-size: .86rem;
+  line-height: 1.55;
+}
+
+/* 05 · CÓMO TRABAJA · CINCO ETAPAS ---------------------------------------- */
+.public-site--v511 .v58-steps {
+  grid-template-columns: repeat(5, minmax(0,1fr));
+  gap: 10px;
+  align-items: start;
+}
+
+.public-site--v511 .v58-step-card {
+  min-width: 0;
+  border-radius: 18px;
+}
+
+.public-site--v511 .v58-step-trigger {
+  grid-template-columns: 38px 42px minmax(0,1fr) 20px;
+  gap: 8px;
+  min-height: 70px;
+  padding: 10px 11px;
+}
+
+.public-site--v511 .v58-step-number {
+  width: 36px;
+  height: 36px;
+  font-size: .68rem;
+}
+
+.public-site--v511 .v58-step-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.public-site--v511 .v58-step-icon .app-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.public-site--v511 .v58-step-title strong {
+  display: block;
+  font-size: .98rem;
+  line-height: 1.15;
+}
+
+.public-site--v511 .v58-step-panel {
+  padding: 0 14px 15px;
+}
+
+.public-site--v511 .v58-step-panel p {
+  margin: 0;
+  color: var(--v54-copy);
+  font-size: .84rem;
+  line-height: 1.52;
+}
+
+/* 06 · PROMESA DE MÉTODO ---------------------------------------------------- */
+.public-site--v511 .v58-work__close {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  justify-content: center;
+  column-gap: 7px;
+  row-gap: 3px;
+  padding: 15px 24px;
+}
+
+.public-site--v511 .v58-work__close strong,
+.public-site--v511 .v58-work__close span {
+  font-size: clamp(1.15rem, 1.65vw, 1.75rem);
+  line-height: 1.15;
+}
+
+.public-site--v511 .v58-work__close small {
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+/* 07 · PRINCIPIOS · CÓMO CUIDAMOS LA INTERVENCIÓN -------------------------- */
+.public-site--v511 .v511-principles {
+  padding-block: clamp(54px, 6vw, 78px);
+  background: var(--v54-paper);
+  color: var(--v54-ink);
+}
+
+.public-site--v511 .v511-principles__layout {
+  display: grid;
+  grid-template-columns: minmax(260px,.72fr) minmax(0,1.28fr);
+  gap: clamp(36px, 5vw, 72px);
+  align-items: start;
+}
+
+.public-site--v511 .v511-principles__head h2 {
+  max-width: 11ch;
+  margin: 8px 0 14px;
+  font-family: "Newsreader", Georgia, serif;
+  font-size: clamp(2rem, 2.8vw, 3rem);
+  font-weight: 540;
+  line-height: 1.04;
+  letter-spacing: -.035em;
+}
+
+.public-site--v511 .v511-principles__head p {
+  max-width: 45ch;
+  margin: 0;
+  color: var(--v54-copy);
+  font-size: .94rem;
+  line-height: 1.6;
+}
+
+.public-site--v511 .v511-principles__grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 10px;
+}
+
+.public-site--v511 .v511-principle {
+  border: 1px solid var(--v54-line);
+  border-radius: 18px;
+  background: rgba(255,255,255,.68);
+  overflow: hidden;
+}
+
+.public-site--v511 .v511-principle.is-open {
+  border-color: rgba(23,122,112,.30);
+  background: #fff;
+}
+
+.public-site--v511 .v511-principle__trigger {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 44px minmax(0,1fr) 20px;
+  gap: 11px;
+  align-items: center;
+  min-height: 68px;
+  padding: 11px 14px;
+  border: 0;
+  background: transparent;
+  color: var(--v54-ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.public-site--v511 .v511-principle__icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: #eaf6f2;
+  color: var(--v54-accent-deep);
+}
+
+.public-site--v511 .v511-principle__icon .app-icon {
+  width: 21px;
+  height: 21px;
+}
+
+.public-site--v511 .v511-principle__trigger strong {
+  font-size: .92rem;
+  line-height: 1.3;
+}
+
+.public-site--v511 .v511-principle__arrow {
+  color: var(--v54-accent-deep);
+}
+
+.public-site--v511 .v511-principle__panel {
+  padding: 0 16px 15px 69px;
+}
+
+.public-site--v511 .v511-principle__panel p {
+  margin: 0;
+  color: var(--v54-copy);
+  font-size: .86rem;
+  line-height: 1.55;
+}
+
+/* 08 · PREGUNTAS QUE CULTIVAMOS -------------------------------------------- */
+.public-site--v511 .v58-research {
+  min-height: auto;
+  padding-block: clamp(54px, 6vw, 78px);
+}
+
+.public-site--v511 .v58-research__shell {
+  gap: clamp(32px, 5vw, 68px);
+}
+
+.public-site--v511 .v58-research__head h2 {
+  font-size: clamp(2rem, 2.9vw, 3.2rem);
+  line-height: 1.04;
+}
+
+.public-site--v511 .v58-research-trigger {
+  min-height: 64px;
+}
+
+.public-site--v511 .v58-research-title strong {
+  font-size: .98rem;
+  line-height: 1.32;
+}
+
+/* 09 · EQUIPO · DIFERENCIACIÓN + PERFILES --------------------------------- */
+.public-site--v511 .v59-team {
+  min-height: auto;
+  padding-block: clamp(68px, 7vw, 94px);
+}
+
+.public-site--v511 .v59-team__layout {
+  grid-template-columns: minmax(0,.82fr) minmax(0,1.18fr);
+  gap: clamp(58px, 7vw, 104px);
+  align-items: center;
+}
+
+.public-site--v511 .v59-team__value {
+  padding-right: clamp(8px, 2vw, 30px);
+}
+
+.public-site--v511 .v59-team__value h2 {
+  max-width: 12ch;
+  margin-bottom: 24px;
+  font-size: clamp(2.2rem, 3.5vw, 3.8rem);
+  line-height: 1.02;
+}
+
+.public-site--v511 .v59-team__value > p {
+  max-width: 47ch;
+  margin-bottom: 28px;
+  font-size: .98rem;
+  line-height: 1.68;
+}
+
+.public-site--v511 .v59-team__strengths {
+  gap: 12px;
+}
+
+.public-site--v511 .v59-team__strengths > span {
+  min-height: 62px;
+  padding: 12px 14px;
+  border-radius: 15px;
+}
+
+.public-site--v511 .v59-team__strengths small {
+  margin-top: 3px;
+  font-size: .78rem;
+  line-height: 1.38;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.public-site--v511 .v59-team__synthesis {
+  margin-top: 26px;
+  padding-top: 20px;
+  line-height: 1.58;
+}
+
+.public-site--v511 .v59-team__profiles .v54-team-grid {
+  gap: 20px;
+}
+
+.public-site--v511 .v59-team__profiles .v54-team-card {
+  padding: 24px;
+}
+
+.public-site--v511 .v59-team__profiles .v54-team-card > p {
+  margin: 18px 0;
+  line-height: 1.58;
+}
+
+.public-site--v511 .v59-team__profiles .v54-team-card__meta {
+  margin-top: 18px;
+  padding-top: 16px;
+  gap: 9px;
+}
+
+/* 10 · DESKTOP BAJO / NOTEBOOK --------------------------------------------- */
+@media (min-width: 901px) and (max-height: 820px) {
+  .public-site--v511 #jardin.v54-section,
+  .public-site--v511 .v58-work,
+  .public-site--v511 .v511-principles,
+  .public-site--v511 .v58-research,
+  .public-site--v511 .v59-team {
+    padding-block: 44px;
+  }
+
+  .public-site--v511 #jardin > .shell,
+  .public-site--v511 .v58-work__shell {
+    gap: 24px;
+  }
+
+  .public-site--v511 .v511-garden-entry {
+    padding-top: 22px;
+  }
+
+  .public-site--v511 .v58-layer__heading h3 {
+    font-size: 1.8rem;
+  }
+
+  .public-site--v511 .v59-team__layout {
+    gap: 58px;
+  }
+}
+
+/* 11 · TABLET --------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .public-site--v511 .v511-garden-entry,
+  .public-site--v511 .v511-principles__layout,
+  .public-site--v511 .v59-team__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .public-site--v511 .v511-garden-entry__cta {
+    grid-column: 1;
+  }
+
+  .public-site--v511 .v58-dimensions {
+    grid-template-columns: 220px minmax(0,1fr);
+  }
+
+  .public-site--v511 .v58-steps {
+    grid-template-columns: repeat(3,minmax(0,1fr));
+  }
+
+  .public-site--v511 .v58-step-card:nth-child(4),
+  .public-site--v511 .v58-step-card:nth-child(5) {
+    grid-column: auto;
+  }
+
+  .public-site--v511 .v59-team__value h2 {
+    max-width: 18ch;
+  }
+}
+
+/* 12 · MÓVIL --------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .public-site--v511 #jardin.v54-section,
+  .public-site--v511 .v58-work,
+  .public-site--v511 .v511-principles,
+  .public-site--v511 .v58-research,
+  .public-site--v511 .v59-team {
+    padding-block: 48px;
+  }
+
+  .public-site--v511 #jardin .v54-lab-definition {
+    grid-template-columns: 1fr;
+    padding-inline: 0;
+  }
+
+  .public-site--v511 .v511-garden-entry__grid,
+  .public-site--v511 .v511-principles__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .public-site--v511 .v511-entry-card__trigger {
+    grid-template-columns: 28px 48px minmax(0,1fr) 22px;
+    min-height: 70px;
+  }
+
+  .public-site--v511 .v511-entry-card__panel {
+    padding-left: 102px;
+  }
+
+  .public-site--v511 .v511-garden-entry__cta {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .public-site--v511 .v511-garden-entry__cta .button {
+    width: 100%;
+  }
+
+  /* En móvil, el mapa se convierte en una experiencia táctil compacta:
+     núcleo arriba y conceptos en 2 columnas. */
+  .public-site--v511 .v58-dimensions {
+    grid-template-columns: 1fr;
+  }
+
+  .public-site--v511 .v58-garden-core {
+    min-height: 150px;
+  }
+
+  .public-site--v511 .v58-dimension-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+
+  .public-site--v511 .v58-accordion-trigger {
+    grid-template-columns: 44px minmax(0,1fr) 20px;
+    min-height: 68px;
+    padding: 10px;
+  }
+
+  .public-site--v511 .v58-accordion-title strong {
+    font-size: .88rem;
+  }
+
+  .public-site--v511 .v58-accordion-panel {
+    padding: 0 12px 14px;
+  }
+
+  .public-site--v511 .v510-panel-label {
+    font-size: .64rem;
+  }
+
+  /* Las cinco etapas pasan a una grilla táctil. Cada toque abre el texto
+     dentro de la misma tarjeta; no hay carrusel ni contenido oculto. */
+  .public-site--v511 .v58-steps {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+
+  .public-site--v511 .v58-step-card:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .public-site--v511 .v58-step-trigger {
+    grid-template-columns: 34px 40px minmax(0,1fr) 18px;
+    min-height: 64px;
+    padding: 9px;
+  }
+
+  .public-site--v511 .v58-step-title strong {
+    font-size: .9rem;
+  }
+
+  .public-site--v511 .v58-work__close {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .public-site--v511 .v58-work__close small {
+    grid-column: 1;
+  }
+
+  .public-site--v511 .v511-principles__head h2,
+  .public-site--v511 .v59-team__value h2 {
+    max-width: 100%;
+  }
+
+  .public-site--v511 .v59-team__layout {
+    gap: 38px;
+  }
+
+  .public-site--v511 .v59-team__profiles .v54-team-grid {
+    gap: 14px;
+  }
+}

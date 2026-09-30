@@ -543,8 +543,8 @@ function SystemsMap() {
 //      Cada concepto despliega su propia explicación debajo del título.
 // -----------------------------------------------------------------------------
 function IntegratedMethodSection() {
-  const [openDimension, setOpenDimension] = useState('operacion');
-  const [openStep, setOpenStep] = useState(0);
+  const [openDimension, setOpenDimension] = useState(null);
+  const [openStep, setOpenStep] = useState(null);
 
   const toggleDimension = (id) => {
     setOpenDimension((current) => current === id ? null : id);
@@ -597,11 +597,11 @@ function IntegratedMethodSection() {
                       <span className="v58-accordion-icon"><Icon name={item.icon} /></span>
                       <span className="v58-accordion-title">
                         <strong>{item.title}</strong>
-                        <small>{item.signal}</small>
                       </span>
                       <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v58-accordion-arrow" />
                     </button>
                     <div id={`dimension-${item.id}`} className="v58-accordion-panel" hidden={!isOpen}>
+                      <small className="v510-panel-label">{item.signal}</small>
                       <p>{item.text}</p>
                     </div>
                   </article>
@@ -637,11 +637,11 @@ function IntegratedMethodSection() {
                     <span className="v58-step-icon"><Icon name={item.icon} /></span>
                     <span className="v58-step-title">
                       <strong>{item.title}</strong>
-                      <small>{item.eyebrow}</small>
                     </span>
                     <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v58-step-arrow" />
                   </button>
                   <div id={`step-${index}`} className="v58-step-panel" hidden={!isOpen}>
+                    <small className="v510-panel-label">{item.eyebrow}</small>
                     <p>{item.text}</p>
                   </div>
                 </article>
@@ -707,100 +707,96 @@ function ResearchGardenSection() {
 
 
 // -----------------------------------------------------------------------------
-// 04D · APORTE + PRINCIPIOS · DOS CAPAS EN UNA SOLA ESCENA
+// 04E · PRINCIPIOS · Criterios que sostienen una intervención
+//      Se mantienen separados de las situaciones de entrada para no mezclar
+//      “cuándo conversar” con “cómo cuidamos el trabajo”.
 // -----------------------------------------------------------------------------
-function ContributionAndPrinciplesSection() {
-  const [openKey, setOpenKey] = useState('use-0');
-
-  const toggle = (key) => setOpenKey((current) => current === key ? '' : key);
+function PrinciplesSection() {
+  const [openPrinciple, setOpenPrinciple] = useState(null);
 
   return (
-    <section id="situaciones" className="v59-decision section-anchor" aria-labelledby="v59-decision-title">
-      <div className="shell v59-decision__shell">
-        <header className="v59-decision__head">
-          <span className="v54-kicker">Dónde puede aportar</span>
-          <h2 id="v59-decision-title">Cuándo conversar y cómo cuidamos el trabajo</h2>
-          <p>Dos preguntas bastan para orientarse: si una situación merece ser comprendida mejor y bajo qué criterios tendría sentido intervenir.</p>
+    <section id="principios" className="v511-principles section-anchor" aria-labelledby="v511-principles-title">
+      <div className="shell v511-principles__layout">
+        <header className="v511-principles__head">
+          <span className="v54-kicker">Cómo cuidamos una intervención</span>
+          <h2 id="v511-principles-title">Criterios antes de hacer más</h2>
+          <p>El rigor también está en saber qué no conviene agregar. Estos principios ordenan cómo delimitamos, probamos y aprendemos.</p>
         </header>
-
-        <div className="v59-decision__columns">
-          <section className="v59-decision__group" aria-labelledby="v59-use-title">
-            <div className="v59-decision__group-head">
-              <span className="v59-decision__number">01</span>
-              <div>
-                <span className="v54-eyebrow">Cuándo puede ser útil conversar</span>
-                <h3 id="v59-use-title">Situaciones de entrada</h3>
-              </div>
-            </div>
-            <div className="v59-decision__list">
-              {activeOfferUseCases.map((item, index) => {
-                const key = `use-${index}`;
-                const isOpen = openKey === key;
-                return (
-                  <article key={item.title} className={`v59-decision-card ${isOpen ? 'is-open' : ''}`}>
-                    <button
-                      type="button"
-                      className="v59-decision-trigger"
-                      onClick={() => toggle(key)}
-                      aria-expanded={isOpen}
-                      aria-controls={`v59-use-${index}`}
-                    >
-                      <span className="v59-decision-icon"><Icon name={item.icon} /></span>
-                      <strong>{item.title}</strong>
-                      <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v59-decision-arrow" />
-                    </button>
-                    <div id={`v59-use-${index}`} className="v59-decision-panel" hidden={!isOpen}>
-                      <p>{item.text}</p>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          </section>
-
-          <section className="v59-decision__group" aria-labelledby="v59-principles-title">
-            <div className="v59-decision__group-head">
-              <span className="v59-decision__number">02</span>
-              <div>
-                <span className="v54-eyebrow">Cómo cuidamos el trabajo</span>
-                <h3 id="v59-principles-title">Principios que ordenan la intervención</h3>
-              </div>
-            </div>
-            <div className="v59-decision__list">
-              {laboratoryPrinciples.map((item, index) => {
-                const key = `principle-${index}`;
-                const isOpen = openKey === key;
-                return (
-                  <article key={item.title} className={`v59-decision-card ${isOpen ? 'is-open' : ''}`}>
-                    <button
-                      type="button"
-                      className="v59-decision-trigger"
-                      onClick={() => toggle(key)}
-                      aria-expanded={isOpen}
-                      aria-controls={`v59-principle-${index}`}
-                    >
-                      <span className="v59-decision-icon"><Icon name={item.icon} /></span>
-                      <strong>{item.title}</strong>
-                      <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v59-decision-arrow" />
-                    </button>
-                    <div id={`v59-principle-${index}`} className="v59-decision-panel" hidden={!isOpen}>
-                      <p>{item.text}</p>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          </section>
-        </div>
-
-        <div className="v59-decision__close">
-          <p>Si una situación merece ser entendida antes de elegir una solución, puede valer la pena conversar.</p>
-          <SectionLink id="contacto" className="button button--small">Conversemos</SectionLink>
+        <div className="v511-principles__grid">
+          {laboratoryPrinciples.map((item, index) => {
+            const isOpen = openPrinciple === index;
+            return (
+              <article key={item.title} className={`v511-principle ${isOpen ? 'is-open' : ''}`}>
+                <button
+                  type="button"
+                  className="v511-principle__trigger"
+                  onClick={() => setOpenPrinciple((current) => current === index ? null : index)}
+                  aria-expanded={isOpen}
+                  aria-controls={`principle-${index}`}
+                >
+                  <span className="v511-principle__icon"><Icon name={item.icon} /></span>
+                  <strong>{item.title}</strong>
+                  <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v511-principle__arrow" />
+                </button>
+                <div id={`principle-${index}`} className="v511-principle__panel" hidden={!isOpen}>
+                  <p>{item.text}</p>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
   );
 }
+
+// -----------------------------------------------------------------------------
+// 04F · CUÁNDO INTERVENIR · Situaciones de entrada dentro del Jardín
+//      Esta capa pertenece a la identidad del Jardín: primero observamos si una
+//      situación necesita más comprensión antes de elegir una solución.
+// -----------------------------------------------------------------------------
+function GardenEntrySituations() {
+  const [openSituation, setOpenSituation] = useState(null);
+
+  return (
+    <div className="v511-garden-entry" aria-labelledby="v511-entry-title">
+      <div className="v511-garden-entry__intro">
+        <span className="v54-eyebrow">Cuándo puede valer la pena intervenir</span>
+        <h3 id="v511-entry-title">No todo cambio necesita la misma respuesta</h3>
+        <p>Estas son señales de entrada. Si alguna se parece a tu situación, podemos empezar por comprenderla antes de definir una solución.</p>
+      </div>
+      <div className="v511-garden-entry__grid">
+        {activeOfferUseCases.map((item, index) => {
+          const isOpen = openSituation === index;
+          return (
+            <article key={item.title} className={`v511-entry-card ${isOpen ? 'is-open' : ''}`}>
+              <button
+                type="button"
+                className="v511-entry-card__trigger"
+                onClick={() => setOpenSituation((current) => current === index ? null : index)}
+                aria-expanded={isOpen}
+                aria-controls={`entry-${index}`}
+              >
+                <span className="v511-entry-card__number">0{index + 1}</span>
+                <span className="v511-entry-card__icon"><Icon name={item.icon} /></span>
+                <strong>{item.title}</strong>
+                <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v511-entry-card__arrow" />
+              </button>
+              <div id={`entry-${index}`} className="v511-entry-card__panel" hidden={!isOpen}>
+                <p>{item.text}</p>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+      <div className="v511-garden-entry__cta">
+        <span>Si todavía no sabes cómo nombrar el problema, esa también puede ser una buena razón para conversar.</span>
+        <SectionLink id="contacto" className="button button--small">Conversemos</SectionLink>
+      </div>
+    </div>
+  );
+}
+
 // -----------------------------------------------------------------------------
 // 05 · COMPOSICIÓN DE LA WEB PÚBLICA · ORDEN REAL DE LECTURA
 // -----------------------------------------------------------------------------
@@ -818,7 +814,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
@@ -856,7 +852,7 @@ function PublicSite() {
             <div className="v54-intro-grid">
               <div>
                 <span className="v54-kicker">Metamorfosis</span>
-                <h2>Un jardín para sembrar preguntas y hacer crecer soluciones</h2>
+                <h2>Un jardín para observar, probar y hacer crecer lo que funciona</h2>
               </div>
               <div className="v54-intro-copy">
                 <p>Trabajamos sobre situaciones reales donde operación, personas, información, regulación y entorno pueden estar interactuando. No forzamos una receta: observamos qué relaciones importan, qué conviene cultivar y qué intervención tiene sentido.</p>
@@ -871,14 +867,16 @@ function PublicSite() {
                 <p>Porque una buena intervención no aparece terminada. Se siembra como pregunta, se observa en contexto, se prueba con cuidado y crece solo cuando la evidencia muestra que vale la pena sostenerla.</p>
               </div>
             </div>
+
+            <GardenEntrySituations />
           </div>
         </section>
 
         {/* 05.3 + 05.4 · CÓMO TRABAJA METAMORFOSIS · Mapa + método integrados */}
         <IntegratedMethodSection />
 
-        {/* 05.5 + 05.7 · APORTE + PRINCIPIOS · Dos capas en una sola escena */}
-        <ContributionAndPrinciplesSection />
+        {/* 05.5 · PRINCIPIOS · Criterios de intervención, separados de las situaciones de entrada */}
+        <PrinciplesSection />
 
         {/* 05.6 · PREGUNTAS QUE CULTIVAMOS · Investigación aplicada compacta */}
         <ResearchGardenSection />
@@ -888,14 +886,14 @@ function PublicSite() {
           <div className="shell v59-team__layout">
             <div className="v59-team__value">
               <span className="v54-kicker">Equipo</span>
-              <h2>Dos capacidades técnicas que trabajan como una sola</h2>
-              <p>Metamorfosis combina ingeniería y derecho no para sumar miradas en paralelo, sino para leer una misma situación desde su operación, sus decisiones, sus reglas y sus relaciones externas.</p>
+              <h2>Ingeniería y derecho para leer una misma situación</h2>
+              <p>Combinamos procesos, capacidades, decisiones, reglas y relaciones externas en una misma lectura. No buscamos agregar complejidad, sino distinguir mejor qué está ocurriendo y qué intervención tiene sentido.</p>
               <div className="v59-team__strengths">
                 <span><Icon name="schema" /><strong>Procesos y capacidades</strong><small>Cómo funciona realmente el trabajo</small></span>
                 <span><Icon name="rule" /><strong>Reglas y responsabilidades</strong><small>Bajo qué condiciones puede actuar cada actor</small></span>
                 <span><Icon name="account_tree" /><strong>Relaciones y entorno</strong><small>Qué conexiones afectan el resultado</small></span>
               </div>
-              <div className="v59-team__synthesis"><Icon name="handshake" /><span>La diferencia no está en tener dos profesiones. Está en formular mejores preguntas y diseñar intervenciones más completas sin agregar complejidad innecesaria.</span></div>
+              <div className="v59-team__synthesis"><Icon name="handshake" /><span>La diferencia no está en sumar profesiones, sino en conectar capacidades técnicas para formular mejores preguntas y diseñar intervenciones proporcionales.</span></div>
             </div>
             <div className="v59-team__profiles">
               <TeamSection />
