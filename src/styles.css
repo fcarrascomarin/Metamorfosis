@@ -21013,3 +21013,161 @@ textarea::placeholder { color: #7f98ac; }
     line-height: 1.58;
   }
 }
+
+
+/* =============================================================================
+   WEB PÚBLICA V5.19 · AJUSTE FINAL DE INTERACCIÓN Y ANCHO EDITORIAL
+   -----------------------------------------------------------------------------
+   01. Acordeones: una tarjeta cerrada no ocupa el alto de una tarjeta abierta.
+   02. Jardín: título y textos introductorios utilizan el ancho editorial completo.
+   03. Qué observamos: tarjetas más anchas para evitar quiebres artificiales en
+       las señales destacadas (texto turquesa).
+   04. Mantener comportamiento táctil y responsive sin forzar una sola línea
+       en pantallas pequeñas.
+   ============================================================================= */
+
+.public-site--v519 {
+  --v519-shell: 1260px;
+}
+
+/* 01 · INTERACCIÓN: NUNCA MOSTRAR UN PANEL OCULTO ------------------------- */
+.public-site--v519 [hidden] {
+  display: none !important;
+}
+
+/* Qué hacemos: si una tarjeta se abre, la tarjeta vecina permanece compacta.
+   El problema visual anterior provenía del stretch por defecto de CSS Grid. */
+.public-site--v519 .v516-engines__grid {
+  align-items: start;
+}
+
+.public-site--v519 .v516-engine {
+  min-width: 0;
+  align-self: start;
+}
+
+/* 02 · JARDÍN: MÁS ANCHO Y RESPIRACIÓN ------------------------------- */
+.public-site--v519 .v514-garden__layout {
+  width: min(calc(100% - clamp(64px, 8vw, 136px)), var(--v519-shell));
+  grid-template-columns: 1fr;
+  gap: clamp(34px, 4vw, 56px);
+}
+
+.public-site--v519 .v514-garden__statement {
+  width: 100%;
+  max-width: none;
+}
+
+.public-site--v519 .v514-garden__statement h2 {
+  width: 100%;
+  max-width: none;
+}
+
+/* Los dos textos dejan de quedar comprimidos en una columna lateral.
+   Se distribuyen sobre el ancho de la página y conservan lectura editorial. */
+.public-site--v519 .v514-garden__copy {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(56px, 8vw, 120px);
+  row-gap: 18px;
+  padding-top: 28px;
+}
+
+.public-site--v519 .v514-garden__copy p {
+  width: 100%;
+  max-width: 62ch;
+  margin: 0;
+  line-height: 1.68;
+}
+
+/* 03 · CÓMO MIRAMOS / ANTES DE INTERVENIR ------------------------------- */
+/* Entregamos más territorio horizontal a cada tarjeta para que las señales
+   turquesa puedan leerse completas y no parezcan títulos partidos. */
+.public-site--v519 .v516-map {
+  grid-template-columns:
+    minmax(310px, 1fr)
+    minmax(340px, .96fr)
+    minmax(310px, 1fr);
+  gap: 20px clamp(34px, 4vw, 58px);
+  align-items: center;
+}
+
+.public-site--v519 .v516-lens {
+  min-width: 0;
+  align-self: start;
+}
+
+.public-site--v519 .v516-lens__panel small {
+  white-space: nowrap;
+}
+
+/* En escritorio las señales son una unidad visual. No se quiebran por falta
+   de ancho dentro de la tarjeta. */
+@media (min-width: 981px) {
+  .public-site--v519 .v516-lens__panel small {
+    font-size: clamp(.58rem, .61vw, .66rem);
+    letter-spacing: .045em;
+  }
+}
+
+/* 04 · TABLET / MÓVIL ----------------------------------------------------- */
+@media (max-width: 1180px) and (min-width: 981px) {
+  .public-site--v519 .v516-map {
+    grid-template-columns:
+      minmax(280px, 1fr)
+      minmax(300px, .92fr)
+      minmax(280px, 1fr);
+    gap: 16px 24px;
+  }
+}
+
+@media (max-width: 980px) {
+  .public-site--v519 .v514-garden__copy {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+
+  .public-site--v519 .v516-map {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "core core"
+      "operation people"
+      "environment conditions";
+    gap: 16px 20px;
+  }
+
+  .public-site--v519 .v516-lens__panel small {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 640px) {
+  .public-site--v519 .v514-garden__layout {
+    width: min(calc(100% - 28px), var(--v519-shell));
+  }
+
+  .public-site--v519 .v514-garden__copy {
+    grid-template-columns: 1fr;
+    padding-top: 22px;
+  }
+
+  .public-site--v519 .v516-map {
+    width: 100%;
+    max-width: 360px;
+    margin-inline: auto;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "core"
+      "operation"
+      "people"
+      "environment"
+      "conditions";
+    gap: 12px;
+  }
+
+  .public-site--v519 .v516-lens {
+    width: min(100%, 340px);
+    justify-self: center;
+  }
+}
