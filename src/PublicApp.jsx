@@ -546,115 +546,80 @@ function IntegratedMethodSection() {
   const [openDimension, setOpenDimension] = useState(null);
   const [openStep, setOpenStep] = useState(null);
 
-  const toggleDimension = (id) => {
-    setOpenDimension((current) => current === id ? null : id);
-  };
-
-  const toggleStep = (index) => {
-    setOpenStep((current) => current === index ? null : index);
-  };
+  const toggleDimension = (id) => setOpenDimension((current) => current === id ? null : id);
+  const toggleStep = (index) => setOpenStep((current) => current === index ? null : index);
 
   return (
-    <section id="metodo" className="v58-work section-anchor" aria-labelledby="v58-work-title">
+    <section id="metodo" className="v513-work section-anchor" aria-labelledby="v513-work-title">
       <span id="como-miramos" className="section-anchor v57-hidden-anchor" aria-hidden="true" />
-      <div className="shell v58-work__shell">
+      <div className="shell v513-work__shell">
         {/* 04C.1 · ENCABEZADO · Una sola idea principal */}
-        <header className="v58-work__head">
+        <header className="v513-work__head">
           <span className="v54-kicker">Cómo trabaja Metamorfosis</span>
-          <h2 id="v58-work-title">Observar mejor para intervenir mejor</h2>
-          <p>Primero distinguimos qué dimensiones explican una situación. Después aplicamos un método para convertir esa comprensión en una intervención verificable.</p>
+          <h2 id="v513-work-title">Observar antes de intervenir</h2>
+          <p>Leemos una situación desde las dimensiones que importan y después aplicamos un método para convertir comprensión en capacidad.</p>
         </header>
 
-        {/* 04C.2 · QUÉ OBSERVAMOS · Cada dimensión abre su propio contenido */}
-        <section className="v58-layer v58-layer--dimensions" aria-labelledby="v58-dimensions-title">
-          <div className="v58-layer__heading">
-            <span className="v58-layer__number">01</span>
-            <div>
-              <span className="v54-eyebrow">Qué observamos</span>
-              <h3 id="v58-dimensions-title">Cuatro lentes para leer una situación</h3>
-            </div>
+        {/* 04C.2 · QUÉ OBSERVAMOS · Metamorfosis al centro, cuatro lentes alrededor */}
+        <div className="v513-observation">
+          <div className="v513-observation__label">
+            <span className="v513-index">01</span>
+            <div><span className="v54-eyebrow">Qué observamos</span><h3>Cuatro lentes para leer una situación</h3></div>
           </div>
-
-          <div className="v58-dimensions">
-            <div className="v58-garden-core" aria-label="Metamorfosis Jardín de innovación">
+          <div className="v513-observation__map">
+            {transformationPillars.map((item, index) => {
+              const isOpen = openDimension === item.id;
+              const positions = ['operation','people','environment','conditions'];
+              return (
+                <article key={item.id} className={`v513-lens v513-lens--${positions[index]} ${isOpen ? 'is-open' : ''}`}>
+                  <button type="button" className="v513-lens__trigger" onClick={() => toggleDimension(item.id)} aria-expanded={isOpen} aria-controls={`dimension-${item.id}`}>
+                    <span className="v513-lens__icon"><Icon name={item.icon} /></span>
+                    <strong>{item.title}</strong>
+                    <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v513-lens__arrow" />
+                  </button>
+                  <div id={`dimension-${item.id}`} className="v513-lens__panel" hidden={!isOpen}>
+                    <small>{item.signal}</small><p>{item.text}</p>
+                  </div>
+                </article>
+              );
+            })}
+            <div className="v513-core" aria-label="Metamorfosis, jardín de innovación">
+              <span className="v513-core__halo" aria-hidden="true" />
               <img src="/logo-metamorfosis-transparente.png" alt="" aria-hidden="true" />
               <strong>Metamorfosis</strong>
               <small>Jardín de innovación · Concepción</small>
             </div>
-
-            <div className="v58-dimension-grid">
-              {transformationPillars.map((item, index) => {
-                const isOpen = openDimension === item.id;
-                return (
-                  <article key={item.id} className={`v58-accordion-card v58-dimension-card ${isOpen ? 'is-open' : ''}`}>
-                    <button
-                      type="button"
-                      className="v58-accordion-trigger"
-                      onClick={() => toggleDimension(item.id)}
-                      aria-expanded={isOpen}
-                      aria-controls={`dimension-${item.id}`}
-                    >
-                      <span className="v58-accordion-icon"><Icon name={item.icon} /></span>
-                      <span className="v58-accordion-title">
-                        <strong>{item.title}</strong>
-                      </span>
-                      <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v58-accordion-arrow" />
-                    </button>
-                    <div id={`dimension-${item.id}`} className="v58-accordion-panel" hidden={!isOpen}>
-                      <small className="v510-panel-label">{item.signal}</small>
-                      <p>{item.text}</p>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
           </div>
-        </section>
+        </div>
 
-        {/* 04C.3 · CÓMO TRABAJAMOS · El método no se mezcla con las dimensiones */}
-        <section className="v58-layer v58-layer--method" aria-labelledby="v58-method-title">
-          <div className="v58-layer__heading">
-            <span className="v58-layer__number">02</span>
-            <div>
-              <span className="v54-eyebrow">Cómo trabajamos</span>
-              <h3 id="v58-method-title">Cinco etapas para convertir comprensión en capacidad</h3>
-            </div>
+        {/* 04C.3 · CÓMO TRABAJAMOS · Cinco etapas, cada una abre su explicación */}
+        <div className="v513-method">
+          <div className="v513-method__label">
+            <span className="v513-index">02</span>
+            <div><span className="v54-eyebrow">Cómo trabajamos</span><h3>Cinco etapas para convertir comprensión en capacidad</h3></div>
           </div>
-
-          <div className="v58-steps">
+          <div className="v513-method__grid">
             {processRoadmap.map((item, index) => {
               const isOpen = openStep === index;
               return (
-                <article key={item.title} className={`v58-step-card ${isOpen ? 'is-open' : ''}`}>
-                  <button
-                    type="button"
-                    className="v58-step-trigger"
-                    onClick={() => toggleStep(index)}
-                    aria-expanded={isOpen}
-                    aria-controls={`step-${index}`}
-                  >
-                    <span className="v58-step-number">0{index + 1}</span>
-                    <span className="v58-step-icon"><Icon name={item.icon} /></span>
-                    <span className="v58-step-title">
-                      <strong>{item.title}</strong>
-                    </span>
-                    <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v58-step-arrow" />
+                <article key={item.title} className={`v513-step ${isOpen ? 'is-open' : ''}`}>
+                  <button type="button" className="v513-step__trigger" onClick={() => toggleStep(index)} aria-expanded={isOpen} aria-controls={`step-${index}`}>
+                    <span className="v513-step__number">0{index + 1}</span>
+                    <span className="v513-step__icon"><Icon name={item.icon} /></span>
+                    <strong>{item.title}</strong>
+                    <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v513-step__arrow" />
                   </button>
-                  <div id={`step-${index}`} className="v58-step-panel" hidden={!isOpen}>
-                    <small className="v510-panel-label">{item.eyebrow}</small>
-                    <p>{item.text}</p>
+                  <div id={`step-${index}`} className="v513-step__panel" hidden={!isOpen}>
+                    <small>{item.eyebrow}</small><p>{item.text}</p>
                   </div>
                 </article>
               );
             })}
           </div>
-        </section>
+        </div>
 
-        {/* 04C.4 · CIERRE · La promesa del método, sin agregar una tercera explicación */}
-        <div className="v58-work__close">
-          <strong>Transformamos información dispersa</strong>
-          <span>en decisiones, capacidades y mejoras sostenibles</span>
-          <small>La intervención termina · La capacidad queda</small>
+        <div className="v513-work__close">
+          <strong>Información dispersa</strong><span aria-hidden="true">→</span><strong>decisiones más claras</strong><span aria-hidden="true">→</span><strong>capacidad que permanece</strong>
         </div>
       </div>
     </section>
@@ -672,9 +637,9 @@ function ResearchGardenSection() {
     <section id="exploramos" className="v58-research section-anchor" aria-labelledby="v58-research-title">
       <div className="shell v58-research__shell">
         <div className="v58-research__head">
-          <span className="v54-kicker">Preguntas que cultivamos</span>
+          <span className="v54-kicker">Investigación aplicada</span>
           <h2 id="v58-research-title">Preguntas que cultivamos</h2>
-          <p>Algunas preguntas nacen de proyectos y otras los preceden. Las seguimos, las contrastamos y buscamos situaciones reales donde puedan producir aprendizaje útil.</p>
+          <p>Seguimos preguntas que pueden convertirse en proyectos, aprendizajes o nuevas formas de intervención.</p>
         </div>
         <div className="v58-research__grid">
           {researchQuestions.map((item, index) => {
@@ -718,9 +683,9 @@ function PrinciplesSection() {
     <section id="principios" className="v511-principles section-anchor" aria-labelledby="v511-principles-title">
       <div className="shell v511-principles__layout">
         <header className="v511-principles__head">
-          <span className="v54-kicker">Cómo cuidamos una intervención</span>
-          <h2 id="v511-principles-title">Criterios que ordenan una intervención</h2>
-          <p>El rigor también está en saber qué no conviene agregar. Estos principios ordenan cómo delimitamos, probamos y aprendemos.</p>
+          <span className="v54-kicker">Criterios de trabajo</span>
+          <h2 id="v511-principles-title">Criterios que ordenan el trabajo</h2>
+          <p>Cuatro criterios sostienen la forma en que delimitamos, probamos y aprendemos de una intervención.</p>
         </header>
         <div className="v511-principles__grid">
           {laboratoryPrinciples.map((item, index) => {
@@ -759,38 +724,37 @@ function GardenEntrySituations() {
   const [openSituation, setOpenSituation] = useState(null);
 
   return (
-    <div className="v511-garden-entry" aria-labelledby="v511-entry-title">
-      <div className="v511-garden-entry__intro">
-        <span className="v54-eyebrow">Cuándo puede valer la pena intervenir</span>
-        <h3 id="v511-entry-title">Cuándo vale la pena intervenir</h3>
-        <p>Estas son señales de entrada. Si alguna se parece a tu situación, podemos empezar por comprenderla antes de definir una solución.</p>
+    <div className="v511-garden-entry v513-garden-entry" aria-labelledby="v511-entry-title">
+      <div className="v511-garden-entry__intro v513-garden-entry__intro">
+        <span className="v54-eyebrow">Cuándo conversar</span>
+        <h3 id="v511-entry-title">Señales de entrada</h3>
+        <p>Si alguna se parece a tu situación, podemos empezar por comprenderla antes de diseñar una respuesta.</p>
       </div>
-      <div className="v511-garden-entry__grid">
+      <div className="v511-garden-entry__grid v513-garden-entry__grid">
         {activeOfferUseCases.map((item, index) => {
           const isOpen = openSituation === index;
           return (
-            <article key={item.title} className={`v511-entry-card ${isOpen ? 'is-open' : ''}`}>
+            <article key={item.title} className={`v511-entry-card v513-entry-card ${isOpen ? 'is-open' : ''}`}>
               <button
                 type="button"
-                className="v511-entry-card__trigger"
+                className="v511-entry-card__trigger v513-entry-card__trigger"
                 onClick={() => setOpenSituation((current) => current === index ? null : index)}
                 aria-expanded={isOpen}
                 aria-controls={`entry-${index}`}
               >
-                <span className="v511-entry-card__number">0{index + 1}</span>
                 <span className="v511-entry-card__icon"><Icon name={item.icon} /></span>
                 <strong>{item.title}</strong>
                 <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v511-entry-card__arrow" />
               </button>
-              <div id={`entry-${index}`} className="v511-entry-card__panel" hidden={!isOpen}>
+              <div id={`entry-${index}`} className="v511-entry-card__panel v513-entry-card__panel" hidden={!isOpen}>
                 <p>{item.text}</p>
               </div>
             </article>
           );
         })}
       </div>
-      <div className="v511-garden-entry__cta">
-        <span>Si todavía no sabes cómo nombrar el problema, esa también puede ser una buena razón para conversar.</span>
+      <div className="v511-garden-entry__cta v513-garden-entry__cta">
+        <span>¿Todavía no sabes cómo nombrar el problema? Esa también puede ser una buena razón para conversar.</span>
         <SectionLink id="contacto" className="button button--small">Conversemos</SectionLink>
       </div>
     </div>
@@ -814,7 +778,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
@@ -853,13 +817,13 @@ function PublicSite() {
             {/* TÍTULO PRINCIPAL · Una sola línea en escritorio */}
             <header className="v512-garden__head">
               <span className="v54-kicker">Metamorfosis</span>
-              <h2>Un jardín para observar, probar y hacer crecer</h2>
+              <h2>Un jardín para observar, probar y crecer</h2>
             </header>
 
             {/* CONTEXTO · Dos ideas breves para entender la identidad sin saturar */}
-            <div className="v512-garden__context">
-              <p>Trabajamos sobre situaciones reales donde operación, personas, información, regulación y entorno pueden interactuar. Observamos qué relaciones importan y qué intervención tiene sentido.</p>
-              <p>Desde Concepción, la Región del Biobío es nuestro principal espacio de aprendizaje aplicado, sin convertir un territorio, industria o tipo de organización en una plantilla universal.</p>
+            <div className="v512-garden__context v513-garden__context">
+              <p>Desde Concepción trabajamos sobre situaciones reales para distinguir qué relaciones importan, qué conviene observar y cuándo una intervención tiene sentido.</p>
+              <span>Biobío es nuestro principal espacio de aprendizaje aplicado, no una plantilla universal.</span>
             </div>
 
             {/* POR QUÉ JARDÍN · Franja compacta, no una sección adicional */}
@@ -867,7 +831,7 @@ function PublicSite() {
               <span className="v512-garden__word">JARDÍN</span>
               <div>
                 <span className="v54-eyebrow">¿Por qué jardín?</span>
-                <p>Una intervención se siembra como pregunta, se observa en contexto, se prueba con cuidado y crece solo cuando la evidencia muestra que vale la pena sostenerla.</p>
+                <p>Sembramos preguntas, observamos en contexto y hacemos crecer solo aquello que demuestra valor.</p>
               </div>
             </div>
 
@@ -890,8 +854,8 @@ function PublicSite() {
           <div className="shell v59-team__layout">
             <div className="v59-team__value">
               <span className="v54-kicker">Equipo</span>
-              <h2>Ingeniería y derecho, una misma lectura</h2>
-              <p>Combinamos procesos, capacidades, decisiones, reglas y relaciones externas en una misma lectura. No buscamos agregar complejidad, sino distinguir mejor qué está ocurriendo y qué intervención tiene sentido.</p>
+              <h2>Capacidades que se complementan</h2>
+              <p>Integramos procesos, capacidades, reglas y relaciones externas para leer una misma situación desde ángulos complementarios.</p>
               <div className="v59-team__strengths">
                 <span><Icon name="schema" /><strong>Procesos y capacidades</strong><small>Cómo funciona realmente el trabajo</small></span>
                 <span><Icon name="rule" /><strong>Reglas y responsabilidades</strong><small>Bajo qué condiciones puede actuar cada actor</small></span>
@@ -911,8 +875,8 @@ function PublicSite() {
           <div className="shell audit-contact__grid">
             <div className="audit-contact__intro">
               <span className="kicker">Conversemos</span>
-              <h2>Conversemos antes de definir la solución</h2>
-              <p>Podemos conversar a partir de una necesidad concreta, una pregunta todavía abierta, una oportunidad de colaboración o una hipótesis que valga la pena poner a prueba.</p>
+              <h2>Conversemos</h2>
+              <p>Una necesidad concreta, una pregunta abierta o una oportunidad pueden ser suficientes para comenzar.</p>
               <div className="audit-contact__facts">
                 <span><Icon name="schedule" /><strong>30 min</strong><small>primera conversación</small></span>
                 <span><Icon name="location_on" /><strong>Concepción</strong><small>Región del Biobío</small></span>
