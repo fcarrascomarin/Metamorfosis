@@ -549,7 +549,7 @@ function InnovationEnginesSection() {
       <div className="shell v514-engines__layout">
         <header className="v514-section-head v514-engines__head">
           <span className="v54-kicker">Qué hacemos</span>
-          <h2 id="v514-engines-title">Dos formas de crear valor</h2>
+          <h2 id="v514-engines-title">Dos maneras de convertir una posibilidad en solución</h2>
           <p>Metamorfosis puede crear una respuesta nueva o ayudar a que una capacidad existente encuentre una forma más útil de crecer.</p>
         </header>
         <div className="v514-engines__grid">
@@ -578,7 +578,7 @@ function CultivationSection() {
       <div className="shell v514-cultivation__layout">
         <header className="v514-section-head v514-cultivation__head">
           <span className="v54-kicker">Qué cultivamos</span>
-          <h2 id="v514-cultivation-title">Preguntas que cultivamos</h2>
+          <h2 id="v514-cultivation-title">Preguntas que ya estamos convirtiendo en trabajo</h2>
           <p>El jardín sigue activo incluso antes de un encargo. Observamos líneas donde una buena pregunta puede convertirse en una solución, un proyecto o una nueva capacidad.</p>
         </header>
         <div className="v514-cultivation__grid">
@@ -662,7 +662,7 @@ function IntegratedMethodSection() {
         <div className="v513-method">
           <div className="v513-method__label">
             <span className="v513-index">02</span>
-            <div><span className="v54-eyebrow">Cómo trabajamos</span><h3>Cinco etapas para transformar comprensión en capacidad</h3></div>
+            <div><span className="v54-eyebrow">Cómo trabajamos</span><h3>Cinco etapas para convertir comprensión en capacidad</h3></div>
           </div>
           <div className="v513-method__grid">
             {processRoadmap.map((item, index) => {
@@ -844,7 +844,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
@@ -852,26 +852,22 @@ function PublicSite() {
         <section id="inicio" className="v54-hero section-anchor" style={{ '--section-image': `url(${heroImage})` }} onPointerMove={handleHeroMove}>
           <div className="v54-hero__shade" aria-hidden="true" />
           <div className="v54-hero__glow" aria-hidden="true" />
-          <div className="shell v515-hero">
-            <header className="v515-hero__headline">
+          <div className="shell v54-hero__grid">
+            <div className="v54-hero__copy">
               <span className="v54-kicker">Jardín de innovación · Concepción</span>
-              <h1>Convertimos problemas en soluciones que crecen</h1>
-            </header>
-            <div className="v515-hero__body">
-              <div className="v54-hero__copy">
-                <p className="v54-hero__lead">Conectamos conocimiento, capacidades y condiciones de operación para crear respuestas nuevas o hacer crecer iniciativas que ya tienen valor.</p>
-                <div className="hero__actions">
-                  <SectionLink className="button audit-primary-cta" id="contacto">Conversemos</SectionLink>
-                  <SectionLink className="button button--ghost-light" id="hacemos">Qué hacemos</SectionLink>
-                </div>
-                <div className="v54-hero__location"><Icon name="location_on" /> Con base en Concepción, trabajamos principalmente en la Región del Biobío.</div>
+              <h1>Convertimos problemas reales en soluciones que pueden crecer</h1>
+              <p className="v54-hero__lead">Conectamos conocimiento, capacidades y condiciones de operación para crear respuestas nuevas o hacer crecer iniciativas que ya tienen valor.</p>
+              <div className="hero__actions">
+                <SectionLink className="button audit-primary-cta" id="contacto">Conversemos</SectionLink>
+                <SectionLink className="button button--ghost-light" id="hacemos">Qué hacemos</SectionLink>
               </div>
-              <aside className="v54-hero__manifesto" aria-label="Forma de trabajo de Metamorfosis">
-                <span className="v54-eyebrow">Qué nos mueve</span>
-                <blockquote>Una buena solución no siempre existe de antemano</blockquote>
-                <p>Observamos, conectamos capacidades y probamos respuestas antes de decidir qué vale la pena sostener, ajustar o escalar.</p>
-              </aside>
+              <div className="v54-hero__location"><Icon name="location_on" /> Con base en Concepción, trabajamos principalmente en la Región del Biobío.</div>
             </div>
+            <aside className="v54-hero__manifesto" aria-label="Forma de trabajo de Metamorfosis">
+              <span className="v54-eyebrow">Qué nos mueve</span>
+              <blockquote>Una buena solución no siempre existe de antemano</blockquote>
+              <p>Observamos, conectamos capacidades y probamos respuestas antes de decidir qué vale la pena sostener, ajustar o escalar.</p>
+            </aside>
           </div>
         </section>
 
@@ -880,7 +876,7 @@ function PublicSite() {
           <div className="shell v514-garden__layout">
             <div className="v514-garden__statement">
               <span className="v54-kicker">Jardín de innovación</span>
-              <h2>Sembramos preguntas, cultivamos soluciones</h2>
+              <h2>Sembramos preguntas y hacemos crecer lo que demuestra valor</h2>
             </div>
             <div className="v514-garden__copy">
               <p>Trabajamos sobre problemas donde conocimiento, información, recursos o capacidades todavía no consiguen producir una respuesta suficientemente útil.</p>
@@ -909,7 +905,7 @@ function PublicSite() {
           <div className="shell v59-team__layout">
             <div className="v59-team__value">
               <span className="v54-kicker">Equipo</span>
-              <h2>Capacidades que se complementan</h2>
+              <h2>Dos capacidades técnicas, una lectura integrada</h2>
               <p>Ingeniería y derecho se combinan para comprender cómo funciona una situación, quién puede actuar, bajo qué reglas y qué relaciones pueden cambiar el resultado.</p>
               <div className="v59-team__strengths">
                 <span><Icon name="schema" /><strong>Procesos y capacidades</strong><small>Cómo funciona realmente el trabajo</small></span>
