@@ -873,11 +873,12 @@ function PublicSite() {
             <div className="v514-garden__statement">
               <span className="v54-kicker">Jardín de innovación</span>
               <h2>Sembramos preguntas, cultivamos soluciones</h2>
-            </div>
-            <div className="v514-garden__copy">
+              <div className="v514-garden__copy">
               <p>Trabajamos sobre problemas donde conocimiento, información o capacidades todavía no consiguen producir una respuesta suficientemente útil.</p>
               <p>Observamos, probamos y hacemos crecer solo aquello que demuestra valor.</p>
             </div>
+            </div>
+            
             <GardenKnowledgeSection />
           </div>
         </section>
