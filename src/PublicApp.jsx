@@ -544,55 +544,36 @@ function SystemsMap() {
 // 04B.1 · DOS MOTORES · Qué produce Metamorfosis
 // -----------------------------------------------------------------------------
 function InnovationEnginesSection() {
-  return (
-    <section id="hacemos" className="v514-engines section-anchor" aria-labelledby="v514-engines-title">
-      <div className="shell v514-engines__layout">
-        <header className="v514-section-head v514-engines__head">
-          <span className="v54-kicker">Qué hacemos</span>
-          <h2 id="v514-engines-title">Dos maneras de convertir una posibilidad en solución</h2>
-          <p>Metamorfosis puede crear una respuesta nueva o ayudar a que una capacidad existente encuentre una forma más útil de crecer.</p>
-        </header>
-        <div className="v514-engines__grid">
-          {innovationEngines.map((item) => (
-            <article key={item.id} className="v514-engine-card">
-              <span className="v514-engine-card__icon"><Icon name={item.icon} /></span>
-              <span className="v54-eyebrow">{item.eyebrow}</span>
-              <h3>{item.title}</h3>
-              <p>{item.text}</p>
-              <SectionLink id="contacto" className="v514-text-link">Conversemos <Icon name="arrow_forward" /></SectionLink>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+  const [openEngines, setOpenEngines] = useState(() => new Set());
+  const toggleEngine = (id) => {
+    setOpenEngines((current) => {
+      const next = new Set(current);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
 
-// -----------------------------------------------------------------------------
-// 04B.2 · QUÉ CULTIVAMOS · Evidencia de trabajo propio, sin catálogo
-// -----------------------------------------------------------------------------
-function CultivationSection() {
-  const [openArea, setOpenArea] = useState(null);
   return (
-    <section id="exploramos" className="v514-cultivation section-anchor" aria-labelledby="v514-cultivation-title">
-      <div className="shell v514-cultivation__layout">
-        <header className="v514-section-head v514-cultivation__head">
-          <span className="v54-kicker">Qué cultivamos</span>
-          <h2 id="v514-cultivation-title">Preguntas que ya estamos convirtiendo en trabajo</h2>
-          <p>El jardín sigue activo incluso antes de un encargo. Observamos líneas donde una buena pregunta puede convertirse en una solución, un proyecto o una nueva capacidad.</p>
+    <section id="hacemos" className="v516-engines section-anchor" aria-labelledby="v516-engines-title">
+      <div className="shell v516-engines__layout">
+        <header className="v516-section-head">
+          <span className="v54-kicker">Qué hacemos</span>
+          <h2 id="v516-engines-title">Dos formas de crear valor</h2>
+          <p>Creamos respuestas nuevas o ayudamos a que una capacidad existente encuentre una forma más útil de crecer.</p>
         </header>
-        <div className="v514-cultivation__grid">
-          {cultivationAreas.map((item, index) => {
-            const isOpen = openArea === index;
+        <div className="v516-engines__grid">
+          {innovationEngines.map((item) => {
+            const isOpen = openEngines.has(item.id);
             return (
-              <article key={item.title} className={`v514-cultivation-card ${isOpen ? 'is-open' : ''}`}>
-                <button type="button" className="v514-cultivation-card__trigger" onClick={() => setOpenArea((current) => current === index ? null : index)} aria-expanded={isOpen} aria-controls={`cultivation-${index}`}>
-                  <span className="v514-cultivation-card__icon"><Icon name={item.icon} /></span>
-                  <strong>{item.title}</strong>
-                  <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v514-cultivation-card__arrow" />
+              <article key={item.id} className={`v516-engine ${isOpen ? 'is-open' : ''}`}>
+                <button type="button" className="v516-engine__trigger" onClick={() => toggleEngine(item.id)} aria-expanded={isOpen} aria-controls={`engine-${item.id}`}>
+                  <span className="v516-engine__icon"><Icon name={item.icon} /></span>
+                  <span className="v516-engine__title"><small>{item.eyebrow}</small><strong>{item.title}</strong></span>
+                  <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v516-engine__arrow" />
                 </button>
-                <div id={`cultivation-${index}`} className="v514-cultivation-card__panel" hidden={!isOpen}>
+                <div id={`engine-${item.id}`} className="v516-engine__panel" hidden={!isOpen}>
                   <p>{item.text}</p>
+                  <SectionLink id="contacto" className="v514-text-link">Conversemos <Icon name="arrow_forward" /></SectionLink>
                 </div>
               </article>
             );
@@ -604,88 +585,136 @@ function CultivationSection() {
 }
 
 // -----------------------------------------------------------------------------
+// 04B.2 · QUÉ CULTIVAMOS · Evidencia de trabajo propio, sin catálogo
+// -----------------------------------------------------------------------------
+function GardenKnowledgeSection() {
+  const [openAreas, setOpenAreas] = useState(() => new Set());
+  const [openPrinciples, setOpenPrinciples] = useState(() => new Set());
+
+  const toggleSet = (setter, key) => setter((current) => {
+    const next = new Set(current);
+    next.has(key) ? next.delete(key) : next.add(key);
+    return next;
+  });
+
+  return (
+    <div className="v516-garden-knowledge" aria-label="Qué cultivamos y criterios de trabajo">
+      <div className="v516-garden-column">
+        <header className="v516-garden-column__head">
+          <span className="v54-eyebrow">Qué cultivamos</span>
+          <h3>Líneas que estamos haciendo crecer</h3>
+        </header>
+        <div className="v516-garden-column__buttons">
+          {cultivationAreas.map((item, index) => {
+            const key = `area-${index}`;
+            const isOpen = openAreas.has(key);
+            return (
+              <article key={item.title} className={`v516-garden-button ${isOpen ? 'is-open' : ''}`}>
+                <button type="button" onClick={() => toggleSet(setOpenAreas, key)} aria-expanded={isOpen} aria-controls={key}>
+                  <span className="v516-garden-button__icon"><Icon name={item.icon} /></span>
+                  <strong>{item.title}</strong>
+                  <Icon name={isOpen ? 'expand_less' : 'expand_more'} />
+                </button>
+                <div id={key} className="v516-garden-button__panel" hidden={!isOpen}><p>{item.text}</p></div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="v516-garden-column">
+        <header className="v516-garden-column__head">
+          <span className="v54-eyebrow">Criterios de trabajo</span>
+          <h3>Cómo cuidamos una intervención</h3>
+        </header>
+        <div className="v516-garden-column__buttons">
+          {laboratoryPrinciples.map((item, index) => {
+            const key = `principle-${index}`;
+            const isOpen = openPrinciples.has(key);
+            return (
+              <article key={item.title} className={`v516-garden-button ${isOpen ? 'is-open' : ''}`}>
+                <button type="button" onClick={() => toggleSet(setOpenPrinciples, key)} aria-expanded={isOpen} aria-controls={key}>
+                  <span className="v516-garden-button__icon"><Icon name={item.icon} /></span>
+                  <strong>{item.title}</strong>
+                  <Icon name={isOpen ? 'expand_less' : 'expand_more'} />
+                </button>
+                <div id={key} className="v516-garden-button__panel" hidden={!isOpen}><p>{item.text}</p></div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// -----------------------------------------------------------------------------
 // 04C · CÓMO TRABAJA METAMORFOSIS · DOS CAPAS, DOS LÓGICAS
 //      1) Qué observamos  2) Cómo trabajamos
 //      Cada concepto despliega su propia explicación debajo del título.
 // -----------------------------------------------------------------------------
 function IntegratedMethodSection() {
-  const [openDimension, setOpenDimension] = useState(null);
-  const [openStep, setOpenStep] = useState(null);
+  const [openDimensions, setOpenDimensions] = useState(() => new Set());
+  const [openSteps, setOpenSteps] = useState(() => new Set());
 
-  const toggleDimension = (id) => setOpenDimension((current) => current === id ? null : id);
-  const toggleStep = (index) => setOpenStep((current) => current === index ? null : index);
+  const toggleInSet = (setter, key) => setter((current) => {
+    const next = new Set(current);
+    next.has(key) ? next.delete(key) : next.add(key);
+    return next;
+  });
 
   return (
-    <section id="metodo" className="v513-work section-anchor" aria-labelledby="v513-work-title">
-      <span id="como-miramos" className="section-anchor v57-hidden-anchor" aria-hidden="true" />
-      <div className="shell v513-work__shell">
-        {/* 04C.1 · ENCABEZADO · Una sola idea principal */}
-        <header className="v513-work__head">
+    <section id="metodo" className="v516-work section-anchor" aria-labelledby="v516-work-title">
+      <div className="shell v516-work__shell">
+        <header className="v516-work__head">
           <span className="v54-kicker">Cómo trabaja Metamorfosis</span>
-          <h2 id="v513-work-title">Observar antes de intervenir</h2>
-          <p>Leemos una situación desde las dimensiones que importan y después aplicamos un método para convertir comprensión en capacidad.</p>
+          <h2 id="v516-work-title">Observar antes de intervenir</h2>
+          <p>Leemos una situación desde las dimensiones que importan y aplicamos un método para convertir esa comprensión en capacidad.</p>
         </header>
 
-        {/* 04C.2 · QUÉ OBSERVAMOS · Metamorfosis al centro, cuatro lentes alrededor */}
-        <div className="v513-observation">
-          <div className="v513-observation__label">
-            <span className="v513-index">01</span>
-            <div><span className="v54-eyebrow">Qué observamos</span><h3>Cuatro lentes para leer una situación</h3></div>
-          </div>
-          <div className="v513-observation__map">
-            {transformationPillars.map((item, index) => {
-              const isOpen = openDimension === item.id;
-              const positions = ['operation','people','environment','conditions'];
-              return (
-                <article key={item.id} className={`v513-lens v513-lens--${positions[index]} ${isOpen ? 'is-open' : ''}`}>
-                  <button type="button" className="v513-lens__trigger" onClick={() => toggleDimension(item.id)} aria-expanded={isOpen} aria-controls={`dimension-${item.id}`}>
-                    <span className="v513-lens__icon"><Icon name={item.icon} /></span>
-                    <strong>{item.title}</strong>
-                    <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v513-lens__arrow" />
-                  </button>
-                  <div id={`dimension-${item.id}`} className="v513-lens__panel" hidden={!isOpen}>
-                    <small>{item.signal}</small><p>{item.text}</p>
-                  </div>
-                </article>
-              );
-            })}
-            <div className="v513-core" aria-label="Metamorfosis, jardín de innovación">
-              <span className="v513-core__halo" aria-hidden="true" />
-              <img src="/logo-metamorfosis-transparente.png" alt="" aria-hidden="true" />
-              <strong>Metamorfosis</strong>
-              <small>Jardín de innovación · Concepción</small>
-            </div>
+        <div className="v516-map">
+          {transformationPillars.map((item, index) => {
+            const isOpen = openDimensions.has(item.id);
+            const positions = ['operation','people','environment','conditions'];
+            return (
+              <article key={item.id} className={`v516-lens v516-lens--${positions[index]} ${isOpen ? 'is-open' : ''}`}>
+                <button type="button" className="v516-lens__trigger" onClick={() => toggleInSet(setOpenDimensions, item.id)} aria-expanded={isOpen} aria-controls={`lens-${item.id}`}>
+                  <span className="v516-lens__icon"><Icon name={item.icon} /></span>
+                  <strong>{item.title}</strong>
+                  <Icon name={isOpen ? 'expand_less' : 'expand_more'} />
+                </button>
+                <div id={`lens-${item.id}`} className="v516-lens__panel" hidden={!isOpen}>
+                  <small>{item.signal}</small><p>{item.text}</p>
+                </div>
+              </article>
+            );
+          })}
+          <div className="v516-core">
+            <img src="/logo-metamorfosis-transparente.png" alt="" aria-hidden="true" />
+            <strong>Metamorfosis</strong>
+            <small>Jardín de innovación · Concepción</small>
           </div>
         </div>
 
-        {/* 04C.3 · CÓMO TRABAJAMOS · Cinco etapas, cada una abre su explicación */}
-        <div className="v513-method">
-          <div className="v513-method__label">
-            <span className="v513-index">02</span>
-            <div><span className="v54-eyebrow">Cómo trabajamos</span><h3>Cinco etapas para convertir comprensión en capacidad</h3></div>
-          </div>
-          <div className="v513-method__grid">
+        <div className="v516-method">
+          <div className="v516-method__head"><span className="v54-eyebrow">Cómo trabajamos</span><h3>Cinco etapas para transformar comprensión en capacidad</h3></div>
+          <div className="v516-method__grid">
             {processRoadmap.map((item, index) => {
-              const isOpen = openStep === index;
+              const key = `step-${index}`;
+              const isOpen = openSteps.has(key);
               return (
-                <article key={item.title} className={`v513-step ${isOpen ? 'is-open' : ''}`}>
-                  <button type="button" className="v513-step__trigger" onClick={() => toggleStep(index)} aria-expanded={isOpen} aria-controls={`step-${index}`}>
-                    <span className="v513-step__number">0{index + 1}</span>
-                    <span className="v513-step__icon"><Icon name={item.icon} /></span>
+                <article key={item.title} className={`v516-step ${isOpen ? 'is-open' : ''}`}>
+                  <button type="button" className="v516-step__trigger" onClick={() => toggleInSet(setOpenSteps, key)} aria-expanded={isOpen} aria-controls={key}>
+                    <span className="v516-step__number">0{index + 1}</span>
+                    <span className="v516-step__icon"><Icon name={item.icon} /></span>
                     <strong>{item.title}</strong>
-                    <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v513-step__arrow" />
+                    <Icon name={isOpen ? 'expand_less' : 'expand_more'} />
                   </button>
-                  <div id={`step-${index}`} className="v513-step__panel" hidden={!isOpen}>
-                    <small>{item.eyebrow}</small><p>{item.text}</p>
-                  </div>
+                  <div id={key} className="v516-step__panel" hidden={!isOpen}><small>{item.eyebrow}</small><p>{item.text}</p></div>
                 </article>
               );
             })}
           </div>
-        </div>
-
-        <div className="v513-work__close">
-          <strong>Información dispersa</strong><span aria-hidden="true">→</span><strong>decisiones más claras</strong><span aria-hidden="true">→</span><strong>capacidad que permanece</strong>
         </div>
       </div>
     </section>
@@ -742,44 +771,7 @@ function ResearchGardenSection() {
 //      Se mantienen separados de las situaciones de entrada para no mezclar
 //      “cuándo conversar” con “cómo cuidamos el trabajo”.
 // -----------------------------------------------------------------------------
-function PrinciplesSection() {
-  const [openPrinciple, setOpenPrinciple] = useState(null);
-
-  return (
-    <section id="principios" className="v511-principles section-anchor" aria-labelledby="v511-principles-title">
-      <div className="shell v511-principles__layout">
-        <header className="v511-principles__head">
-          <span className="v54-kicker">Criterios de trabajo</span>
-          <h2 id="v511-principles-title">Criterios que ordenan el trabajo</h2>
-          <p>Cuatro criterios sostienen la forma en que delimitamos, probamos y aprendemos de una intervención.</p>
-        </header>
-        <div className="v511-principles__grid">
-          {laboratoryPrinciples.map((item, index) => {
-            const isOpen = openPrinciple === index;
-            return (
-              <article key={item.title} className={`v511-principle ${isOpen ? 'is-open' : ''}`}>
-                <button
-                  type="button"
-                  className="v511-principle__trigger"
-                  onClick={() => setOpenPrinciple((current) => current === index ? null : index)}
-                  aria-expanded={isOpen}
-                  aria-controls={`principle-${index}`}
-                >
-                  <span className="v511-principle__icon"><Icon name={item.icon} /></span>
-                  <strong>{item.title}</strong>
-                  <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v511-principle__arrow" />
-                </button>
-                <div id={`principle-${index}`} className="v511-principle__panel" hidden={!isOpen}>
-                  <p>{item.text}</p>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
+function PrinciplesSection() { return null; }
 
 // -----------------------------------------------------------------------------
 // 04F · CUÁNDO INTERVENIR · Situaciones de entrada dentro del Jardín
@@ -844,7 +836,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
@@ -852,22 +844,26 @@ function PublicSite() {
         <section id="inicio" className="v54-hero section-anchor" style={{ '--section-image': `url(${heroImage})` }} onPointerMove={handleHeroMove}>
           <div className="v54-hero__shade" aria-hidden="true" />
           <div className="v54-hero__glow" aria-hidden="true" />
-          <div className="shell v54-hero__grid">
-            <div className="v54-hero__copy">
+          <div className="shell v515-hero">
+            <header className="v515-hero__headline">
               <span className="v54-kicker">Jardín de innovación · Concepción</span>
-              <h1>Convertimos problemas reales en soluciones que pueden crecer</h1>
-              <p className="v54-hero__lead">Conectamos conocimiento, capacidades y condiciones de operación para crear respuestas nuevas o hacer crecer iniciativas que ya tienen valor.</p>
-              <div className="hero__actions">
-                <SectionLink className="button audit-primary-cta" id="contacto">Conversemos</SectionLink>
-                <SectionLink className="button button--ghost-light" id="hacemos">Qué hacemos</SectionLink>
+              <h1>Convertimos problemas en soluciones que crecen</h1>
+            </header>
+            <div className="v515-hero__body">
+              <div className="v54-hero__copy">
+                <p className="v54-hero__lead">Conectamos conocimiento, capacidades y condiciones de operación para crear respuestas nuevas o hacer crecer iniciativas que ya tienen valor.</p>
+                <div className="hero__actions">
+                  <SectionLink className="button audit-primary-cta" id="contacto">Conversemos</SectionLink>
+                  <SectionLink className="button button--ghost-light" id="hacemos">Qué hacemos</SectionLink>
+                </div>
+                <div className="v54-hero__location"><Icon name="location_on" /> Con base en Concepción, trabajamos principalmente en la Región del Biobío.</div>
               </div>
-              <div className="v54-hero__location"><Icon name="location_on" /> Con base en Concepción, trabajamos principalmente en la Región del Biobío.</div>
+              <aside className="v54-hero__manifesto" aria-label="Forma de trabajo de Metamorfosis">
+                <span className="v54-eyebrow">Qué nos mueve</span>
+                <blockquote>Una buena solución no siempre existe de antemano</blockquote>
+                <p>Observamos, conectamos capacidades y probamos respuestas antes de decidir qué vale la pena sostener, ajustar o escalar.</p>
+              </aside>
             </div>
-            <aside className="v54-hero__manifesto" aria-label="Forma de trabajo de Metamorfosis">
-              <span className="v54-eyebrow">Qué nos mueve</span>
-              <blockquote>Una buena solución no siempre existe de antemano</blockquote>
-              <p>Observamos, conectamos capacidades y probamos respuestas antes de decidir qué vale la pena sostener, ajustar o escalar.</p>
-            </aside>
           </div>
         </section>
 
@@ -876,15 +872,13 @@ function PublicSite() {
           <div className="shell v514-garden__layout">
             <div className="v514-garden__statement">
               <span className="v54-kicker">Jardín de innovación</span>
-              <h2>Sembramos preguntas y hacemos crecer lo que demuestra valor</h2>
+              <h2>Sembramos preguntas, cultivamos soluciones</h2>
             </div>
             <div className="v514-garden__copy">
               <p>Trabajamos sobre problemas donde conocimiento, información, recursos o capacidades todavía no consiguen producir una respuesta suficientemente útil.</p>
-              <p>El jardín no obliga a que todo crezca. Primero observa, después prueba y solo entonces decide qué merece más espacio.</p>
-              <div className="v514-garden__principle">
-                <span>Concepción</span><strong>→</strong><span>Biobío como campo principal de aprendizaje aplicado</span>
-              </div>
+              <p>Primero observamos, después probamos y solo entonces decidimos qué merece crecer.</p>
             </div>
+            <GardenKnowledgeSection />
           </div>
         </section>
 
@@ -894,18 +888,12 @@ function PublicSite() {
         {/* 05.3 + 05.4 · CÓMO TRABAJA METAMORFOSIS · Mapa + método integrados */}
         <IntegratedMethodSection />
 
-        {/* 05.5 · QUÉ CULTIVAMOS · Trabajo propio y líneas abiertas */}
-        <CultivationSection />
-
-        {/* 05.6 · PRINCIPIOS · Criterios que ordenan una intervención */}
-        <PrinciplesSection />
-
         {/* 05.8 · EQUIPO · Diferenciación conjunta + perfiles en columna */}
         <section id="equipo" className="v59-team section-anchor">
           <div className="shell v59-team__layout">
             <div className="v59-team__value">
               <span className="v54-kicker">Equipo</span>
-              <h2>Dos capacidades técnicas, una lectura integrada</h2>
+              <h2>Dos capacidades, una misma lectura</h2>
               <p>Ingeniería y derecho se combinan para comprender cómo funciona una situación, quién puede actuar, bajo qué reglas y qué relaciones pueden cambiar el resultado.</p>
               <div className="v59-team__strengths">
                 <span><Icon name="schema" /><strong>Procesos y capacidades</strong><small>Cómo funciona realmente el trabajo</small></span>
@@ -942,7 +930,7 @@ function PublicSite() {
       <footer className="site-footer audit-footer v54-footer">
         <div className="shell audit-footer__grid">
           <div className="site-footer__brand"><Brand /><p>Jardín de innovación con base en Concepción. Transformamos la manera en que las organizaciones generan valor, integrando eficiencia operacional, condiciones humanas y una relación responsable con los sistemas vivos.</p></div>
-          <div><span className="footer-title">Navegación</span><SectionLink id="jardin">Jardín</SectionLink><SectionLink id="hacemos">Qué hacemos</SectionLink><SectionLink id="metodo">Cómo trabajamos</SectionLink><SectionLink id="exploramos">Qué cultivamos</SectionLink><SectionLink id="equipo">Equipo</SectionLink></div>
+          <div><span className="footer-title">Navegación</span><SectionLink id="jardin">Jardín</SectionLink><SectionLink id="hacemos">Qué hacemos</SectionLink><SectionLink id="metodo">Cómo trabajamos</SectionLink><SectionLink id="equipo">Equipo</SectionLink></div>
           <div><span className="footer-title">Contacto</span><a className="footer-icon-link" href={`mailto:${contact.email}`}><Icon name="mail" /><span>{contact.email}</span></a><a className="footer-icon-link" href={OS_SITE_URL}><Icon name="lock" /><span>Acceso OS</span></a></div>
         </div>
         <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis</span><span>Concepción · Región del Biobío · Chile</span></div>

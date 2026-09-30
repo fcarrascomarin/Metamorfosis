@@ -9,7 +9,6 @@ export const publicNavigation = [
   { id: 'jardin', label: 'Jardín', icon: 'query_stats' },
   { id: 'hacemos', label: 'Qué hacemos', icon: 'design_services' },
   { id: 'metodo', label: 'Cómo trabajamos', icon: 'timeline' },
-  { id: 'exploramos', label: 'Qué cultivamos', icon: 'search' },
   { id: 'equipo', label: 'Equipo', icon: 'group' }
 ];
 
