@@ -697,7 +697,7 @@ function IntegratedMethodSection() {
         </div>
 
         <div className="v516-method">
-          <div className="v516-method__head"><span className="v54-eyebrow">Cómo trabajamos</span><h3>Cinco etapas para transformar comprensión en capacidad</h3></div>
+          <div className="v516-method__head"><h3>Cinco etapas para transformar comprensión en capacidad</h3></div>
           <div className="v516-method__grid">
             {processRoadmap.map((item, index) => {
               const key = `step-${index}`;
@@ -836,7 +836,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">

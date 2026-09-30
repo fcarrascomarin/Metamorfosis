@@ -20817,3 +20817,199 @@ textarea::placeholder { color: #7f98ac; }
     padding-top: 42px;
   }
 }
+
+/* =============================================================================
+   WEB PÚBLICA V5.18 · CONTINUIDAD VISUAL + MÓVIL CENTRADO
+   -----------------------------------------------------------------------------
+   OBJETIVO
+   - Acercar el texto secundario al título del hero para aprovechar mejor la
+     primera pantalla sin perder aire.
+   - Tratar “Observar antes de intervenir” + “Cinco etapas...” como una sola
+     explicación continua, sin repetir “Cómo trabajamos”.
+   - Centrar mapa, tarjetas y botones en móvil para que la composición no quede
+     pegada al margen izquierdo.
+   - Mantener tarjetas compactas cerradas y expansión individual al clic.
+
+   EDICIÓN RÁPIDA
+   01. Hero
+   02. Sección integrada: observación + método
+   03. Cinco etapas
+   04. Móvil: mapa centrado
+   05. Móvil: etapas centradas
+   06. Móvil: botones del Jardín y Qué hacemos
+   ============================================================================= */
+
+/* 01 · HERO ---------------------------------------------------------------- */
+/* Reduce el vacío entre título y contenido secundario sin apretar el conjunto. */
+.public-site--v518 .v515-hero {
+  gap: clamp(28px, 3.8vh, 44px);
+}
+
+.public-site--v518 .v515-hero__body {
+  align-items: center;
+}
+
+.public-site--v518 .v54-hero__lead {
+  font-size: clamp(1.06rem, 1.22vw, 1.2rem);
+  line-height: 1.6;
+  max-width: 60ch;
+}
+
+/* 02 · OBSERVACIÓN + MÉTODO COMO UNA SOLA HISTORIA ------------------------ */
+.public-site--v518 .v516-work__shell {
+  gap: 0;
+}
+
+.public-site--v518 .v516-work__head {
+  margin-bottom: 28px;
+}
+
+/* Las cinco etapas dejan de sentirse como otra sección independiente. */
+.public-site--v518 .v516-method {
+  min-height: 0;
+  margin-top: clamp(42px, 5vw, 64px);
+  padding: clamp(36px, 4vw, 50px) 0 0;
+  border-top: 1px solid var(--v516-line);
+}
+
+.public-site--v518 .v516-method__head {
+  margin: 0 auto clamp(24px, 3vw, 34px);
+  max-width: 920px;
+  text-align: center;
+}
+
+.public-site--v518 .v516-method__head h3 {
+  margin: 0;
+  font-size: clamp(2rem, 2.55vw, 2.75rem);
+  line-height: 1.04;
+  text-align: center;
+}
+
+/* 03 · CINCO ETAPAS -------------------------------------------------------- */
+.public-site--v518 .v516-method__grid {
+  gap: 14px;
+  align-items: start;
+}
+
+.public-site--v518 .v516-step {
+  min-width: 0;
+}
+
+.public-site--v518 .v516-step__trigger {
+  min-height: 70px;
+}
+
+/* 04 · MÓVIL: MAPA CENTRADO ------------------------------------------------ */
+@media (max-width: 640px) {
+  .public-site--v518 .v516-work__head {
+    max-width: 340px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .public-site--v518 .v516-work__head h2,
+  .public-site--v518 .v516-work__head > p {
+    text-align: center;
+  }
+
+  .public-site--v518 .v516-map {
+    width: 100%;
+    max-width: 360px;
+    margin-inline: auto;
+    justify-items: center;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "core"
+      "operation"
+      "people"
+      "environment"
+      "conditions";
+    gap: 12px;
+  }
+
+  .public-site--v518 .v516-core,
+  .public-site--v518 .v516-lens {
+    width: min(100%, 340px);
+    justify-self: center;
+  }
+
+  .public-site--v518 .v516-core {
+    min-height: 170px;
+    padding: 22px;
+  }
+
+  .public-site--v518 .v516-lens__trigger {
+    min-height: 62px;
+    grid-template-columns: 42px minmax(0,1fr) 18px;
+    padding: 9px 12px;
+  }
+
+  .public-site--v518 .v516-lens__panel {
+    padding: 0 14px 14px 66px;
+  }
+
+  /* 05 · MÓVIL: ETAPAS CENTRADAS ----------------------------------------- */
+  .public-site--v518 .v516-method {
+    margin-top: 38px;
+    padding-top: 34px;
+  }
+
+  .public-site--v518 .v516-method__head {
+    max-width: 340px;
+    margin-inline: auto;
+    margin-bottom: 22px;
+  }
+
+  .public-site--v518 .v516-method__head h3 {
+    font-size: clamp(1.8rem, 8vw, 2.2rem);
+    text-wrap: balance;
+  }
+
+  .public-site--v518 .v516-method__grid {
+    grid-template-columns: 1fr;
+    width: 100%;
+    max-width: 360px;
+    margin-inline: auto;
+    justify-items: center;
+    gap: 10px;
+  }
+
+  .public-site--v518 .v516-step {
+    width: min(100%, 340px);
+    justify-self: center;
+  }
+
+  .public-site--v518 .v516-step__trigger {
+    min-height: 62px;
+    padding: 9px 11px;
+  }
+
+  /* 06 · MÓVIL: BOTONES DEL JARDÍN Y QUÉ HACEMOS ------------------------- */
+  .public-site--v518 .v516-garden-column__buttons,
+  .public-site--v518 .v516-engines__grid {
+    width: 100%;
+    max-width: 360px;
+    margin-inline: auto;
+    justify-items: center;
+  }
+
+  .public-site--v518 .v516-garden-button,
+  .public-site--v518 .v516-engine {
+    width: min(100%, 340px);
+  }
+
+  .public-site--v518 .v516-garden-column__head,
+  .public-site--v518 .v516-section-head {
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .public-site--v518 .v515-hero {
+    gap: 24px;
+  }
+
+  .public-site--v518 .v54-hero__lead {
+    font-size: 1.05rem;
+    line-height: 1.58;
+  }
+}
