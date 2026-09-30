@@ -18449,3 +18449,488 @@ textarea::placeholder { color: #7f98ac; }
     gap: 14px;
   }
 }
+
+/* =============================================================================
+   WEB PÚBLICA V5.12 · UNA IDEA POR PLANA · TÍTULOS EN UNA LÍNEA
+   -----------------------------------------------------------------------------
+   OBJETIVO DE ESTA CAPA
+   - La vista cerrada de cada sección debe entenderse en una sola pantalla.
+   - Los títulos principales permanecen en una sola línea en escritorio.
+   - Ningún botón corta, trunca ni oculta su texto.
+   - Las tarjetas ocupan solo el espacio necesario; al abrirse crecen con el
+     contenido completo y después vuelven a su altura compacta.
+   - La lectura debe avanzar: identidad → criterio → método → confianza → contacto.
+
+   ÍNDICE DE EDICIÓN RÁPIDA
+   01. Salvaguardas de títulos y textos
+   02. Hero
+   03. Jardín · composición de una sola plana
+   04. Jardín · definición
+   05. Jardín · señales de intervención
+   06. Cómo trabaja · títulos y botones
+   07. Principios
+   08. Preguntas que cultivamos
+   09. Equipo
+   10. Contacto
+   11. Notebook / pantalla baja
+   12. Tablet y móvil
+   ============================================================================= */
+
+/* 01 · SALVAGUARDAS DE TÍTULOS Y TEXTOS ------------------------------------ */
+@media (min-width: 901px) {
+  /* Títulos de escena: una sola línea, sin puntos suspensivos ni recortes. */
+  .public-site--v512 .v54-hero h1,
+  .public-site--v512 .v512-garden__head h2,
+  .public-site--v512 .v58-work__head h2,
+  .public-site--v512 .v58-layer__heading h3,
+  .public-site--v512 .v511-principles__head h2,
+  .public-site--v512 .v58-research__head h2,
+  .public-site--v512 .v59-team__value h2,
+  .public-site--v512 .v54-contact .audit-contact__intro h2 {
+    max-width: none;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: clip;
+    text-wrap: nowrap;
+    hyphens: none;
+  }
+
+  /* Títulos dentro de tarjetas y botones: visibles completos. */
+  .public-site--v512 .v511-entry-card__trigger strong,
+  .public-site--v512 .v58-accordion-title strong,
+  .public-site--v512 .v58-step-title strong,
+  .public-site--v512 .v511-principle__trigger strong,
+  .public-site--v512 .v58-research-title strong,
+  .public-site--v512 .v54-team-card h3 {
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: clip;
+    hyphens: none;
+  }
+}
+
+/* Nunca truncar contenido desplegado. */
+.public-site--v512 [class$="__panel"] p,
+.public-site--v512 .v510-panel-label,
+.public-site--v512 .v54-team-card__meta span,
+.public-site--v512 .v59-team__strengths small {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+/* 02 · HERO ---------------------------------------------------------------- */
+.public-site--v512 .v54-hero h1 {
+  font-size: clamp(3rem, 5vw, 5.7rem);
+  line-height: .95;
+}
+
+.public-site--v512 .v512-hero-tagline {
+  margin: 10px 0 0;
+  color: #9cf1e8;
+  font-family: "Newsreader", Georgia, serif;
+  font-size: clamp(1.65rem, 2.35vw, 2.75rem);
+  font-weight: 470;
+  line-height: 1;
+  letter-spacing: -.025em;
+  white-space: nowrap;
+}
+
+/* 03 · JARDÍN · COMPOSICIÓN DE UNA SOLA PLANA ------------------------------ */
+.public-site--v512 #jardin.v512-garden {
+  min-height: calc(100svh - var(--header-height));
+  display: flex;
+  align-items: center;
+  padding-block: clamp(28px, 4vh, 46px);
+  overflow: visible;
+}
+
+.public-site--v512 .v512-garden__shell {
+  width: min(100% - 72px, 1240px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(16px, 2.2vh, 24px);
+}
+
+/* Encabezado a ancho completo: evita convertir el título en cuatro líneas. */
+.public-site--v512 .v512-garden__head {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(18px, 2vw, 28px);
+}
+
+.public-site--v512 .v512-garden__head .v54-kicker {
+  flex: 0 0 auto;
+}
+
+.public-site--v512 .v512-garden__head h2 {
+  margin: 0;
+  color: var(--v54-ink);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: clamp(2.35rem, 3.25vw, 3.65rem);
+  font-weight: 540;
+  line-height: 1;
+  letter-spacing: -.04em;
+}
+
+/* Dos ideas breves, paralelas. El ojo entiende identidad antes de bajar. */
+.public-site--v512 .v512-garden__context {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(28px, 5vw, 76px);
+  padding: 2px 0 4px;
+}
+
+.public-site--v512 .v512-garden__context p {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--v54-copy);
+  font-size: clamp(.92rem, .95vw, 1rem);
+  line-height: 1.55;
+}
+
+/* 04 · JARDÍN · DEFINICIÓN ------------------------------------------------- */
+.public-site--v512 .v512-garden__definition {
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+  padding: 14px 20px;
+  border-top: 1px solid var(--v54-line);
+  border-bottom: 1px solid var(--v54-line);
+}
+
+.public-site--v512 .v512-garden__word {
+  color: var(--v54-accent-deep);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 620;
+  letter-spacing: -.03em;
+}
+
+.public-site--v512 .v512-garden__definition p {
+  margin: 4px 0 0;
+  color: var(--v54-copy);
+  font-size: .92rem;
+  line-height: 1.5;
+}
+
+/* 05 · JARDÍN · SEÑALES DE INTERVENCIÓN ----------------------------------- */
+.public-site--v512 .v511-garden-entry {
+  display: grid;
+  grid-template-columns: minmax(230px, .55fr) minmax(0, 1.45fr);
+  column-gap: clamp(34px, 5vw, 72px);
+  row-gap: 10px;
+  align-items: start;
+  padding-top: 4px;
+  border-top: 0;
+}
+
+.public-site--v512 .v511-garden-entry__intro {
+  align-self: center;
+}
+
+.public-site--v512 .v511-garden-entry__intro h3 {
+  margin: 5px 0 8px;
+  font-size: clamp(1.45rem, 1.8vw, 2rem);
+  line-height: 1.02;
+}
+
+.public-site--v512 .v511-garden-entry__intro p {
+  max-width: 35ch;
+  font-size: .86rem;
+  line-height: 1.48;
+}
+
+.public-site--v512 .v511-garden-entry__grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.public-site--v512 .v511-entry-card {
+  border-radius: 15px;
+}
+
+.public-site--v512 .v511-entry-card__trigger {
+  grid-template-columns: 24px 38px minmax(0,1fr) 18px;
+  gap: 8px;
+  min-height: 58px;
+  padding: 8px 11px;
+}
+
+.public-site--v512 .v511-entry-card__number {
+  font-size: .62rem;
+}
+
+.public-site--v512 .v511-entry-card__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+}
+
+.public-site--v512 .v511-entry-card__icon .app-icon {
+  width: 19px;
+  height: 19px;
+}
+
+.public-site--v512 .v511-entry-card__trigger strong {
+  font-size: .86rem;
+  line-height: 1.15;
+}
+
+.public-site--v512 .v511-entry-card__panel {
+  padding: 0 12px 11px 81px;
+}
+
+.public-site--v512 .v511-entry-card__panel p {
+  font-size: .82rem;
+  line-height: 1.45;
+}
+
+.public-site--v512 .v511-garden-entry__cta {
+  grid-column: 2;
+  margin: 0;
+  padding: 8px 4px 0;
+  border-top: 0;
+  font-size: .8rem;
+}
+
+.public-site--v512 .v511-garden-entry__cta .button {
+  min-height: 38px;
+  padding: 8px 16px;
+}
+
+/* 06 · CÓMO TRABAJA · TÍTULOS Y BOTONES ----------------------------------- */
+.public-site--v512 .v58-work__head h2 {
+  font-size: clamp(2rem, 2.7vw, 3rem);
+}
+
+.public-site--v512 .v58-layer__heading {
+  width: 100%;
+}
+
+.public-site--v512 .v58-layer__heading h3 {
+  font-size: clamp(1.55rem, 2vw, 2.1rem);
+}
+
+.public-site--v512 .v58-dimension-grid,
+.public-site--v512 .v58-steps {
+  min-width: 0;
+}
+
+.public-site--v512 .v58-accordion-trigger,
+.public-site--v512 .v58-step-trigger {
+  overflow: visible;
+}
+
+.public-site--v512 .v58-step-title strong,
+.public-site--v512 .v58-accordion-title strong {
+  font-size: .9rem;
+}
+
+/* 07 · PRINCIPIOS ----------------------------------------------------------- */
+/* Encabezado superior + cuatro criterios en fila: más aire y título de una línea. */
+.public-site--v512 .v511-principles__layout {
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+
+.public-site--v512 .v511-principles__head {
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr);
+  column-gap: 28px;
+  align-items: end;
+}
+
+.public-site--v512 .v511-principles__head .v54-kicker {
+  grid-column: 1 / -1;
+}
+
+.public-site--v512 .v511-principles__head h2 {
+  max-width: none;
+  margin: 6px 0 0;
+  font-size: clamp(1.9rem, 2.5vw, 2.7rem);
+}
+
+.public-site--v512 .v511-principles__head p {
+  max-width: 62ch;
+  margin: 0;
+  justify-self: end;
+  font-size: .88rem;
+}
+
+.public-site--v512 .v511-principles__grid {
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 10px;
+}
+
+.public-site--v512 .v511-principle__trigger {
+  grid-template-columns: 40px minmax(0,1fr) 18px;
+  min-height: 64px;
+  padding: 10px;
+}
+
+.public-site--v512 .v511-principle__icon {
+  width: 38px;
+  height: 38px;
+}
+
+.public-site--v512 .v511-principle__trigger strong {
+  font-size: .84rem;
+}
+
+.public-site--v512 .v511-principle__panel {
+  padding: 0 11px 12px;
+}
+
+/* 08 · PREGUNTAS QUE CULTIVAMOS -------------------------------------------- */
+.public-site--v512 .v58-research__head h2 {
+  font-size: clamp(1.95rem, 2.6vw, 2.8rem);
+}
+
+/* 09 · EQUIPO --------------------------------------------------------------- */
+.public-site--v512 .v59-team__value h2 {
+  font-size: clamp(1.85rem, 2.45vw, 2.7rem);
+  margin-bottom: 18px;
+}
+
+.public-site--v512 .v59-team__layout {
+  gap: clamp(70px, 8vw, 118px);
+}
+
+.public-site--v512 .v59-team__profiles .v54-team-grid {
+  gap: 26px;
+}
+
+/* 10 · CONTACTO ------------------------------------------------------------- */
+.public-site--v512 .v54-contact .audit-contact__intro h2 {
+  font-size: clamp(1.85rem, 2.5vw, 2.8rem);
+}
+
+/* 11 · NOTEBOOK / PANTALLA BAJA -------------------------------------------- */
+@media (min-width: 901px) and (max-height: 820px) {
+  .public-site--v512 #jardin.v512-garden {
+    padding-block: 18px;
+  }
+
+  .public-site--v512 .v512-garden__shell {
+    gap: 12px;
+  }
+
+  .public-site--v512 .v512-garden__head h2 {
+    font-size: clamp(2rem, 2.7vw, 3rem);
+  }
+
+  .public-site--v512 .v512-garden__context p,
+  .public-site--v512 .v512-garden__definition p {
+    font-size: .82rem;
+    line-height: 1.42;
+  }
+
+  .public-site--v512 .v512-garden__definition {
+    padding-block: 10px;
+  }
+
+  .public-site--v512 .v511-entry-card__trigger {
+    min-height: 52px;
+  }
+
+  .public-site--v512 .v511-garden-entry__intro p {
+    font-size: .8rem;
+  }
+}
+
+/* 12 · TABLET Y MÓVIL ------------------------------------------------------- */
+@media (max-width: 900px) {
+  /* En pantallas estrechas se prioriza lectura completa sobre la regla de una
+     sola plana. Los títulos siguen sin truncarse y reducen tamaño antes de
+     desbordar. */
+  .public-site--v512 #jardin.v512-garden {
+    min-height: auto;
+    padding-block: 46px;
+  }
+
+  .public-site--v512 .v512-garden__shell {
+    width: min(100% - 40px, 1240px);
+    gap: 24px;
+  }
+
+  .public-site--v512 .v512-garden__head {
+    display: grid;
+    gap: 8px;
+  }
+
+  .public-site--v512 .v512-garden__head h2,
+  .public-site--v512 .v58-work__head h2,
+  .public-site--v512 .v58-layer__heading h3,
+  .public-site--v512 .v511-principles__head h2,
+  .public-site--v512 .v58-research__head h2,
+  .public-site--v512 .v59-team__value h2,
+  .public-site--v512 .v54-contact .audit-contact__intro h2 {
+    white-space: normal;
+    text-wrap: balance;
+  }
+
+  .public-site--v512 .v512-garden__context,
+  .public-site--v512 .v511-garden-entry,
+  .public-site--v512 .v511-principles__head {
+    grid-template-columns: 1fr;
+  }
+
+  .public-site--v512 .v512-garden__definition {
+    grid-template-columns: 90px 1fr;
+  }
+
+  .public-site--v512 .v511-garden-entry__cta {
+    grid-column: 1;
+  }
+
+  .public-site--v512 .v511-principles__grid {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .public-site--v512 .v54-hero h1 {
+    font-size: clamp(2rem, 10vw, 3rem);
+    white-space: nowrap;
+  }
+
+  .public-site--v512 .v512-hero-tagline {
+    font-size: clamp(1.2rem, 6vw, 1.8rem);
+  }
+
+  .public-site--v512 .v512-garden__shell {
+    width: min(100% - 28px, 1240px);
+  }
+
+  .public-site--v512 .v512-garden__head h2 {
+    font-size: clamp(1.55rem, 7vw, 2.15rem);
+  }
+
+  .public-site--v512 .v512-garden__context {
+    gap: 14px;
+  }
+
+  .public-site--v512 .v512-garden__definition {
+    grid-template-columns: 1fr;
+    gap: 7px;
+    padding-inline: 0;
+  }
+
+  .public-site--v512 .v511-garden-entry__grid,
+  .public-site--v512 .v511-principles__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .public-site--v512 .v511-entry-card__trigger strong,
+  .public-site--v512 .v511-principle__trigger strong,
+  .public-site--v512 .v58-accordion-title strong,
+  .public-site--v512 .v58-step-title strong {
+    white-space: normal;
+  }
+}

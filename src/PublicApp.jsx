@@ -673,7 +673,7 @@ function ResearchGardenSection() {
       <div className="shell v58-research__shell">
         <div className="v58-research__head">
           <span className="v54-kicker">Preguntas que cultivamos</span>
-          <h2 id="v58-research-title">Investigar también es parte de nuestro trabajo</h2>
+          <h2 id="v58-research-title">Preguntas que cultivamos</h2>
           <p>Algunas preguntas nacen de proyectos y otras los preceden. Las seguimos, las contrastamos y buscamos situaciones reales donde puedan producir aprendizaje útil.</p>
         </div>
         <div className="v58-research__grid">
@@ -719,7 +719,7 @@ function PrinciplesSection() {
       <div className="shell v511-principles__layout">
         <header className="v511-principles__head">
           <span className="v54-kicker">Cómo cuidamos una intervención</span>
-          <h2 id="v511-principles-title">Criterios antes de hacer más</h2>
+          <h2 id="v511-principles-title">Criterios que ordenan una intervención</h2>
           <p>El rigor también está en saber qué no conviene agregar. Estos principios ordenan cómo delimitamos, probamos y aprendemos.</p>
         </header>
         <div className="v511-principles__grid">
@@ -762,7 +762,7 @@ function GardenEntrySituations() {
     <div className="v511-garden-entry" aria-labelledby="v511-entry-title">
       <div className="v511-garden-entry__intro">
         <span className="v54-eyebrow">Cuándo puede valer la pena intervenir</span>
-        <h3 id="v511-entry-title">No todo cambio necesita la misma respuesta</h3>
+        <h3 id="v511-entry-title">Cuándo vale la pena intervenir</h3>
         <p>Estas son señales de entrada. Si alguna se parece a tu situación, podemos empezar por comprenderla antes de definir una solución.</p>
       </div>
       <div className="v511-garden-entry__grid">
@@ -814,7 +814,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
@@ -825,7 +825,8 @@ function PublicSite() {
           <div className="shell v54-hero__grid">
             <div className="v54-hero__copy">
               <span className="v54-kicker">Jardín de innovación · Concepción</span>
-              <h1>Crecer con claridad<br /><em>Operar con precisión</em></h1>
+              <h1>Crecer con claridad</h1>
+              <p className="v512-hero-tagline">Operar con precisión</p>
               <p className="v54-hero__lead">Estudiamos cómo funcionan organizaciones, actividades productivas y sus entornos para transformar información dispersa en mejores decisiones, capacidades y mejoras que puedan sostenerse.</p>
               <div className="hero__actions">
                 <SectionLink className="button audit-primary-cta" id="contacto">Conversemos</SectionLink>
@@ -846,28 +847,31 @@ function PublicSite() {
           </div>
         </section>
 
-        {/* 05.2 · JARDÍN DE INNOVACIÓN · Identidad y lógica de crecimiento */}
-        <section id="jardin" className="v54-section v54-section--paper section-anchor">
-          <div className="shell">
-            <div className="v54-intro-grid">
-              <div>
-                <span className="v54-kicker">Metamorfosis</span>
-                <h2>Un jardín para observar, probar y hacer crecer lo que funciona</h2>
-              </div>
-              <div className="v54-intro-copy">
-                <p>Trabajamos sobre situaciones reales donde operación, personas, información, regulación y entorno pueden estar interactuando. No forzamos una receta: observamos qué relaciones importan, qué conviene cultivar y qué intervención tiene sentido.</p>
-                <p>La Región del Biobío es hoy nuestro principal campo de aprendizaje aplicado. Desde Concepción desarrollamos proyectos con vocación de utilidad concreta, sin convertir un territorio, industria o tipo de organización en una plantilla universal.</p>
-              </div>
+        {/* 05.2 · JARDÍN DE INNOVACIÓN · Identidad, criterio y señales de entrada */}
+        <section id="jardin" className="v54-section v54-section--paper section-anchor v512-garden">
+          <div className="shell v512-garden__shell">
+            {/* TÍTULO PRINCIPAL · Una sola línea en escritorio */}
+            <header className="v512-garden__head">
+              <span className="v54-kicker">Metamorfosis</span>
+              <h2>Un jardín para observar, probar y hacer crecer</h2>
+            </header>
+
+            {/* CONTEXTO · Dos ideas breves para entender la identidad sin saturar */}
+            <div className="v512-garden__context">
+              <p>Trabajamos sobre situaciones reales donde operación, personas, información, regulación y entorno pueden interactuar. Observamos qué relaciones importan y qué intervención tiene sentido.</p>
+              <p>Desde Concepción, la Región del Biobío es nuestro principal espacio de aprendizaje aplicado, sin convertir un territorio, industria o tipo de organización en una plantilla universal.</p>
             </div>
 
-            <div className="v54-lab-definition">
-              <span className="v54-lab-definition__number">JARDÍN</span>
+            {/* POR QUÉ JARDÍN · Franja compacta, no una sección adicional */}
+            <div className="v512-garden__definition">
+              <span className="v512-garden__word">JARDÍN</span>
               <div>
                 <span className="v54-eyebrow">¿Por qué jardín?</span>
-                <p>Porque una buena intervención no aparece terminada. Se siembra como pregunta, se observa en contexto, se prueba con cuidado y crece solo cuando la evidencia muestra que vale la pena sostenerla.</p>
+                <p>Una intervención se siembra como pregunta, se observa en contexto, se prueba con cuidado y crece solo cuando la evidencia muestra que vale la pena sostenerla.</p>
               </div>
             </div>
 
+            {/* CUÁNDO INTERVENIR · Señales de entrada, desplegables y completas */}
             <GardenEntrySituations />
           </div>
         </section>
@@ -886,7 +890,7 @@ function PublicSite() {
           <div className="shell v59-team__layout">
             <div className="v59-team__value">
               <span className="v54-kicker">Equipo</span>
-              <h2>Ingeniería y derecho para leer una misma situación</h2>
+              <h2>Ingeniería y derecho, una misma lectura</h2>
               <p>Combinamos procesos, capacidades, decisiones, reglas y relaciones externas en una misma lectura. No buscamos agregar complejidad, sino distinguir mejor qué está ocurriendo y qué intervención tiene sentido.</p>
               <div className="v59-team__strengths">
                 <span><Icon name="schema" /><strong>Procesos y capacidades</strong><small>Cómo funciona realmente el trabajo</small></span>
@@ -907,7 +911,7 @@ function PublicSite() {
           <div className="shell audit-contact__grid">
             <div className="audit-contact__intro">
               <span className="kicker">Conversemos</span>
-              <h2>Una buena conversación puede ser el mejor punto de partida</h2>
+              <h2>Conversemos antes de definir la solución</h2>
               <p>Podemos conversar a partir de una necesidad concreta, una pregunta todavía abierta, una oportunidad de colaboración o una hipótesis que valga la pena poner a prueba.</p>
               <div className="audit-contact__facts">
                 <span><Icon name="schedule" /><strong>30 min</strong><small>primera conversación</small></span>
