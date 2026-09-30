@@ -19240,7 +19240,7 @@ textarea::placeholder { color: #7f98ac; }
 
 .public-site--v514 .v514-garden__copy {
   display: grid;
-  gap: 50px;
+  gap: 30px;
 }
 
 .public-site--v514 .v514-garden__copy p {
