@@ -536,6 +536,107 @@ function SystemsMap() {
   );
 }
 
+
+// -----------------------------------------------------------------------------
+// 04C · CÓMO TRABAJA METAMORFOSIS · MAPA + MÉTODO EN UNA SOLA ESCENA
+// -----------------------------------------------------------------------------
+function IntegratedMethodSection() {
+  const [activeDimension, setActiveDimension] = useState('operacion');
+  const [activeStep, setActiveStep] = useState(null);
+
+  const dimension = transformationPillars.find((item) => item.id === activeDimension) || transformationPillars[0];
+  const step = activeStep !== null ? processRoadmap[activeStep] : null;
+
+  const openDimension = (id) => {
+    setActiveDimension(id);
+    setActiveStep(null);
+  };
+
+  const openStep = (index) => {
+    setActiveStep((current) => current === index ? null : index);
+  };
+
+  return (
+    <section id="metodo" className="v57-work section-anchor" aria-labelledby="v57-work-title">
+      <span id="como-miramos" className="section-anchor v57-hidden-anchor" aria-hidden="true" />
+      <div className="shell v57-work__shell">
+        {/* 04C.1 · ENCABEZADO */}
+        <header className="v57-work__head">
+          <span className="v54-kicker">Cómo trabajamos</span>
+          <h2 id="v57-work-title">Cómo trabaja Metamorfosis</h2>
+          <p>Comprendemos una situación desde sus conexiones y aplicamos un método para convertir información dispersa en decisiones, capacidades y mejoras sostenibles.</p>
+        </header>
+
+        {/* 04C.2 · MAPA DE DIMENSIONES · Clic para abrir explicación */}
+        <div className="v57-map" aria-label="Dimensiones de análisis de Metamorfosis">
+          <div className="v57-map__center">
+            <img src="/logo-metamorfosis-transparente.png" alt="" aria-hidden="true" />
+            <strong>Metamorfosis</strong>
+            <small>Laboratorio de innovación · Concepción</small>
+          </div>
+
+          {transformationPillars.map((item, index) => (
+            <button
+              type="button"
+              key={item.id}
+              className={`v57-dimension v57-dimension--${index + 1} ${activeDimension === item.id && activeStep === null ? 'is-active' : ''}`}
+              onClick={() => openDimension(item.id)}
+              aria-expanded={activeDimension === item.id && activeStep === null}
+              aria-controls="v57-detail-panel"
+            >
+              <span className="v57-dimension__icon"><Icon name={item.icon} /></span>
+              <span className="v57-dimension__copy">
+                <strong>{item.title}</strong>
+                <small>{item.signal}</small>
+              </span>
+              <Icon name="chevron_right" className="v57-dimension__arrow" />
+            </button>
+          ))}
+        </div>
+
+        {/* 04C.3 · PANEL DE EXPLICACIÓN · Cambia al clickear dimensión o etapa */}
+        <div id="v57-detail-panel" className={`v57-detail ${step ? 'is-step' : 'is-dimension'}`} aria-live="polite">
+          <div className="v57-detail__label">
+            <span>{step ? `0${activeStep + 1}` : dimension.title}</span>
+            <small>{step ? step.eyebrow : 'Dimensión de análisis'}</small>
+          </div>
+          <div className="v57-detail__body">
+            <strong>{step ? step.title : dimension.short}</strong>
+            <p>{step ? step.text : dimension.text}</p>
+          </div>
+          <span className="v57-detail__hint">Haz clic en otro elemento para cambiar la explicación</span>
+        </div>
+
+        {/* 04C.4 · MÉTODO EN CINCO ETAPAS · Clic para abrir explicación */}
+        <div className="v57-steps" aria-label="Método de trabajo de Metamorfosis">
+          {processRoadmap.map((item, index) => (
+            <button
+              type="button"
+              key={item.title}
+              className={`v57-step ${activeStep === index ? 'is-active' : ''}`}
+              onClick={() => openStep(index)}
+              aria-expanded={activeStep === index}
+              aria-controls="v57-detail-panel"
+            >
+              <span className="v57-step__number">0{index + 1}</span>
+              <span className="v57-step__icon"><Icon name={item.icon} /></span>
+              <strong>{item.title}</strong>
+              <small>{item.eyebrow}</small>
+            </button>
+          ))}
+        </div>
+
+        {/* 04C.5 · CIERRE */}
+        <div className="v57-work__close">
+          <strong>Transformamos información dispersa</strong>
+          <span>en decisiones, capacidades y mejoras sostenibles</span>
+          <small>La intervención termina · La capacidad queda</small>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // -----------------------------------------------------------------------------
 // 05 · COMPOSICIÓN DE LA WEB PÚBLICA · ORDEN REAL DE LECTURA
 // -----------------------------------------------------------------------------
@@ -609,47 +710,8 @@ function PublicSite() {
           </div>
         </section>
 
-        {/* 05.3 · CÓMO MIRAMOS · Mapa interactivo de dimensiones de análisis */}
-        <section id="como-miramos" className="v54-section v54-section--mist section-anchor">
-          <div className="shell">
-            <SectionHeading
-              kicker="Cómo miramos"
-              title="Mirar una situación completa"
-              description="Estas dimensiones funcionan como lentes de análisis. Se activan solo cuando ayudan a explicar una situación concreta."
-            />
-            <SystemsMap />
-          </div>
-        </section>
-
-        {/* 05.4 · CÓMO TRABAJAMOS · Método en cinco etapas */}
-        <section id="metodo" className="v54-section v54-section--dark section-anchor">
-          <div className="shell">
-            <div className="v54-method-head">
-              <div>
-                <span className="v54-kicker">Cómo trabajamos</span>
-                <h2>De una pregunta abierta a una intervención verificable</h2>
-              </div>
-              <p>El método reduce incertidumbre sin sobredimensionar el problema. Cada etapa debe justificar la siguiente.</p>
-            </div>
-            <div className="v54-method-flow" aria-label="Método de Metamorfosis Lab">
-              {processRoadmap.map((item, index) => (
-                <article key={item.title} className="v54-method-step">
-                  <div className="v54-method-step__top">
-                    <span className="v54-method-step__number">{String(index + 1).padStart(2, '0')}</span>
-                    <span className="v54-method-step__icon"><Icon name={item.icon} /></span>
-                  </div>
-                  <span className="v54-eyebrow">{item.eyebrow}</span>
-                  <h3>{item.title}</h3>
-                  <p>{item.text}</p>
-                </article>
-              ))}
-            </div>
-            <div className="v54-method-close">
-              <span>La intervención termina.</span>
-              <strong>La capacidad queda.</strong>
-            </div>
-          </div>
-        </section>
+        {/* 05.3 + 05.4 · CÓMO TRABAJA METAMORFOSIS · Mapa + método integrados */}
+        <IntegratedMethodSection />
 
         {/* 05.5 · DÓNDE PODEMOS APORTAR · Situaciones, no catálogo de servicios */}
         <section id="situaciones" className="v54-section v54-section--paper section-anchor">
