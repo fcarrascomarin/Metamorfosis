@@ -16904,3 +16904,445 @@ textarea::placeholder { color: #7f98ac; }
   .public-site--v58 .v58-work__close { border-radius: 24px; }
   .public-site--v58 .v54-lab-definition { grid-template-columns: 1fr; }
 }
+
+/* =============================================================================
+   WEB PÚBLICA V5.9 · APORTE + PRINCIPIOS + EQUIPO EN DOS COLUMNAS
+   -----------------------------------------------------------------------------
+   Objetivo:
+   - Reunir "cuándo conversar" y "principios" en una sola escena compacta.
+   - Mostrar solo lo esencial y abrir una explicación a la vez.
+   - Reorganizar Equipo: valor diferencial a la izquierda, perfiles apilados a la derecha.
+   - Mantener una lectura completa en desktop y un patrón táctil claro en móvil.
+
+   Índice de edición rápida:
+   01. Escena Aporte + Principios
+   02. Cabecera de escena
+   03. Dos grupos conceptuales
+   04. Tarjetas desplegables
+   05. CTA de cierre
+   06. Equipo en dos columnas
+   07. Perfiles apilados
+   08. Tablet
+   09. Móvil
+   10. Pantallas bajas
+   ============================================================================= */
+
+/* 01 · ESCENA APORTE + PRINCIPIOS ------------------------------------------- */
+.public-site--v59 .v59-decision {
+  min-height: calc(100svh - var(--header-height));
+  display: flex;
+  align-items: center;
+  padding: clamp(48px, 6vh, 76px) 0;
+  background:
+    radial-gradient(circle at 82% 10%, rgba(105,229,216,.10), transparent 26%),
+    linear-gradient(180deg, #f7f8f4 0%, #eef4f0 100%);
+  color: var(--v54-ink);
+}
+
+.public-site--v59 .v59-decision__shell {
+  width: 100%;
+}
+
+/* 02 · CABECERA DE ESCENA -------------------------------------------------- */
+.public-site--v59 .v59-decision__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, .72fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: end;
+  margin-bottom: clamp(22px, 3vh, 34px);
+}
+
+.public-site--v59 .v59-decision__head .v54-kicker {
+  grid-column: 1 / -1;
+  margin-bottom: -8px;
+}
+
+.public-site--v59 .v59-decision__head h2 {
+  margin: 0;
+  max-width: 19ch;
+  color: var(--v54-ink);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: clamp(2rem, 3vw, 3.35rem);
+  font-weight: 540;
+  line-height: 1.02;
+  letter-spacing: -.04em;
+}
+
+.public-site--v59 .v59-decision__head > p {
+  margin: 0;
+  max-width: 52ch;
+  color: var(--v54-copy);
+  font-size: .98rem;
+  line-height: 1.58;
+}
+
+/* 03 · DOS GRUPOS CONCEPTUALES -------------------------------------------- */
+.public-site--v59 .v59-decision__columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.public-site--v59 .v59-decision__group {
+  padding: 22px;
+  border: 1px solid rgba(16,40,42,.11);
+  border-radius: 28px;
+  background: rgba(255,255,255,.66);
+  box-shadow: 0 18px 44px rgba(22,61,57,.06);
+}
+
+.public-site--v59 .v59-decision__group-head {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.public-site--v59 .v59-decision__number {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(23,122,112,.22);
+  border-radius: 50%;
+  color: var(--v54-accent-deep);
+  font-size: .72rem;
+  font-weight: 850;
+}
+
+.public-site--v59 .v59-decision__group-head h3 {
+  margin: 5px 0 0;
+  color: var(--v54-ink);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: clamp(1.28rem, 1.6vw, 1.62rem);
+  line-height: 1.08;
+}
+
+.public-site--v59 .v59-decision__list {
+  display: grid;
+  gap: 8px;
+}
+
+/* 04 · TARJETAS DESPLEGABLES ----------------------------------------------- */
+.public-site--v59 .v59-decision-card {
+  border: 1px solid rgba(16,40,42,.11);
+  border-radius: 18px;
+  background: rgba(255,255,255,.78);
+  overflow: hidden;
+  transition: border-color .22s ease, box-shadow .22s ease, background .22s ease;
+}
+
+.public-site--v59 .v59-decision-card.is-open {
+  border-color: rgba(23,122,112,.34);
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(22,61,57,.07);
+}
+
+.public-site--v59 .v59-decision-trigger {
+  width: 100%;
+  min-height: 58px;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) 24px;
+  gap: 12px;
+  align-items: center;
+  padding: 9px 12px;
+  border: 0;
+  background: transparent;
+  color: var(--v54-ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.public-site--v59 .v59-decision-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: #e8f5f1;
+  color: var(--v54-accent-deep);
+}
+
+.public-site--v59 .v59-decision-icon .app-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.public-site--v59 .v59-decision-trigger strong {
+  min-width: 0;
+  font-size: .95rem;
+  line-height: 1.25;
+  font-weight: 760;
+  white-space: normal;
+}
+
+.public-site--v59 .v59-decision-arrow {
+  width: 19px;
+  height: 19px;
+  color: var(--v54-accent-deep);
+}
+
+.public-site--v59 .v59-decision-panel {
+  padding: 0 16px 14px 66px;
+}
+
+.public-site--v59 .v59-decision-panel p {
+  margin: 0;
+  color: var(--v54-copy);
+  font-size: .88rem;
+  line-height: 1.55;
+}
+
+/* 05 · CTA DE CIERRE ------------------------------------------------------- */
+.public-site--v59 .v59-decision__close {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 16px;
+  padding: 14px 18px;
+  border: 1px solid rgba(16,40,42,.10);
+  border-radius: 20px;
+  background: rgba(255,255,255,.72);
+}
+
+.public-site--v59 .v59-decision__close p {
+  margin: 0;
+  color: var(--v54-copy);
+  font-size: .9rem;
+}
+
+/* 06 · EQUIPO EN DOS COLUMNAS --------------------------------------------- */
+.public-site--v59 .v59-team {
+  min-height: calc(100svh - var(--header-height));
+  display: flex;
+  align-items: center;
+  padding: clamp(54px, 7vh, 86px) 0;
+  background:
+    radial-gradient(circle at 88% 14%, rgba(72,190,174,.12), transparent 28%),
+    linear-gradient(180deg, #eef4f0 0%, #f7f8f4 100%);
+}
+
+.public-site--v59 .v59-team__layout {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(520px, 1.1fr);
+  gap: clamp(44px, 7vw, 96px);
+  align-items: center;
+}
+
+.public-site--v59 .v59-team__value h2 {
+  margin: 12px 0 18px;
+  max-width: 15ch;
+  color: var(--v54-ink);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: clamp(2.1rem, 3.25vw, 3.7rem);
+  font-weight: 540;
+  line-height: 1.02;
+  letter-spacing: -.04em;
+}
+
+.public-site--v59 .v59-team__value > p {
+  max-width: 58ch;
+  margin: 0;
+  color: var(--v54-copy);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.public-site--v59 .v59-team__strengths {
+  display: grid;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.public-site--v59 .v59-team__strengths > span {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 0 12px;
+  align-items: center;
+  padding: 12px 14px;
+  border: 1px solid rgba(16,40,42,.10);
+  border-radius: 17px;
+  background: rgba(255,255,255,.62);
+}
+
+.public-site--v59 .v59-team__strengths .app-icon {
+  grid-row: 1 / span 2;
+  width: 24px;
+  height: 24px;
+  color: var(--v54-accent-deep);
+}
+
+.public-site--v59 .v59-team__strengths strong {
+  color: var(--v54-ink);
+  font-size: .94rem;
+}
+
+.public-site--v59 .v59-team__strengths small {
+  color: var(--v54-muted);
+  font-size: .78rem;
+  line-height: 1.4;
+}
+
+.public-site--v59 .v59-team__synthesis {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(16,40,42,.12);
+  color: var(--v54-copy);
+  font-size: .88rem;
+  line-height: 1.55;
+}
+
+.public-site--v59 .v59-team__synthesis .app-icon {
+  color: var(--v54-accent-deep);
+}
+
+/* 07 · PERFILES APILADOS --------------------------------------------------- */
+.public-site--v59 .v59-team__profiles .v54-team-grid {
+  grid-template-columns: 1fr;
+  gap: 14px;
+  max-width: none;
+  margin: 0;
+}
+
+.public-site--v59 .v59-team__profiles .v54-team-card {
+  padding: 22px 24px;
+  border-radius: 22px;
+  box-shadow: 0 14px 34px rgba(27,68,63,.06);
+}
+
+.public-site--v59 .v59-team__profiles .v54-team-card > p {
+  margin: 16px 0;
+  font-size: .88rem;
+  line-height: 1.5;
+}
+
+.public-site--v59 .v59-team__profiles .v54-team-card h3 {
+  font-size: 1.45rem;
+}
+
+.public-site--v59 .v59-team__profiles .v54-team-card__meta {
+  padding-top: 12px;
+  gap: 6px;
+}
+
+/* 08 · TABLET -------------------------------------------------------------- */
+@media (max-width: 1050px) {
+  .public-site--v59 .v59-decision__head,
+  .public-site--v59 .v59-team__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .public-site--v59 .v59-decision__head {
+    gap: 14px;
+  }
+
+  .public-site--v59 .v59-decision__head h2 {
+    max-width: 24ch;
+  }
+
+  .public-site--v59 .v59-team__value h2 {
+    max-width: 20ch;
+  }
+}
+
+/* 09 · MÓVIL --------------------------------------------------------------- */
+@media (max-width: 720px) {
+  .public-site--v59 .v59-decision,
+  .public-site--v59 .v59-team {
+    min-height: auto;
+    padding: 48px 0;
+  }
+
+  .public-site--v59 .v59-decision__columns {
+    grid-template-columns: 1fr;
+  }
+
+  .public-site--v59 .v59-decision__group {
+    padding: 14px;
+    border-radius: 22px;
+  }
+
+  .public-site--v59 .v59-decision-trigger {
+    grid-template-columns: 48px minmax(0, 1fr) 22px;
+    min-height: 64px;
+  }
+
+  .public-site--v59 .v59-decision-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .public-site--v59 .v59-decision-panel {
+    padding-left: 72px;
+  }
+
+  .public-site--v59 .v59-decision__close {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .public-site--v59 .v59-decision__close .button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .public-site--v59 .v59-team__layout {
+    gap: 28px;
+  }
+
+  .public-site--v59 .v59-team__value h2 {
+    font-size: clamp(2rem, 9vw, 2.8rem);
+  }
+
+  .public-site--v59 .v59-team__profiles .v54-team-card {
+    padding: 18px;
+  }
+}
+
+/* 10 · PANTALLAS BAJAS ----------------------------------------------------- */
+@media (min-width: 1051px) and (max-height: 760px) {
+  .public-site--v59 .v59-decision,
+  .public-site--v59 .v59-team {
+    padding: 24px 0;
+  }
+
+  .public-site--v59 .v59-decision__head {
+    margin-bottom: 16px;
+  }
+
+  .public-site--v59 .v59-decision__group {
+    padding: 16px;
+  }
+
+  .public-site--v59 .v59-decision-trigger {
+    min-height: 50px;
+    padding-block: 6px;
+  }
+
+  .public-site--v59 .v59-decision-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .public-site--v59 .v59-decision-panel p {
+    font-size: .8rem;
+  }
+
+  .public-site--v59 .v59-team__strengths {
+    margin-top: 16px;
+    gap: 7px;
+  }
+
+  .public-site--v59 .v59-team__strengths > span {
+    padding: 9px 12px;
+  }
+
+  .public-site--v59 .v59-team__profiles .v54-team-card {
+    padding: 16px 18px;
+  }
+}

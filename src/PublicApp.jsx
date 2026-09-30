@@ -704,6 +704,103 @@ function ResearchGardenSection() {
   );
 }
 
+
+
+// -----------------------------------------------------------------------------
+// 04D · APORTE + PRINCIPIOS · DOS CAPAS EN UNA SOLA ESCENA
+// -----------------------------------------------------------------------------
+function ContributionAndPrinciplesSection() {
+  const [openKey, setOpenKey] = useState('use-0');
+
+  const toggle = (key) => setOpenKey((current) => current === key ? '' : key);
+
+  return (
+    <section id="situaciones" className="v59-decision section-anchor" aria-labelledby="v59-decision-title">
+      <div className="shell v59-decision__shell">
+        <header className="v59-decision__head">
+          <span className="v54-kicker">Dónde puede aportar</span>
+          <h2 id="v59-decision-title">Cuándo conversar y cómo cuidamos el trabajo</h2>
+          <p>Dos preguntas bastan para orientarse: si una situación merece ser comprendida mejor y bajo qué criterios tendría sentido intervenir.</p>
+        </header>
+
+        <div className="v59-decision__columns">
+          <section className="v59-decision__group" aria-labelledby="v59-use-title">
+            <div className="v59-decision__group-head">
+              <span className="v59-decision__number">01</span>
+              <div>
+                <span className="v54-eyebrow">Cuándo puede ser útil conversar</span>
+                <h3 id="v59-use-title">Situaciones de entrada</h3>
+              </div>
+            </div>
+            <div className="v59-decision__list">
+              {activeOfferUseCases.map((item, index) => {
+                const key = `use-${index}`;
+                const isOpen = openKey === key;
+                return (
+                  <article key={item.title} className={`v59-decision-card ${isOpen ? 'is-open' : ''}`}>
+                    <button
+                      type="button"
+                      className="v59-decision-trigger"
+                      onClick={() => toggle(key)}
+                      aria-expanded={isOpen}
+                      aria-controls={`v59-use-${index}`}
+                    >
+                      <span className="v59-decision-icon"><Icon name={item.icon} /></span>
+                      <strong>{item.title}</strong>
+                      <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v59-decision-arrow" />
+                    </button>
+                    <div id={`v59-use-${index}`} className="v59-decision-panel" hidden={!isOpen}>
+                      <p>{item.text}</p>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+
+          <section className="v59-decision__group" aria-labelledby="v59-principles-title">
+            <div className="v59-decision__group-head">
+              <span className="v59-decision__number">02</span>
+              <div>
+                <span className="v54-eyebrow">Cómo cuidamos el trabajo</span>
+                <h3 id="v59-principles-title">Principios que ordenan la intervención</h3>
+              </div>
+            </div>
+            <div className="v59-decision__list">
+              {laboratoryPrinciples.map((item, index) => {
+                const key = `principle-${index}`;
+                const isOpen = openKey === key;
+                return (
+                  <article key={item.title} className={`v59-decision-card ${isOpen ? 'is-open' : ''}`}>
+                    <button
+                      type="button"
+                      className="v59-decision-trigger"
+                      onClick={() => toggle(key)}
+                      aria-expanded={isOpen}
+                      aria-controls={`v59-principle-${index}`}
+                    >
+                      <span className="v59-decision-icon"><Icon name={item.icon} /></span>
+                      <strong>{item.title}</strong>
+                      <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v59-decision-arrow" />
+                    </button>
+                    <div id={`v59-principle-${index}`} className="v59-decision-panel" hidden={!isOpen}>
+                      <p>{item.text}</p>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        </div>
+
+        <div className="v59-decision__close">
+          <p>Si una situación merece ser entendida antes de elegir una solución, puede valer la pena conversar.</p>
+          <SectionLink id="contacto" className="button button--small">Conversemos</SectionLink>
+        </div>
+      </div>
+    </section>
+  );
+}
 // -----------------------------------------------------------------------------
 // 05 · COMPOSICIÓN DE LA WEB PÚBLICA · ORDEN REAL DE LECTURA
 // -----------------------------------------------------------------------------
@@ -721,7 +818,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
@@ -780,63 +877,29 @@ function PublicSite() {
         {/* 05.3 + 05.4 · CÓMO TRABAJA METAMORFOSIS · Mapa + método integrados */}
         <IntegratedMethodSection />
 
-        {/* 05.5 · DÓNDE PODEMOS APORTAR · Situaciones, no catálogo de servicios */}
-        <section id="situaciones" className="v54-section v54-section--paper section-anchor">
-          <div className="shell">
-            <SectionHeading
-              kicker="Dónde puede aportar"
-              title="Cuándo una conversación puede ser útil"
-              description="No vendemos una respuesta idéntica para problemas distintos. Estas son algunas condiciones en las que una conversación puede aportar claridad."
-            />
-            <div className="v54-situations-grid">
-              {activeOfferUseCases.map((item, index) => (
-                <article key={item.title} className="v54-situation-card">
-                  <span className="v54-situation-card__index">0{index + 1}</span>
-                  <span className="v54-situation-card__icon"><Icon name={item.icon} /></span>
-                  <h3>{item.title}</h3>
-                  <p>{item.text}</p>
-                </article>
-              ))}
-            </div>
-            <div className="v56-inline-cta">
-              <p>Si tu situación no encaja exactamente en estas categorías, igual puede valer la pena conversar.</p>
-              <SectionLink id="contacto" className="button button--small v56-inline-cta__button">Conversemos</SectionLink>
-            </div>
-          </div>
-        </section>
+        {/* 05.5 + 05.7 · APORTE + PRINCIPIOS · Dos capas en una sola escena */}
+        <ContributionAndPrinciplesSection />
 
         {/* 05.6 · PREGUNTAS QUE CULTIVAMOS · Investigación aplicada compacta */}
         <ResearchGardenSection />
 
-        {/* 05.7 · PRINCIPIOS · Límites y criterios de trabajo */}
-        <section id="principios" className="v54-section v54-section--paper section-anchor">
-          <div className="shell v54-principles-layout">
-            <div className="v54-principles-intro">
-              <span className="v54-kicker">Principios de trabajo</span>
-              <h2>El profesionalismo también se demuestra en los límites</h2>
-              <p>La calidad no depende de prometer más. Depende de formular bien el problema, explicitar supuestos, trabajar con evidencia y reconocer qué corresponde —y qué no corresponde— hacer.</p>
+        {/* 05.8 · EQUIPO · Diferenciación conjunta + perfiles en columna */}
+        <section id="equipo" className="v59-team section-anchor">
+          <div className="shell v59-team__layout">
+            <div className="v59-team__value">
+              <span className="v54-kicker">Equipo</span>
+              <h2>Dos capacidades técnicas que trabajan como una sola</h2>
+              <p>Metamorfosis combina ingeniería y derecho no para sumar miradas en paralelo, sino para leer una misma situación desde su operación, sus decisiones, sus reglas y sus relaciones externas.</p>
+              <div className="v59-team__strengths">
+                <span><Icon name="schema" /><strong>Procesos y capacidades</strong><small>Cómo funciona realmente el trabajo</small></span>
+                <span><Icon name="rule" /><strong>Reglas y responsabilidades</strong><small>Bajo qué condiciones puede actuar cada actor</small></span>
+                <span><Icon name="account_tree" /><strong>Relaciones y entorno</strong><small>Qué conexiones afectan el resultado</small></span>
+              </div>
+              <div className="v59-team__synthesis"><Icon name="handshake" /><span>La diferencia no está en tener dos profesiones. Está en formular mejores preguntas y diseñar intervenciones más completas sin agregar complejidad innecesaria.</span></div>
             </div>
-            <div className="v54-principles-grid">
-              {laboratoryPrinciples.map((item) => (
-                <article key={item.title}>
-                  <span><Icon name={item.icon} /></span>
-                  <div><h3>{item.title}</h3><p>{item.text}</p></div>
-                </article>
-              ))}
+            <div className="v59-team__profiles">
+              <TeamSection />
             </div>
-          </div>
-        </section>
-
-        {/* 05.8 · EQUIPO · Capacidad conjunta de ingeniería + derecho */}
-        <section id="equipo" className="v54-section v54-section--mist section-anchor">
-          <div className="shell">
-            <SectionHeading
-              kicker="Equipo"
-              title="Dos trayectorias para una capacidad de análisis"
-              description="Ingeniería y derecho se encuentran en Metamorfosis para comprender cómo funciona una organización, qué capacidades existen, bajo qué condiciones puede actuar cada actor y qué relaciones externas afectan el resultado."
-            />
-            <TeamSection />
-            <div className="v54-team-synthesis"><Icon name="handshake" /><span>La multidisciplina no es una suma de profesiones. Es una forma de formular mejores preguntas antes de intervenir.</span></div>
           </div>
         </section>
 
