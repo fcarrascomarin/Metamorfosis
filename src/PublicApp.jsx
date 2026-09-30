@@ -553,7 +553,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
@@ -614,7 +614,7 @@ function PublicSite() {
           <div className="shell">
             <SectionHeading
               kicker="Cómo miramos"
-              title="Comprender una situación requiere observar también sus conexiones"
+              title="Mirar una situación completa"
               description="Estas dimensiones funcionan como lentes de análisis. Se activan solo cuando ayudan a explicar una situación concreta."
             />
             <SystemsMap />
@@ -656,8 +656,8 @@ function PublicSite() {
           <div className="shell">
             <SectionHeading
               kicker="Dónde puede aportar"
-              title="Situaciones que vale la pena comprender antes de elegir una solución"
-              description="No vendemos una respuesta idéntica para problemas distintos. Estas son algunas condiciones en las que una conversación puede ser útil."
+              title="Cuándo una conversación puede ser útil"
+              description="No vendemos una respuesta idéntica para problemas distintos. Estas son algunas condiciones en las que una conversación puede aportar claridad."
             />
             <div className="v54-situations-grid">
               {activeOfferUseCases.map((item, index) => (
@@ -668,6 +668,10 @@ function PublicSite() {
                   <p>{item.text}</p>
                 </article>
               ))}
+            </div>
+            <div className="v56-inline-cta">
+              <p>Si tu situación no encaja exactamente en estas categorías, igual puede valer la pena conversar.</p>
+              <SectionLink id="contacto" className="button button--small v56-inline-cta__button">Conversemos</SectionLink>
             </div>
           </div>
         </section>
@@ -680,7 +684,7 @@ function PublicSite() {
                 <span className="v54-kicker">Investigación aplicada</span>
                 <h2>Preguntas que estamos explorando</h2>
               </div>
-              <p>Metamorfosis no existe únicamente cuando recibe un encargo. El laboratorio desarrolla preguntas propias y busca contextos reales donde contrastarlas con rigor.</p>
+              <p>Metamorfosis no existe solo cuando recibe un encargo. El laboratorio desarrolla preguntas propias y busca contextos reales donde contrastarlas con rigor.</p>
             </div>
             <div className="v54-question-list">
               {researchQuestions.map((item) => (
@@ -718,7 +722,7 @@ function PublicSite() {
           <div className="shell">
             <SectionHeading
               kicker="Equipo"
-              title="Dos trayectorias para observar una misma situación desde escalas diferentes"
+              title="Dos trayectorias. Una capacidad de análisis."
               description="Ingeniería y derecho se encuentran en Metamorfosis para comprender cómo funciona una organización, qué capacidades existen, bajo qué condiciones puede actuar cada actor y qué relaciones externas afectan el resultado."
             />
             <TeamSection />
@@ -732,7 +736,7 @@ function PublicSite() {
           <div className="shell audit-contact__grid">
             <div className="audit-contact__intro">
               <span className="kicker">Conversemos</span>
-              <h2>No todas las conversaciones tienen que comenzar con un proyecto definido</h2>
+              <h2>Una buena conversación puede ser el mejor punto de partida</h2>
               <p>Podemos conversar a partir de una necesidad concreta, una pregunta todavía abierta, una oportunidad de colaboración o una hipótesis que valga la pena poner a prueba.</p>
               <div className="audit-contact__facts">
                 <span><Icon name="schedule" /><strong>30 min</strong><small>primera conversación</small></span>

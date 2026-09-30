@@ -15149,3 +15149,553 @@ textarea::placeholder { color: #7f98ac; }
   .public-site--v54 .v54-system__core::after,
   .public-site--v54 .v54-hero__glow { animation: none !important; }
 }
+
+/* =============================================================================
+   WEB PÚBLICA V5.6 · AJUSTE DE ATENCIÓN, JERARQUÍA Y CONVERSIÓN
+   -----------------------------------------------------------------------------
+   Objetivo de esta capa:
+   - Reducir la competencia visual entre títulos, textos y tarjetas.
+   - Hacer más clara la ruta de lectura para que el usuario avance hacia
+     “Conversemos”.
+   - Aumentar el tamaño útil de los íconos para que informen de verdad.
+   - Mantener comentarios dentro del CSS para editar rápido cada bloque.
+
+   Orden de edición:
+   01. Variables globales y escala tipográfica
+   02. Títulos y jerarquía de lectura
+   03. Secciones generales y respiración
+   04. Cómo miramos (mapa interactivo)
+   05. Método
+   06. Situaciones
+   07. Llamado intermedio a conversación
+   08. Investigación aplicada
+   09. Principios
+   10. Equipo
+   11. Contacto
+   12. Navegación superior
+   13. Responsive
+   ============================================================================= */
+
+/* 01 · VARIABLES GLOBALES Y ESCALA TIPOGRÁFICA ------------------------------ */
+.public-site--v56 {
+  --v56-title: clamp(1.9rem, 2.7vw, 3.1rem);
+  --v56-subtitle: clamp(1.15rem, 1.45vw, 1.5rem);
+  --v56-copy: clamp(.96rem, 1vw, 1.02rem);
+  --v56-copy-small: .88rem;
+  --v56-card-radius: 24px;
+  --v56-card-padding: clamp(20px, 2vw, 28px);
+  --v56-soft-shadow: 0 20px 50px rgba(20, 54, 52, .08);
+  --v56-section-gap: clamp(20px, 2.8vh, 34px);
+}
+
+/* 02 · TÍTULOS Y JERARQUÍA DE LECTURA -------------------------------------- */
+.public-site--v56 .section-heading,
+.public-site--v56 .v54-method-head,
+.public-site--v56 .v54-research-head,
+.public-site--v56 .v54-intro-grid,
+.public-site--v56 .v54-principles-layout {
+  row-gap: var(--v56-section-gap);
+}
+
+.public-site--v56 .section-heading {
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+.public-site--v56 .section-heading h2,
+.public-site--v56 .v54-intro-grid h2,
+.public-site--v56 .v54-method-head h2,
+.public-site--v56 .v54-research-head h2,
+.public-site--v56 .v54-principles-intro h2 {
+  font-size: var(--v56-title);
+  line-height: 1.04;
+  letter-spacing: -.038em;
+}
+
+.public-site--v56 .section-heading p,
+.public-site--v56 .v54-intro-copy p,
+.public-site--v56 .v54-method-head > p,
+.public-site--v56 .v54-research-head > p,
+.public-site--v56 .v54-principles-intro p,
+.public-site--v56 .v54-system__explanation > p,
+.public-site--v56 .v54-team-card > p,
+.public-site--v56 .v54-question-card p,
+.public-site--v56 .v54-situation-card p,
+.public-site--v56 .v54-method-step p,
+.public-site--v56 .v54-principles-grid p {
+  font-size: var(--v56-copy);
+  line-height: 1.62;
+}
+
+/* 03 · SECCIONES GENERALES Y RESPIRACIÓN ----------------------------------- */
+.public-site--v56 .v54-section {
+  padding-block: clamp(70px, 8vw, 110px);
+}
+
+.public-site--v56 .v54-section .shell {
+  position: relative;
+  z-index: 1;
+}
+
+.public-site--v56 .v54-section--paper .section-heading,
+.public-site--v56 .v54-section--mist .section-heading,
+.public-site--v56 .v54-section--research .v54-research-head,
+.public-site--v56 .v54-section--dark .v54-method-head {
+  margin-bottom: clamp(26px, 3vw, 40px);
+}
+
+/* 04 · CÓMO MIRAMOS (MAPA INTERACTIVO) ------------------------------------- */
+/* Edición rápida: tamaño del panel principal, nodos, íconos y caja de texto. */
+.public-site--v56 .v54-system {
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr);
+  gap: clamp(24px, 3vw, 38px);
+  align-items: center;
+}
+
+.public-site--v56 .v54-system__canvas {
+  min-height: 520px;
+  border-radius: 30px;
+}
+
+.public-site--v56 .v54-system__core {
+  width: 220px;
+  min-height: 180px;
+  padding: 22px;
+}
+
+.public-site--v56 .v54-system__core strong {
+  font-size: 1.85rem;
+}
+
+.public-site--v56 .v54-system__node {
+  width: min(250px, 31%);
+  grid-template-columns: 54px 1fr;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 20px;
+}
+
+.public-site--v56 .v54-system__node-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+}
+
+.public-site--v56 .v54-system__node-icon .app-icon,
+.public-site--v56 .v54-situation-card__icon .app-icon,
+.public-site--v56 .v54-method-step__icon .app-icon,
+.public-site--v56 .v54-principles-grid article > span .app-icon,
+.public-site--v56 .v54-team-card__meta .app-icon,
+.public-site--v56 .v54-system__criterion .app-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.public-site--v56 .v54-system__node strong {
+  font-size: .98rem;
+  line-height: 1.15;
+}
+
+.public-site--v56 .v54-system__node small {
+  font-size: .76rem;
+  line-height: 1.35;
+}
+
+.public-site--v56 .v54-system__explanation {
+  padding: clamp(24px, 3vw, 34px);
+  border-radius: 26px;
+  box-shadow: var(--v56-soft-shadow);
+}
+
+.public-site--v56 .v54-system__explanation h3 {
+  font-size: clamp(1.85rem, 2.6vw, 2.7rem);
+  line-height: 1.02;
+}
+
+.public-site--v56 .v54-system__criterion {
+  grid-template-columns: 32px 1fr;
+  font-size: .88rem;
+}
+
+/* 05 · MÉTODO --------------------------------------------------------------- */
+/* Edición rápida: alto de tarjetas, tamaño de números, íconos y cierre. */
+.public-site--v56 .v54-method-head {
+  align-items: end;
+}
+
+.public-site--v56 .v54-method-flow {
+  gap: 14px;
+}
+
+.public-site--v56 .v54-method-step {
+  min-height: 260px;
+  padding: 22px;
+  border-radius: var(--v56-card-radius);
+}
+
+.public-site--v56 .v54-method-step__top {
+  margin-bottom: 24px;
+}
+
+.public-site--v56 .v54-method-step__number {
+  width: 46px;
+  height: 46px;
+  font-size: .82rem;
+}
+
+.public-site--v56 .v54-method-step__icon {
+  display: inline-grid;
+  place-items: center;
+}
+
+.public-site--v56 .v54-method-step h3 {
+  font-size: 1.5rem;
+  line-height: 1.04;
+}
+
+.public-site--v56 .v54-method-close {
+  margin-top: 30px;
+  font-size: clamp(1.3rem, 1.8vw, 2rem);
+}
+
+/* 06 · SITUACIONES ---------------------------------------------------------- */
+/* Edición rápida: tarjetas de entrada, íconos y lectura breve. */
+.public-site--v56 .v54-situations-grid {
+  gap: 18px;
+}
+
+.public-site--v56 .v54-situation-card {
+  min-height: 260px;
+  padding: var(--v56-card-padding);
+  border-radius: var(--v56-card-radius);
+  box-shadow: 0 8px 24px rgba(20, 54, 52, .04);
+}
+
+.public-site--v56 .v54-situation-card__index {
+  top: 16px;
+  right: 18px;
+  font-size: .98rem;
+  opacity: .55;
+}
+
+.public-site--v56 .v54-situation-card__icon {
+  width: 56px;
+  height: 56px;
+  margin: 34px 0 24px;
+  border-radius: 16px;
+}
+
+.public-site--v56 .v54-situation-card h3 {
+  max-width: 14ch;
+  font-size: clamp(1.35rem, 1.65vw, 1.6rem);
+  line-height: 1.08;
+  margin-bottom: 10px;
+}
+
+.public-site--v56 .v54-situation-card p {
+  max-width: 28ch;
+}
+
+/* 07 · LLAMADO INTERMEDIO A CONVERSACIÓN ----------------------------------- */
+/* Edición rápida: texto de apoyo y botón hacia el formulario. */
+.public-site--v56 .v56-inline-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 24px;
+  padding: 18px 22px;
+  border: 1px solid var(--v54-line);
+  border-radius: 22px;
+  background: rgba(255,255,255,.72);
+}
+
+.public-site--v56 .v56-inline-cta p {
+  max-width: 60ch;
+  margin: 0;
+  color: var(--v54-copy);
+  font-size: .94rem;
+  line-height: 1.55;
+}
+
+.public-site--v56 .v56-inline-cta__button {
+  flex: 0 0 auto;
+}
+
+/* 08 · INVESTIGACIÓN APLICADA ---------------------------------------------- */
+/* Edición rápida: tarjetas de preguntas, tamaño de pregunta y contraste. */
+.public-site--v56 .v54-research-head {
+  grid-template-columns: 1fr;
+  max-width: 820px;
+  gap: 14px;
+}
+
+.public-site--v56 .v54-question-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  border-top: 0;
+}
+
+.public-site--v56 .v54-question-card {
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 10px 16px;
+  min-height: 210px;
+  padding: 22px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: var(--v56-card-radius);
+  background: rgba(255,255,255,.03);
+}
+
+.public-site--v56 .v54-question-card:hover {
+  padding-left: 22px;
+  background: rgba(255,255,255,.045);
+}
+
+.public-site--v56 .v54-question-card__meta {
+  gap: 4px;
+}
+
+.public-site--v56 .v54-question-card__meta span {
+  font-size: 1.2rem;
+}
+
+.public-site--v56 .v54-question-card__meta small {
+  font-size: .62rem;
+}
+
+.public-site--v56 .v54-question-card h3 {
+  margin-bottom: 8px;
+  font-size: clamp(1.3rem, 1.55vw, 1.58rem);
+  line-height: 1.15;
+}
+
+.public-site--v56 .v54-question-card p {
+  grid-column: 2;
+  max-width: 36ch;
+  color: #c4d7d9;
+  font-size: .9rem;
+}
+
+/* 09 · PRINCIPIOS ----------------------------------------------------------- */
+/* Edición rápida: lista de criterios y separación entre criterio e ícono. */
+.public-site--v56 .v54-principles-layout {
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  gap: clamp(30px, 5vw, 70px);
+}
+
+.public-site--v56 .v54-principles-grid {
+  gap: 10px;
+  border-top: 0;
+}
+
+.public-site--v56 .v54-principles-grid article {
+  align-items: start;
+  padding: 18px 0;
+}
+
+.public-site--v56 .v54-principles-grid article > span {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+}
+
+.public-site--v56 .v54-principles-grid h3 {
+  font-size: 1.06rem;
+  line-height: 1.3;
+}
+
+/* 10 · EQUIPO --------------------------------------------------------------- */
+/* Edición rápida: tarjetas de personas, metadatos y línea de cierre. */
+.public-site--v56 .v54-team-grid {
+  gap: 20px;
+  max-width: 1080px;
+}
+
+.public-site--v56 .v54-team-card {
+  padding: 26px;
+  border-radius: 24px;
+}
+
+.public-site--v56 .v54-team-card__head {
+  grid-template-columns: 64px 1fr;
+}
+
+.public-site--v56 .v54-team-card__initials {
+  width: 60px;
+  height: 60px;
+  font-size: 1.15rem;
+}
+
+.public-site--v56 .v54-team-card h3 {
+  font-size: 1.7rem;
+  line-height: 1.04;
+}
+
+.public-site--v56 .v54-team-card__head strong {
+  font-size: .84rem;
+  line-height: 1.35;
+}
+
+.public-site--v56 .v54-team-card__meta {
+  gap: 10px;
+}
+
+.public-site--v56 .v54-team-card__meta span {
+  font-size: .8rem;
+}
+
+.public-site--v56 .v54-team-synthesis {
+  margin-top: 20px;
+  font-size: .9rem;
+}
+
+/* 11 · CONTACTO ------------------------------------------------------------- */
+/* Edición rápida: panel introductorio, métricas y bloque del formulario. */
+.public-site--v56 .v54-contact {
+  padding-block: clamp(76px, 8vw, 108px);
+}
+
+.public-site--v56 .v54-contact .audit-contact__grid {
+  align-items: center;
+}
+
+.public-site--v56 .v54-contact .audit-contact__intro h2 {
+  max-width: 15ch;
+  font-size: clamp(2rem, 2.9vw, 3.35rem);
+  line-height: 1.04;
+}
+
+.public-site--v56 .v54-contact .audit-contact__intro p {
+  max-width: 60ch;
+}
+
+.public-site--v56 .quote-wizard {
+  border-radius: 26px;
+}
+
+/* 12 · NAVEGACIÓN SUPERIOR -------------------------------------------------- */
+/* Edición rápida: espacios del menú, CTA y consistencia del header. */
+.public-site--v56 .site-header__inner {
+  gap: 20px;
+}
+
+.public-site--v56 .site-nav__links {
+  gap: 6px;
+}
+
+.public-site--v56 .site-nav__links button {
+  padding-inline: 14px;
+}
+
+.public-site--v56 .site-nav__conversation {
+  min-width: 148px;
+}
+
+/* 13 · RESPONSIVE ----------------------------------------------------------- */
+@media (max-width: 1180px) {
+  .public-site--v56 .v54-question-list,
+  .public-site--v56 .v54-situations-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .public-site--v56 .v54-system {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .public-site--v56 .v54-section {
+    padding-block: 60px;
+  }
+
+  .public-site--v56 .v54-question-list,
+  .public-site--v56 .v54-situations-grid,
+  .public-site--v56 .v54-team-grid,
+  .public-site--v56 .v54-method-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .public-site--v56 .v54-method-step:last-child {
+    grid-column: auto;
+  }
+
+  .public-site--v56 .v56-inline-cta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .public-site--v56 .v54-question-card {
+    grid-template-columns: 50px minmax(0, 1fr);
+    min-height: auto;
+  }
+
+  .public-site--v56 .v54-principles-layout,
+  .public-site--v56 .v54-intro-grid,
+  .public-site--v56 .v54-method-head,
+  .public-site--v56 .v54-research-head {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .public-site--v56 {
+    --v56-title: clamp(1.7rem, 8vw, 2.25rem);
+  }
+
+  .public-site--v56 .v54-system__canvas {
+    min-height: 580px;
+  }
+
+  .public-site--v56 .v54-system__node {
+    width: 43%;
+    grid-template-columns: 42px 1fr;
+    padding: 12px;
+  }
+
+  .public-site--v56 .v54-system__node-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .public-site--v56 .v54-system__node-icon .app-icon,
+  .public-site--v56 .v54-situation-card__icon .app-icon,
+  .public-site--v56 .v54-method-step__icon .app-icon,
+  .public-site--v56 .v54-principles-grid article > span .app-icon,
+  .public-site--v56 .v54-team-card__meta .app-icon,
+  .public-site--v56 .v54-system__criterion .app-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .public-site--v56 .v54-situation-card,
+  .public-site--v56 .v54-question-card,
+  .public-site--v56 .v54-team-card,
+  .public-site--v56 .quote-wizard {
+    padding: 18px;
+  }
+
+  .public-site--v56 .v54-team-card__head {
+    grid-template-columns: 56px 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .public-site--v56 .v54-system__node {
+    width: 45%;
+  }
+
+  .public-site--v56 .v54-system__node small {
+    display: none;
+  }
+
+  .public-site--v56 .v54-team-card__head {
+    grid-template-columns: 1fr;
+  }
+
+  .public-site--v56 .site-nav__conversation,
+  .public-site--v56 .site-nav__os {
+    width: 100%;
+    justify-content: center;
+  }
+}

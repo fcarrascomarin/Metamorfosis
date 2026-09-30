@@ -52,22 +52,22 @@ export const transformationPillars = [
 export const activeOfferUseCases = [
   {
     icon: 'trending_up',
-    title: 'Cuando una organización crece o cambia',
-    text: 'y sus procesos, información o responsabilidades necesitan evolucionar con ella.'
+    title: 'Cuando una organización crece',
+    text: 'y sus procesos, información o responsabilidades necesitan acompañar ese cambio.'
   },
   {
     icon: 'verified_user',
-    title: 'Cuando aparecen nuevas exigencias',
-    text: 'de clientes, cadenas productivas, regulación, trazabilidad o debida diligencia.'
+    title: 'Cuando cambian las exigencias',
+    text: 'de clientes, regulación, trazabilidad o debida diligencia.'
   },
   {
     icon: 'account_tree',
-    title: 'Cuando existen capacidades desconectadas',
+    title: 'Cuando hay capacidades dispersas',
     text: 'entre áreas, proveedores, instituciones, personas o territorio.'
   },
   {
     icon: 'search',
-    title: 'Cuando decidir exige comprender mejor',
+    title: 'Cuando falta claridad para decidir',
     text: 'antes de invertir, intervenir, escalar o diseñar una solución.'
   }
 ];
@@ -96,7 +96,7 @@ export const processRoadmap = [
     icon: 'query_stats',
     title: 'Medir',
     eyebrow: 'Observar qué cambió',
-    text: 'Definimos resultados observables, contrastamos lo ocurrido y ajustamos cuando corresponde.'
+    text: 'Contrastamos resultados observables y ajustamos cuando corresponde.'
   },
   {
     icon: 'conversion_path',
@@ -135,25 +135,25 @@ export const researchQuestions = [
   {
     index: '01',
     tag: 'Organizaciones',
-    question: '¿Cómo puede una organización crecer sin que sus procesos, información y capacidades queden atrás?',
+    question: '¿Cómo crecer sin que la organización se quede atrás?',
     text: 'Exploramos qué necesita evolucionar para acompañar el crecimiento sin convertir la gestión en burocracia.'
   },
   {
     index: '02',
-    tag: 'Cadenas productivas',
-    question: '¿Qué cambia cuando nuevas exigencias modifican las condiciones bajo las cuales una organización opera?',
-    text: 'Observamos trazabilidad, regulación, conducta empresarial responsable, debida diligencia y exigencias de clientes cuando resultan pertinentes.'
+    tag: 'Exigencias',
+    question: '¿Qué cambia cuando cambian las reglas de juego?',
+    text: 'Observamos trazabilidad, regulación, conducta empresarial responsable y debida diligencia cuando son pertinentes.'
   },
   {
     index: '03',
     tag: 'Capacidades',
-    question: '¿Qué impide que una capacidad existente se transforme a tiempo en una respuesta efectiva?',
-    text: 'Estudiamos brechas de información, coordinación, preparación y acceso que pueden mantener capacidades valiosas fuera de una oportunidad real.'
+    question: '¿Por qué una capacidad no alcanza a transformarse en respuesta?',
+    text: 'Estudiamos brechas de información, coordinación, preparación y acceso que mantienen capacidades valiosas fuera de una oportunidad real.'
   },
   {
     index: '04',
     tag: 'Decisiones',
-    question: '¿Qué información necesita una decisión antes de convertirse en una intervención?',
+    question: '¿Qué necesita saber una decisión antes de intervenir?',
     text: 'Buscamos disminuir incertidumbre y hacer visible qué sabemos, qué falta conocer y qué vale la pena probar.'
   }
 ];
