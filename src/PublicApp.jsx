@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Icon from './components/Icon.jsx';
 import heroImage from './assets/images/jardin/hero-jardin.png';
 import contactImage from './assets/images/jardin/contacto-jardin.webp';
-import proposalAtmosphere from './assets/images/jardin/propuesta-atmosfera.png';
 import { contact } from './data.js';
 import {
   activeOfferUseCases,
@@ -531,13 +530,12 @@ function ProposalSection() {
       id="propuesta"
       className="v537-proposal section-anchor"
       aria-labelledby="v537-title"
-      style={{ '--v537-atmosphere': `url(${proposalAtmosphere})` }}
     >
       <div className="shell v537-proposal__layout">
         <header className="v537-proposal__intro">
           <span className="v54-kicker">Nuestra propuesta</span>
           <h2 id="v537-title">Del conocimiento a soluciones aplicables</h2>
-          <p>Convertimos situaciones reales en respuestas útiles: desarrollamos soluciones nuevas o fortalecemos capacidades que ya existen.</p>
+          <p>Desarrollamos respuestas a problemas concretos y fortalecemos capacidades que necesitan una nueva forma de operar o crecer.</p>
         </header>
 
         <div className="v537-offers" aria-label="Qué hacemos">
@@ -572,7 +570,7 @@ function ProposalSection() {
         </div>
 
         <div className="v537-proposal__closing">
-          <p>El trabajo debe dejar conocimiento, herramientas o capacidades que puedan seguir utilizándose después de la intervención.</p>
+          <p>Una buena intervención no termina con la entrega: deja criterios, herramientas y capacidades para continuar.</p>
           <SectionLink id="contacto" className="button button--small">Conversemos <Icon name="arrow_forward" /></SectionLink>
         </div>
 
@@ -959,7 +957,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--v532 public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522 public-site--v523 public-site--v524 public-site--v525 public-site--v526 public-site--v527 public-site--v528 public-site--v529 public-site--v530 public-site--v531 public-site--v534 public-site--v535 public-site--v536 public-site--v537">
+    <div className="public-site public-site--v532 public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522 public-site--v523 public-site--v524 public-site--v525 public-site--v526 public-site--v527 public-site--v528 public-site--v529 public-site--v530 public-site--v531 public-site--v534 public-site--v535 public-site--v536 public-site--v537 public-site--v539">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
