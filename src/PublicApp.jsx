@@ -846,7 +846,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522 public-site--v523 public-site--v524 public-site--v525 public-site--v526 public-site--v527 public-site--v528 public-site--v529 public-site--v530">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522 public-site--v523 public-site--v524 public-site--v525 public-site--v526 public-site--v527 public-site--v528 public-site--v529 public-site--v530 public-site--v531">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
@@ -856,8 +856,9 @@ function PublicSite() {
           <div className="v54-hero__glow" aria-hidden="true" />
           <div className="shell v515-hero">
             <header className="v515-hero__headline">
-              <span className="v54-kicker">Metamorfosis LAB</span>
-              <h1>Investigación e innovación aplicada desde la Región del Biobío</h1>
+              <span className="v54-kicker">METAMORFOSIS LAB</span>
+              <h1>Investigación e innovación aplicada</h1>
+              <p className="v531-hero__origin">Desde la Región del Biobío</p>
             </header>
             <div className="v515-hero__body">
               <div className="v54-hero__copy">

@@ -22303,3 +22303,47 @@ textarea::placeholder { color: #7f98ac; }
 @media (prefers-reduced-motion:reduce) {
  .public-site--v530 #jardin :is(.v530-garden-choice,.v530-garden-detail) {animation:none;transition:none;}
 }
+
+/* ================================================================
+   V5.31 · Hero: titular protagonista y origen territorial secundario.
+   Sin reducir una promesa extensa a tipografía de texto corriente.
+   ================================================================ */
+.public-site--v531 #inicio .v515-hero {
+  gap:clamp(30px,4.5vh,48px);
+}
+.public-site--v531 #inicio .v515-hero__headline {
+  display:flex;flex-direction:column;align-items:flex-start;
+  width:100%;min-width:0;
+}
+.public-site--v531 #inicio .v515-hero__headline .v54-kicker {
+  display:block;margin:0 0 clamp(20px,3vh,31px);
+  letter-spacing:.19em;font-size:clamp(.67rem,.75vw,.81rem);
+}
+.public-site--v531 #inicio .v515-hero__headline h1 {
+  width:auto;max-width:100%;margin:0;
+  font-size:clamp(2.65rem,4.15vw,4.65rem);
+  letter-spacing:-.045em;line-height:1.065;
+  font-weight:550;white-space:nowrap;text-wrap:nowrap;
+}
+.public-site--v531 #inicio .v531-hero__origin {
+  margin:clamp(12px,1.7vh,19px) 0 0;
+  font-family:inherit;font-size:clamp(1.12rem,1.55vw,1.5rem);
+  font-weight:420;letter-spacing:.005em;line-height:1.3;
+  color:#a2e6db;
+}
+@media (min-width:1024px) and (max-width:1300px) {
+  .public-site--v531 #inicio .v515-hero__headline h1 {font-size:clamp(2.35rem,3.8vw,3.15rem);}
+}
+@media (max-width:1023px) {
+  .public-site--v531 #inicio .v515-hero__headline h1 {
+    font-size:clamp(2.35rem,5vw,3.25rem);
+    white-space:normal;text-wrap:balance;max-width:23ch;line-height:1.08;
+  }
+  .public-site--v531 #inicio .v515-hero__headline .v54-kicker {margin-bottom:17px;}
+}
+@media (max-width:600px) {
+  .public-site--v531 #inicio .v515-hero__headline h1 {
+    font-size:clamp(2.1rem,8.4vw,2.75rem);max-width:100%;
+  }
+  .public-site--v531 #inicio .v531-hero__origin {font-size:1.08rem;margin-top:13px;}
+}
