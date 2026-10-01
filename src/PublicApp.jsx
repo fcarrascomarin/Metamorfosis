@@ -659,14 +659,12 @@ function IntegratedMethodSection() {
   return (
     <section id="metodo" className="v516-work section-anchor" aria-labelledby="v516-work-title">
       <div className="shell v516-work__shell">
-        
-        <header className="v516-work__head">
-          <span className="v54-kicker">Cómo trabaja Metamorfosis</span>
-          <h2 id="v516-work-title">Observar antes de intervenir</h2>
-          <p>Leemos una situación desde las dimensiones que importan y aplicamos un método para convertir esa comprensión en capacidad.</p>
-        </header>
-        <div className="v520-method-layout v524-method-composition">
-        
+        <div className="v520-method-layout v524-method-composition v525-method-composition">
+          <header className="v516-work__head v525-method-heading">
+            <span className="v54-kicker">Cómo trabaja Metamorfosis</span>
+            <h2 id="v516-work-title">Observar antes de intervenir</h2>
+            <p>Leemos las dimensiones relevantes de cada situación y seguimos una secuencia para transformar esa comprensión en decisiones y capacidad.</p>
+          </header>
           <div className="v516-map">
           {transformationPillars.map((item, index) => {
             const isOpen = openDimensions.has(item.id);
@@ -832,7 +830,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522 public-site--v523 public-site--v524">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522 public-site--v523 public-site--v524 public-site--v525">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
@@ -843,7 +841,7 @@ function PublicSite() {
           <div className="shell v515-hero">
             <header className="v515-hero__headline">
               <span className="v54-kicker">Metamorfosis LAB</span>
-              <h1>Investigación e innovación aplicada desde la región del Biobío</h1>
+              <h1>Innovación aplicada desde la Región del Biobío</h1>
             </header>
             <div className="v515-hero__body">
               <div className="v54-hero__copy">
@@ -855,7 +853,7 @@ function PublicSite() {
               </div>
               <aside className="v54-hero__manifesto" aria-label="Forma de trabajo de Metamorfosis">
                 <span className="v54-eyebrow">Nuestro criterio</span>
-                <blockquote>Primero comprendemos Después intervenimos</blockquote>
+                <blockquote>Primero comprendemos. Después intervenimos.</blockquote>
                 <p>No partimos de recetas. Contrastamos información, relaciones y capacidades para decidir qué respuesta vale la pena probar y cómo medirla.</p>
               </aside>
             </div>
@@ -906,9 +904,9 @@ function PublicSite() {
               <span className="kicker">Conversemos</span>
               <h2>Cuéntanos tu desafío</h2>
               <p>Podemos comenzar con una necesidad concreta, una pregunta abierta o una oportunidad por explorar.</p>
-              <div className="audit-contact__facts">
-                <span><Icon name="schedule" /><strong>30 min</strong><small>primera conversación</small></span>
-                <span><Icon name="mail" /><strong>Correo formal</strong><small>{contact.email}</small></span>
+              <div className="audit-contact__facts" aria-label="Modalidades de contacto">
+                <span><Icon name="schedule" /><span className="v525-contact-fact__copy"><strong>30 minutos</strong><small>Primera conversación</small></span></span>
+                <span><Icon name="mail" /><span className="v525-contact-fact__copy"><strong>Correo formal</strong><small>{contact.email}</small></span></span>
               </div>
             </div>
             <QuoteForm />
