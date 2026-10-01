@@ -596,22 +596,31 @@ function GardenKnowledgeSection() {
           <h3>Líneas que estamos haciendo crecer</h3>
           <p>Cuatro ámbitos donde transformamos preguntas y capacidades existentes en oportunidades de innovación aplicada.</p>
         </header>
-        <div className="v516-garden-column__buttons v523-garden-lines">
+        <div className="v530-garden-choices" aria-label="Explorar líneas de innovación">
           {cultivationAreas.map((item, index) => {
             const isOpen = openArea === index;
-            const key = `area-${index}`;
             return (
-              <article key={item.title} className={`v516-garden-button v523-garden-line ${isOpen ? 'is-open' : ''}`}>
-                <button type="button" onClick={() => setOpenArea((current) => current === index ? null : index)} aria-expanded={isOpen} aria-controls={key}>
-                  <span className="v523-garden-line__number" aria-hidden="true">0{index + 1}</span>
-                  <span className="v516-garden-button__icon"><Icon name={item.icon} /></span>
-                  <strong>{item.title}</strong>
-                  <Icon name={isOpen ? 'expand_less' : 'expand_more'} />
-                </button>
-                <div id={key} className="v516-garden-button__panel" hidden={!isOpen}><p>{item.text}</p></div>
-              </article>
+              <button
+                key={item.title}
+                type="button"
+                className={`v530-garden-choice ${isOpen ? 'is-active' : ''}`}
+                aria-expanded={isOpen}
+                aria-controls="garden-area-detail"
+                onClick={() => setOpenArea((current) => current === index ? null : index)}
+              >
+                <span className="v530-garden-choice__icon"><Icon name={item.icon} /></span>
+                <span className="v530-garden-choice__content"><small>0{index + 1}</small><strong>{item.title}</strong></span>
+                <span className="v530-garden-choice__arrow" aria-hidden="true"><Icon name={isOpen ? 'expand_less' : 'north_east'} /></span>
+              </button>
             );
           })}
+        </div>
+        <div id="garden-area-detail" className="v530-garden-detail" role="region" aria-label="Detalle de la línea seleccionada" hidden={openArea === null}>
+          {openArea !== null && <>
+            <span className="v530-garden-detail__label">Explorando · 0{openArea + 1}</span>
+            <h4>{cultivationAreas[openArea].title}</h4>
+            <p>{cultivationAreas[openArea].text}</p>
+          </>}
         </div>
       </div>
       <aside className="v516-garden-column v523-garden-board__aside" aria-label="Criterios que orientan las intervenciones">
@@ -837,7 +846,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522 public-site--v523 public-site--v524 public-site--v525 public-site--v526 public-site--v527 public-site--v528 public-site--v529">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522 public-site--v523 public-site--v524 public-site--v525 public-site--v526 public-site--v527 public-site--v528 public-site--v529 public-site--v530">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">

@@ -22231,3 +22231,75 @@ textarea::placeholder { color: #7f98ac; }
   .public-site--v529 #metodo .v529-system-links__energy {animation:none;stroke-dasharray:none;opacity:.35;}
   .public-site--v529 #metodo :is(.v516-lens,.v529-core,.v516-step__trigger) {transition:none;}
 }
+
+/* ========================================================================
+   V5.30 · Jardín exploratorio. Sustituye visualmente SOLO el antiguo listado
+   izquierdo por cuatro accesos de igual jerarquía y un lector compartido.
+   Conserva el panel de principios y la navegación de toda la web.
+   ======================================================================== */
+.public-site--v530 #jardin .v523-garden-board {
+  grid-template-columns:minmax(0,1.08fr) minmax(350px,.88fr);
+  column-gap:clamp(32px,4.5vw,70px);
+  align-items:center;
+}
+.public-site--v530 #jardin .v523-garden-board__main .v516-garden-column__head {margin-bottom:clamp(18px,2.4vh,27px);}
+.public-site--v530 #jardin .v530-garden-choices {
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(13px,1.3vw,21px);align-items:stretch;
+}
+.public-site--v530 #jardin .v530-garden-choice {
+  appearance:none;-webkit-appearance:none;font:inherit;color:#173431;text-align:left;
+  position:relative;min-width:0;width:100%;min-height:98px;
+  display:grid;grid-template-columns:39px minmax(0,1fr) 16px;
+  align-items:center;gap:clamp(10px,1vw,15px);
+  border:1px solid rgba(34,95,81,.16);border-radius:19px;
+  background:rgba(255,255,255,.78);
+  padding:clamp(12px,1.25vw,18px);
+  box-shadow:0 6px 20px rgba(18,63,52,.035);
+  cursor:pointer;transition:border-color .22s ease,background .22s ease,transform .22s ease,box-shadow .22s ease;
+}
+.public-site--v530 #jardin .v530-garden-choice:hover,
+.public-site--v530 #jardin .v530-garden-choice:focus-visible {
+  transform:translateY(-2px);border-color:rgba(16,119,103,.45);
+  background:#fff;box-shadow:0 11px 27px rgba(17,80,68,.08);
+}
+.public-site--v530 #jardin .v530-garden-choice:focus-visible {outline:2px solid #159b8e;outline-offset:3px;}
+.public-site--v530 #jardin .v530-garden-choice.is-active {border-color:rgba(12,123,109,.55);background:#f2faf7;}
+.public-site--v530 #jardin .v530-garden-choice__icon {
+  width:39px;height:39px;border-radius:12px;background:#e7f3ee;color:#087c70;
+  display:grid;place-items:center;flex:none;
+}
+.public-site--v530 #jardin .v530-garden-choice__icon .app-icon {width:20px;height:20px;}
+.public-site--v530 #jardin .v530-garden-choice__content {display:flex;flex-direction:column;align-items:flex-start;gap:7px;min-width:0;}
+.public-site--v530 #jardin .v530-garden-choice__content small {font-size:.65rem;letter-spacing:.07em;color:#54877d;font-weight:750;line-height:1;}
+.public-site--v530 #jardin .v530-garden-choice__content strong {font-size:clamp(.83rem,.88vw,.98rem);line-height:1.33;font-weight:740;overflow-wrap:normal;}
+.public-site--v530 #jardin .v530-garden-choice__arrow {align-self:center;color:#347d73;display:grid;place-items:center;}
+.public-site--v530 #jardin .v530-garden-choice__arrow .app-icon {width:16px;height:16px;}
+.public-site--v530 #jardin .v530-garden-detail {
+  margin-top:clamp(14px,1.75vh,22px);padding:clamp(17px,1.7vw,24px);
+  border-radius:19px;border:1px solid #c9e1d7;background:linear-gradient(120deg,#f7fcf9,#edf8f3);
+  animation:v530-reveal .22s ease both;
+}
+.public-site--v530 #jardin .v530-garden-detail[hidden] {display:none!important;}
+.public-site--v530 #jardin .v530-garden-detail__label {font-size:.64rem;text-transform:uppercase;font-weight:800;letter-spacing:.12em;color:#168477;}
+.public-site--v530 #jardin .v530-garden-detail h4 {margin:6px 0 9px;font-size:clamp(1.05rem,1.2vw,1.3rem);line-height:1.22;color:#143734;}
+.public-site--v530 #jardin .v530-garden-detail p {margin:0;max-width:64ch;font-size:.87rem;line-height:1.58;color:#425f59;}
+@keyframes v530-reveal {from {opacity:0;transform:translateY(5px);} to {opacity:1;transform:translateY(0);}}
+@media (min-width:1081px) and (max-height:780px) {
+ .public-site--v530 #jardin .v530-garden-choice {min-height:82px;padding:11px 13px;}
+ .public-site--v530 #jardin .v530-garden-choice__content {gap:5px;}
+ .public-site--v530 #jardin .v523-garden-board {padding-top:14px;}
+}
+@media (max-width:1080px) {
+ .public-site--v530 #jardin .v523-garden-board {grid-template-columns:minmax(0,1fr);gap:clamp(20px,4vw,36px);align-items:start;}
+ .public-site--v530 #jardin .v530-garden-choice {min-height:86px;}
+}
+@media (max-width:520px) {
+ .public-site--v530 #jardin .v530-garden-choices {grid-template-columns:1fr;gap:10px;}
+ .public-site--v530 #jardin .v530-garden-choice {min-height:67px;grid-template-columns:36px minmax(0,1fr) 16px;padding:10px 12px;}
+ .public-site--v530 #jardin .v530-garden-choice__icon {width:36px;height:36px;}
+ .public-site--v530 #jardin .v530-garden-choice__content {gap:4px;}
+}
+@media (prefers-reduced-motion:reduce) {
+ .public-site--v530 #jardin :is(.v530-garden-choice,.v530-garden-detail) {animation:none;transition:none;}
+}
