@@ -6,9 +6,9 @@
 
 // 01 · NAVEGACIÓN PRINCIPAL
 export const publicNavigation = [
-  { id: 'inicio', label: 'Inicio' },
-  { id: 'propuesta', label: 'Propuesta' },
-  { id: 'equipo', label: 'Equipo' }
+  { id: 'inicio', label: 'Inicio', icon: 'home' },
+  { id: 'propuesta', label: 'Propuesta', icon: 'design_services' },
+  { id: 'equipo', label: 'Equipo', icon: 'group' }
 ];
 
 // 02 · CÓMO MIRAMOS · Dimensiones del mapa interactivo

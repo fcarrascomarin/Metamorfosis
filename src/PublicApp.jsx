@@ -141,7 +141,7 @@ function Brand({ compact = false }) {
       <img className="brand-logo" src="/logo-metamorfosis-transparente.png" alt="Isotipo de Metamorfosis" width="44" height="44" />
       <span className="brand-copy">
         <strong>METAMORFOSIS LAB</strong>
-        <small>Investigación e innovación aplicada</small>
+        <small>investigación e innovación aplicada</small>
       </span>
     </a>
   );
@@ -466,19 +466,20 @@ function QuoteForm() {
 // -----------------------------------------------------------------------------
 function TeamSection() {
   return (
-    <div className="v54-team-grid">
+    <div className="v533-team-cards">
       {team.map((person) => (
-        <article key={person.name} className="v54-team-card">
-          <div className="v54-team-card__head">
-            <span className="v54-team-card__initials" aria-hidden="true">{person.initials}</span>
+        <article key={person.name} className="v533-team-card">
+          <div className="v533-team-card__head">
+            <span className="v533-team-card__initials" aria-hidden="true">{person.initials}</span>
             <div>
               <h3>{person.name}</h3>
               <strong>{person.role}</strong>
             </div>
           </div>
           <p>{person.text}</p>
-          <div className="v54-team-card__meta">
+          <div className="v533-team-card__meta">
             <span><Icon name="briefcase" /> {person.profession}</span>
+            {person.institution ? <span><Icon name="menu_book" /> {person.institution}</span> : null}
           </div>
         </article>
       ))}
@@ -487,6 +488,155 @@ function TeamSection() {
 }
 
 // -----------------------------------------------------------------------------
+// 04A.1 · PROPUESTA INTEGRADA
+//      Una sola escena para explicar dónde aportamos, qué desarrollamos y
+//      cómo convertimos evidencia en una intervención proporcionada.
+// -----------------------------------------------------------------------------
+function ProposalSection() {
+  const [activeDimension, setActiveDimension] = useState(transformationPillars[0]?.id || null);
+  const [activeStep, setActiveStep] = useState(processRoadmap[0]?.title || null);
+
+  const activeLens = transformationPillars.find((item) => item.id === activeDimension) || transformationPillars[0];
+  const activeRoadmap = processRoadmap.find((item) => item.title === activeStep) || processRoadmap[0];
+
+  return (
+    <section id="propuesta" className="v533-proposal section-anchor" aria-labelledby="v533-proposal-title">
+      <div className="shell v533-proposal__shell">
+        <header className="v533-proposal__head">
+          <span className="v54-kicker">Propuesta</span>
+          <h2 id="v533-proposal-title">Qué hacemos y cómo lo convertimos en trabajo útil</h2>
+          <p>Trabajamos cuando la información, las capacidades o las exigencias existentes todavía no logran convertirse en una respuesta suficientemente útil. Desarrollamos soluciones nuevas o fortalecemos iniciativas en curso, siempre a partir de una lectura rigurosa de la situación.</p>
+        </header>
+
+        <div className="v533-proposal__grid">
+          <article className="v533-panel v533-panel--where">
+            <div className="v533-panel__heading">
+              <span className="v54-eyebrow">Dónde aportamos</span>
+              <h3>Cuatro ámbitos de trabajo</h3>
+              <p>Son espacios donde conocimiento y capacidades ya existen, pero todavía necesitan converger mejor.</p>
+            </div>
+            <div className="v533-area-grid">
+              {cultivationAreas.map((item) => (
+                <article key={item.title} className="v533-area-card">
+                  <span className="v533-area-card__icon"><Icon name={item.icon} /></span>
+                  <div>
+                    <strong>{item.title}</strong>
+                    <p>{item.text}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </article>
+
+          <article className="v533-panel v533-panel--core">
+            <div className="v533-panel__heading">
+              <span className="v54-eyebrow">Cómo trabajamos</span>
+              <h3>Observamos primero, intervenimos después</h3>
+              <p>Leemos la situación desde cuatro dimensiones y avanzamos por una secuencia breve para entender, delimitar, probar, medir y transferir.</p>
+            </div>
+
+            <div className="v533-method-composition">
+              <div className="v533-system" aria-label="Esquema de trabajo de Metamorfosis">
+                <svg className="v533-system__lines" viewBox="0 0 720 430" preserveAspectRatio="none" aria-hidden="true">
+                  <path d="M360 214 C280 186 226 144 166 104" />
+                  <path d="M360 214 C438 186 492 144 554 104" />
+                  <path d="M360 214 C280 244 226 288 166 326" />
+                  <path d="M360 214 C438 244 492 288 554 326" />
+                </svg>
+                <div className="v533-system__core">
+                  <img src="/logo-metamorfosis-transparente.png" alt="" aria-hidden="true" />
+                  <strong>Metamorfosis</strong>
+                  <small>Investigación · innovación aplicada</small>
+                </div>
+                {transformationPillars.map((item, index) => {
+                  const positions = ['nw', 'ne', 'sw', 'se'];
+                  const isActive = activeDimension === item.id;
+                  return (
+                    <button
+                      type="button"
+                      key={item.id}
+                      className={`v533-system__node v533-system__node--${positions[index]} ${isActive ? 'is-active' : ''}`}
+                      onClick={() => setActiveDimension(item.id)}
+                      aria-pressed={isActive}
+                    >
+                      <span className="v533-system__node-icon"><Icon name={item.icon} /></span>
+                      <span>
+                        <strong>{item.title}</strong>
+                        <small>{item.short}</small>
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <aside className="v533-method-aside" aria-live="polite">
+                <span className="v533-method-aside__eyebrow">{activeLens.title}</span>
+                <h4>{activeLens.short}</h4>
+                <p>{activeLens.text}</p>
+              </aside>
+            </div>
+
+            <div className="v533-steps">
+              <div className="v533-steps__list">
+                {processRoadmap.map((item, index) => {
+                  const isActive = activeRoadmap.title === item.title;
+                  return (
+                    <button
+                      type="button"
+                      key={item.title}
+                      className={`v533-step-chip ${isActive ? 'is-active' : ''}`}
+                      onClick={() => setActiveStep(item.title)}
+                      aria-pressed={isActive}
+                    >
+                      <span>0{index + 1}</span>
+                      <strong>{item.title}</strong>
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="v533-steps__detail" aria-live="polite">
+                <small>{activeRoadmap.eyebrow}</small>
+                <p>{activeRoadmap.text}</p>
+              </div>
+            </div>
+          </article>
+
+          <article className="v533-panel v533-panel--what">
+            <div className="v533-panel__heading">
+              <span className="v54-eyebrow">Qué desarrollamos</span>
+              <h3>Dos formas de crear valor</h3>
+              <p>Según la situación, desarrollamos una respuesta nueva o fortalecemos una capacidad existente para que pueda sostenerse y crecer.</p>
+            </div>
+            <div className="v533-engine-list">
+              {innovationEngines.map((item, index) => (
+                <article key={item.id} className="v533-engine-card">
+                  <div className="v533-engine-card__head">
+                    <span className="v533-engine-card__icon"><Icon name={item.icon} /></span>
+                    <div><small>{item.eyebrow}</small><h4>{item.title}</h4></div>
+                    <span className="v533-engine-card__index">0{index + 1}</span>
+                  </div>
+                  <p>{item.summary}</p>
+                  <ul>
+                    <li><strong>Cuándo aporta</strong><span>{item.when}</span></li>
+                    <li><strong>Resultado</strong><span>{item.output}</span></li>
+                  </ul>
+                </article>
+              ))}
+            </div>
+          </article>
+        </div>
+
+        <div className="v533-proposal__closing">
+          <p>No necesitas llegar con una solución definida. Podemos comenzar por una necesidad concreta, una oportunidad o una iniciativa en desarrollo.</p>
+          <SectionLink id="contacto" className="button button--small">Conversemos <Icon name="arrow_forward" /></SectionLink>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// 04B// -----------------------------------------------------------------------------
 // 04B · MAPA INTERACTIVO · CÓMO MIRAMOS
 // -----------------------------------------------------------------------------
 function SystemsMap() {
@@ -545,8 +695,8 @@ function SystemsMap() {
 // -----------------------------------------------------------------------------
 function InnovationEnginesSection() {
   return (
-    <div className="v516-engines v524-engines v532-engines" aria-labelledby="v516-engines-title">
-      <div className="v516-engines__layout v524-engines__layout">
+    <section id="hacemos" className="v516-engines v524-engines section-anchor" aria-labelledby="v516-engines-title">
+      <div className="shell v516-engines__layout v524-engines__layout">
         <header className="v516-section-head v524-engines__head">
           <span className="v54-kicker">Qué hacemos</span>
           <h2 id="v516-engines-title">Dos formas de crear valor</h2>
@@ -572,9 +722,12 @@ function InnovationEnginesSection() {
             </article>
           ))}
         </div>
-
+        <div className="v524-offer__closing">
+          <p>No necesitas llegar con una solución definida. Podemos comenzar por una necesidad, una oportunidad o una iniciativa en desarrollo.</p>
+          <SectionLink id="contacto" className="button button--small">Conversemos <Icon name="arrow_forward" /></SectionLink>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -663,13 +816,13 @@ function IntegratedMethodSection() {
   });
 
   return (
-    <div id="metodo" className="v516-work v532-method" aria-labelledby="v516-work-title">
-      <div className="v516-work__shell">
+    <section id="metodo" className="v516-work section-anchor" aria-labelledby="v516-work-title">
+      <div className="shell v516-work__shell">
         <div className="v520-method-layout v524-method-composition v525-method-composition">
           <header className="v516-work__head v525-method-heading">
             <span className="v54-kicker">Cómo trabaja Metamorfosis</span>
-            <h2 id="v516-work-title">Cómo convertimos evidencia en acción</h2>
-            <p>Cuatro dimensiones que se relacionan; cinco etapas para entender, delimitar, probar, medir y transferir. Selecciona cada elemento para profundizar.</p>
+            <h2 id="v516-work-title">Observar antes de intervenir</h2>
+            <p>Leemos las dimensiones relevantes de cada situación y seguimos una secuencia para transformar esa comprensión en decisiones y capacidad.</p>
           </header>
           <div className="v516-map v529-system-map" aria-label="Sistema de relaciones de Metamorfosis">
           <svg className="v529-system-links" viewBox="0 0 1000 390" preserveAspectRatio="none" aria-hidden="true" focusable="false">
@@ -683,7 +836,7 @@ function IntegratedMethodSection() {
               <article key={item.id} className={`v516-lens v516-lens--${positions[index]} ${isOpen ? 'is-open' : ''}`}>
                 <button type="button" className="v516-lens__trigger" onClick={() => toggleInSet(setOpenDimensions, item.id)} aria-expanded={isOpen} aria-controls={`lens-${item.id}`}>
                   <span className="v516-lens__icon"><Icon name={item.icon} /></span>
-                  <span className="v532-lens-label"><strong>{item.title}</strong><small>{item.short}</small></span>
+                  <strong>{item.title}</strong>
                   <Icon name={isOpen ? 'expand_less' : 'expand_more'} />
                 </button>
                 <div id={`lens-${item.id}`} className="v516-lens__panel" hidden={!isOpen}>
@@ -713,7 +866,7 @@ function IntegratedMethodSection() {
                   <button type="button" className="v516-step__trigger" onClick={() => setOpenStep((current) => current === key ? null : key)} aria-expanded={isOpen} aria-controls={key}>
                     <span className="v516-step__number">0{index + 1}</span>
                     <span className="v516-step__icon"><Icon name={item.icon} /></span>
-                    <span className="v532-step-label"><strong>{item.title}</strong><small>{item.eyebrow}</small></span>
+                    <strong>{item.title}</strong>
                     <Icon name={isOpen ? 'expand_less' : 'expand_more'} />
                   </button>
                   <div id={key} className="v516-step__panel" hidden={!isOpen}><small>{item.eyebrow}</small><p>{item.text}</p></div>
@@ -724,7 +877,7 @@ function IntegratedMethodSection() {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -843,7 +996,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--v532 public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522 public-site--v523 public-site--v524 public-site--v525 public-site--v526 public-site--v527 public-site--v528 public-site--v529 public-site--v530 public-site--v531">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522 public-site--v523 public-site--v524 public-site--v525 public-site--v526 public-site--v527 public-site--v528 public-site--v529 public-site--v530 public-site--v531 public-site--v533">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
@@ -851,54 +1004,36 @@ function PublicSite() {
         <section id="inicio" className="v54-hero section-anchor" style={{ '--section-image': `url(${heroImage})` }} onPointerMove={handleHeroMove}>
           <div className="v54-hero__shade" aria-hidden="true" />
           <div className="v54-hero__glow" aria-hidden="true" />
-          <div className="shell v515-hero">
-            <header className="v515-hero__headline">
+          <div className="shell v515-hero v533-hero">
+            <header className="v515-hero__headline v533-hero__headline">
               <span className="v54-kicker">METAMORFOSIS LAB</span>
               <h1>Investigación e innovación aplicada</h1>
               <p className="v531-hero__origin">Desde la Región del Biobío</p>
             </header>
-            <div className="v532-hero-content">
-              <div className="v532-hero-note">
-                <span className="v54-eyebrow">Nuestro punto de partida</span>
-                <p>Investigamos organizaciones, actividades productivas y territorios desde sus condiciones reales. Combinamos evidencia, mapeo, entrevistas y conocimiento técnico para comprender sus relaciones, reconocer capacidades y desarrollar soluciones aplicables, evaluables y responsables con las personas y los sistemas vivos.</p>
-                <strong>Primero comprendemos. Después diseñamos, probamos y medimos.</strong>
-              </div>
-              <div className="hero__actions">
+            <div className="v533-hero__panel" aria-label="Presentación de Metamorfosis">
+              <span className="v54-eyebrow">Nuestro criterio</span>
+              <blockquote>Primero comprendemos. Después intervenimos.</blockquote>
+              <p>Investigamos organizaciones, actividades productivas y territorios desde sus condiciones reales. Combinamos evidencia, mapeo, entrevistas y conocimiento técnico para desarrollar soluciones aplicables, evaluables y responsables con las personas y los sistemas vivos. No partimos de recetas: contrastamos información, relaciones y capacidades para decidir qué respuesta vale la pena probar y cómo medirla.</p>
+              <div className="hero__actions v533-hero__actions">
                 <SectionLink className="button audit-primary-cta" id="contacto">Conversemos</SectionLink>
-                <SectionLink className="button button--ghost-light" id="propuesta">Explorar la propuesta</SectionLink>
+                <SectionLink className="button button--ghost-light" id="propuesta">Propuesta</SectionLink>
               </div>
             </div>
           </div>
         </section>
 
-        {/* La propuesta integra ámbitos, resultados y método sin exigir clics previos. */}
-        <section id="propuesta" className="v532-proposal section-anchor" aria-labelledby="v532-proposal-title">
-          <div className="shell v532-proposal__shell">
-            <header className="v532-intro">
-              <span className="v54-kicker">Nuestra propuesta · Jardín de innovación</span>
-              <h2 id="v532-proposal-title">Del conocimiento a soluciones que funcionan</h2>
-              <p>Trabajamos cuando la información y las capacidades existentes no logran encontrarse en una respuesta útil. Investigamos antes de decidir y desarrollamos junto a cada organización, actividad productiva o territorio una intervención proporcionada a su realidad.</p>
-            </header>
-            <div className="v532-capabilities" aria-label="Ámbitos en que trabajamos">
-              {cultivationAreas.map((area) => <div className="v532-capability" key={area.title}><span aria-hidden="true"><Icon name={area.icon}/></span><div><strong>{area.title}</strong><p>{area.text}</p></div></div>)}
-            </div>
-            <InnovationEnginesSection />
-            <IntegratedMethodSection />
-            <div className="v532-closing"><p>No necesitas llegar con una solución definida: basta una necesidad, una oportunidad o una iniciativa que merezca explorarse.</p><SectionLink id="contacto" className="button button--small">Conversemos <Icon name="arrow_forward" /></SectionLink></div>
-          </div>
-        </section>
+        {/* 05.2 · PROPUESTA · Qué hacemos y cómo lo hacemos en una sola escena */}
+        <ProposalSection />
 
-        {/* 05.8 · EQUIPO · Diferenciación conjunta + perfiles en columna */}
-        <section id="equipo" className="v59-team section-anchor">
-          <div className="shell v59-team__layout">
-            <div className="v59-team__value">
+        {/* 05.8 · EQUIPO · Ventaja técnica visible + perfiles en horizontal */}
+        <section id="equipo" className="v533-team section-anchor">
+          <div className="shell v533-team__layout">
+            <div className="v533-team__intro">
               <span className="v54-kicker">Equipo</span>
               <h2>Ingeniería y derecho en diálogo</h2>
-              <p>Ingeniería Civil Industrial y Derecho se integran con experiencia en gestión, investigación y contextos organizacionales para construir una lectura rigurosa antes de intervenir.</p>
+              <p>La combinación de ingeniería y derecho permite leer un mismo desafío desde su operación, sus capacidades, sus exigencias y sus consecuencias. Esa mirada técnica cruzada es parte de la fortaleza de Metamorfosis: ayuda a comprender mejor el problema, intervenir con proporción y traducir complejidad en decisiones aplicables.</p>
             </div>
-            <div className="v59-team__profiles">
-              <TeamSection />
-            </div>
+            <TeamSection />
           </div>
         </section>
 
@@ -922,8 +1057,8 @@ function PublicSite() {
       {/* 05.10 · FOOTER · Cierre institucional */}
       <footer className="site-footer audit-footer v54-footer">
         <div className="shell audit-footer__grid">
-          <div className="site-footer__brand"><Brand /><p>Investigación e innovación aplicada. Concepción · Región del Biobío.</p></div>
-          <div><span className="footer-title">Navegación</span><SectionLink id="inicio">Inicio</SectionLink><SectionLink id="propuesta">Propuesta</SectionLink><SectionLink id="equipo">Equipo</SectionLink><SectionLink id="contacto">Contacto</SectionLink></div>
+          <div className="site-footer__brand"><Brand /><p>Innovación aplicada con base en Concepción. Trabajamos con organizaciones, actividades productivas y territorios integrando evidencia, capacidades y una relación responsable con los sistemas vivos.</p></div>
+          <div><span className="footer-title">Navegación</span><SectionLink id="inicio">Inicio</SectionLink><SectionLink id="propuesta">Propuesta</SectionLink><SectionLink id="equipo">Equipo</SectionLink></div>
           <div><span className="footer-title">Contacto</span><a className="footer-icon-link" href={`mailto:${contact.email}`}><Icon name="mail" /><span>{contact.email}</span></a><a className="footer-icon-link" href={OS_SITE_URL}><Icon name="lock" /><span>Acceso OS</span></a></div>
         </div>
         <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis</span><span>Concepción · Región del Biobío · Chile</span></div>
