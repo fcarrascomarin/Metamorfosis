@@ -849,7 +849,8 @@ function PublicSite() {
           <div className="shell v515-hero">
             <header className="v515-hero__headline">
               <span className="v54-kicker">Metamorfosis LAB</span>
-              <h1>Investigación e innovación aplicada desde la región del Biobío</h1>
+              <h1>Investigación e innovación aplicada </h1>
+              <h2>desde la región del Biobío</h2>
             </header>
             <div className="v515-hero__body">
               <div className="v54-hero__copy">
