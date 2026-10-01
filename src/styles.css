@@ -21692,10 +21692,6 @@ textarea::placeholder { color: #7f98ac; }
 .public-site--v523 .v523-garden-board .v516-garden-column__head p {margin:0;max-width:53ch;color:#566c68;font-size:.88rem;line-height:1.55;}
 .public-site--v523 .v523-garden-lines {gap:11px;}
 .public-site--v523 .v523-garden-line {align-self:start;min-width:0;border-radius:18px;background:rgba(255,255,255,.84);transition:border-color .2s ease,box-shadow .2s ease,background .2s ease;}
-.public-site--v523 .v523-garden-line:first-child:not(.is-open) {background:#164740;border-color:#164740;box-shadow:0 12px 25px rgba(9,61,54,.09);}
-.public-site--v523 .v523-garden-line:first-child:not(.is-open) > button strong,.public-site--v523 .v523-garden-line:first-child:not(.is-open) > button > .app-icon {color:#fff;}
-.public-site--v523 .v523-garden-line:first-child:not(.is-open) .v523-garden-line__number {color:#91e2d4;}
-.public-site--v523 .v523-garden-line:first-child:not(.is-open) .v516-garden-button__icon {background:rgba(255,255,255,.13);color:#96e8dc;}
 .public-site--v523 .v523-garden-line > button {grid-template-columns:28px 43px minmax(0,1fr) 18px;min-height:72px;gap:clamp(9px,1.2vw,17px);padding:12px clamp(13px,1.65vw,22px);}
 .public-site--v523 .v523-garden-line__number {font-size:.67rem;letter-spacing:.05em;font-weight:800;color:#428a7e;}
 .public-site--v523 .v523-garden-line .v516-garden-button__icon {width:43px;height:43px;border-radius:12px;display:grid;place-items:center;}
@@ -21771,7 +21767,6 @@ textarea::placeholder { color: #7f98ac; }
 @media (min-width:1081px) {
   .public-site--v524 #metodo .v516-work__shell {gap:clamp(20px,2.9vh,32px);}
   .public-site--v524 #metodo .v524-method-composition {position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,310px);align-items:center;gap:clamp(22px,2.5vw,35px);padding:clamp(24px,2.2vw,35px);border:1px solid rgba(30,111,96,.13);border-radius:32px;background:linear-gradient(110deg,rgba(255,255,255,.36),rgba(231,245,237,.68));}
-  .public-site--v524 #metodo .v524-method-composition::after {content:'→';position:absolute;left:calc(100% - 310px - clamp(22px,2.5vw,35px) - 9px);top:50%;transform:translate(-50%,-50%);z-index:2;display:grid;place-items:center;width:30px;height:30px;border:1px solid rgba(29,123,107,.22);border-radius:50%;background:#f3faf6;color:#168476;font-size:1.13rem;}
   .public-site--v524 #metodo .v516-map {column-gap:clamp(9px,1vw,15px);row-gap:clamp(14px,1.5vw,20px);}
   .public-site--v524 #metodo .v516-core {min-height:202px;}
   .public-site--v524 #metodo .v516-method {padding-left:clamp(9px,1.25vw,18px);border-left:1px solid rgba(22,96,82,.17);}
@@ -21822,7 +21817,6 @@ textarea::placeholder { color: #7f98ac; }
  .public-site--v525 #metodo .v525-method-heading {grid-row:1;grid-column:1/-1;}
  .public-site--v525 #metodo .v525-method-composition > .v516-map {grid-column:1;grid-row:2;}
  .public-site--v525 #metodo .v525-method-composition > .v516-method {grid-column:2;grid-row:2;align-self:center;}
- .public-site--v525 #metodo .v524-method-composition::after {top:calc(50% + 26px);pointer-events:none;}
  .public-site--v525 #metodo .v516-method__head {margin-bottom:12px;gap:3px;}
  .public-site--v525 #metodo .v516-method__head h3 {font-size:clamp(1.48rem,1.8vw,1.8rem);}
  .public-site--v525 #metodo .v516-method__head p {max-width:38ch;font-size:.72rem;line-height:1.35;}
@@ -21881,3 +21875,65 @@ textarea::placeholder { color: #7f98ac; }
  .public-site--v525 #metodo .v516-method__head p {display:none;}
 }
 @media (prefers-reduced-motion:reduce) {.public-site--v525 * {scroll-behavior:auto!important;}}
+
+/* ============================================================================
+   V5.26 · Afinación editorial del Jardín y limpieza del método
+   - Igual relevancia inicial de las cuatro líneas, sin favoritismo cromático.
+   - Sin flecha ornamental entre dimensiones y etapas.
+   - Ritmo compacto en escritorio; el contenido abierto conserva altura natural.
+   ============================================================================ */
+.public-site--v526 #jardin .v523-garden-line:not(.is-open) {
+  background:rgba(255,255,255,.88);
+  border-color:rgba(16,40,42,.12);
+  box-shadow:0 5px 15px rgba(13,55,48,.025);
+}
+.public-site--v526 #jardin .v523-garden-line:not(.is-open) > button strong {color:var(--v54-ink);}
+.public-site--v526 #jardin .v523-garden-line:not(.is-open) .v523-garden-line__number {color:#428a7e;}
+.public-site--v526 #jardin .v523-garden-line:not(.is-open) .v516-garden-button__icon {background:#e9f5f0;color:var(--v54-accent-deep);}
+.public-site--v526 #jardin .v523-garden-line:hover,
+.public-site--v526 #jardin .v523-garden-line:focus-within {
+  border-color:rgba(20,117,102,.38);
+  box-shadow:0 8px 22px rgba(14,72,62,.065);
+}
+.public-site--v526 #metodo .v524-method-composition::after {content:none !important;display:none !important;}
+@media (min-width:1081px) {
+  .public-site--v526 #jardin {padding-block:clamp(12px,1.85vh,22px);align-items:center;}
+  .public-site--v526 #jardin .v514-garden__layout {gap:clamp(12px,1.45vh,19px);}
+  .public-site--v526 #jardin .v514-garden__statement h2 {
+    margin-top:5px;font-size:clamp(2.0rem,2.85vw,3.13rem);line-height:1.055;
+    white-space:normal;text-wrap:balance;
+  }
+  .public-site--v526 #jardin .v514-garden__copy {
+    padding-top:clamp(9px,1.4vh,15px);gap:clamp(24px,4vw,58px);
+  }
+  .public-site--v526 #jardin .v514-garden__copy p:first-child {font-size:clamp(.88rem,.97vw,1rem);line-height:1.45;}
+  .public-site--v526 #jardin .v514-garden__copy .v523-garden__accent {
+    padding-block:5px;font-size:clamp(1.03rem,1.28vw,1.24rem);line-height:1.22;
+  }
+  .public-site--v526 #jardin .v523-garden-board {
+    padding-top:clamp(13px,1.85vh,21px);gap:clamp(24px,3.5vw,45px);
+  }
+  .public-site--v526 #jardin .v523-garden-board__main .v516-garden-column__head {margin-bottom:clamp(10px,1.55vh,16px);}
+  .public-site--v526 #jardin .v523-garden-board .v516-garden-column__head h3 {
+    font-size:clamp(1.43rem,1.75vw,1.84rem);line-height:1.08;margin:5px 0 6px;
+  }
+  .public-site--v526 #jardin .v523-garden-board .v516-garden-column__head p {font-size:.81rem;line-height:1.38;}
+  .public-site--v526 #jardin .v523-garden-lines {gap:clamp(6px,.85vh,9px);}
+  .public-site--v526 #jardin .v523-garden-line > button {
+    min-height:clamp(56px,6.8vh,65px);padding-block:7px;
+  }
+  .public-site--v526 #jardin .v523-garden-board__aside {padding:clamp(15px,1.65vw,23px);}
+  .public-site--v526 #jardin .v523-garden-principle > button {min-height:clamp(46px,5.75vh,53px);padding-block:6px;}
+}
+/* No forzar una sola plana en ventanas bajas, ampliadas o con tarjetas abiertas. */
+@media (min-width:1081px) and (max-height:710px) {
+  .public-site--v526 #jardin {min-height:0;display:block;padding-block:18px;}
+}
+@media (max-width:1080px) {
+  .public-site--v526 #jardin {min-height:0;height:auto;}
+  .public-site--v526 #jardin .v523-garden-board__main,
+  .public-site--v526 #jardin .v523-garden-board__aside {min-width:0;}
+}
+@media (prefers-reduced-motion:reduce) {
+  .public-site--v526 #jardin .v523-garden-line {transition:none;}
+}
