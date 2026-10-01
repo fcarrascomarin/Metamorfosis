@@ -659,13 +659,14 @@ function IntegratedMethodSection() {
   return (
     <section id="metodo" className="v516-work section-anchor" aria-labelledby="v516-work-title">
       <div className="shell v516-work__shell">
+        <div className="v520-method-layout v524-method-composition">
         <header className="v516-work__head">
           <span className="v54-kicker">Cómo trabaja Metamorfosis</span>
           <h2 id="v516-work-title">Observar antes de intervenir</h2>
           <p>Leemos una situación desde las dimensiones que importan y aplicamos un método para convertir esa comprensión en capacidad.</p>
         </header>
 
-        <div className="v520-method-layout v524-method-composition">
+        
           <div className="v516-map">
           {transformationPillars.map((item, index) => {
             const isOpen = openDimensions.has(item.id);
@@ -842,7 +843,7 @@ function PublicSite() {
           <div className="shell v515-hero">
             <header className="v515-hero__headline">
               <span className="v54-kicker">Metamorfosis LAB</span>
-              <h1>Innovación aplicada desde la Región del Biobío</h1>
+              <h1>Investigación e innovación aplicada desde la región del Biobío</h1>
             </header>
             <div className="v515-hero__body">
               <div className="v54-hero__copy">
