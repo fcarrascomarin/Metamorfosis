@@ -22588,3 +22588,230 @@ textarea::placeholder { color: #7f98ac; }
 @media(prefers-reduced-motion:reduce) {
  .public-site--v536 .v535-map__node {transition:none}
 }
+
+/* ---------------------------------------------------------------------------
+   V5.37 · Propuesta editorial con atmósfera orgánica-tecnológica
+   Se conserva la escala de títulos y el sistema de color del resto de la web.
+   --------------------------------------------------------------------------- */
+.public-site--v537 #propuesta.v537-proposal {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: calc(100svh - var(--site-header-h, 90px));
+  display: flex;
+  align-items: center;
+  padding: clamp(40px, 5vh, 68px) 0 clamp(28px, 4vh, 50px);
+  color: #effaf8;
+  background: #031923;
+  scroll-margin-top: var(--site-header-h, 90px);
+}
+/* La fotografía de referencia es atmosférica: se amplía para que la franja de
+   controles visible en su captura original quede fuera del recorte de sección. */
+.public-site--v537 #propuesta.v537-proposal::before {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  inset: 0 0 -17%;
+  background-image: var(--v537-atmosphere);
+  background-size: cover;
+  background-position: center top;
+  filter: saturate(.85) brightness(.65);
+  pointer-events: none;
+}
+.public-site--v537 #propuesta.v537-proposal::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(2,19,27,.92), rgba(3,24,32,.78) 44%, rgba(3,21,30,.8)),
+    linear-gradient(0deg,#031923 0%,rgba(3,25,35,.36) 35%,rgba(3,25,35,.26));
+  pointer-events: none;
+}
+.public-site--v537 .v537-proposal__layout {
+  display: grid;
+  width: 100%;
+  gap: clamp(23px, 3vh, 38px);
+}
+.public-site--v537 .v537-proposal :is(h2,h3,p,strong,small,span,summary) {
+  color: inherit;
+}
+.public-site--v537 .v537-proposal__intro {
+  display: grid;
+  gap: 10px;
+  text-align: center;
+  max-width: 84ch;
+  margin-inline: auto;
+}
+.public-site--v537 .v537-proposal :is(.v54-kicker,.v54-eyebrow) {
+  color: #76e1d4;
+  font-weight: 760;
+  font-size: .75rem;
+  letter-spacing: .17em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+.public-site--v537 .v537-proposal__intro h2 {
+  margin: 0;
+  font-family: Georgia,serif;
+  font-size: clamp(2.15rem,3.25vw,3.5rem);
+  line-height: 1.06;
+  font-weight: 500;
+  text-wrap: balance;
+}
+.public-site--v537 .v537-proposal__intro p {
+  margin: 0 auto;
+  max-width: 69ch;
+  color: #d4e9e5;
+  font-size: clamp(.96rem,1.06vw,1.09rem);
+  line-height: 1.56;
+}
+.public-site--v537 .v537-offers {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: clamp(28px,4vw,72px);
+  padding-block: clamp(17px,2.2vh,28px);
+  border-top: 1px solid rgba(167,234,225,.23);
+  border-bottom: 1px solid rgba(167,234,225,.23);
+}
+.public-site--v537 .v537-offer {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+  padding-inline: clamp(4px,1.4vw,22px);
+  min-width: 0;
+}
+.public-site--v537 .v537-offer + .v537-offer {
+  border-left: 1px solid rgba(167,234,225,.24);
+  padding-left: clamp(20px,3.5vw,56px);
+}
+.public-site--v537 .v537-offer__index {
+  font-size: .73rem;
+  font-weight: 750;
+  letter-spacing: .15em;
+  color: #76e1d4 !important;
+}
+.public-site--v537 .v537-offer h3 {
+  margin: 0;
+  font: 500 clamp(1.5rem,2vw,2.15rem)/1.15 Georgia,serif;
+}
+.public-site--v537 .v537-offer p {
+  margin: 0;
+  max-width: 53ch;
+  font-size: clamp(.9rem,.96vw,1.02rem);
+  line-height: 1.55;
+  color: #e0efec;
+}
+.public-site--v537 .v537-offer .v537-offer__outcome {
+  margin-top: 4px;
+  color: #bfe1db;
+  font-size: clamp(.85rem,.93vw,.96rem);
+}
+.public-site--v537 .v537-offer__outcome strong {color:#8be2d5;}
+.public-site--v537 .v537-method {
+  padding: clamp(20px,2.6vh,30px) clamp(22px,3.5vw,50px);
+  display: grid;
+  gap: clamp(18px,2.2vh,27px);
+  background: rgba(3,26,34,.65);
+  border: 1px solid rgba(125,225,212,.25);
+  border-radius: clamp(20px,2.5vw,30px);
+  box-shadow: 0 18px 42px rgba(0,0,0,.13);
+  backdrop-filter: blur(5px);
+}
+.public-site--v537 .v537-method__story {
+  display: grid;
+  gap: 8px;
+}
+.public-site--v537 .v537-method__story h3 {
+  margin: 0;
+  font: 500 clamp(1.45rem,1.9vw,2.1rem)/1.17 Georgia,serif;
+}
+.public-site--v537 .v537-method__story p {
+  margin: 0;
+  color: #e0efec;
+  line-height: 1.6;
+  font-size: clamp(.93rem,1.02vw,1.06rem);
+  max-width: 112ch;
+}
+.public-site--v537 .v537-method__sequence {
+  display: grid;
+  grid-template-columns: repeat(5,minmax(0,1fr));
+  border-top: 1px solid rgba(167,234,225,.2);
+  padding-top: clamp(14px,1.8vh,20px);
+  gap: 0;
+}
+.public-site--v537 .v537-method__step {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  padding: 4px 9px;
+}
+.public-site--v537 .v537-method__step:not(:last-child) {border-right:1px solid rgba(167,234,225,.22);}
+.public-site--v537 .v537-method__step span {font-size:.72rem;font-weight:750;color:#7bdacf;}
+.public-site--v537 .v537-method__step strong {font-size:clamp(.83rem,.99vw,1.06rem);font-weight:720;color:#f4fbf8;}
+.public-site--v537 .v537-proposal__closing {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+}
+.public-site--v537 .v537-proposal__closing p {
+  margin:0;
+  max-width:73ch;
+  color:#d4e9e5;
+  line-height:1.52;
+  font-size:.93rem;
+}
+.public-site--v537 .v537-proposal__closing .button {flex:none;white-space:nowrap;}
+.public-site--v537 .v537-details {padding:0;border-top:1px solid rgba(167,234,225,.19);color:#e7f5f1;}
+.public-site--v537 .v537-details summary {
+  display:flex;
+  width:fit-content;
+  align-items:center;
+  gap:8px;
+  padding:14px 0 3px;
+  cursor:pointer;
+  font-size:.85rem;
+  font-weight:730;
+  color:#8de8dc;
+  list-style:none;
+}
+.public-site--v537 .v537-details summary::-webkit-details-marker{display:none;}
+.public-site--v537 .v537-details summary .app-icon{width:16px;height:16px;transition:transform .18s ease;}
+.public-site--v537 .v537-details[open] summary .app-icon{transform:rotate(180deg);}
+.public-site--v537 .v537-details__content {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(22px,3vw,44px);
+  margin-top:18px;
+  padding:clamp(18px,2.5vw,26px);
+  border:1px solid rgba(167,234,225,.2);
+  border-radius:20px;
+  background:rgba(2,20,29,.88);
+}
+.public-site--v537 .v537-details__content h3 {font:500 1.35rem/1.2 Georgia,serif;margin:0 0 12px;}
+.public-site--v537 .v537-details__content p {margin:0 0 10px;color:#d8eae6;font-size:.94rem;line-height:1.55;}
+.public-site--v537 .v537-details__content p strong{color:#8de8dc;}
+.public-site--v537 .v537-details__areas{grid-column:1/-1;padding-top:16px;border-top:1px solid rgba(167,234,225,.16);}
+/* La escala de titulaciones corresponde a la misma jerarquía de Propuesta/Equipo. */
+.public-site--v537 .v534-team__intro > .v54-kicker {display:block;color:#08766d!important;font-size:.75rem!important;letter-spacing:.17em!important;line-height:1.35!important;font-weight:760;}
+.public-site--v537 .v534-team__intro h2 {font-size:clamp(2.15rem,3.25vw,3.5rem)!important;line-height:1.06!important;}
+@media (max-width:800px) {
+  .public-site--v537 #propuesta.v537-proposal{min-height:0;align-items:start;padding-block:52px 45px;}
+  .public-site--v537 .v537-offers {grid-template-columns:1fr;gap:18px;}
+  .public-site--v537 .v537-offer + .v537-offer {border-left:0;border-top:1px solid rgba(167,234,225,.23);padding:18px 4px 0;}
+  .public-site--v537 .v537-method__sequence {grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+  .public-site--v537 .v537-method__step:not(:last-child){border:0;}
+  .public-site--v537 .v537-method__step{justify-content:flex-start;}
+  .public-site--v537 .v537-details__content{grid-template-columns:1fr;}
+  .public-site--v537 .v537-details__areas{grid-column:1;}
+}
+@media (max-width:530px) {
+  .public-site--v537 .v537-proposal__intro h2 {font-size:clamp(2rem,8vw,2.6rem);}
+  .public-site--v537 .v537-method{padding:21px 18px;}
+  .public-site--v537 .v537-method__sequence{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .public-site--v537 .v537-proposal__closing{flex-direction:column;align-items:flex-start;}
+}
+@media(prefers-reduced-motion:reduce){.public-site--v537 .v537-details summary .app-icon{transition:none;}}

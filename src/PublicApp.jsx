@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Icon from './components/Icon.jsx';
 import heroImage from './assets/images/jardin/hero-jardin.png';
 import contactImage from './assets/images/jardin/contacto-jardin.webp';
+import proposalAtmosphere from './assets/images/jardin/propuesta-atmosfera.png';
 import { contact } from './data.js';
 import {
   activeOfferUseCases,
@@ -520,6 +521,88 @@ function IntegratedProposalMap() {
 }
 
 // -----------------------------------------------------------------------------
+// PROPUESTA · Primera vista autosuficiente y ampliación de rigor bajo demanda.
+// La sección evita duplicar el criterio expresado en el hero y no requiere
+// ninguna interacción para entender las dos formas de crear valor y el método.
+// -----------------------------------------------------------------------------
+function ProposalSection() {
+  return (
+    <section
+      id="propuesta"
+      className="v537-proposal section-anchor"
+      aria-labelledby="v537-title"
+      style={{ '--v537-atmosphere': `url(${proposalAtmosphere})` }}
+    >
+      <div className="shell v537-proposal__layout">
+        <header className="v537-proposal__intro">
+          <span className="v54-kicker">Nuestra propuesta</span>
+          <h2 id="v537-title">Del conocimiento a soluciones aplicables</h2>
+          <p>Convertimos situaciones reales en respuestas útiles: desarrollamos soluciones nuevas o fortalecemos capacidades que ya existen.</p>
+        </header>
+
+        <div className="v537-offers" aria-label="Qué hacemos">
+          <article className="v537-offer">
+            <span className="v537-offer__index">01 / CREAMOS</span>
+            <h3>Soluciones propias</h3>
+            <p>Investigamos necesidades aún no resueltas y diseñamos herramientas, protocolos o prototipos que puedan ponerse a prueba en contexto.</p>
+            <p className="v537-offer__outcome"><strong>Resultado posible</strong> · Una solución documentada, evaluable y con condiciones claras de aplicación.</p>
+          </article>
+          <article className="v537-offer">
+            <span className="v537-offer__index">02 / FORTALECEMOS</span>
+            <h3>Incubación de impacto</h3>
+            <p>Acompañamos organizaciones e iniciativas con capacidades valiosas para estructurar su operación y hacer viable su continuidad o crecimiento.</p>
+            <p className="v537-offer__outcome"><strong>Resultado posible</strong> · Una propuesta fortalecida y una hoja de ruta accionable.</p>
+          </article>
+        </div>
+
+        <div className="v537-method" aria-labelledby="v537-method-title">
+          <div className="v537-method__story">
+            <span className="v54-eyebrow">Cómo trabajamos</span>
+            <h3 id="v537-method-title">Investigación que orienta decisiones</h3>
+            <p>Combinamos información disponible, mapeo, entrevistas y análisis técnico para comprender cómo se relacionan la operación, las personas, el entorno y las condiciones de cada situación. Con esa evidencia delimitamos una respuesta, la probamos, evaluamos sus resultados y transferimos lo aprendido.</p>
+          </div>
+          <div className="v537-method__sequence" aria-label="Cinco etapas del método">
+            {processRoadmap.map((item, index) => (
+              <div className="v537-method__step" key={item.title}>
+                <span>0{index + 1}</span>
+                <strong>{item.title}</strong>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="v537-proposal__closing">
+          <p>El trabajo debe dejar conocimiento, herramientas o capacidades que puedan seguir utilizándose después de la intervención.</p>
+          <SectionLink id="contacto" className="button button--small">Conversemos <Icon name="arrow_forward" /></SectionLink>
+        </div>
+
+        <details className="v537-details">
+          <summary>Explorar nuestro método <Icon name="expand_more" /></summary>
+          <div className="v537-details__content">
+            <div>
+              <h3>Qué observamos</h3>
+              {transformationPillars.map((item) => (
+                <p key={item.id}><strong>{item.title}</strong> — {item.text}</p>
+              ))}
+            </div>
+            <div>
+              <h3>Cómo avanzamos</h3>
+              {processRoadmap.map((item, index) => (
+                <p key={item.title}><strong>0{index + 1} · {item.title}</strong> — {item.text}</p>
+              ))}
+            </div>
+            <div className="v537-details__areas">
+              <h3>Ámbitos de aplicación</h3>
+              <p>{cultivationAreas.map((item) => item.title).join(' · ')}</p>
+            </div>
+          </div>
+        </details>
+      </div>
+    </section>
+  );
+}
+
+// -----------------------------------------------------------------------------
 // 04B · MAPA INTERACTIVO · CÓMO MIRAMOS
 // -----------------------------------------------------------------------------
 function SystemsMap() {
@@ -876,7 +959,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--v532 public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522 public-site--v523 public-site--v524 public-site--v525 public-site--v526 public-site--v527 public-site--v528 public-site--v529 public-site--v530 public-site--v531 public-site--v534 public-site--v535 public-site--v536">
+    <div className="public-site public-site--v532 public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522 public-site--v523 public-site--v524 public-site--v525 public-site--v526 public-site--v527 public-site--v528 public-site--v529 public-site--v530 public-site--v531 public-site--v534 public-site--v535 public-site--v536 public-site--v537">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
@@ -904,53 +987,8 @@ function PublicSite() {
           </div>
         </section>
 
-        {/* Propuesta v5.36: una idea por capa. Lo esencial se lee sin interactuar. */}
-        <section id="propuesta" className="v536-proposal section-anchor" aria-labelledby="v536-title">
-          <div className="shell v536-proposal__layout">
-            <header className="v536-proposal__intro">
-              <span className="v54-kicker">Nuestra propuesta</span>
-              <h2 id="v536-title">Del análisis a soluciones aplicables</h2>
-              <p>Investigamos las condiciones reales de cada desafío para crear una respuesta nueva o fortalecer una iniciativa existente.</p>
-            </header>
-
-            <div className="v536-offers" aria-label="Qué hacemos en Metamorfosis">
-              <div className="v536-offer">
-                <span className="v536-offer__index">01</span>
-                <div><span className="v536-offer__eyebrow">Creamos</span><h3>Soluciones propias</h3>
-                  <p>Diseñamos y probamos herramientas o prototipos ante necesidades aún no resueltas.</p></div>
-                <strong className="v536-offer__outcome">Resultado posible · Prototipo validable</strong>
-              </div>
-              <div className="v536-offer">
-                <span className="v536-offer__index">02</span>
-                <div><span className="v536-offer__eyebrow">Hacemos crecer</span><h3>Incubación de impacto</h3>
-                  <p>Estructuramos capacidades e iniciativas existentes para hacer viable su desarrollo.</p></div>
-                <strong className="v536-offer__outcome">Resultado posible · Hoja de ruta accionable</strong>
-              </div>
-            </div>
-
-            <div className="v536-method" aria-label="Cómo trabaja Metamorfosis">
-              <div className="v536-method__label"><span className="v54-eyebrow">Así lo hacemos</span><p>Observamos cuatro dimensiones que se relacionan entre sí. Selecciona una para profundizar.</p></div>
-              <IntegratedProposalMap />
-              <div className="v536-journey" aria-label="Etapas de trabajo">
-                {processRoadmap.map((item,index)=>(
-                  <div className="v536-journey__item" key={item.title} title={`${item.eyebrow}: ${item.text}`}>
-                    <span className="v536-journey__number">0{index+1}</span>
-                    <span><strong>{item.title}</strong><small>{item.eyebrow}</small></span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="v536-proposal__closing">
-              <details className="v536-applications">
-                <summary>Explorar ámbitos de aplicación <Icon name="expand_more" /></summary>
-                <div>{cultivationAreas.map((area)=><p key={area.title}><strong>{area.title}</strong><span>{area.text}</span></p>)}</div>
-              </details>
-              <p>¿Hay una necesidad u oportunidad por explorar? Podemos comenzar por comprenderla.</p>
-              <SectionLink id="contacto" className="button button--small">Conversemos <Icon name="arrow_forward" /></SectionLink>
-            </div>
-          </div>
-        </section>
+        {/* Una escena editorial: información esencial visible; profundidad opcional. */}
+        <ProposalSection />
 
         {/* La complementariedad técnica se explica antes de mostrar los dos perfiles. */}
         <section id="equipo" className="v59-team v534-team section-anchor">
