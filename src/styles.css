@@ -23288,3 +23288,66 @@ textarea::placeholder { color: #7f98ac; }
 @media (max-width:530px) {
   .public-site--v543 {--v543-section-title:clamp(2rem,7.4vw,2.55rem);--v543-block-title:clamp(1.46rem,5.3vw,1.75rem);}
 }
+
+
+/* =============================================================================
+   V5.44 — Contacto: mejora de contraste y soporte visual para la columna izquierda.
+   La introducción gana legibilidad sobre el fondo oscuro sin romper la armonía general.
+   ============================================================================= */
+.public-site--v544 #contacto .audit-contact__intro {
+  position: relative;
+  display: grid;
+  gap: clamp(14px, 1.9vh, 20px);
+  align-content: start;
+  padding: clamp(24px, 2.8vw, 36px);
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(7, 28, 34, .72) 0%, rgba(8, 33, 39, .56) 100%);
+  border: 1px solid rgba(116, 239, 226, .14);
+  box-shadow: 0 22px 48px rgba(2, 18, 23, .22);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+}
+.public-site--v544 #contacto .audit-contact__intro .kicker {
+  color: #72e7db !important;
+  margin: 0;
+}
+.public-site--v544 #contacto .audit-contact__intro h2 {
+  color: #f6fbfa !important;
+  max-width: 13ch;
+  margin: 0;
+}
+.public-site--v544 #contacto .audit-contact__intro > p {
+  color: rgba(237, 246, 244, .92) !important;
+  max-width: 42ch;
+  margin: 0;
+}
+.public-site--v544 #contacto .audit-contact__facts {
+  margin-top: clamp(2px, .4vh, 6px);
+}
+.public-site--v544 #contacto .audit-contact__facts > span {
+  border-color: rgba(116, 239, 226, .16);
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+}
+.public-site--v544 #contacto .audit-contact__facts > span > .app-icon,
+.public-site--v544 #contacto .audit-contact__facts .app-icon {
+  color: #72e7db;
+}
+.public-site--v544 #contacto .audit-contact__facts strong {
+  color: #ffffff;
+}
+.public-site--v544 #contacto .audit-contact__facts small {
+  color: #d3e4e2;
+}
+@media (max-width: 960px) {
+  .public-site--v544 #contacto .audit-contact__intro {
+    padding: clamp(20px, 4vw, 28px);
+    border-radius: 24px;
+  }
+}
+@media (max-width: 680px) {
+  .public-site--v544 #contacto .audit-contact__intro {
+    gap: 14px;
+    padding: 18px;
+  }
+}
