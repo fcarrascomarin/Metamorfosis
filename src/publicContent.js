@@ -77,18 +77,18 @@ export const activeOfferUseCases = [
 // 03A · DOS MOTORES · Qué produce Metamorfosis
 export const innovationEngines = [
   {
-    id: 'soluciones',
-    icon: 'design_services',
-    eyebrow: 'Creamos',
-    title: 'Soluciones propias',
-    text: 'Observamos problemas reales, desarrollamos respuestas, las probamos en contexto y convertimos lo aprendido en soluciones utilizables y replicables cuando tiene sentido.'
+    id: 'soluciones', icon: 'design_services', eyebrow: 'Creamos', title: 'Soluciones propias',
+    summary: 'Desarrollamos nuevas respuestas cuando un problema concreto todavía no cuenta con una solución suficientemente útil.',
+    when: 'Hay una necesidad verificable o una oportunidad que merece explorarse antes de invertir en una solución mayor.',
+    work: 'Diseño, prototipado y pruebas en contexto, con criterios explícitos para ajustar o descartar.',
+    output: 'Un prototipo o herramienta documentada, con evidencia inicial sobre su utilidad y condiciones de aplicación.'
   },
   {
-    id: 'incubacion',
-    icon: 'conversion_path',
-    eyebrow: 'Hacemos crecer',
-    title: 'Incubación de impacto',
-    text: 'Trabajamos con organizaciones e iniciativas que ya poseen capacidades valiosas para transformarlas en propuestas sostenibles, financiables y comercialmente viables.'
+    id: 'incubacion', icon: 'conversion_path', eyebrow: 'Hacemos crecer', title: 'Incubación de impacto',
+    summary: 'Acompañamos a organizaciones e iniciativas que ya tienen capacidades valiosas, pero necesitan estructurarlas para sostenerse y crecer.',
+    when: 'Existe una actividad, experiencia o propuesta con potencial, pero aún faltan estructura operativa, modelo de valor o viabilidad.',
+    work: 'Ordenamiento de la propuesta, capacidades, operación y alternativas de sostenibilidad o financiamiento.',
+    output: 'Una propuesta fortalecida y una hoja de ruta accionable para implementar, validar o presentar ante aliados.'
   }
 ];
 

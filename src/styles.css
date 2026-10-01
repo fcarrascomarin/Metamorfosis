@@ -21671,3 +21671,132 @@ textarea::placeholder { color: #7f98ac; }
   .public-site--v522 .v516-step__trigger { max-width:255px; }
   .public-site--v522 .v516-step__panel:not([hidden]) { max-width:100%; padding:14px; margin-top:7px; background:#fff; border:1px solid rgba(23,122,112,.2); border-radius:14px; }
 }
+
+
+/* ============================================================================
+ V5.23 · JARDÍN CON JERARQUÍA EDITORIAL
+ Diseño: introducción → ámbitos principales → criterio complementario.
+ Solo afecta al jardín; no modifica el método v5.22 ni navegación/formulario.
+ ============================================================================ */
+.public-site--v523 .v514-garden {padding-block:clamp(42px,5vw,70px);}
+.public-site--v523 .v514-garden__layout {width:min(calc(100% - clamp(42px,7vw,112px)),1320px);gap:clamp(25px,3vw,38px);}
+.public-site--v523 .v514-garden__statement h2 {margin-top:8px;font-size:clamp(2.15rem,3.15vw,3.55rem);line-height:1.06;letter-spacing:-.043em;}
+.public-site--v523 .v514-garden__copy {display:flex;align-items:center;justify-content:space-between;gap:clamp(28px,5vw,78px);padding-top:clamp(22px,2.5vw,30px);}
+.public-site--v523 .v514-garden__copy p:first-child {max-width:64ch;flex:1.2;font-size:clamp(.95rem,1.04vw,1.08rem);line-height:1.62;}
+.public-site--v523 .v514-garden__copy .v523-garden__accent {max-width:30ch;flex:.58;padding:12px 0 12px 20px;border-left:3px solid #53c7b5;font-family:"Newsreader",Georgia,serif;font-size:clamp(1.13rem,1.5vw,1.43rem);font-weight:560;line-height:1.25;color:#145a55;}
+.public-site--v523 .v523-garden-board {grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.32fr) minmax(340px,.83fr);align-items:start;gap:clamp(32px,4vw,62px);margin:0;padding:clamp(29px,3vw,42px) 0 0;border-top:1px solid rgba(16,40,42,.12);}
+.public-site--v523 .v523-garden-board__main,.public-site--v523 .v523-garden-board__aside {min-width:0;}
+.public-site--v523 .v523-garden-board__main .v516-garden-column__head {margin-bottom:21px;}
+.public-site--v523 .v523-garden-board__aside {padding:clamp(24px,2.2vw,32px);border:1px solid rgba(21,91,81,.12);border-radius:25px;background:linear-gradient(145deg,#edf5f0,#f3f6f0);}
+.public-site--v523 .v523-garden-board .v516-garden-column__head h3 {margin:7px 0 10px;font-size:clamp(1.57rem,2vw,2.02rem);line-height:1.12;white-space:normal;text-wrap:balance;}
+.public-site--v523 .v523-garden-board .v516-garden-column__head p {margin:0;max-width:53ch;color:#566c68;font-size:.88rem;line-height:1.55;}
+.public-site--v523 .v523-garden-lines {gap:11px;}
+.public-site--v523 .v523-garden-line {align-self:start;min-width:0;border-radius:18px;background:rgba(255,255,255,.84);transition:border-color .2s ease,box-shadow .2s ease,background .2s ease;}
+.public-site--v523 .v523-garden-line:first-child:not(.is-open) {background:#164740;border-color:#164740;box-shadow:0 12px 25px rgba(9,61,54,.09);}
+.public-site--v523 .v523-garden-line:first-child:not(.is-open) > button strong,.public-site--v523 .v523-garden-line:first-child:not(.is-open) > button > .app-icon {color:#fff;}
+.public-site--v523 .v523-garden-line:first-child:not(.is-open) .v523-garden-line__number {color:#91e2d4;}
+.public-site--v523 .v523-garden-line:first-child:not(.is-open) .v516-garden-button__icon {background:rgba(255,255,255,.13);color:#96e8dc;}
+.public-site--v523 .v523-garden-line > button {grid-template-columns:28px 43px minmax(0,1fr) 18px;min-height:72px;gap:clamp(9px,1.2vw,17px);padding:12px clamp(13px,1.65vw,22px);}
+.public-site--v523 .v523-garden-line__number {font-size:.67rem;letter-spacing:.05em;font-weight:800;color:#428a7e;}
+.public-site--v523 .v523-garden-line .v516-garden-button__icon {width:43px;height:43px;border-radius:12px;display:grid;place-items:center;}
+.public-site--v523 .v523-garden-line .v516-garden-button__icon .app-icon {width:21px;height:21px;}
+.public-site--v523 .v523-garden-line > button strong {font-size:clamp(.88rem,1vw,1.05rem);font-weight:740;line-height:1.25;white-space:normal;}
+.public-site--v523 .v523-garden-line .v516-garden-button__panel:not([hidden]) {display:block;padding:0 clamp(19px,2vw,28px) 20px clamp(84px,7.7vw,106px);}
+.public-site--v523 .v523-garden-line .v516-garden-button__panel p {max-width:62ch;font-size:.9rem;line-height:1.62;}
+.public-site--v523 .v523-garden-principles {gap:0;}
+.public-site--v523 .v523-garden-principle {border:0;border-top:1px solid rgba(20,83,74,.13);border-radius:0;background:transparent;box-shadow:none;align-self:start;}
+.public-site--v523 .v523-garden-principle:last-child {border-bottom:1px solid rgba(20,83,74,.13);}
+.public-site--v523 .v523-garden-principle.is-open {box-shadow:none;background:rgba(255,255,255,.56);border-radius:12px;border-color:rgba(20,83,74,.15);}
+.public-site--v523 .v523-garden-principle > button {grid-template-columns:35px minmax(0,1fr) 16px;gap:12px;min-height:57px;padding:10px 6px;}
+.public-site--v523 .v523-garden-principle .v516-garden-button__icon {width:35px;height:35px;border-radius:10px;}
+.public-site--v523 .v523-garden-principle .v516-garden-button__icon .app-icon {width:18px;height:18px;}
+.public-site--v523 .v523-garden-principle > button strong {font-size:.84rem;line-height:1.25;}
+.public-site--v523 .v523-garden-principle .v516-garden-button__panel:not([hidden]) {display:block;padding:1px 14px 16px 53px;}
+.public-site--v523 .v523-garden-principle .v516-garden-button__panel p {font-size:.81rem;line-height:1.56;}
+.public-site--v523 .v523-garden-board [hidden] {display:none !important;}
+.public-site--v523 .v523-garden-board button:focus-visible {outline:2px solid #278d82;outline-offset:3px;}
+@media (max-width:1080px) {
+ .public-site--v523 .v523-garden-board {grid-template-columns:minmax(0,1fr) minmax(290px,.8fr);gap:25px;}
+ .public-site--v523 .v523-garden-board__aside {padding:20px;}
+ .public-site--v523 .v514-garden__statement h2 {white-space:normal;text-wrap:balance;}
+}
+@media (max-width:800px) {
+ .public-site--v523 .v514-garden__copy {display:grid;grid-template-columns:1fr;gap:12px;}
+ .public-site--v523 .v514-garden__copy .v523-garden__accent {max-width:unset;}
+ .public-site--v523 .v523-garden-board {grid-template-columns:1fr;gap:32px;}
+ .public-site--v523 .v523-garden-board__aside {padding:24px;}
+ .public-site--v523 .v523-garden-line .v516-garden-button__panel:not([hidden]) {padding-left:20px;}
+}
+@media (max-width:520px) {
+ .public-site--v523 .v514-garden__layout {width:min(calc(100% - 32px),1320px);}
+ .public-site--v523 .v523-garden-line > button {grid-template-columns:20px 35px minmax(0,1fr) 16px;gap:8px;min-height:66px;padding:10px;}
+ .public-site--v523 .v523-garden-line .v516-garden-button__icon {width:35px;height:35px;}
+ .public-site--v523 .v523-garden-line > button strong {font-size:.83rem;}
+ .public-site--v523 .v523-garden-board__aside {padding:18px;}
+}
+
+/* ==========================================================================
+   V5.24 | PROPUESTA DE VALOR VISIBLE + MÉTODO COMO COMPOSICIÓN ÚNICA
+   Se conserva el sistema de acordeones del mapa y cinco etapas de v5.19-v5.22.
+   Esta capa solo afecta Qué hacemos y la caja compositiva del método.
+   ========================================================================== */
+.public-site--v524 #hacemos {height:auto; min-height:calc(100svh - var(--header-height)); display:flex; align-items:center; padding:clamp(40px,5vh,66px) 0;}
+.public-site--v524 #hacemos .v524-engines__layout {width:min(calc(100% - clamp(36px,7vw,104px)),1320px);display:grid;gap:clamp(22px,3vh,34px);}
+.public-site--v524 .v524-engines__head {max-width:100%;margin:0;}
+.public-site--v524 .v524-engines__head h2 {margin-block:7px 13px;}
+.public-site--v524 .v524-engines__head p {max-width:77ch;font-size:clamp(.92rem,1.05vw,1.04rem);line-height:1.6;}
+.public-site--v524 .v524-offer-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,2.3vw,30px);align-items:stretch;}
+.public-site--v524 .v524-offer {min-width:0;display:flex;flex-direction:column;padding:clamp(22px,2.15vw,32px);border:1px solid rgba(21,82,76,.16);border-radius:26px;background:rgba(255,255,255,.85);box-shadow:0 17px 38px rgba(20,66,59,.055);}
+.public-site--v524 .v524-offer--incubacion {background:linear-gradient(145deg,#f0f7f2,#fff 66%);}
+.public-site--v524 .v524-offer__top {display:grid;grid-template-columns:52px minmax(0,1fr) auto;align-items:center;gap:15px;}
+.public-site--v524 .v524-offer__icon {width:52px;height:52px;border-radius:15px;display:grid;place-items:center;background:#e1f3ec;color:#147c70;}
+.public-site--v524 .v524-offer__icon .app-icon {display:block;width:24px;height:24px;}
+.public-site--v524 .v524-offer__identity {min-width:0;}
+.public-site--v524 .v524-offer__identity small {color:#137b6e;font-weight:850;letter-spacing:.095em;text-transform:uppercase;font-size:.66rem;}
+.public-site--v524 .v524-offer__identity h3 {margin:5px 0 0;font:550 clamp(1.5rem,2.1vw,2.05rem)/1.08 'Newsreader',Georgia,serif;letter-spacing:-.025em;white-space:nowrap;}
+.public-site--v524 .v524-offer__index {color:#91aaa4;font-size:.75rem;font-weight:800;align-self:start;}
+.public-site--v524 .v524-offer__summary {margin:20px 0 19px;max-width:57ch;font-size:clamp(.91rem,1vw,1rem);line-height:1.53;color:#344e4a;}
+.public-site--v524 .v524-offer__facts {display:grid;gap:14px;padding:17px 0;border-block:1px solid rgba(23,87,74,.11);}
+.public-site--v524 .v524-offer__facts > div {display:grid;grid-template-columns:125px minmax(0,1fr);gap:15px;align-items:start;}
+.public-site--v524 .v524-offer__facts span,.public-site--v524 .v524-offer__output small {color:#17796d;font-size:.69rem;font-weight:840;letter-spacing:.025em;}
+.public-site--v524 .v524-offer__facts p,.public-site--v524 .v524-offer__output p {margin:0;color:#415c56;font-size:.86rem;line-height:1.47;}
+.public-site--v524 .v524-offer__output {display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;align-items:start;margin-top:auto;padding-top:17px;}
+.public-site--v524 .v524-offer__output > .app-icon {width:19px;height:19px;color:#168575;margin-top:1px;}
+.public-site--v524 .v524-offer__output p {margin-top:3px;font-weight:610;color:#123c37;}
+.public-site--v524 .v524-offer__closing {display:flex;align-items:center;justify-content:space-between;gap:26px;padding-top:1px;}
+.public-site--v524 .v524-offer__closing p {margin:0;max-width:72ch;color:#475d58;font-size:.87rem;line-height:1.5;}
+.public-site--v524 .v524-offer__closing .button {flex-shrink:0;display:inline-flex;gap:9px;align-items:center;justify-content:center;}
+.public-site--v524 .v524-offer__closing .app-icon {width:17px;height:17px;}
+/* Mapa y proceso comparten escena, fondo, borde y separación estructural. */
+@media (min-width:1081px) {
+  .public-site--v524 #metodo .v516-work__shell {gap:clamp(20px,2.9vh,32px);}
+  .public-site--v524 #metodo .v524-method-composition {position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,310px);align-items:center;gap:clamp(22px,2.5vw,35px);padding:clamp(24px,2.2vw,35px);border:1px solid rgba(30,111,96,.13);border-radius:32px;background:linear-gradient(110deg,rgba(255,255,255,.36),rgba(231,245,237,.68));}
+  .public-site--v524 #metodo .v524-method-composition::after {content:'→';position:absolute;left:calc(100% - 310px - clamp(22px,2.5vw,35px) - 9px);top:50%;transform:translate(-50%,-50%);z-index:2;display:grid;place-items:center;width:30px;height:30px;border:1px solid rgba(29,123,107,.22);border-radius:50%;background:#f3faf6;color:#168476;font-size:1.13rem;}
+  .public-site--v524 #metodo .v516-map {column-gap:clamp(9px,1vw,15px);row-gap:clamp(14px,1.5vw,20px);}
+  .public-site--v524 #metodo .v516-core {min-height:202px;}
+  .public-site--v524 #metodo .v516-method {padding-left:clamp(9px,1.25vw,18px);border-left:1px solid rgba(22,96,82,.17);}
+  .public-site--v524 #metodo .v516-method__head {text-align:left;margin-bottom:18px;}
+  .public-site--v524 #metodo .v516-method__head h3 {font-size:clamp(1.5rem,1.7vw,1.85rem);}
+  .public-site--v524 #metodo .v516-method__head p {margin:4px 0 0;color:#54706a;font-size:.76rem;line-height:1.42;max-width:30ch;}
+  .public-site--v524 #metodo .v516-step__trigger {width:100%;max-width:100%;min-height:48px;box-shadow:none;}
+  .public-site--v524 #metodo .v516-step__panel:not([hidden]) {width:100%;box-shadow:0 6px 16px rgba(22,60,56,.035);}
+}
+@media (max-width:1080px) {
+  .public-site--v524 .v524-engines__head h2 {white-space:normal;text-wrap:balance;}
+  .public-site--v524 .v524-offer__identity h3 {white-space:normal;}
+  .public-site--v524 #metodo .v524-method-composition {display:grid;grid-template-columns:1fr;gap:24px;}
+  .public-site--v524 #metodo .v516-method__head p {font-size:.86rem;color:#54706a;margin:6px 0 13px;}
+  .public-site--v524 #metodo .v516-method {border-top:1px solid rgba(22,96,82,.15);padding-top:20px;}
+}
+@media (max-width:760px) {
+  .public-site--v524 #hacemos {padding-block:52px;min-height:0;}
+  .public-site--v524 .v524-offer-grid {grid-template-columns:1fr;}
+  .public-site--v524 .v524-offer__facts > div {grid-template-columns:110px minmax(0,1fr);}
+  .public-site--v524 .v524-offer__closing {flex-direction:column;align-items:flex-start;gap:16px;}
+}
+@media (max-width:420px) {
+ .public-site--v524 .v524-offer__facts > div {grid-template-columns:1fr;gap:4px;}
+ .public-site--v524 .v524-offer__top {grid-template-columns:45px minmax(0,1fr);gap:10px;}
+ .public-site--v524 .v524-offer__index {display:none;}
+ .public-site--v524 .v524-offer__icon {width:45px;height:45px;}
+}

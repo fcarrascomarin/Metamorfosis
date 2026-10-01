@@ -544,40 +544,37 @@ function SystemsMap() {
 // 04B.1 · DOS MOTORES · Qué produce Metamorfosis
 // -----------------------------------------------------------------------------
 function InnovationEnginesSection() {
-  const [openEngines, setOpenEngines] = useState(() => new Set());
-  const toggleEngine = (id) => {
-    setOpenEngines((current) => {
-      const next = new Set(current);
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
-  };
-
   return (
-    <section id="hacemos" className="v516-engines section-anchor" aria-labelledby="v516-engines-title">
-      <div className="shell v516-engines__layout">
-        <header className="v516-section-head">
+    <section id="hacemos" className="v516-engines v524-engines section-anchor" aria-labelledby="v516-engines-title">
+      <div className="shell v516-engines__layout v524-engines__layout">
+        <header className="v516-section-head v524-engines__head">
           <span className="v54-kicker">Qué hacemos</span>
           <h2 id="v516-engines-title">Dos formas de crear valor</h2>
-          <p>Creamos respuestas nuevas o ayudamos a que una capacidad existente encuentre una forma más útil de crecer.</p>
+          <p>Según la situación, desarrollamos una respuesta nueva o fortalecemos una iniciativa que ya existe. Cada camino tiene un propósito y un resultado diferente.</p>
         </header>
-        <div className="v516-engines__grid">
-          {innovationEngines.map((item) => {
-            const isOpen = openEngines.has(item.id);
-            return (
-              <article key={item.id} className={`v516-engine ${isOpen ? 'is-open' : ''}`}>
-                <button type="button" className="v516-engine__trigger" onClick={() => toggleEngine(item.id)} aria-expanded={isOpen} aria-controls={`engine-${item.id}`}>
-                  <span className="v516-engine__icon"><Icon name={item.icon} /></span>
-                  <span className="v516-engine__title"><small>{item.eyebrow}</small><strong>{item.title}</strong></span>
-                  <Icon name={isOpen ? 'expand_less' : 'expand_more'} className="v516-engine__arrow" />
-                </button>
-                <div id={`engine-${item.id}`} className="v516-engine__panel" hidden={!isOpen}>
-                  <p>{item.text}</p>
-                  <SectionLink id="contacto" className="v514-text-link">Conversemos <Icon name="arrow_forward" /></SectionLink>
-                </div>
-              </article>
-            );
-          })}
+        <div className="v524-offer-grid">
+          {innovationEngines.map((item, index) => (
+            <article key={item.id} className={`v524-offer v524-offer--${item.id}`}>
+              <div className="v524-offer__top">
+                <div className="v524-offer__icon" aria-hidden="true"><Icon name={item.icon} /></div>
+                <div className="v524-offer__identity"><small>{item.eyebrow}</small><h3>{item.title}</h3></div>
+                <span className="v524-offer__index" aria-hidden="true">0{index+1}</span>
+              </div>
+              <p className="v524-offer__summary">{item.summary}</p>
+              <div className="v524-offer__facts">
+                <div><span>Cuándo aporta</span><p>{item.when}</p></div>
+                <div><span>Qué desarrollamos</span><p>{item.work}</p></div>
+              </div>
+              <div className="v524-offer__output">
+                <Icon name="check_circle" />
+                <div><small>Resultado posible</small><p>{item.output}</p></div>
+              </div>
+            </article>
+          ))}
+        </div>
+        <div className="v524-offer__closing">
+          <p>No necesitas llegar con una solución definida. Podemos comenzar por una necesidad, una oportunidad o una iniciativa en desarrollo.</p>
+          <SectionLink id="contacto" className="button button--small">Conversemos <Icon name="arrow_forward" /></SectionLink>
         </div>
       </div>
     </section>
@@ -588,29 +585,25 @@ function InnovationEnginesSection() {
 // 04B.2 · QUÉ CULTIVAMOS · Evidencia de trabajo propio, sin catálogo
 // -----------------------------------------------------------------------------
 function GardenKnowledgeSection() {
-  const [openAreas, setOpenAreas] = useState(() => new Set());
-  const [openPrinciples, setOpenPrinciples] = useState(() => new Set());
-
-  const toggleSet = (setter, key) => setter((current) => {
-    const next = new Set(current);
-    next.has(key) ? next.delete(key) : next.add(key);
-    return next;
-  });
+  const [openArea, setOpenArea] = useState(null);
+  const [openPrinciple, setOpenPrinciple] = useState(null);
 
   return (
-    <div className="v516-garden-knowledge" aria-label="Qué cultivamos y criterios de trabajo">
-      <div className="v516-garden-column">
+    <div className="v516-garden-knowledge v523-garden-board" aria-label="Líneas de innovación y criterios de trabajo">
+      <div className="v516-garden-column v523-garden-board__main">
         <header className="v516-garden-column__head">
-          <span className="v54-eyebrow">Qué cultivamos</span>
+          <span className="v54-eyebrow">01 / Qué cultivamos</span>
           <h3>Líneas que estamos haciendo crecer</h3>
+          <p>Cuatro ámbitos donde transformamos preguntas y capacidades existentes en oportunidades de innovación aplicada.</p>
         </header>
-        <div className="v516-garden-column__buttons">
+        <div className="v516-garden-column__buttons v523-garden-lines">
           {cultivationAreas.map((item, index) => {
+            const isOpen = openArea === index;
             const key = `area-${index}`;
-            const isOpen = openAreas.has(key);
             return (
-              <article key={item.title} className={`v516-garden-button ${isOpen ? 'is-open' : ''}`}>
-                <button type="button" onClick={() => toggleSet(setOpenAreas, key)} aria-expanded={isOpen} aria-controls={key}>
+              <article key={item.title} className={`v516-garden-button v523-garden-line ${isOpen ? 'is-open' : ''}`}>
+                <button type="button" onClick={() => setOpenArea((current) => current === index ? null : index)} aria-expanded={isOpen} aria-controls={key}>
+                  <span className="v523-garden-line__number" aria-hidden="true">0{index + 1}</span>
                   <span className="v516-garden-button__icon"><Icon name={item.icon} /></span>
                   <strong>{item.title}</strong>
                   <Icon name={isOpen ? 'expand_less' : 'expand_more'} />
@@ -621,19 +614,19 @@ function GardenKnowledgeSection() {
           })}
         </div>
       </div>
-
-      <div className="v516-garden-column">
+      <aside className="v516-garden-column v523-garden-board__aside" aria-label="Criterios que orientan las intervenciones">
         <header className="v516-garden-column__head">
-          <span className="v54-eyebrow">Criterios de trabajo</span>
+          <span className="v54-eyebrow">02 / Nuestro criterio</span>
           <h3>Cómo cuidamos una intervención</h3>
+          <p>No es un catálogo de servicios: estos principios orientan qué vale la pena hacer y hasta dónde intervenir.</p>
         </header>
-        <div className="v516-garden-column__buttons">
+        <div className="v516-garden-column__buttons v523-garden-principles">
           {laboratoryPrinciples.map((item, index) => {
             const key = `principle-${index}`;
-            const isOpen = openPrinciples.has(key);
+            const isOpen = openPrinciple === index;
             return (
-              <article key={item.title} className={`v516-garden-button ${isOpen ? 'is-open' : ''}`}>
-                <button type="button" onClick={() => toggleSet(setOpenPrinciples, key)} aria-expanded={isOpen} aria-controls={key}>
+              <article key={item.title} className={`v516-garden-button v523-garden-principle ${isOpen ? 'is-open' : ''}`}>
+                <button type="button" onClick={() => setOpenPrinciple((current) => current === index ? null : index)} aria-expanded={isOpen} aria-controls={key}>
                   <span className="v516-garden-button__icon"><Icon name={item.icon} /></span>
                   <strong>{item.title}</strong>
                   <Icon name={isOpen ? 'expand_less' : 'expand_more'} />
@@ -643,7 +636,7 @@ function GardenKnowledgeSection() {
             );
           })}
         </div>
-      </div>
+      </aside>
     </div>
   );
 }
@@ -672,7 +665,7 @@ function IntegratedMethodSection() {
           <p>Leemos una situación desde las dimensiones que importan y aplicamos un método para convertir esa comprensión en capacidad.</p>
         </header>
 
-        <div className="v520-method-layout">
+        <div className="v520-method-layout v524-method-composition">
           <div className="v516-map">
           {transformationPillars.map((item, index) => {
             const isOpen = openDimensions.has(item.id);
@@ -698,7 +691,7 @@ function IntegratedMethodSection() {
           </div>
 
           <div className="v516-method">
-            <div className="v516-method__head"><span className="v54-eyebrow">Una evolución</span><h3>Cinco etapas</h3></div>
+            <div className="v516-method__head"><span className="v54-eyebrow">Del análisis a la acción</span><h3>Cinco etapas</h3><p>Una secuencia flexible para convertir lo observado en decisiones y aprendizajes.</p></div>
           <div className="v516-method__grid">
             {processRoadmap.map((item, index) => {
               const key = `step-${index}`;
@@ -838,7 +831,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522 public-site--v523 public-site--v524">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
@@ -875,8 +868,8 @@ function PublicSite() {
               <span className="v54-kicker">Jardín de innovación</span>
               <h2>Sembramos preguntas, cultivamos soluciones</h2>
               <div className="v514-garden__copy">
-              <p>Trabajamos sobre problemas donde conocimiento, información o capacidades todavía no consiguen producir una respuesta suficientemente útil.</p>
-              <p>Observamos, probamos y hacemos crecer solo aquello que demuestra valor.</p>
+              <p>Trabajamos donde el conocimiento, la información y las capacidades existentes aún no consiguen producir una respuesta suficientemente útil.</p>
+              <p className="v523-garden__accent">Observar, probar y aprender antes de hacer crecer.</p>
             </div>
             </div>
             
