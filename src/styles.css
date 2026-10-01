@@ -22995,3 +22995,110 @@ textarea::placeholder { color: #7f98ac; }
   .public-site--v540 #contacto .quote-wizard {padding:20px 17px;}
   .public-site--v540 #contacto .audit-contact__facts {grid-template-columns:1fr;}
 }
+
+/* V5.41 · Propuesta: encaje editorial de la escena inicial, sin repeticiones.
+   En pantallas con altura limitada y con ampliaciones abiertas se permite
+   crecimiento natural: nunca se recorta texto para simular una plana. */
+.public-site--v541 #propuesta.v537-proposal {
+  --v541-scene: calc(100svh - var(--site-header-h, 90px));
+  padding-block: clamp(20px, 3.1vh, 34px);
+  min-height: var(--v541-scene);
+  align-items: center;
+  overflow: visible;
+}
+.public-site--v541 #propuesta .v537-proposal__layout {
+  gap: clamp(13px, 1.75vh, 20px);
+  align-content: center;
+}
+.public-site--v541 #propuesta .v537-proposal__intro {
+  gap: 7px;
+  max-width: 830px;
+}
+.public-site--v541 #propuesta .v537-proposal__intro h2 {
+  font-size: clamp(2.05rem, 3vw, 3.1rem) !important;
+  line-height: 1.06 !important;
+}
+.public-site--v541 #propuesta .v537-proposal__intro > p {
+  max-width: 65ch;
+  font-size: var(--type-body) !important;
+  line-height: 1.43 !important;
+}
+.public-site--v541 #propuesta .v537-offers {
+  padding-block: clamp(13px, 1.75vh, 19px);
+  column-gap: clamp(28px, 4vw, 52px);
+}
+.public-site--v541 #propuesta .v537-offer {gap: 5px;}
+.public-site--v541 #propuesta .v537-offer h3 {line-height: 1.12;}
+.public-site--v541 #propuesta .v537-offer > p {
+  font-size: var(--type-secondary) !important;
+  line-height: 1.43 !important;
+  max-width: 58ch;
+}
+.public-site--v541 #propuesta .v537-offer .v537-offer__outcome {
+  padding-top: 5px;
+  margin-top: 1px;
+  border-top: 0;
+}
+.public-site--v541 #propuesta .v537-method {
+  padding: clamp(15px, 2vh, 21px) clamp(20px, 2.6vw, 31px);
+  gap: clamp(12px, 1.6vh, 17px);
+  border-radius: 23px;
+}
+.public-site--v541 #propuesta .v537-method__story {gap: 6px;}
+.public-site--v541 #propuesta .v537-method__story > p {
+  max-width: 103ch;
+  font-size: var(--type-secondary) !important;
+  line-height: 1.49 !important;
+}
+.public-site--v541 #propuesta .v537-method__sequence {
+  margin: 0;
+  padding: clamp(10px, 1.3vh, 14px) 0 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0;
+}
+.public-site--v541 #propuesta .v537-method__step {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 9px;
+  padding: 2px 9px;
+  min-width: 0;
+}
+.public-site--v541 #propuesta .v537-method__step div {display: grid; gap: 3px; min-width: 0;}
+.public-site--v541 #propuesta .v537-method__step strong {line-height: 1.2;}
+.public-site--v541 #propuesta .v537-method__step small {
+  display: block;
+  color: #45635c;
+  font-size: clamp(.72rem, .84vw, .8rem);
+  line-height: 1.25;
+  overflow-wrap: normal;
+}
+.public-site--v541 #propuesta .v537-proposal__closing {gap: 20px; padding-block: 0;}
+.public-site--v541 #propuesta .v537-proposal__closing p {
+  max-width: 69ch;
+  line-height: 1.4 !important;
+  font-size: var(--type-secondary) !important;
+}
+.public-site--v541 #propuesta .v537-details summary {padding: 8px 0 0;}
+.public-site--v541 #propuesta .v537-details__content {align-items:start;}
+/* La ampliación solo introduce información nueva: dimensiones y aplicaciones.
+   No vuelve a imprimir las cinco etapas que ya se explican arriba. */
+@media (min-width: 801px) and (max-height: 790px) {
+  .public-site--v541 #propuesta.v537-proposal {padding-block: 17px;}
+  .public-site--v541 #propuesta .v537-proposal__layout {gap: 11px;}
+  .public-site--v541 #propuesta .v537-proposal__intro h2 {font-size: clamp(1.85rem, 2.65vw, 2.65rem) !important;}
+  .public-site--v541 #propuesta .v537-offers {padding-block: 11px;}
+  .public-site--v541 #propuesta .v537-method {padding-block: 12px; gap: 10px;}
+}
+@media (max-width: 800px) {
+  .public-site--v541 #propuesta.v537-proposal {align-items: start; min-height: 0; padding-block: 48px;}
+  .public-site--v541 #propuesta .v537-proposal__layout {gap: 23px;}
+  .public-site--v541 #propuesta .v537-method__sequence {grid-template-columns: repeat(3, minmax(0,1fr)); row-gap: 14px;}
+  .public-site--v541 #propuesta .v537-method__step:not(:last-child) {border-right:0;}
+  .public-site--v541 #propuesta .v537-method__step {justify-content: flex-start;}
+}
+@media (max-width: 530px) {
+  .public-site--v541 #propuesta .v537-method__sequence {grid-template-columns: repeat(2,minmax(0,1fr));}
+}

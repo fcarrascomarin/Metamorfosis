@@ -559,14 +559,14 @@ function ProposalSection() {
             <h3 id="v537-method-title">Investigación que orienta decisiones</h3>
             <p>Combinamos información disponible, mapeo, entrevistas y análisis técnico para comprender cómo se relacionan la operación, las personas, el entorno y las condiciones de cada situación. Con esa evidencia delimitamos una respuesta, la probamos, evaluamos sus resultados y transferimos lo aprendido.</p>
           </div>
-          <div className="v537-method__sequence" aria-label="Cinco etapas del método">
+          <ol className="v537-method__sequence" aria-label="Cinco etapas del método">
             {processRoadmap.map((item, index) => (
-              <div className="v537-method__step" key={item.title}>
+              <li className="v537-method__step" key={item.title}>
                 <span>0{index + 1}</span>
-                <strong>{item.title}</strong>
-              </div>
+                <div><strong>{item.title}</strong><small>{item.eyebrow}</small></div>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
 
         <div className="v537-proposal__closing">
@@ -575,23 +575,19 @@ function ProposalSection() {
         </div>
 
         <details className="v537-details">
-          <summary>Explorar nuestro método <Icon name="expand_more" /></summary>
+          <summary>Profundizar en nuestro trabajo <Icon name="expand_more" /></summary>
           <div className="v537-details__content">
             <div>
-              <h3>Qué observamos</h3>
+              <h3>Las cuatro dimensiones que investigamos</h3>
               {transformationPillars.map((item) => (
                 <p key={item.id}><strong>{item.title}</strong> — {item.text}</p>
               ))}
             </div>
             <div>
-              <h3>Cómo avanzamos</h3>
-              {processRoadmap.map((item, index) => (
-                <p key={item.title}><strong>0{index + 1} · {item.title}</strong> — {item.text}</p>
+              <h3>Ámbitos en los que podemos aportar</h3>
+              {cultivationAreas.map((item) => (
+                <p key={item.title}><strong>{item.title}</strong> — {item.text}</p>
               ))}
-            </div>
-            <div className="v537-details__areas">
-              <h3>Ámbitos de aplicación</h3>
-              <p>{cultivationAreas.map((item) => item.title).join(' · ')}</p>
             </div>
           </div>
         </details>
@@ -957,7 +953,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--v532 public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522 public-site--v523 public-site--v524 public-site--v525 public-site--v526 public-site--v527 public-site--v528 public-site--v529 public-site--v530 public-site--v531 public-site--v534 public-site--v535 public-site--v536 public-site--v537 public-site--v539 public-site--v540">
+    <div className="public-site public-site--v532 public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522 public-site--v523 public-site--v524 public-site--v525 public-site--v526 public-site--v527 public-site--v528 public-site--v529 public-site--v530 public-site--v531 public-site--v534 public-site--v535 public-site--v536 public-site--v537 public-site--v539 public-site--v540 public-site--v541">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
