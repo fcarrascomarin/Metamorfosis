@@ -19720,7 +19720,7 @@ textarea::placeholder { color: #7f98ac; }
 
 .public-site--v515 .v515-hero__headline .v54-kicker {
   color: var(--v54-accent);
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .public-site--v515 .v515-hero__headline h1 {
@@ -19730,7 +19730,7 @@ textarea::placeholder { color: #7f98ac; }
   color: #fff;
   font-family: "Newsreader", Georgia, serif;
   font-size: clamp(2.85rem, 3.35vw, 3.85rem);
-  font-weight: 530;
+  font-weight: 500;
   line-height: .98;
   letter-spacing: -.045em;
   white-space: nowrap;
