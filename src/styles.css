@@ -20090,7 +20090,7 @@ textarea::placeholder { color: #7f98ac; }
   grid-template-columns: 40px minmax(0,1fr) 18px;
   align-items: center;
   gap: 12px;
-  padding: 9px 10px;
+  padding: 9px 5px;
   border: 0;
   background: transparent;
   color: var(--v516-ink);
