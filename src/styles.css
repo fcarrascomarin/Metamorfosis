@@ -20251,7 +20251,7 @@ textarea::placeholder { color: #7f98ac; }
 }
 
 .public-site--v516 .v516-work__head h2 {
-  margin: 8px 0 12px;
+  margin: 8px 0 8px;
   color: var(--v516-ink);
   font-family: "Newsreader", Georgia, serif;
   font-size: clamp(2.35rem, 3.2vw, 3.5rem);

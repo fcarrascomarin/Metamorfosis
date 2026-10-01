@@ -659,13 +659,13 @@ function IntegratedMethodSection() {
   return (
     <section id="metodo" className="v516-work section-anchor" aria-labelledby="v516-work-title">
       <div className="shell v516-work__shell">
-        <div className="v520-method-layout v524-method-composition">
+        
         <header className="v516-work__head">
           <span className="v54-kicker">Cómo trabaja Metamorfosis</span>
           <h2 id="v516-work-title">Observar antes de intervenir</h2>
           <p>Leemos una situación desde las dimensiones que importan y aplicamos un método para convertir esa comprensión en capacidad.</p>
         </header>
-
+        <div className="v520-method-layout v524-method-composition">
         
           <div className="v516-map">
           {transformationPillars.map((item, index) => {
