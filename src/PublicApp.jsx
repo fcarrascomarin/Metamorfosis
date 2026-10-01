@@ -855,7 +855,7 @@ function PublicSite() {
               </div>
               <aside className="v54-hero__manifesto" aria-label="Forma de trabajo de Metamorfosis">
                 <span className="v54-eyebrow">Nuestro criterio</span>
-                <blockquote>Primero comprendemos. Después intervenimos.</blockquote>
+                <blockquote>Primero comprendemos Después intervenimos</blockquote>
                 <p>No partimos de recetas. Contrastamos información, relaciones y capacidades para decidir qué respuesta vale la pena probar y cómo medirla.</p>
               </aside>
             </div>
