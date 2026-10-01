@@ -512,8 +512,8 @@ function IntegratedProposalMap() {
           </button>
         ))}
       </div>
-      <div className="v535-map__detail" aria-live="polite">
-        {active ? <><strong>{active.title}</strong><span>{active.text}</span></> : <span>Selecciona una dimensión para conocer qué observamos en ella.</span>}
+      <div className={`v535-map__detail ${active ? 'is-open' : ''}`} aria-live="polite">
+        {active ? <><strong>{active.title}</strong><span>{active.text}</span></> : <span>Conectamos información, procesos, personas y contexto antes de intervenir.</span>}
       </div>
     </div>
   );
@@ -876,7 +876,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--v532 public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522 public-site--v523 public-site--v524 public-site--v525 public-site--v526 public-site--v527 public-site--v528 public-site--v529 public-site--v530 public-site--v531 public-site--v534 public-site--v535">
+    <div className="public-site public-site--v532 public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522 public-site--v523 public-site--v524 public-site--v525 public-site--v526 public-site--v527 public-site--v528 public-site--v529 public-site--v530 public-site--v531 public-site--v534 public-site--v535 public-site--v536">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
@@ -904,39 +904,49 @@ function PublicSite() {
           </div>
         </section>
 
-        {/* Propuesta v5.35: una escena visual que responde qué hacemos y cómo lo hacemos. */}
-        <section id="propuesta" className="v535-proposal section-anchor" aria-labelledby="v535-title">
-          <div className="shell v535-proposal__layout">
-            <header className="v535-proposal__intro">
-              <span className="v54-kicker">Propuesta · Jardín de innovación</span>
-              <h2 id="v535-title">Del análisis a soluciones que funcionan</h2>
-              <p>Investigamos situaciones reales para crear respuestas nuevas o fortalecer capacidades existentes. Conectamos conocimiento, operación, personas y entorno antes de decidir qué vale la pena intervenir.</p>
+        {/* Propuesta v5.36: una idea por capa. Lo esencial se lee sin interactuar. */}
+        <section id="propuesta" className="v536-proposal section-anchor" aria-labelledby="v536-title">
+          <div className="shell v536-proposal__layout">
+            <header className="v536-proposal__intro">
+              <span className="v54-kicker">Nuestra propuesta</span>
+              <h2 id="v536-title">Del análisis a soluciones aplicables</h2>
+              <p>Investigamos las condiciones reales de cada desafío para crear una respuesta nueva o fortalecer una iniciativa existente.</p>
             </header>
-            <div className="v535-proposal__stage">
-              <div className="v535-offers" aria-label="Qué hacemos">
-                <h3><span>01</span> Qué hacemos</h3>
-                {innovationEngines.map((item) => (
-                  <article className="v535-offer" key={item.id}>
-                    <span className="v535-offer__label">{item.eyebrow}</span>
-                    <h4>{item.title}</h4>
-                    <p>{item.summary}</p>
-                    <p className="v535-offer__result"><strong>Resultado posible</strong>{item.output}</p>
-                  </article>
-                ))}
+
+            <div className="v536-offers" aria-label="Qué hacemos en Metamorfosis">
+              <div className="v536-offer">
+                <span className="v536-offer__index">01</span>
+                <div><span className="v536-offer__eyebrow">Creamos</span><h3>Soluciones propias</h3>
+                  <p>Diseñamos y probamos herramientas o prototipos ante necesidades aún no resueltas.</p></div>
+                <strong className="v536-offer__outcome">Resultado posible · Prototipo validable</strong>
               </div>
-              <IntegratedProposalMap />
-              <div className="v535-process" aria-label="Cómo lo hacemos">
-                <h3><span>02</span> Cómo lo hacemos</h3>
-                <p className="v535-process__intro">Cinco pasos para transformar evidencia en decisiones y dejar capacidades instaladas.</p>
-                <ol>
-                  {processRoadmap.map((item, index) => (
-                    <li key={item.title}><span className="v535-process__number">0{index+1}</span><div><strong>{item.title}</strong><small>{item.eyebrow}</small></div></li>
-                  ))}
-                </ol>
+              <div className="v536-offer">
+                <span className="v536-offer__index">02</span>
+                <div><span className="v536-offer__eyebrow">Hacemos crecer</span><h3>Incubación de impacto</h3>
+                  <p>Estructuramos capacidades e iniciativas existentes para hacer viable su desarrollo.</p></div>
+                <strong className="v536-offer__outcome">Resultado posible · Hoja de ruta accionable</strong>
               </div>
             </div>
-            <div className="v535-proposal__base">
-              <div className="v535-applications"><strong>Ámbitos de aplicación</strong>{cultivationAreas.map((area) => <span key={area.title}>{area.title}</span>)}</div>
+
+            <div className="v536-method" aria-label="Cómo trabaja Metamorfosis">
+              <div className="v536-method__label"><span className="v54-eyebrow">Así lo hacemos</span><p>Observamos cuatro dimensiones que se relacionan entre sí. Selecciona una para profundizar.</p></div>
+              <IntegratedProposalMap />
+              <div className="v536-journey" aria-label="Etapas de trabajo">
+                {processRoadmap.map((item,index)=>(
+                  <div className="v536-journey__item" key={item.title} title={`${item.eyebrow}: ${item.text}`}>
+                    <span className="v536-journey__number">0{index+1}</span>
+                    <span><strong>{item.title}</strong><small>{item.eyebrow}</small></span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="v536-proposal__closing">
+              <details className="v536-applications">
+                <summary>Explorar ámbitos de aplicación <Icon name="expand_more" /></summary>
+                <div>{cultivationAreas.map((area)=><p key={area.title}><strong>{area.title}</strong><span>{area.text}</span></p>)}</div>
+              </details>
+              <p>¿Hay una necesidad u oportunidad por explorar? Podemos comenzar por comprenderla.</p>
               <SectionLink id="contacto" className="button button--small">Conversemos <Icon name="arrow_forward" /></SectionLink>
             </div>
           </div>
