@@ -22792,3 +22792,206 @@ textarea::placeholder { color: #7f98ac; }
   .public-site--v539 #propuesta .v537-proposal__closing {align-items:flex-start;flex-direction:column}
 }
 @media(prefers-reduced-motion:reduce) {.public-site--v539 #propuesta .v537-details summary .app-icon {transition:none}}
+/* ============================================================================
+   V5.40 | SISTEMA DE DISEÑO PÚBLICO
+   Una única rejilla, escala tipográfica y espaciado para todas las escenas.
+   La superficie de fondo puede ocupar la pantalla; los textos nunca.
+   ============================================================================ */
+.public-site--v540 {
+  --page-max: 1180px;
+  --page-gutter: clamp(24px, 4.5vw, 76px);
+  --page-width: min(var(--page-max), calc(100% - 2 * var(--page-gutter)));
+  --type-kicker: .75rem;
+  --type-section: clamp(2.25rem, 3.2vw, 3.25rem);
+  --type-subsection: clamp(1.5rem, 2vw, 1.95rem);
+  --type-body: clamp(.97rem, 1.035vw, 1.075rem);
+  --type-secondary: .94rem;
+  --line-body: 1.62;
+  --space-section: clamp(58px, 6.5vh, 86px);
+  --space-block: clamp(25px, 3vw, 40px);
+  --ink-main: #173832;
+  --ink-muted: #45635c;
+}
+/* Históricamente .shell recibió anchuras distintas según la versión.
+   Se normaliza el mismo contenedor también dentro de Contacto y footer. */
+.public-site--v540 .shell,
+.public-site--v540 #inicio > .shell,
+.public-site--v540 #propuesta > .shell,
+.public-site--v540 #equipo > .shell,
+.public-site--v540 #contacto > .shell,
+.public-site--v540 .site-header__inner.shell,
+.public-site--v540 .site-footer .shell {
+  width: var(--page-width);
+  max-width: var(--page-max);
+  margin-inline: auto;
+  min-width: 0;
+}
+.public-site--v540 main > .section-anchor {
+  height: auto;
+  scroll-margin-top: var(--site-header-h, 90px);
+}
+/* Un ritmo vertical compartido, sin alturas máximas que corten formularios. */
+.public-site--v540 #propuesta.v537-proposal,
+.public-site--v540 #equipo.v534-team,
+.public-site--v540 #contacto.v54-contact {
+  padding-block: var(--space-section);
+  min-height: calc(100svh - var(--site-header-h, 90px));
+  height: auto;
+}
+/* Jerarquía: rótulo / título de escena / título de bloque / cuerpo / auxiliar. */
+.public-site--v540 :is(#inicio,#propuesta,#equipo,#contacto) :is(.v54-kicker,.v54-eyebrow,.kicker),
+.public-site--v540 #propuesta .v537-offer__index {
+  font-size: var(--type-kicker) !important;
+  font-weight: 740;
+  line-height: 1.35;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.public-site--v540 #propuesta .v537-proposal__intro h2,
+.public-site--v540 #equipo .v534-team__intro h2,
+.public-site--v540 #contacto .audit-contact__intro h2 {
+  font-family: Georgia, serif;
+  font-weight: 500;
+  font-size: var(--type-section) !important;
+  line-height: 1.1 !important;
+  letter-spacing: -.035em;
+  text-wrap: balance;
+  white-space: normal;
+  margin: 0;
+}
+.public-site--v540 #propuesta :is(.v537-offer h3,.v537-method__story h3) {
+  font-family: Georgia, serif;
+  font-size: var(--type-subsection) !important;
+  line-height: 1.17;
+  font-weight: 500;
+  margin: 0;
+}
+.public-site--v540 #propuesta :is(.v537-proposal__intro > p,.v537-offer > p,.v537-method__story > p,.v537-proposal__closing > p),
+.public-site--v540 #equipo .v534-team__intro > p,
+.public-site--v540 #contacto .audit-contact__intro > p {
+  font-size: var(--type-body) !important;
+  line-height: var(--line-body) !important;
+  letter-spacing: 0;
+}
+/* Coherencia de anchuras de lectura; las introducciones jamás se estiran. */
+.public-site--v540 #propuesta .v537-proposal__intro,
+.public-site--v540 #equipo .v534-team__intro {
+  width: min(100%, 850px);
+  max-width: 850px;
+  display: grid;
+  gap: clamp(10px, 1.6vh, 17px);
+  margin-inline: auto;
+  text-align: center;
+}
+.public-site--v540 #propuesta .v537-proposal__intro > p,
+.public-site--v540 #equipo .v534-team__intro > p {
+  max-width: 74ch;
+  margin: 0 auto;
+  color: var(--ink-muted);
+}
+.public-site--v540 #propuesta .v537-proposal__layout,
+.public-site--v540 #equipo .v534-team__layout {
+  width: var(--page-width);
+  max-width: var(--page-max);
+  display: grid;
+  gap: var(--space-block);
+  margin-inline: auto;
+}
+/* Propuesta: el ancho utilizable es el mismo que en Equipo y Contacto.
+   Los módulos se separan por ritmo, no por ocupar el ancho completo. */
+.public-site--v540 #propuesta .v537-offers {
+  column-gap: clamp(28px, 4.2vw, 64px);
+  padding-block: clamp(20px, 2.7vh, 30px);
+}
+.public-site--v540 #propuesta .v537-offer {
+  gap: clamp(8px, 1.15vh, 13px);
+  padding-inline: clamp(4px, 1vw, 13px);
+}
+.public-site--v540 #propuesta .v537-offer + .v537-offer {
+  padding-left: clamp(23px, 3vw, 42px);
+}
+.public-site--v540 #propuesta .v537-offer > p {
+  color: var(--ink-muted);
+  max-width: 51ch;
+}
+.public-site--v540 #propuesta .v537-method {
+  gap: clamp(16px, 2.2vh, 24px);
+  padding: clamp(22px, 2.5vw, 32px) clamp(22px, 3.2vw, 42px);
+}
+.public-site--v540 #propuesta .v537-method__story { gap: 12px; }
+.public-site--v540 #propuesta .v537-method__story > p { max-width: 92ch; }
+.public-site--v540 #propuesta .v537-proposal__closing {
+  gap: 24px;
+  padding-block: 4px;
+}
+.public-site--v540 #propuesta .v537-proposal__closing > p {max-width: 64ch;}
+.public-site--v540 #propuesta .v537-details__content {max-width:100%;}
+/* Equipo: mismos márgenes y proporción editorial de Propuesta. */
+.public-site--v540 #equipo .v534-team__profiles .v54-team-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(22px, 2.8vw, 34px);
+}
+.public-site--v540 #equipo .v534-team__profiles .v54-team-card {
+  min-width: 0;
+  padding: clamp(24px, 2.65vw, 34px);
+}
+.public-site--v540 #equipo .v534-team__profiles .v54-team-card h3 {
+  font-size: clamp(1.3rem, 1.7vw, 1.65rem);
+  line-height: 1.2;
+}
+.public-site--v540 #equipo .v534-team__profiles .v54-team-card > p {
+  font-size: var(--type-secondary);
+  line-height: var(--line-body);
+}
+/* Contacto: mismo ancho real de lectura. Se corrige el antiguo max-width 1040
+   sin forzar que el formulario se comprima en una caja central. */
+.public-site--v540 #contacto .audit-contact__grid {
+  width: var(--page-width);
+  max-width: var(--page-max);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+  gap: clamp(32px, 4.6vw, 66px);
+  align-items: center;
+  min-height: 0;
+  padding: 0;
+}
+.public-site--v540 #contacto :is(.audit-contact__intro,.quote-wizard) {min-width:0;}
+.public-site--v540 #contacto .audit-contact__intro > p {max-width:48ch;}
+.public-site--v540 #contacto .quote-wizard {
+  width:100%;
+  max-width:none;
+  margin-inline:0;
+  padding:clamp(22px,2.65vw,34px);
+  max-height:none;
+  overflow:visible;
+}
+.public-site--v540 #contacto .audit-contact__facts {
+  width:100%;
+  max-width:100%;
+  gap:12px;
+}
+/* La portada conserva su carácter propio; solo unifica su contenedor y cuerpo. */
+.public-site--v540 #inicio .v515-hero {width:var(--page-width);max-width:var(--page-max);}
+.public-site--v540 #inicio .v532-hero-note {max-width:min(100%,920px);margin-inline:auto;}
+.public-site--v540 #inicio .v532-hero-note p {
+  font-size:var(--type-body);
+  line-height:var(--line-body);
+}
+@media (max-width: 960px) {
+  .public-site--v540 {--page-gutter: clamp(23px,4vw,44px);--space-section:clamp(46px,6vw,66px);}
+  .public-site--v540 #contacto .audit-contact__grid {grid-template-columns:1fr;gap:30px;align-items:start;}
+  .public-site--v540 #contacto .quote-wizard {max-width:none;}
+  .public-site--v540 #equipo .v534-team__profiles .v54-team-grid {grid-template-columns:1fr;}
+}
+@media (max-width: 680px) {
+  .public-site--v540 {--page-gutter: clamp(18px,5vw,25px);--type-section:clamp(2rem,7.4vw,2.65rem);--type-subsection:clamp(1.45rem,5.4vw,1.8rem);--space-block:26px;--space-section:45px;}
+  .public-site--v540 #propuesta .v537-offers {grid-template-columns:1fr;gap:22px;}
+  .public-site--v540 #propuesta .v537-offer + .v537-offer {border-left:0;border-top:1px solid #cbded6;padding:23px 4px 0;}
+  .public-site--v540 #propuesta .v537-method {padding:22px 18px;}
+  .public-site--v540 #propuesta .v537-method__sequence {grid-template-columns:repeat(2,minmax(0,1fr));row-gap:13px;}
+  .public-site--v540 #propuesta .v537-method__step:not(:last-child) {border-right:0;}
+  .public-site--v540 #propuesta .v537-proposal__closing {align-items:flex-start;}
+  .public-site--v540 #contacto .quote-wizard {padding:20px 17px;}
+  .public-site--v540 #contacto .audit-contact__facts {grid-template-columns:1fr;}
+}
