@@ -102,8 +102,10 @@ function scrollToPublicSection(id, { smooth = true, updateHash = true } = {}) {
   const target = document.getElementById(id);
   if (!target) return;
   const header = document.querySelector('.site-header');
-  const headerHeight = header?.getBoundingClientRect().height || 0;
-  const targetTop = target.getBoundingClientRect().top + window.scrollY - headerHeight;
+  const headerHeight = Math.ceil(header?.getBoundingClientRect().height || 0);
+  // Calcular sobre la geometría real del header, no sobre un valor CSS fijo.
+  // El pequeño margen evita que el primer renglón quede tapado en zoom.
+  const targetTop = target.getBoundingClientRect().top + window.scrollY - headerHeight - 2;
   if (updateHash) window.history.replaceState(null, '', `#${id}`);
   window.scrollTo({ top: Math.max(0, targetTop), behavior: smooth ? 'smooth' : 'auto' });
 }
@@ -139,7 +141,7 @@ function Brand({ compact = false }) {
       <img className="brand-logo" src="/logo-metamorfosis-transparente.png" alt="Isotipo de Metamorfosis" width="44" height="44" />
       <span className="brand-copy">
         <strong>METAMORFOSIS LAB</strong>
-        <small>jardín de innovación · Concepción</small>
+        <small>innovación aplicada</small>
       </span>
     </a>
   );
@@ -470,7 +472,6 @@ function TeamSection() {
           <div className="v54-team-card__head">
             <span className="v54-team-card__initials" aria-hidden="true">{person.initials}</span>
             <div>
-              <span className="v54-eyebrow">Equipo Metamorfosis</span>
               <h3>{person.name}</h3>
               <strong>{person.role}</strong>
             </div>
@@ -478,7 +479,6 @@ function TeamSection() {
           <p>{person.text}</p>
           <div className="v54-team-card__meta">
             <span><Icon name="briefcase" /> {person.profession}</span>
-            <span><Icon name="menu_book" /> {person.institution}</span>
           </div>
         </article>
       ))}
@@ -672,7 +672,8 @@ function IntegratedMethodSection() {
           <p>Leemos una situación desde las dimensiones que importan y aplicamos un método para convertir esa comprensión en capacidad.</p>
         </header>
 
-        <div className="v516-map">
+        <div className="v520-method-layout">
+          <div className="v516-map">
           {transformationPillars.map((item, index) => {
             const isOpen = openDimensions.has(item.id);
             const positions = ['operation','people','environment','conditions'];
@@ -692,12 +693,12 @@ function IntegratedMethodSection() {
           <div className="v516-core">
             <img src="/logo-metamorfosis-transparente.png" alt="" aria-hidden="true" />
             <strong>Metamorfosis</strong>
-            <small>Jardín de innovación · Concepción</small>
+            <small>Innovación aplicada</small>
           </div>
-        </div>
+          </div>
 
-        <div className="v516-method">
-          <div className="v516-method__head"><h3>Cinco etapas para transformar comprensión en capacidad</h3></div>
+          <div className="v516-method">
+            <div className="v516-method__head"><h3>Cinco etapas, una evolución</h3></div>
           <div className="v516-method__grid">
             {processRoadmap.map((item, index) => {
               const key = `step-${index}`;
@@ -714,6 +715,7 @@ function IntegratedMethodSection() {
                 </article>
               );
             })}
+            </div>
           </div>
         </div>
       </div>
@@ -836,7 +838,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">
@@ -846,22 +848,21 @@ function PublicSite() {
           <div className="v54-hero__glow" aria-hidden="true" />
           <div className="shell v515-hero">
             <header className="v515-hero__headline">
-              <span className="v54-kicker">Jardín de innovación · Concepción</span>
-              <h1>Convertimos problemas en soluciones</h1>
+              <span className="v54-kicker">Metamorfosis LAB</span>
+              <h1>Innovación aplicada desde la Región del Biobío</h1>
             </header>
             <div className="v515-hero__body">
               <div className="v54-hero__copy">
-                <p className="v54-hero__lead">Conectamos conocimiento, capacidades y condiciones de operación para crear respuestas nuevas y hacer crecer iniciativas que ya tienen valor.</p>
+                <p className="v54-hero__lead">Investigamos organizaciones, actividades productivas y territorios desde sus condiciones reales. Combinamos evidencia, mapeo, entrevistas y conocimiento técnico para desarrollar soluciones aplicables, evaluables y responsables con las personas y los sistemas vivos.</p>
                 <div className="hero__actions">
                   <SectionLink className="button audit-primary-cta" id="contacto">Conversemos</SectionLink>
                   <SectionLink className="button button--ghost-light" id="hacemos">Qué hacemos</SectionLink>
                 </div>
-                <div className="v54-hero__location"><Icon name="location_on" /> Con base en Concepción, trabajamos principalmente en la Región del Biobío.</div>
               </div>
               <aside className="v54-hero__manifesto" aria-label="Forma de trabajo de Metamorfosis">
-                <span className="v54-eyebrow">Qué nos mueve</span>
-                <blockquote>Una buena solución no siempre existe de antemano</blockquote>
-                <p>Observamos, conectamos capacidades y probamos respuestas antes de decidir qué vale la pena sostener, ajustar o escalar.</p>
+                <span className="v54-eyebrow">Nuestro criterio</span>
+                <blockquote>Primero comprendemos. Después intervenimos.</blockquote>
+                <p>No partimos de recetas. Contrastamos información, relaciones y capacidades para decidir qué respuesta vale la pena probar y cómo medirla.</p>
               </aside>
             </div>
           </div>
@@ -894,14 +895,8 @@ function PublicSite() {
           <div className="shell v59-team__layout">
             <div className="v59-team__value">
               <span className="v54-kicker">Equipo</span>
-              <h2>Dos capacidades, una misma lectura</h2>
-              <p>Ingeniería y derecho se combinan para comprender cómo funciona una situación, quién puede actuar, bajo qué reglas y qué relaciones pueden cambiar el resultado.</p>
-              <div className="v59-team__strengths">
-                <span><Icon name="schema" /><strong>Procesos y capacidades</strong><small>Cómo funciona realmente el trabajo</small></span>
-                <span><Icon name="rule" /><strong>Reglas y responsabilidades</strong><small>Bajo qué condiciones puede actuar cada actor</small></span>
-                <span><Icon name="account_tree" /><strong>Relaciones y entorno</strong><small>Qué conexiones afectan el resultado</small></span>
-              </div>
-              <div className="v59-team__synthesis"><Icon name="handshake" /><span>La diferencia no está en sumar profesiones, sino en conectar capacidades técnicas para formular mejores preguntas y diseñar intervenciones proporcionales.</span></div>
+              <h2>Ingeniería y derecho en diálogo</h2>
+              <p>Ingeniería Civil Industrial y Derecho se integran con experiencia en gestión, investigación y contextos organizacionales para construir una lectura rigurosa antes de intervenir.</p>
             </div>
             <div className="v59-team__profiles">
               <TeamSection />
@@ -915,11 +910,10 @@ function PublicSite() {
           <div className="shell audit-contact__grid">
             <div className="audit-contact__intro">
               <span className="kicker">Conversemos</span>
-              <h2>Conversemos</h2>
-              <p>Una necesidad concreta, una pregunta abierta o una oportunidad pueden ser suficientes para comenzar.</p>
+              <h2>Cuéntanos tu desafío</h2>
+              <p>Podemos comenzar con una necesidad concreta, una pregunta abierta o una oportunidad por explorar.</p>
               <div className="audit-contact__facts">
                 <span><Icon name="schedule" /><strong>30 min</strong><small>primera conversación</small></span>
-                <span><Icon name="location_on" /><strong>Concepción</strong><small>Región del Biobío</small></span>
                 <span><Icon name="mail" /><strong>Correo formal</strong><small>{contact.email}</small></span>
               </div>
             </div>
@@ -930,7 +924,7 @@ function PublicSite() {
       {/* 05.10 · FOOTER · Cierre institucional */}
       <footer className="site-footer audit-footer v54-footer">
         <div className="shell audit-footer__grid">
-          <div className="site-footer__brand"><Brand /><p>Jardín de innovación con base en Concepción. Transformamos la manera en que las organizaciones generan valor, integrando eficiencia operacional, condiciones humanas y una relación responsable con los sistemas vivos.</p></div>
+          <div className="site-footer__brand"><Brand /><p>Innovación aplicada con base en Concepción. Trabajamos con organizaciones, actividades productivas y territorios integrando evidencia, capacidades y una relación responsable con los sistemas vivos.</p></div>
           <div><span className="footer-title">Navegación</span><SectionLink id="jardin">Jardín</SectionLink><SectionLink id="hacemos">Qué hacemos</SectionLink><SectionLink id="metodo">Cómo trabajamos</SectionLink><SectionLink id="equipo">Equipo</SectionLink></div>
           <div><span className="footer-title">Contacto</span><a className="footer-icon-link" href={`mailto:${contact.email}`}><Icon name="mail" /><span>{contact.email}</span></a><a className="footer-icon-link" href={OS_SITE_URL}><Icon name="lock" /><span>Acceso OS</span></a></div>
         </div>

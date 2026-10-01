@@ -21171,3 +21171,412 @@ textarea::placeholder { color: #7f98ac; }
     justify-self: center;
   }
 }
+
+/* =============================================================================
+   WEB PÚBLICA V5.20 · HERO, MÉTODO, EQUIPO Y CONTACTO
+   -----------------------------------------------------------------------------
+   - Hero: posicionamiento territorial y rigor aplicado.
+   - Método: mapa a la izquierda + cinco etapas verticales a la derecha.
+   - Equipo: menos redundancia y mayor respiración.
+   - Contacto: una sola escena de escritorio, alineada al ancla del header.
+   - Concepción se reserva para el footer.
+   ============================================================================= */
+
+.public-site--v520 {
+  --v520-shell: 1260px;
+}
+
+/* HERO --------------------------------------------------------------------- */
+.public-site--v520 .v515-hero__headline {
+  max-width: 1020px;
+}
+
+.public-site--v520 .v515-hero__headline h1 {
+  max-width: 14ch;
+  font-size: clamp(3rem, 5.4vw, 5.9rem);
+  line-height: .94;
+  text-wrap: balance;
+}
+
+.public-site--v520 .v54-hero__lead {
+  max-width: 70ch;
+}
+
+.public-site--v520 .v54-hero__location {
+  display: none;
+}
+
+/* MÉTODO ------------------------------------------------------------------- */
+.public-site--v520 .v516-work__shell {
+  width: min(calc(100% - clamp(64px, 8vw, 136px)), var(--v520-shell));
+}
+
+.public-site--v520 .v520-method-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.62fr) minmax(300px, .72fr);
+  gap: clamp(34px, 4vw, 58px);
+  align-items: start;
+}
+
+.public-site--v520 .v516-map {
+  min-width: 0;
+}
+
+.public-site--v520 .v516-method {
+  min-height: 0;
+  padding-block: 0;
+  border-top: 0;
+  align-content: start;
+}
+
+.public-site--v520 .v516-method__head {
+  margin: 0 0 18px;
+}
+
+.public-site--v520 .v516-method__head h3 {
+  max-width: 18ch;
+  margin: 0;
+  font-size: clamp(1.45rem, 1.9vw, 2rem);
+  line-height: 1.08;
+  white-space: normal;
+  text-wrap: balance;
+}
+
+.public-site--v520 .v516-method__grid {
+  grid-template-columns: 1fr;
+  gap: 9px;
+}
+
+.public-site--v520 .v516-step {
+  border-radius: 16px;
+}
+
+.public-site--v520 .v516-step.is-open {
+  transform: none;
+}
+
+.public-site--v520 .v516-step__trigger {
+  min-height: 60px;
+  grid-template-columns: 32px 34px minmax(0,1fr) 16px;
+  padding: 9px 11px;
+}
+
+.public-site--v520 .v516-step__number {
+  width: 32px;
+  height: 32px;
+}
+
+.public-site--v520 .v516-step__icon {
+  width: 34px;
+  height: 34px;
+}
+
+.public-site--v520 .v516-step__trigger strong {
+  font-size: 1rem;
+}
+
+.public-site--v520 .v516-step__panel {
+  padding: 0 14px 14px 86px;
+}
+
+/* EQUIPO ------------------------------------------------------------------- */
+.public-site--v520 .v59-team {
+  padding-block: clamp(88px, 8vw, 124px);
+}
+
+.public-site--v520 .v59-team__layout {
+  width: min(calc(100% - clamp(64px, 8vw, 136px)), var(--v520-shell));
+  grid-template-columns: minmax(300px, .68fr) minmax(0, 1.32fr);
+  gap: clamp(72px, 8vw, 126px);
+  align-items: start;
+}
+
+.public-site--v520 .v59-team__value {
+  padding-top: 10px;
+}
+
+.public-site--v520 .v59-team__value h2 {
+  max-width: 13ch;
+  margin: 12px 0 24px;
+  font-size: clamp(2.2rem, 3.2vw, 3.45rem);
+  line-height: 1;
+  white-space: normal;
+  text-wrap: balance;
+}
+
+.public-site--v520 .v59-team__value > p {
+  max-width: 42ch;
+  margin: 0;
+  line-height: 1.75;
+}
+
+.public-site--v520 .v59-team__profiles .v54-team-grid {
+  gap: 30px;
+}
+
+.public-site--v520 .v59-team__profiles .v54-team-card {
+  padding: clamp(26px, 3vw, 34px);
+}
+
+.public-site--v520 .v59-team__profiles .v54-team-card__head {
+  margin-bottom: 22px;
+}
+
+.public-site--v520 .v59-team__profiles .v54-team-card > p {
+  margin-top: 20px;
+  line-height: 1.68;
+}
+
+.public-site--v520 .v59-team__profiles .v54-team-card__meta {
+  margin-top: 24px;
+  padding-top: 18px;
+}
+
+/* CONTACTO ----------------------------------------------------------------- */
+.public-site--v520 #contacto {
+  scroll-margin-top: var(--header-height);
+}
+
+@media (min-width: 981px) {
+  .public-site--v520 .v54-contact {
+    min-height: calc(100svh - var(--header-height));
+    height: calc(100svh - var(--header-height));
+    display: flex;
+    align-items: center;
+    padding-block: clamp(22px, 3vh, 38px);
+    overflow: hidden;
+  }
+
+  .public-site--v520 .v54-contact .audit-contact__grid {
+    width: min(calc(100% - clamp(64px, 8vw, 136px)), var(--v520-shell));
+    align-items: center;
+    gap: clamp(48px, 6vw, 86px);
+  }
+
+  .public-site--v520 .v54-contact .audit-contact__intro h2 {
+    max-width: 12ch;
+    font-size: clamp(2.5rem, 4vw, 4.6rem);
+    line-height: .98;
+  }
+
+  .public-site--v520 .v54-contact .audit-contact__facts {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    max-width: 560px;
+  }
+
+  .public-site--v520 .v54-contact .quote-wizard {
+    max-height: calc(100svh - var(--header-height) - 56px);
+  }
+
+  .public-site--v520 .v54-contact .form-headline--steps {
+    margin-bottom: 12px;
+  }
+
+  .public-site--v520 .v54-contact .quote-steps {
+    margin-bottom: 14px;
+  }
+
+  .public-site--v520 .v54-contact .quote-step-panel {
+    gap: 12px;
+  }
+}
+
+/* TABLET ------------------------------------------------------------------- */
+@media (max-width: 980px) {
+  .public-site--v520 .v520-method-layout,
+  .public-site--v520 .v59-team__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .public-site--v520 .v520-method-layout {
+    gap: 42px;
+  }
+
+  .public-site--v520 .v516-method__head h3 {
+    max-width: none;
+  }
+
+  .public-site--v520 .v516-method__grid {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+
+  .public-site--v520 .v59-team__layout {
+    gap: 54px;
+  }
+
+  .public-site--v520 .v59-team__value h2 {
+    max-width: 16ch;
+  }
+}
+
+/* MÓVIL -------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .public-site--v520 .v515-hero__headline h1 {
+    max-width: none;
+    font-size: clamp(2.4rem, 10.8vw, 3.25rem);
+  }
+
+  .public-site--v520 .v516-work__shell,
+  .public-site--v520 .v59-team__layout {
+    width: min(calc(100% - 28px), var(--v520-shell));
+  }
+
+  .public-site--v520 .v516-method__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .public-site--v520 .v516-step__panel {
+    padding-left: 14px;
+  }
+
+  .public-site--v520 .v59-team {
+    padding-block: 64px;
+  }
+
+  .public-site--v520 .v59-team__value h2 {
+    max-width: none;
+    font-size: clamp(2rem, 9vw, 2.7rem);
+  }
+
+  .public-site--v520 .v59-team__profiles .v54-team-grid {
+    gap: 20px;
+  }
+}
+
+/* V5.20.1 · afinación de proporciones del esquema y equipo */
+.public-site--v520 .v520-method-layout > .v516-map {
+  grid-template-columns: minmax(190px, 1fr) minmax(220px, .92fr) minmax(190px, 1fr);
+  gap: 16px 20px;
+}
+
+.public-site--v520 .v59-team__profiles .v54-team-card__head > div {
+  display: grid;
+  gap: 7px;
+}
+
+.public-site--v520 .v59-team__profiles .v54-team-card__meta {
+  grid-template-columns: 1fr;
+}
+
+@media (max-width: 980px) {
+  .public-site--v520 .v520-method-layout > .v516-map {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "core core"
+      "operation people"
+      "environment conditions";
+    gap: 16px 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .public-site--v520 .v520-method-layout > .v516-map {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "core"
+      "operation"
+      "people"
+      "environment"
+      "conditions";
+    gap: 12px;
+  }
+}
+
+
+/* ============================================================================
+   V5.21 | AUDITORÍA INTEGRAL DE JERARQUÍA Y ENCAJE
+   Se añade después de todas las capas históricas: las correcciones v5.19
+   para paneles [hidden] se conservan intactas. Todas las reglas están aisladas.
+   ============================================================================ */
+.public-site--v521 { --v521-max: 1320px; }
+.public-site--v521 [hidden] { display:none !important; }
+.public-site--v521 *, .public-site--v521 *::before, .public-site--v521 *::after { box-sizing:border-box; }
+.public-site--v521 main > .section-anchor { scroll-margin-top: var(--header-height); }
+.public-site--v521 main > .section-anchor > .shell { min-width:0; }
+.public-site--v521 .app-icon { display:block; flex:none; }
+.public-site--v521 button > .app-icon,
+.public-site--v521 a > .app-icon { justify-self:center; align-self:center; }
+.public-site--v521 :is(.v516-lens__icon,.v516-step__icon,.v516-engine__icon,.v516-garden-button__icon,.v54-team-card__initials) { display:grid; place-items:center; flex-shrink:0; }
+.public-site--v521 :is(.v516-lens__icon,.v516-step__icon,.v516-engine__icon,.v516-garden-button__icon) .app-icon { width: min(52%, 23px); height:min(52%, 23px); }
+.public-site--v521 :is(.v516-lens__trigger,.v516-step__trigger,.v516-engine__trigger,.v516-garden-button button) { min-width:0; gap:12px; }
+.public-site--v521 :is(.v516-lens,.v516-step,.v516-engine,.v516-garden-button) { min-width:0; align-self:start; }
+.public-site--v521 :is(.v516-lens__trigger,.v516-step__trigger,.v516-engine__trigger,.v516-garden-button button) strong { min-width:0; }
+/* Una sola escena por enlace, pero se permite crecer si contenido, zoom o teclado lo exigen. */
+@media (min-width: 1081px) {
+  .public-site--v521 main > :is(#inicio,#jardin,#hacemos,#metodo,#equipo,#contacto) {
+    min-height:calc(100svh - var(--header-height));
+  }
+  .public-site--v521 .v515-hero__headline { max-width:none; width:100%; }
+  .public-site--v521 .v515-hero__headline h1 {
+    max-width:none; font-size:clamp(1.95rem, 3.02vw, 3.22rem);
+    line-height:1.12; white-space:nowrap; letter-spacing:-.038em;
+  }
+  .public-site--v521 .v516-work { padding:clamp(32px,4vh,58px) 0; display:flex; align-items:center; }
+  .public-site--v521 .v516-work__shell { width:min(calc(100% - 72px),var(--v521-max)); display:grid; gap:clamp(20px,3vh,34px); }
+  .public-site--v521 .v516-work__head { min-height:0; padding:0; display:grid; gap:9px; }
+  .public-site--v521 .v516-work__head h2 { margin:0; font-size:clamp(2.1rem,3vw,3rem); }
+  .public-site--v521 .v516-work__head > p { margin:0; max-width:78ch; }
+  .public-site--v521 .v520-method-layout { display:grid; grid-template-columns:minmax(0,1.7fr) minmax(330px,.9fr); gap:clamp(28px,3.4vw,52px); align-items:start; }
+  /* Con dos columnas de tarjetas el mapa conserva legibilidad incluso dentro del panel izquierdo. */
+  .public-site--v521 .v520-method-layout > .v516-map {
+    width:100%; max-width:none; min-width:0;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-areas:"core core" "operation people" "environment conditions";
+    gap:12px 14px; align-items:start;
+  }
+  .public-site--v521 .v516-core { min-height:120px; padding:14px; border-radius:21px; }
+  .public-site--v521 .v516-core img { width:42px; height:42px; margin-bottom:3px; }
+  .public-site--v521 .v516-core strong { font-size:1.45rem; }
+  .public-site--v521 .v516-core small { margin-top:2px; }
+  .public-site--v521 .v516-lens__trigger { grid-template-columns:38px minmax(0,1fr) 16px; min-height:58px; padding:9px 11px; }
+  .public-site--v521 .v516-lens__icon { width:38px; height:38px; }
+  .public-site--v521 .v516-lens__panel { padding:0 12px 13px; }
+  .public-site--v521 .v516-lens__panel small { white-space:normal; overflow-wrap:anywhere; }
+  .public-site--v521 .v516-method { min-height:0; padding:0; border:0; align-content:start; }
+  .public-site--v521 .v516-method__head { margin:0 0 15px; }
+  .public-site--v521 .v516-method__head h3 { margin:0; max-width:none; font-size:clamp(1.38rem,2.05vw,2.05rem); white-space:nowrap; }
+  .public-site--v521 .v516-method__grid { display:grid; grid-template-columns:1fr; gap:10px; }
+  .public-site--v521 .v516-step__trigger { grid-template-columns:31px 33px minmax(0,1fr) 16px; min-height:58px; padding:8px 10px; }
+  .public-site--v521 .v516-step__number { width:31px; height:31px; }
+  .public-site--v521 .v516-step__icon { width:33px; height:33px; }
+  .public-site--v521 .v516-step__panel { padding:0 13px 13px; }
+  .public-site--v521 .v59-team { display:flex; align-items:center; padding:clamp(45px,5vh,75px) 0; }
+  .public-site--v521 .v59-team__layout { width:min(calc(100% - 90px),var(--v521-max)); grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:clamp(38px,5vw,76px); align-items:center; }
+  .public-site--v521 .v59-team__value h2 { max-width:none; white-space:nowrap; font-size:clamp(1.52rem,2.12vw,2.2rem); line-height:1.13; margin:13px 0 22px; }
+  .public-site--v521 .v59-team__value > p { max-width:48ch; line-height:1.7; }
+  .public-site--v521 .v59-team__profiles .v54-team-grid { gap:18px; }
+  .public-site--v521 .v59-team__profiles .v54-team-card { padding:clamp(20px,2.3vw,30px); }
+  .public-site--v521 .v59-team__profiles .v54-team-card__head { display:flex; align-items:center; gap:16px; margin-bottom:14px; }
+  .public-site--v521 .v59-team__profiles .v54-team-card__head > div { min-width:0; gap:5px; }
+  .public-site--v521 .v59-team__profiles .v54-team-card h3 { font-size:clamp(1.13rem,1.6vw,1.53rem); white-space:nowrap; }
+  .public-site--v521 .v59-team__profiles .v54-team-card > p { margin:12px 0 0; line-height:1.58; }
+  .public-site--v521 .v59-team__profiles .v54-team-card__meta { margin-top:15px; padding-top:12px; }
+  .public-site--v521 .v54-contact { height:auto; min-height:calc(100svh - var(--header-height)); padding:clamp(24px,3vh,42px) 0; overflow:visible; display:flex; align-items:center; }
+  .public-site--v521 .v54-contact .audit-contact__grid { width:min(calc(100% - 90px),var(--v521-max)); gap:clamp(32px,5vw,72px); align-items:center; }
+  .public-site--v521 .v54-contact .audit-contact__intro h2 { max-width:none; font-size:clamp(2.1rem,3.05vw,3.7rem); line-height:1.07; white-space:nowrap; }
+  .public-site--v521 .v54-contact .audit-contact__intro .kicker { margin-bottom:14px; }
+  .public-site--v521 .v54-contact .quote-wizard { max-height:none; min-width:0; }
+  .public-site--v521 .v54-contact .audit-contact__facts { gap:12px; }
+}
+/* Nunca recortar títulos o formularios cuando el dispositivo no permite una línea. */
+@media (max-width:1080px) {
+ .public-site--v521 :is(.v515-hero__headline h1,.v516-work__head h2,.v516-method__head h3,.v59-team__value h2,.audit-contact__intro h2) { white-space:normal; overflow-wrap:normal; text-wrap:balance; }
+ .public-site--v521 .v520-method-layout { display:grid; grid-template-columns:1fr; gap:35px; }
+ .public-site--v521 .v516-work__head { min-height:0; padding:35px 0 15px; }
+ .public-site--v521 .v516-method { min-height:0; padding:0 0 35px; }
+ .public-site--v521 .v54-contact { height:auto; max-height:none; min-height:auto; overflow:visible; padding:60px 0; }
+ .public-site--v521 .v54-contact .quote-wizard { max-height:none; }
+ .public-site--v521 .v59-team__layout { gap:36px; }
+}
+@media (max-width:640px) {
+ .public-site--v521 .v515-hero__headline h1 { font-size:clamp(2.15rem,9vw,3.05rem); }
+ .public-site--v521 .v520-method-layout > .v516-map { grid-template-columns:1fr; grid-template-areas:"core" "operation" "people" "environment" "conditions"; gap:12px; }
+ .public-site--v521 .v516-lens__panel small { white-space:normal; }
+ .public-site--v521 .v516-method__grid { grid-template-columns:1fr; }
+ .public-site--v521 .v59-team__value h2 { max-width:none; }
+ .public-site--v521 .v59-team__profiles .v54-team-card h3 { white-space:normal; }
+ .public-site--v521 .v54-contact .audit-contact__intro h2 { white-space:normal; }
+}
+@media (prefers-reduced-motion: reduce) {
+ .public-site--v521 *, .public-site--v521 *::before, .public-site--v521 *::after { scroll-behavior:auto !important; transition-duration:.01ms !important; animation-duration:.01ms !important; }
+}
