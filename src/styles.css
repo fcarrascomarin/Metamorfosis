@@ -21580,3 +21580,94 @@ textarea::placeholder { color: #7f98ac; }
 @media (prefers-reduced-motion: reduce) {
  .public-site--v521 *, .public-site--v521 *::before, .public-site--v521 *::after { scroll-behavior:auto !important; transition-duration:.01ms !important; animation-duration:.01ms !important; }
 }
+
+
+/* ==========================================================================
+   V5.22 | Composición relacional del mapa y rail de cinco etapas
+   Reestablece el núcleo al centro sin alterar los acordeones v5.19.
+   Las reglas se limitan al método y prevalecen sobre v5.20/v5.21.
+   ========================================================================== */
+@media (min-width:1081px) {
+  .public-site--v522 .v516-work { padding-block:clamp(30px,4vh,52px); }
+  .public-site--v522 .v516-work__shell { width:min(calc(100% - 80px),1320px); gap:clamp(22px,3.2vh,38px); }
+  .public-site--v522 .v520-method-layout {
+    display:grid;
+    grid-template-columns:minmax(0, 1fr) minmax(295px, 335px);
+    gap:clamp(26px,3.5vw,48px);
+    align-items:center;
+  }
+  /* Cuatro dimensiones rodean un centro real, no una cabecera longitudinal. */
+  .public-site--v522 .v520-method-layout > .v516-map {
+    display:grid; width:100%; max-width:none; min-width:0;
+    grid-template-columns:minmax(0,1fr) minmax(175px,.76fr) minmax(0,1fr);
+    grid-template-areas: 'operation core people' 'environment core conditions';
+    column-gap:clamp(12px,1.25vw,22px); row-gap:clamp(16px,2vh,26px);
+    align-items:center;
+  }
+  .public-site--v522 .v516-core { grid-area:core; min-width:0; min-height:210px; height:100%; padding:18px 9px; border-radius:28px; display:grid; align-content:center; justify-items:center; }
+  .public-site--v522 .v516-core img { width:60px; height:60px; margin-bottom:6px; }
+  .public-site--v522 .v516-core strong { font-size:clamp(1.45rem,1.8vw,1.85rem); }
+  .public-site--v522 .v516-core small { font-size:.6rem; white-space:nowrap; }
+  .public-site--v522 .v516-lens { align-self:center; width:100%; min-width:0; }
+  .public-site--v522 .v516-lens__trigger { min-height:72px; grid-template-columns:38px minmax(0,1fr) 15px; gap:8px; padding:10px; }
+  .public-site--v522 .v516-lens__trigger strong { font-size:clamp(.79rem,.94vw,.92rem); line-height:1.22; }
+  .public-site--v522 .v516-lens__panel { padding:0 13px 15px; }
+  .public-site--v522 .v516-lens__panel small { white-space:normal; font-size:.61rem; overflow-wrap:break-word; line-height:1.4; }
+  /* El rail no tiene la misma jerarquía visual que el mapa. */
+  .public-site--v522 .v516-method { min-width:0; width:100%; border:0; padding:0; min-height:0; align-self:center; }
+  .public-site--v522 .v516-method__head { margin:0 0 16px; display:grid; gap:5px; }
+  .public-site--v522 .v516-method__head h3 { margin:0; max-width:none; white-space:nowrap; font-size:clamp(1.58rem,2vw,2rem); line-height:1.12; }
+  .public-site--v522 .v516-method__grid { display:grid; grid-template-columns:minmax(0,1fr); gap:9px; align-items:start; }
+  .public-site--v522 .v516-step { width:100%; min-width:0; align-self:start; border:0; border-radius:0; background:transparent; overflow:visible; box-shadow:none; transform:none; }
+  .public-site--v522 .v516-step.is-open { transform:none; border:0; box-shadow:none; }
+  .public-site--v522 .v516-step__trigger {
+    width:min(100%,258px); min-height:51px; padding:7px 10px;
+    display:grid; grid-template-columns:28px 29px minmax(0,1fr) 15px; gap:8px;
+    background:rgba(255,255,255,.9); border:1px solid rgba(17,75,70,.14);
+    border-radius:14px; box-shadow:0 7px 20px rgba(22,60,56,.035);
+  }
+  .public-site--v522 .v516-step.is-open .v516-step__trigger { border-color:rgba(23,122,112,.4); background:#fff; }
+  .public-site--v522 .v516-step__number { width:28px; height:28px; font-size:.58rem; }
+  .public-site--v522 .v516-step__icon { width:29px; height:29px; border-radius:9px; }
+  .public-site--v522 .v516-step__icon .app-icon { width:16px; height:16px; }
+  .public-site--v522 .v516-step__trigger strong { font-size:.98rem; line-height:1.12; }
+  /* Al abrir, una tarjeta descriptiva más ancha que el botón: lectura cómoda. */
+  .public-site--v522 .v516-step__panel:not([hidden]) {
+    display:block; width:100%; margin:7px 0 3px; padding:15px 16px 17px;
+    background:#fff; border:1px solid rgba(23,122,112,.22); border-radius:15px;
+    box-shadow:0 12px 30px rgba(22,60,56,.055);
+  }
+  .public-site--v522 .v516-step__panel p { font-size:.85rem; line-height:1.58; }
+}
+/* En tablet se conserva Metamorfosis centrada en el mapa, con las etapas debajo. */
+@media (min-width:641px) and (max-width:1080px) {
+  .public-site--v522 .v520-method-layout { grid-template-columns:1fr; gap:30px; }
+  .public-site--v522 .v520-method-layout > .v516-map {
+    display:grid; grid-template-columns:minmax(0,1fr) minmax(180px,.8fr) minmax(0,1fr);
+    grid-template-areas:'operation core people' 'environment core conditions'; gap:14px; align-items:center;
+  }
+  .public-site--v522 .v516-core { min-height:190px; height:100%; padding:12px; }
+  .public-site--v522 .v516-lens { align-self:center; }
+  .public-site--v522 .v516-lens__panel { padding:0 12px 14px; }
+  .public-site--v522 .v516-method { padding-bottom:15px; }
+  .public-site--v522 .v516-method__head h3 { white-space:nowrap; font-size:1.65rem; }
+  .public-site--v522 .v516-step__trigger { max-width:270px; }
+  .public-site--v522 .v516-step__panel:not([hidden]) { max-width:440px; padding:14px; background:white; border:1px solid rgba(23,122,112,.2); border-radius:14px; margin-top:7px; }
+}
+@media (max-width:640px) {
+  .public-site--v522 .v520-method-layout > .v516-map {
+    width:100%; max-width:420px; margin-inline:auto;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-areas:'operation people' 'core core' 'environment conditions'; gap:11px;
+  }
+  .public-site--v522 .v516-core { min-height:155px; padding:15px; }
+  .public-site--v522 .v516-lens { width:100%; min-width:0; align-self:stretch; }
+  .public-site--v522 .v516-lens__trigger { grid-template-columns:28px minmax(0,1fr) 13px; gap:6px; padding:8px; min-height:58px; }
+  .public-site--v522 .v516-lens__icon { width:28px; height:28px; }
+  .public-site--v522 .v516-lens__trigger strong { font-size:.72rem; line-height:1.2; }
+  .public-site--v522 .v516-lens__panel { padding:0 10px 12px; }
+  .public-site--v522 .v516-method { padding-bottom:12px; }
+  .public-site--v522 .v516-method__head h3 { white-space:nowrap; font-size:1.55rem; }
+  .public-site--v522 .v516-step__trigger { max-width:255px; }
+  .public-site--v522 .v516-step__panel:not([hidden]) { max-width:100%; padding:14px; margin-top:7px; background:#fff; border:1px solid rgba(23,122,112,.2); border-radius:14px; }
+}
