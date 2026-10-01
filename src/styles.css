@@ -19720,7 +19720,7 @@ textarea::placeholder { color: #7f98ac; }
 
 .public-site--v515 .v515-hero__headline .v54-kicker {
   color: var(--v54-accent);
-  margin-bottom: 10px;
+  margin-bottom: 14px;
 }
 
 .public-site--v515 .v515-hero__headline h1 {
@@ -19730,7 +19730,7 @@ textarea::placeholder { color: #7f98ac; }
   color: #fff;
   font-family: "Newsreader", Georgia, serif;
   font-size: clamp(2.85rem, 3.35vw, 3.85rem);
-  font-weight: 500;
+  font-weight: 530;
   line-height: .98;
   letter-spacing: -.045em;
   white-space: nowrap;
@@ -20090,7 +20090,7 @@ textarea::placeholder { color: #7f98ac; }
   grid-template-columns: 40px minmax(0,1fr) 18px;
   align-items: center;
   gap: 12px;
-  padding: 9px 5px;
+  padding: 9px 13px;
   border: 0;
   background: transparent;
   color: var(--v516-ink);
@@ -21937,3 +21937,87 @@ textarea::placeholder { color: #7f98ac; }
 @media (prefers-reduced-motion:reduce) {
   .public-site--v526 #jardin .v523-garden-line {transition:none;}
 }
+
+
+/* ============================================================================
+   V5.27 | Sistema editorial de espacios y alturas naturales.
+   Correcciones por sección sin alterar lógica React ni funcionalidad de acordeones.
+   Unidad de lectura: cabecera compacta, espacio entre grupos, tarjetas serenas.
+   ============================================================================ */
+.public-site--v527 {--v527-ink:#102e2d;--v527-gap:clamp(18px,2.2vw,32px);--v527-scene:calc(100svh - var(--header-height,88px));}
+.public-site--v527 :is(#jardin,#hacemos,#metodo,#equipo,#contacto) {scroll-margin-top:var(--header-height,88px);}
+.public-site--v527 :is(#jardin,#hacemos,#metodo,#equipo) :is(h2,h3,p) {overflow-wrap:break-word;}
+.public-site--v527 :is(#jardin,#hacemos,#metodo,#equipo) .app-icon {flex:none;vertical-align:middle;}
+/* El hero tiene una promesa completa y un ancho de lectura controlado. */
+.public-site--v527 .v515-hero__headline h1 {max-width:20ch;line-height:1.04;font-size:clamp(2.85rem,4.45vw,5.05rem);letter-spacing:-.044em;text-wrap:balance;}
+/* Jardín: amplitud lateral y ritmo vertical, sin convertir cada fila en banner. */
+@media (min-width:1081px) {
+ .public-site--v527 #jardin {min-height:var(--v527-scene);padding-block:clamp(20px,2.3vh,29px);display:flex;align-items:center;}
+ .public-site--v527 #jardin .v514-garden__layout {width:min(calc(100% - clamp(48px,6.6vw,110px)),1320px);gap:clamp(16px,2.05vh,24px);}
+ .public-site--v527 #jardin .v514-garden__statement h2 {font-size:clamp(2.1rem,2.9vw,3.05rem);line-height:1.07;margin:6px 0 0;}
+ .public-site--v527 #jardin .v514-garden__copy {padding-top:clamp(12px,1.7vh,19px);gap:clamp(25px,3.7vw,54px);align-items:center;}
+ .public-site--v527 #jardin .v523-garden-board {grid-template-columns:minmax(0,1.14fr) minmax(350px,.82fr);gap:clamp(32px,4.0vw,56px);padding-top:clamp(17px,2.1vh,25px);}
+ .public-site--v527 #jardin .v523-garden-lines {gap:clamp(11px,1.45vh,15px);}
+ .public-site--v527 #jardin .v523-garden-line {width:100%;}
+ .public-site--v527 #jardin .v523-garden-line > button {min-height:clamp(54px,6.2vh,61px);grid-template-columns:22px 36px minmax(0,1fr) 18px;gap:clamp(10px,1vw,15px);padding:7px clamp(14px,1.5vw,20px);}
+ .public-site--v527 #jardin .v523-garden-line .v516-garden-button__icon {width:36px;height:36px;border-radius:11px;}
+ .public-site--v527 #jardin .v523-garden-line .v516-garden-button__icon .app-icon {width:18px;height:18px;}
+ .public-site--v527 #jardin .v523-garden-board__main .v516-garden-column__head {margin-bottom:clamp(15px,2vh,22px);}
+ .public-site--v527 #jardin .v523-garden-board__aside {padding:clamp(19px,2vw,27px);}
+ .public-site--v527 #jardin .v523-garden-principle > button {min-height:clamp(47px,5.6vh,53px);}
+ /* Qué hacemos: el CTA pertenece a la escena, visible sin desplazarla al pie. */
+ .public-site--v527 #hacemos {min-height:var(--v527-scene);padding-block:clamp(16px,2.25vh,27px);display:flex;align-items:center;}
+ .public-site--v527 #hacemos .v524-engines__layout {gap:clamp(14px,1.85vh,23px);}
+ .public-site--v527 #hacemos .v524-engines__head h2 {margin:4px 0 9px;font-size:clamp(2.15rem,3vw,3.25rem);line-height:1.06;}
+ .public-site--v527 #hacemos .v524-engines__head p {font-size:clamp(.91rem,1vw,1rem);line-height:1.4;max-width:92ch;}
+ .public-site--v527 #hacemos .v524-offer-grid {gap:clamp(18px,2.05vw,27px);}
+ .public-site--v527 #hacemos .v524-offer {padding:clamp(19px,1.8vw,26px);border-radius:24px;}
+ .public-site--v527 #hacemos .v524-offer__top {grid-template-columns:45px minmax(0,1fr) auto;gap:12px;}
+ .public-site--v527 #hacemos .v524-offer__icon {width:45px;height:45px;border-radius:13px;}
+ .public-site--v527 #hacemos .v524-offer__icon .app-icon {width:21px;height:21px;}
+ .public-site--v527 #hacemos .v524-offer__identity h3 {font-size:clamp(1.58rem,1.85vw,1.96rem);margin-top:3px;}
+ .public-site--v527 #hacemos .v524-offer__summary {margin:clamp(11px,1.6vh,16px) 0;line-height:1.43;font-size:.91rem;}
+ .public-site--v527 #hacemos .v524-offer__facts {gap:clamp(8px,1.2vh,12px);padding:clamp(11px,1.4vh,14px) 0;}
+ .public-site--v527 #hacemos .v524-offer__facts > div {grid-template-columns:118px minmax(0,1fr);gap:10px;}
+ .public-site--v527 #hacemos .v524-offer__facts p {font-size:.82rem;line-height:1.39;}
+ .public-site--v527 #hacemos .v524-offer__output {padding-top:clamp(10px,1.3vh,14px);}
+ .public-site--v527 #hacemos .v524-offer__output p {font-size:.83rem;line-height:1.4;}
+ .public-site--v527 #hacemos .v524-offer__closing {padding:0 2px;gap:20px;align-items:center;}
+ .public-site--v527 #hacemos .v524-offer__closing p {font-size:.83rem;max-width:90ch;}
+ .public-site--v527 #hacemos .v524-offer__closing .button {min-height:40px;padding:9px 16px;}
+}
+/* Respeto de estado abierto: ninguna sección limita la altura del contenido. */
+.public-site--v527 :is(#jardin,#hacemos,#metodo,#equipo,#contacto) {max-height:none;}
+.public-site--v527 :is(.v523-garden-line,.v523-garden-principle,.v524-offer,.v516-step,.v516-lens) {min-width:0;}
+.public-site--v527 #jardin .v523-garden-board [hidden] {display:none!important;}
+/* En pantallas de baja altura priorizar el texto y el desplazamiento natural. */
+@media (min-width:1081px) and (max-height:760px) {
+ .public-site--v527 #jardin,.public-site--v527 #hacemos {min-height:0;padding-block:20px;}
+ .public-site--v527 #jardin .v523-garden-board {padding-top:16px;}
+ .public-site--v527 #jardin .v523-garden-lines {gap:9px;}
+ .public-site--v527 #hacemos .v524-offer {padding:18px;}
+}
+/* Tablet: las columnas conservan aire hasta que la lectura aconseja apilar. */
+@media (min-width:801px) and (max-width:1080px) {
+ .public-site--v527 #jardin .v523-garden-board {gap:24px;}
+ .public-site--v527 #hacemos .v524-offer {padding:20px;}
+ .public-site--v527 #hacemos .v524-offer__facts > div {grid-template-columns:105px minmax(0,1fr);gap:10px;}
+}
+@media (max-width:800px) {
+ .public-site--v527 #jardin,.public-site--v527 #hacemos {height:auto;min-height:0;padding-block:clamp(38px,5vw,58px);}
+ .public-site--v527 #jardin .v523-garden-lines {gap:12px;}
+ .public-site--v527 #jardin .v523-garden-line > button {min-height:60px;}
+ .public-site--v527 #hacemos .v524-offer-grid {gap:17px;}
+ .public-site--v527 #hacemos .v524-offer {padding:clamp(18px,4vw,26px);}
+ .public-site--v527 #hacemos .v524-offer__closing {gap:16px;}
+}
+@media (max-width:560px) {
+ .public-site--v527 .v515-hero__headline h1 {max-width:100%;font-size:clamp(2.35rem,9.2vw,3.15rem);}
+ .public-site--v527 #jardin .v514-garden__statement h2 {font-size:clamp(2rem,7.7vw,2.7rem);}
+ .public-site--v527 #jardin .v523-garden-line > button {grid-template-columns:19px 35px minmax(0,1fr) 16px;gap:8px;padding:9px 11px;}
+ .public-site--v527 #jardin .v523-garden-board__aside {padding:18px;}
+ .public-site--v527 #hacemos .v524-offer__facts > div {grid-template-columns:1fr;gap:4px;}
+ .public-site--v527 #hacemos .v524-offer__identity h3 {font-size:1.6rem;}
+ .public-site--v527 #contacto .audit-contact__facts {grid-template-columns:1fr;}
+}
+@media (prefers-reduced-motion:reduce) { .public-site--v527 :is(.v523-garden-line,.v524-offer) {transition:none;} }
