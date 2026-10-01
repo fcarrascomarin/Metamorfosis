@@ -849,9 +849,8 @@ function PublicSite() {
           <div className="shell v515-hero">
             <header className="v515-hero__headline">
               <span className="v54-kicker">Metamorfosis LAB</span>
-              <h1>Investigación e innovación aplicada </h1>
-              <h2>desde la región del Biobío</h2>
-            </header>
+              <h1>Investigación e innovación aplicada desde la región del Biobío </h1>
+               </header>
             <div className="v515-hero__body">
               <div className="v54-hero__copy">
                 <p className="v54-hero__lead">Investigamos organizaciones, actividades productivas y territorios desde sus condiciones reales. Combinamos evidencia, mapeo, entrevistas y conocimiento técnico para desarrollar soluciones aplicables, evaluables y responsables con las personas y los sistemas vivos.</p>
