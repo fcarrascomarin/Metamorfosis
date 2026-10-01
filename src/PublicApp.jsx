@@ -665,7 +665,11 @@ function IntegratedMethodSection() {
             <h2 id="v516-work-title">Observar antes de intervenir</h2>
             <p>Leemos las dimensiones relevantes de cada situación y seguimos una secuencia para transformar esa comprensión en decisiones y capacidad.</p>
           </header>
-          <div className="v516-map">
+          <div className="v516-map v529-system-map" aria-label="Sistema de relaciones de Metamorfosis">
+          <svg className="v529-system-links" viewBox="0 0 1000 390" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <path className="v529-system-links__track" d="M215 95 C340 95 352 157 500 192 C648 157 660 95 785 95 M215 295 C340 295 352 230 500 192 C648 230 660 295 785 295" />
+            <path className="v529-system-links__energy" d="M215 95 C340 95 352 157 500 192 C648 157 660 95 785 95 M215 295 C340 295 352 230 500 192 C648 230 660 295 785 295" />
+          </svg>
           {transformationPillars.map((item, index) => {
             const isOpen = openDimensions.has(item.id);
             const positions = ['operation','people','environment','conditions'];
@@ -682,10 +686,13 @@ function IntegratedMethodSection() {
               </article>
             );
           })}
-          <div className="v516-core">
+          <div className="v516-core v529-core">
+            <span className="v529-core__orbit" aria-hidden="true" />
+            <span className="v529-core__orbit v529-core__orbit--outer" aria-hidden="true" />
             <img src="/logo-metamorfosis-transparente.png" alt="" aria-hidden="true" />
             <strong>Metamorfosis</strong>
-            <small>Innovación aplicada</small>
+            <small>Investigación · innovación aplicada</small>
+            <span className="v529-core__signal" aria-hidden="true"><i/><i/><i/></span>
           </div>
           </div>
 
@@ -830,7 +837,7 @@ function PublicSite() {
   };
 
   return (
-    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522 public-site--v523 public-site--v524 public-site--v525 public-site--v526 public-site--v527">
+    <div className="public-site public-site--lab public-site--audit public-site--v49 public-site--v50 public-site--v54 public-site--v56 public-site--v58 public-site--v59 public-site--v510 public-site--v511 public-site--v512 public-site--v513 public-site--v514 public-site--v515 public-site--v516 public-site--v517 public-site--v518 public-site--v519 public-site--v520 public-site--v521 public-site--v522 public-site--v523 public-site--v524 public-site--v525 public-site--v526 public-site--v527 public-site--v528 public-site--v529">
       <a className="skip-link" href="#contenido">Saltar al contenido</a>
       <PublicHeader />
       <main id="contenido">

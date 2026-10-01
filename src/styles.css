@@ -22021,3 +22021,213 @@ textarea::placeholder { color: #7f98ac; }
  .public-site--v527 #contacto .audit-contact__facts {grid-template-columns:1fr;}
 }
 @media (prefers-reduced-motion:reduce) { .public-site--v527 :is(.v523-garden-line,.v524-offer) {transition:none;} }
+
+/* ===========================================================================
+   V5.28 · Jerarquía sobria: hero en una línea y Jardín de tamaño semántico.
+   Los selectores afectan solo a la nueva versión y conservan el estado abierto.
+   =========================================================================== */
+/* La frase institucional completa permanece intacta. Su escala se calcula
+   sobre el ancho de lectura y no sobre el tamaño de un titular corto. */
+@media (min-width: 1024px) {
+  .public-site--v528 .v515-hero__headline,
+  .public-site--v528 .v515-hero__headline h1 {width:100%;max-width:none;min-width:0;}
+  .public-site--v528 .v515-hero__headline h1 {
+    font-size:clamp(1.55rem,2.15vw,2.35rem);
+    letter-spacing:-.037em;
+    line-height:1.16;
+    white-space:nowrap;
+    text-wrap:nowrap;
+    overflow:visible;
+    margin-top:13px;
+  }
+  .public-site--v528 .v515-hero {gap:clamp(48px,6vh,76px);}
+}
+/* El título vuelve a fluir antes de que la pantalla ya no pueda alojarlo. */
+@media (max-width:1023px) {
+  .public-site--v528 .v515-hero__headline h1 {
+    width:100%;max-width:25ch;
+    font-size:clamp(2.1rem,4.1vw,3rem);
+    white-space:normal;text-wrap:balance;
+    line-height:1.06;
+  }
+}
+/* Jardín: el estado cerrado se mide según el texto. Las tarjetas abiertas
+   emplean todo el ancho legible, evitando paneles angostos. */
+@media (min-width:801px) {
+  .public-site--v528 #jardin .v523-garden-lines {
+    display:flex;flex-direction:column;align-items:flex-start;
+    gap:clamp(13px,1.7vh,19px);
+  }
+  .public-site--v528 #jardin .v523-garden-line:not(.is-open) {
+    width:fit-content;max-width:100%;align-self:flex-start;
+  }
+  .public-site--v528 #jardin .v523-garden-line:not(.is-open) > button {
+    width:max-content;max-width:100%;
+    grid-template-columns:20px 34px max-content 17px;
+    gap:clamp(9px,1vw,15px);
+    min-height:54px;
+    padding:7px clamp(13px,1.3vw,18px);
+  }
+  .public-site--v528 #jardin .v523-garden-line.is-open {
+    width:100%;align-self:stretch;
+  }
+  .public-site--v528 #jardin .v523-garden-line.is-open > button {
+    width:100%;max-width:100%;
+    grid-template-columns:20px 34px minmax(0,1fr) 17px;
+    min-height:55px;
+    padding:9px clamp(15px,1.5vw,21px);
+  }
+  .public-site--v528 #jardin .v523-garden-line .v516-garden-button__icon {
+    width:34px;height:34px;display:grid;place-items:center;
+  }
+  .public-site--v528 #jardin .v523-garden-line .v516-garden-button__panel:not([hidden]) {
+    display:block;
+    padding:3px clamp(20px,2.4vw,32px) clamp(17px,2vh,23px) clamp(66px,6.8vw,88px);
+  }
+  .public-site--v528 #jardin .v523-garden-line .v516-garden-button__panel p {
+    max-width:65ch;line-height:1.56;
+  }
+  .public-site--v528 #jardin .v523-garden-board__main .v516-garden-column__head {
+    margin-bottom:clamp(16px,1.9vh,22px);
+  }
+}
+/* En pantallas compactas el objetivo es área táctil útil y lectura sin corte. */
+@media (max-width:800px) {
+  .public-site--v528 #jardin .v523-garden-lines {
+    display:grid;gap:13px;
+  }
+  .public-site--v528 #jardin .v523-garden-line,
+  .public-site--v528 #jardin .v523-garden-line > button {
+    width:100%;max-width:100%;
+  }
+  .public-site--v528 #jardin .v523-garden-line > button {
+    grid-template-columns:20px 35px minmax(0,1fr) 18px;
+    min-height:56px;
+  }
+}
+.public-site--v528 #jardin .v523-garden-line [hidden] {display:none!important;}
+.public-site--v528 #jardin .v523-garden-line > button:focus-visible {
+  outline:2px solid #278d82;outline-offset:3px;
+}
+
+/* ========================================================================== 
+   V5.29 · Sistema relacional interactivo. Cambios confinados a #metodo.
+   Líneas SVG ornamentales, controles nativos, sin animación invasiva.
+   ========================================================================== */
+.public-site--v529 #metodo .v529-system-map {
+  isolation:isolate; position:relative; min-width:0;
+  grid-template-columns:minmax(0,1fr) minmax(205px,.79fr) minmax(0,1fr);
+  column-gap:clamp(12px,1.45vw,24px);
+  row-gap:clamp(19px,3.8vh,40px);
+  align-items:center;
+  padding:clamp(11px,1.6vw,22px) 0;
+  background:radial-gradient(ellipse 44% 61% at 50% 50%,rgba(66,198,182,.095),transparent 85%);
+}
+.public-site--v529 #metodo .v529-system-links {
+  position:absolute;z-index:-1;inset:4% 0;width:100%;height:92%;
+  overflow:visible;pointer-events:none;
+}
+.public-site--v529 #metodo .v529-system-links__track,
+.public-site--v529 #metodo .v529-system-links__energy {
+  fill:none;stroke-linecap:round;stroke-linejoin:round;
+}
+.public-site--v529 #metodo .v529-system-links__track {stroke:rgba(30,134,119,.22);stroke-width:2.2;}
+.public-site--v529 #metodo .v529-system-links__energy {
+  stroke:rgba(40,172,161,.48);stroke-width:2.4;
+  stroke-dasharray:5 36;animation:v529-flow 13s linear infinite;
+}
+@keyframes v529-flow {to {stroke-dashoffset:-164;}}
+/* Las dimensiones son nodos del mapa, no otra hilera de tarjetas de servicios. */
+.public-site--v529 #metodo .v529-system-map .v516-lens {
+  position:relative;z-index:2;align-self:center;min-width:0;
+  overflow:visible;border:1px solid rgba(23,115,103,.13);
+  border-radius:15px;background:rgba(255,255,255,.66);
+  box-shadow:0 8px 24px rgba(16,76,66,.025);
+  backdrop-filter:blur(6px);
+  transition:background .22s,border-color .22s,transform .22s,box-shadow .22s;
+}
+.public-site--v529 #metodo .v529-system-map .v516-lens:hover,
+.public-site--v529 #metodo .v529-system-map .v516-lens:focus-within,
+.public-site--v529 #metodo .v529-system-map .v516-lens.is-open {
+  background:rgba(255,255,255,.97);border-color:rgba(21,135,122,.38);
+  box-shadow:0 14px 32px rgba(12,83,73,.085);transform:translateY(-2px);
+}
+.public-site--v529 #metodo .v529-system-map .v516-lens__trigger {
+  min-height:clamp(64px,8vh,80px);padding:11px clamp(10px,1vw,17px);
+  grid-template-columns:40px minmax(0,1fr) 16px;gap:10px;
+}
+.public-site--v529 #metodo .v529-system-map .v516-lens__icon {
+  width:40px;height:40px;display:grid;place-items:center;border-radius:50%;
+  background:linear-gradient(150deg,#e5f5f0,#f4fcf7);border:1px solid rgba(31,135,119,.12);
+}
+.public-site--v529 #metodo .v529-system-map .v516-lens__icon .app-icon {width:20px;height:20px;}
+.public-site--v529 #metodo .v529-system-map .v516-lens__trigger strong {font-size:clamp(.81rem,.92vw,.99rem);line-height:1.2;}
+.public-site--v529 #metodo .v529-system-map .v516-lens__panel:not([hidden]) {padding:4px 15px 15px;}
+.public-site--v529 #metodo .v529-system-map .v516-lens__panel p {font-size:.8rem;line-height:1.5;}
+/* El núcleo, protagonista y punto de convergencia, sustituye la caja plana. */
+.public-site--v529 #metodo .v529-system-map .v529-core {
+  position:relative;z-index:1;min-width:0;min-height:clamp(193px,23vh,230px);
+  padding:17px 8px;isolation:isolate;overflow:visible;
+  border:0;border-radius:50%;
+  background:radial-gradient(circle at 37% 28%,rgba(255,255,255,.98),rgba(221,246,239,.95) 52%,rgba(195,230,223,.72) 100%);
+  box-shadow:0 20px 55px rgba(24,109,100,.15),inset 0 1px 12px rgba(255,255,255,.92),0 0 0 1px rgba(30,130,115,.20);
+  transition:box-shadow .3s ease,transform .3s ease;
+}
+.public-site--v529 #metodo .v529-core:hover {transform:scale(1.015);box-shadow:0 22px 62px rgba(24,109,100,.19),0 0 0 1px rgba(30,130,115,.32);}
+.public-site--v529 #metodo .v529-core__orbit {
+  position:absolute;inset:-11px;border-radius:50%;z-index:-1;
+  border:1px dashed rgba(42,166,151,.34);pointer-events:none;
+}
+.public-site--v529 #metodo .v529-core__orbit--outer {inset:-23px;border:1px solid rgba(42,166,151,.13);}
+.public-site--v529 #metodo .v529-core img {width:clamp(58px,6vw,77px);height:clamp(58px,6vw,77px);margin-bottom:5px;}
+.public-site--v529 #metodo .v529-core strong {font-size:clamp(1.38rem,1.85vw,1.88rem);white-space:nowrap;line-height:1.05;}
+.public-site--v529 #metodo .v529-core small {margin-top:6px;font-size:clamp(.49rem,.58vw,.61rem);line-height:1.22;max-width:20ch;}
+.public-site--v529 #metodo .v529-core__signal {display:flex;gap:5px;margin-top:12px;align-items:center;justify-content:center;}
+.public-site--v529 #metodo .v529-core__signal i {width:4px;height:4px;border-radius:50%;background:#269d8b;opacity:.36;}
+.public-site--v529 #metodo .v529-core__signal i:nth-child(2) {opacity:.9;}
+/* Método editorial continuo: deliberadamente distinto de los nodos. */
+.public-site--v529 #metodo .v516-method {align-self:center;min-width:0;}
+.public-site--v529 #metodo .v516-method__head {margin-bottom:14px;}
+.public-site--v529 #metodo .v516-method__grid {gap:6px;}
+.public-site--v529 #metodo .v516-step {
+  background:transparent;border:0;border-radius:0;box-shadow:none;
+  border-bottom:1px solid rgba(23,111,98,.16);
+}
+.public-site--v529 #metodo .v516-step:first-child {border-top:1px solid rgba(23,111,98,.16);}
+.public-site--v529 #metodo .v516-step__trigger {
+  border-radius:10px;min-height:clamp(43px,5.25vh,52px);
+  padding:6px 6px;background:transparent;transition:background .2s ease;
+}
+.public-site--v529 #metodo .v516-step__trigger:hover,
+.public-site--v529 #metodo .v516-step.is-open .v516-step__trigger {background:rgba(255,255,255,.68);}
+.public-site--v529 #metodo .v516-step__number {width:29px;height:29px;font-size:.64rem;}
+.public-site--v529 #metodo .v516-step__icon {width:29px;height:29px;}
+.public-site--v529 #metodo .v516-step__icon .app-icon {width:17px;height:17px;}
+.public-site--v529 #metodo .v516-step__panel:not([hidden]) {
+  background:rgba(255,255,255,.90);border:1px solid rgba(23,122,112,.16);
+  border-radius:12px;padding:10px 12px;margin:5px 0 10px;box-shadow:none;
+}
+@media (max-width:1080px) {
+  .public-site--v529 #metodo .v529-system-map {grid-template-columns:minmax(0,1fr) minmax(185px,.75fr) minmax(0,1fr);}
+  .public-site--v529 #metodo .v529-system-links {opacity:.8;}
+  .public-site--v529 #metodo .v529-core {min-height:190px;}
+  .public-site--v529 #metodo .v516-method {border-left:0;}
+}
+@media (max-width:640px) {
+  .public-site--v529 #metodo .v529-system-map {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-areas:'operation people' 'core core' 'environment conditions';
+    gap:17px 11px;padding:13px 5px;
+  }
+  .public-site--v529 #metodo .v529-system-links {display:none;}
+  .public-site--v529 #metodo .v529-system-map .v516-lens__trigger {grid-template-columns:30px minmax(0,1fr) 12px;gap:6px;padding:8px;min-height:59px;}
+  .public-site--v529 #metodo .v529-system-map .v516-lens__icon {width:29px;height:29px;}
+  .public-site--v529 #metodo .v529-system-map .v516-lens__icon .app-icon {width:16px;height:16px;}
+  .public-site--v529 #metodo .v529-system-map .v516-lens__trigger strong {font-size:.71rem;}
+  .public-site--v529 #metodo .v529-core {width:min(78%,210px);justify-self:center;min-height:170px;}
+  .public-site--v529 #metodo .v529-core small {font-size:.55rem;}
+}
+@media (prefers-reduced-motion:reduce) {
+  .public-site--v529 #metodo .v529-system-links__energy {animation:none;stroke-dasharray:none;opacity:.35;}
+  .public-site--v529 #metodo :is(.v516-lens,.v529-core,.v516-step__trigger) {transition:none;}
+}
