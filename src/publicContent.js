@@ -207,13 +207,13 @@ export const team = [
     initials: 'FC',
     name: 'Francisca Carrasco Marín',
     role: 'Ingeniera Civil Industrial · Universidad de Concepción',
-    text: 'Cuenta con formación complementaria en economía circular (Diplomado, Universidad de Chile), gestión ágil de proyectos, evaluación de impacto ambiental (SEIA) y debida diligencia en derechos humanos. Su perfil combina el análisis de procesos productivos y organizacionales con herramientas de gestión e innovación, aportando una mirada orientada a la eficiencia, el aprovechamiento responsable de los recursos y el desarrollo de soluciones viables y sostenibles.'
+    text: 'Su trayectoria se orienta a la gestión de proyectos, el análisis de procesos y el desarrollo de soluciones para organizaciones y actividades productivas. Cuenta con un Diplomado en Economía Circular de la Universidad de Chile y formación complementaria en metodologías ágiles, evaluación ambiental (SEIA) y debida diligencia en derechos humanos. Integra estas herramientas desde una perspectiva que vincula la eficiencia organizacional con el uso responsable de los recursos y la sostenibilidad.'
   },
   {
     initials: 'BS',
     name: 'Benjamín Sepúlveda Méndez',
     role: 'Abogado · Pontificia Universidad Católica de Valparaíso',
-    text: 'Cursa el Magíster en Derecho Penal de la Universidad de Buenos Aires y cuenta con experiencia profesional en defensa penal pública, derechos humanos y desarrollo de proyectos. Complementa su trayectoria con formación en participación ciudadana en el SEIA y debida diligencia empresarial. Su perfil integra el análisis jurídico e institucional con la investigación de problemáticas sociales y territoriales, aportando una mirada orientada a la identificación de riesgos, la prevención de daños y la construcción de respuestas responsables y contextualizadas.'
+    text: 'Su trayectoria profesional se ha desarrollado en el ámbito de la defensa penal pública, los derechos humanos y la participación en proyectos de intervención social. Actualmente cursa el Magíster en Derecho Penal de la Universidad de Buenos Aires, complementando su especialización con estudios en participación ciudadana en el SEIA y debida diligencia empresarial. Su trabajo incorpora una perspectiva jurídica e investigativa, con especial interés en las relaciones entre organizaciones, personas y territorios, así como en la prevención de riesgos e impactos asociados a sus actividades.'
   }
 ];
 
