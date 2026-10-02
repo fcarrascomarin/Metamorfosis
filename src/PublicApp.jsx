@@ -538,21 +538,6 @@ function ProposalSection() {
           <p>Desarrollamos respuestas a problemas concretos y fortalecemos capacidades que necesitan una nueva forma de operar o crecer.</p>
         </header>
 
-        <div className="v537-offers" aria-label="Qué hacemos">
-          <article className="v537-offer">
-            <span className="v537-offer__index">01 / CREAMOS</span>
-            <h3>Soluciones propias</h3>
-            <p>Investigamos necesidades aún no resueltas y diseñamos herramientas, protocolos o prototipos que puedan ponerse a prueba en contexto.</p>
-            <p className="v537-offer__outcome"><strong>Resultado posible</strong> · Una solución documentada, evaluable y con condiciones claras de aplicación.</p>
-          </article>
-          <article className="v537-offer">
-            <span className="v537-offer__index">02 / FORTALECEMOS</span>
-            <h3>Incubación de impacto</h3>
-            <p>Acompañamos organizaciones e iniciativas con capacidades valiosas para estructurar su operación y hacer viable su continuidad o crecimiento.</p>
-            <p className="v537-offer__outcome"><strong>Resultado posible</strong> · Una propuesta fortalecida y una hoja de ruta accionable.</p>
-          </article>
-        </div>
-
         <div className="v537-method" aria-labelledby="v537-method-title">
           <div className="v537-method__story">
             <span className="v54-eyebrow">Cómo trabajamos</span>
@@ -567,6 +552,21 @@ function ProposalSection() {
               </li>
             ))}
           </ol>
+        </div>
+
+         <div className="v537-offers" aria-label="Qué hacemos">
+          <article className="v537-offer">
+            <span className="v537-offer__index">01 / CREAMOS</span>
+            <h3>Soluciones propias</h3>
+            <p>Investigamos necesidades aún no resueltas y diseñamos herramientas, protocolos o prototipos que puedan ponerse a prueba en contexto.</p>
+            <p className="v537-offer__outcome"><strong>Resultado posible</strong> · Una solución documentada, evaluable y con condiciones claras de aplicación.</p>
+          </article>
+          <article className="v537-offer">
+            <span className="v537-offer__index">02 / FORTALECEMOS</span>
+            <h3>Incubación de impacto</h3>
+            <p>Acompañamos organizaciones e iniciativas con capacidades valiosas para estructurar su operación y hacer viable su continuidad o crecimiento.</p>
+            <p className="v537-offer__outcome"><strong>Resultado posible</strong> · Una propuesta fortalecida y una hoja de ruta accionable.</p>
+          </article>
         </div>
 
         <div className="v537-proposal__closing">
