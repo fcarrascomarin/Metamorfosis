@@ -206,18 +206,25 @@ export const team = [
   {
     initials: 'FC',
     name: 'Francisca Carrasco Marín',
-    role: 'Dirección operativa y diseño de intervención',
+    role: 'Diseño organizacional e innovación aplicada',
     profession: 'Ingeniera Civil Industrial · Universidad de Concepción',
-    institution: 'Formación en economía circular, bioeconomía y transformación organizacional',
-    text: 'Estudia cómo funcionan los sistemas de trabajo y cómo pueden transformarse cuando cambian sus condiciones productivas, humanas, regulatorias o ambientales.'
+    credentials: [
+      'Investigación de título UdeC · Composición de género y gestión de empresas en Chile',
+      'Líneas de especialización · Procesos, gestión, economía circular y transformación organizacional'
+    ],
+    text: 'Integra procesos, datos y eficiencia con las condiciones de trabajo, la participación y la relación de la actividad productiva con su entorno. Su mirada permite transformar capacidades existentes en soluciones operativas y sostenibles.'
   },
   {
     initials: 'BS',
     name: 'Benjamín Sepúlveda Méndez',
-    role: 'Estrategia, investigación y desarrollo metodológico',
+    role: 'Estrategia, investigación y dimensión jurídica',
     profession: 'Abogado · Pontificia Universidad Católica de Valparaíso',
-    institution: 'Magíster en Derecho Penal · Universidad de Buenos Aires, en curso',
-    text: 'Trabaja sobre instituciones, regulación, responsabilidades, prevención de daños y coordinación de actores en contextos organizacionales y territoriales complejos.'
+    credentials: [
+      'Magíster en Derecho Penal · Universidad de Buenos Aires (en curso)',
+      'Formación complementaria · Participación Ciudadana en el SEIA (Academia SEA)',
+      'Debida Diligencia · Ministerio de Justicia y Derechos Humanos'
+    ],
+    text: 'Aborda regulación, derechos humanos, prevención de daños y relaciones entre instituciones, empresas y comunidades. Conecta el análisis jurídico con decisiones organizacionales y territoriales concretas.'
   }
 ];
 

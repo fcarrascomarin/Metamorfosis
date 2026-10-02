@@ -476,8 +476,9 @@ function TeamSection() {
             </div>
           </div>
           <p>{person.text}</p>
-          <div className="v54-team-card__meta">
-            <span><Icon name="briefcase" /> {person.profession}</span>
+          <div className="v54-team-card__meta" aria-label={`Formación de ${person.name}`}>
+            <span><Icon name="school" /> {person.profession}</span>
+            {person.credentials?.map((credential) => <span key={credential}><Icon name="verified" /> {credential}</span>)}
           </div>
         </article>
       ))}
@@ -963,7 +964,7 @@ function PublicSite() {
             <div className="v534-team__intro">
               <span className="v54-kicker">Equipo</span>
               <h2>Ingeniería y derecho en diálogo</h2>
-              <p>La ingeniería permite estudiar procesos, información y condiciones reales de operación; el derecho aporta una lectura de responsabilidades, exigencias y relaciones institucionales. Trabajar ambas perspectivas en conjunto nos ayuda a identificar decisiones técnicamente viables, responsables y ajustadas a cada contexto.</p>
+              <p>Integramos ingeniería civil industrial, investigación y derecho para comprender una situación más allá de sus partes: cómo se relacionan procesos, personas, exigencias y territorio. Esta mirada multidisciplinaria permite reconocer capacidades, anticipar riesgos y diseñar respuestas operativamente viables, jurídicamente fundadas y sensibles a sus efectos humanos y ambientales.</p>
             </div>
             <div className="v534-team__profiles"><TeamSection /></div>
           </div>
