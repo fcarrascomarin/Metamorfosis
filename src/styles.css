@@ -23427,3 +23427,117 @@ textarea::placeholder { color: #7f98ac; }
 }
 @media (prefers-reduced-motion: reduce) {.public-site *, .public-site *::before,.public-site *::after {scroll-behavior:auto;}}
 
+
+
+/* ===============================================================
+   PROPOSAL COMPACT v1 · Maintained public layout (October 2026)
+   Single-screen editorial hierarchy on desktop; naturally scrollable
+   on narrow screens. Avoid changing the legacy versioned selectors.
+   =============================================================== */
+.public-site #propuesta.proposal-compact {
+  min-height: 0 !important;
+  padding: clamp(32px, 4.5vh, 48px) 0 !important;
+  align-items: start;
+}
+.public-site #propuesta.proposal-compact .v537-proposal__layout {
+  width: min(1120px, calc(100% - 2 * clamp(24px, 5vw, 60px))) !important;
+  max-width: 1120px !important;
+  display: grid;
+  gap: clamp(16px, 2.1vh, 23px) !important;
+  margin-inline: auto;
+}
+.public-site #propuesta.proposal-compact .v537-proposal__intro {
+  max-width: none; gap: 7px !important;
+}
+.public-site #propuesta.proposal-compact .v537-proposal__intro h2 {
+  max-width: none; font-size: clamp(2rem, 3vw, 2.9rem) !important;
+  line-height: 1.12; white-space: nowrap; text-wrap: nowrap;
+}
+.public-site #propuesta.proposal-compact .v537-proposal__intro p {max-width: 85ch;}
+.public-site #propuesta.proposal-compact .entry-signals {
+  max-width: none; padding: 17px 24px; gap: 12px;
+  border-radius: 17px; box-shadow: none;
+}
+.public-site #propuesta.proposal-compact .entry-signals__heading {max-width: none; gap: 4px;}
+.public-site #propuesta.proposal-compact .entry-signals__heading h3 {
+  font-size: clamp(1.12rem, 1.55vw, 1.4rem); line-height: 1.2;
+}
+.public-site #propuesta.proposal-compact .entry-signals__grid {
+  grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px;
+}
+.public-site #propuesta.proposal-compact .entry-signal {
+  min-width: 0; min-height: 0; display:flex; flex-direction:row;
+  align-items:center; gap: 9px; padding: 12px 11px; border-radius: 10px;
+  background: rgba(255,255,255,.6);
+}
+.public-site #propuesta.proposal-compact .entry-signal .app-icon {flex:0 0 auto;font-size: 1.15rem;}
+.public-site #propuesta.proposal-compact .entry-signal span:not(.app-icon) {
+  color:#1b4c43; font-size: clamp(.84rem,.95vw,.98rem);
+  line-height:1.25; font-weight:700;
+}
+.public-site #propuesta.proposal-compact .v537-offers {
+  gap: clamp(22px, 3vw, 46px); padding: 15px 0 !important;
+}
+.public-site #propuesta.proposal-compact .v537-offer {gap: 5px !important;}
+.public-site #propuesta.proposal-compact .v537-offer h3 {
+  font-size:clamp(1.2rem,1.6vw,1.56rem);line-height:1.18;
+  white-space:nowrap;text-wrap:nowrap;
+}
+.public-site #propuesta.proposal-compact .v537-offer p {line-height:1.44;margin:0;}
+.public-site #propuesta.proposal-compact .v537-method {
+  grid-template-columns:minmax(0,1fr) minmax(0,1.08fr) !important;
+  align-items:center; gap:22px !important; padding:16px 22px !important;
+  border-radius:16px;
+}
+.public-site #propuesta.proposal-compact .v537-method__story {gap:5px !important;min-width:0;}
+.public-site #propuesta.proposal-compact .v537-method__story h3 {
+  font-size:clamp(1.16rem,1.55vw,1.45rem);line-height:1.18;
+  white-space:nowrap;text-wrap:nowrap;
+}
+.public-site #propuesta.proposal-compact .v537-method__story p {font-size:.92rem;line-height:1.43;}
+.public-site #propuesta.proposal-compact .v537-method__sequence {
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  gap:0;padding-top:0;border-top:0;
+}
+.public-site #propuesta.proposal-compact .v537-method__step {
+  flex-direction:column;align-items:center;justify-content:center;
+  gap:5px;padding:7px 3px !important;text-align:center;
+}
+.public-site #propuesta.proposal-compact .v537-method__step strong {
+  font-size:clamp(.76rem,.8vw,.91rem);white-space:nowrap;line-height:1.1;
+}
+.public-site #propuesta.proposal-compact .v537-proposal__closing {
+  display:flex;flex-wrap:nowrap;justify-content:space-between;
+  gap:18px !important; align-items:center;
+}
+.public-site #propuesta.proposal-compact .v537-proposal__closing p {max-width:none;font-size:.94rem;}
+/* Give the contact heading its actual column width: no 13ch clipping. */
+.public-site #contacto .audit-contact__intro {min-width:0;overflow:visible;}
+.public-site #contacto .audit-contact__intro h2 {
+  width:max-content;max-width:none !important;
+  font-size:clamp(1.75rem,2.35vw,2.65rem) !important;
+  letter-spacing:-.045em;white-space:nowrap !important;
+  text-wrap:nowrap !important;overflow:visible;line-height:1.16;
+}
+@media (max-width: 1050px) {
+ .public-site #propuesta.proposal-compact .entry-signals__grid {grid-template-columns:repeat(2,minmax(0,1fr));}
+ .public-site #propuesta.proposal-compact .v537-method {grid-template-columns:1fr !important;}
+ .public-site #propuesta.proposal-compact .v537-method__sequence {border-top:1px solid #d0e2da;padding-top:10px;}
+ .public-site #contacto .audit-contact__intro h2 {font-size:clamp(1.65rem,3vw,2.2rem) !important;}
+}
+@media (max-width: 680px) {
+ .public-site #propuesta.proposal-compact {padding:32px 0 !important;}
+ .public-site #propuesta.proposal-compact .v537-proposal__layout {width:calc(100% - 36px) !important;gap:18px !important;}
+ .public-site #propuesta.proposal-compact .v537-proposal__intro h2 {font-size:clamp(1.57rem,6.2vw,2.1rem) !important;}
+ .public-site #propuesta.proposal-compact .entry-signals {padding:17px 14px;}
+ .public-site #propuesta.proposal-compact .entry-signals__grid {grid-template-columns:repeat(2,minmax(0,1fr));}
+ .public-site #propuesta.proposal-compact .entry-signal {padding:9px 7px;gap:6px;}
+ .public-site #propuesta.proposal-compact .entry-signal span:not(.app-icon) {font-size:.77rem;}
+ .public-site #propuesta.proposal-compact .v537-offers {grid-template-columns:1fr;gap:13px !important;}
+ .public-site #propuesta.proposal-compact .v537-offer+.v537-offer {border-left:0;padding-left:8px;border-top:1px solid #cbded6;padding-top:13px;}
+ .public-site #propuesta.proposal-compact .v537-method {padding:17px 14px !important;}
+ .public-site #propuesta.proposal-compact .v537-method__story h3 {font-size:clamp(1.02rem,4.1vw,1.32rem);}
+ .public-site #propuesta.proposal-compact .v537-method__step strong {font-size:.68rem;}
+ .public-site #propuesta.proposal-compact .v537-proposal__closing {flex-wrap:wrap;}
+ .public-site #contacto .audit-contact__intro h2 {font-size:clamp(1.52rem,6.3vw,2rem) !important;}
+}

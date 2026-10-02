@@ -525,89 +525,61 @@ function IntegratedProposalMap() {
 // -----------------------------------------------------------------------------
 function ProposalSection() {
   return (
-    <section
-      id="propuesta"
-      className="v537-proposal section-anchor"
-      aria-labelledby="v537-title"
-    >
+    <section id="propuesta" className="v537-proposal proposal-compact section-anchor" aria-labelledby="proposal-title">
       <div className="shell v537-proposal__layout">
-       
+        <header className="v537-proposal__intro">
+          <span className="v54-kicker">Nuestra propuesta</span>
+          <h2 id="proposal-title">Qué hacemos y cómo</h2>
+          <p>Convertimos conocimiento y capacidades existentes en soluciones concretas para organizaciones, actividades productivas y territorios.</p>
+        </header>
 
-        <header className="v537-proposal__intro" >
-                  <span className="v54-kicker">Nuestra propuesta</span>
-               <h2 id="v537-title">Del conocimiento a soluciones aplicables</h2>
-          <p>Desarrollamos respuestas a problemas concretos y fortalecemos capacidades que necesitan una nueva forma de operar o crecer.</p>  
-                </header>
-         <div className="entry-signals" aria-labelledby="entry-signals-title">
+        <div className="entry-signals" aria-labelledby="entry-signals-title">
           <div className="entry-signals__heading">
             <span className="v54-eyebrow">Cuándo podemos aportar</span>
-            <h3 id="entry-signals-title">¿Te reconoces en alguna de estas situaciones?</h3>
-            <p>No necesitas llegar con una solución definida. Podemos comenzar comprendiendo el problema.</p>
+            <h3 id="entry-signals-title">Un buen punto de partida puede ser…</h3>
           </div>
           <div className="entry-signals__grid">
             {activeOfferUseCases.map((item) => (
-              <article className="entry-signal" key={item.title}>
-                <Icon name={item.icon} />
-                <h4>{item.title}</h4>
-                <p>{item.text}</p>
-              </article>
+              <div className="entry-signal" key={item.title}>
+                <Icon name={item.icon} aria-hidden="true" />
+                <span>{item.title.replace(/^Cuando /, '')}</span>
+              </div>
             ))}
           </div>
         </div>
 
         <div className="v537-offers" aria-label="Qué hacemos">
-                          
           <article className="v537-offer">
             <span className="v537-offer__index">01 / CREAMOS</span>
             <h3>Soluciones propias</h3>
-            <p>Investigamos necesidades aún no resueltas y diseñamos herramientas, protocolos o prototipos que puedan ponerse a prueba en contexto.</p>
-            <p className="v537-offer__outcome"><strong>Resultado posible</strong> · Una solución documentada, evaluable y con condiciones claras de aplicación.</p>
+            <p>Investigamos necesidades y desarrollamos herramientas, protocolos o prototipos que puedan probarse en contextos reales.</p>
           </article>
           <article className="v537-offer">
             <span className="v537-offer__index">02 / FORTALECEMOS</span>
             <h3>Incubación de impacto</h3>
-            <p>Acompañamos organizaciones e iniciativas con capacidades valiosas para estructurar su operación y hacer viable su continuidad o crecimiento.</p>
-            <p className="v537-offer__outcome"><strong>Resultado posible</strong> · Una propuesta fortalecida y una hoja de ruta accionable.</p>
+            <p>Ayudamos a organizaciones e iniciativas a ordenar sus capacidades y construir modelos sostenibles, viables y preparados para crecer.</p>
           </article>
         </div>
 
-        <div className="v537-proposal__closing">
-          <p>Una buena intervención no termina con la entrega: deja criterios, herramientas y capacidades para continuar.</p>
-          <SectionLink id="contacto" className="button button--small">Conversemos <Icon name="arrow_forward" /></SectionLink>
-                  <div className="v537-method" aria-labelledby="v537-method-title">
+        <div className="v537-method" aria-labelledby="proposal-method-title">
           <div className="v537-method__story">
-            <span className="v54-eyebrow">Cómo trabajamos</span>
-            <h3 id="v537-method-title">Investigación que orienta decisiones</h3>
-            <p>Combinamos información disponible, mapeo, entrevistas y análisis técnico para comprender cómo se relacionan la operación, las personas, el entorno y las condiciones de cada situación. Con esa evidencia delimitamos una respuesta, la probamos, evaluamos sus resultados y transferimos lo aprendido.</p>
+            <span className="v54-eyebrow">Nuestro método</span>
+            <h3 id="proposal-method-title">Comprender antes de intervenir</h3>
+            <p>Integramos investigación, análisis técnico y diálogo con quienes conocen el problema. Diseñamos respuestas, las ponemos a prueba y aprendemos de sus resultados.</p>
           </div>
           <ol className="v537-method__sequence" aria-label="Cinco etapas del método">
             {processRoadmap.map((item, index) => (
               <li className="v537-method__step" key={item.title}>
-                <span>0{index + 1}</span>
-                <div><strong>{item.title}</strong><small>{item.eyebrow}</small></div>
+                <span>0{index + 1}</span><strong>{item.title}</strong>
               </li>
             ))}
           </ol>
         </div>
-        </div>
 
-        <details className="v537-details">
-          <summary>Profundizar en nuestro trabajo <Icon name="expand_more" /></summary>
-          <div className="v537-details__content">
-            <div>
-              <h3>Las cuatro dimensiones que investigamos</h3>
-              {transformationPillars.map((item) => (
-                <p key={item.id}><strong>{item.title}</strong> — {item.text}</p>
-              ))}
-            </div>
-            <div>
-              <h3>Ámbitos en los que podemos aportar</h3>
-              {cultivationAreas.map((item) => (
-                <p key={item.title}><strong>{item.title}</strong> — {item.text}</p>
-              ))}
-            </div>
-          </div>
-        </details>
+        <div className="v537-proposal__closing">
+          <p>¿Hay algo que vale la pena mirar de otra manera? No necesitas llegar con una solución definida.</p>
+          <SectionLink id="contacto" className="button button--small">Conversemos <Icon name="arrow_forward" /></SectionLink>
+        </div>
       </div>
     </section>
   );
