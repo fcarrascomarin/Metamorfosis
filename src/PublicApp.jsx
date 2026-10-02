@@ -22,9 +22,8 @@ import {
 // 02. Navegación y marca
 // 03. Formulario de conversación
 // 04. Componentes visuales (equipo + mapa de sistemas)
-// 05. Secciones públicas, en el orden real de lectura
-//     Inicio → Jardín → Cómo miramos → Método → Situaciones →
-//     Investigación aplicada → Principios → Equipo → Contacto → Footer
+// 05. Recorrido público real: Inicio → Señales / Propuesta → Equipo → Contacto.
+//     Contenido ampliado bajo demanda mediante <details>.
 //
 // Los textos repetibles (método, preguntas, equipo, etc.) se editan en
 // src/publicContent.js. Los textos narrativos de cada sección viven aquí.
@@ -197,7 +196,7 @@ function PublicHeader() {
             ))}
           </div>
           <div className="site-nav__actions">
-            <a className="site-nav__os" href={OS_SITE_URL} onClick={openOs} onMouseEnter={warmPrivateApi} onFocus={warmPrivateApi} aria-label="Acceso al sistema interno de Metamorfosis">
+            <a className="site-nav__os" href={OS_SITE_URL} onClick={openOs} aria-label="Acceso privado del equipo de Metamorfosis">
               <Icon name="lock" /> <span>Acceso OS</span>
             </a>
             <button className="button button--small site-nav__conversation" type="button" onClick={() => goTo('contacto')}>
@@ -384,8 +383,8 @@ function QuoteForm() {
     <form className="quote-wizard tpr-form tpr-form--steps" onSubmit={prepareFormalContact} noValidate>
       <div className="form-headline form-headline--steps">
         <span><Icon name="mail" /> Canal formal</span>
-        <strong>Solicitud de conversación</strong>
-        <small>Cuéntanos lo suficiente para decidir si corresponde conversar.</small>
+        <strong>Iniciemos una conversación</strong>
+        <small>Cuéntanos brevemente qué necesitas explorar. No hace falta tener una solución definida.</small>
       </div>
 
       <ol className="quote-steps" aria-label="Pasos de la solicitud">
@@ -539,7 +538,24 @@ function ProposalSection() {
                <h2 id="v537-title">Del conocimiento a soluciones aplicables</h2>
           <p>Desarrollamos respuestas a problemas concretos y fortalecemos capacidades que necesitan una nueva forma de operar o crecer.</p>  
                 </header>
-         <div className="v537-offers" aria-label="Qué hacemos">
+         <div className="entry-signals" aria-labelledby="entry-signals-title">
+          <div className="entry-signals__heading">
+            <span className="v54-eyebrow">Cuándo podemos aportar</span>
+            <h3 id="entry-signals-title">¿Te reconoces en alguna de estas situaciones?</h3>
+            <p>No necesitas llegar con una solución definida. Podemos comenzar comprendiendo el problema.</p>
+          </div>
+          <div className="entry-signals__grid">
+            {activeOfferUseCases.map((item) => (
+              <article className="entry-signal" key={item.title}>
+                <Icon name={item.icon} />
+                <h4>{item.title}</h4>
+                <p>{item.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div className="v537-offers" aria-label="Qué hacemos">
                           
           <article className="v537-offer">
             <span className="v537-offer__index">01 / CREAMOS</span>
@@ -971,8 +987,8 @@ function PublicSite() {
             <div className="v532-hero-content">
               <div className="v532-hero-note">
                 <span className="v54-eyebrow">Nuestro punto de partida</span>
-                <p>Investigamos organizaciones, actividades productivas y territorios desde sus condiciones reales. Combinamos evidencia, mapeo, entrevistas y conocimiento técnico para comprender sus relaciones, reconocer capacidades y desarrollar soluciones aplicables, evaluables y responsables con las personas y los sistemas vivos.</p>
-                <strong>Primero comprendemos. Después diseñamos, probamos y medimos.</strong>
+                <p>Transformamos problemas complejos en soluciones aplicables. Estudiamos cómo funcionan las organizaciones, sus actividades y sus relaciones con el entorno para identificar oportunidades, fortalecer capacidades y desarrollar respuestas que puedan ponerse a prueba.</p>
+                <strong>Comprender antes de intervenir. Medir para seguir mejorando.</strong>
               </div>
               <div className="hero__actions">
                 <SectionLink className="button audit-primary-cta" id="contacto">Conversemos</SectionLink>
@@ -1019,7 +1035,7 @@ function PublicSite() {
         <div className="shell audit-footer__grid">
           <div className="site-footer__brand"><Brand /><p>Investigación e innovación aplicada. Concepción · Región del Biobío.</p></div>
           <div><span className="footer-title">Navegación</span><SectionLink id="inicio">Inicio</SectionLink><SectionLink id="propuesta">Propuesta</SectionLink><SectionLink id="equipo">Equipo</SectionLink><SectionLink id="contacto">Contacto</SectionLink></div>
-          <div><span className="footer-title">Contacto</span><a className="footer-icon-link" href={`mailto:${contact.email}`}><Icon name="mail" /><span>{contact.email}</span></a><a className="footer-icon-link" href={OS_SITE_URL}><Icon name="lock" /><span>Acceso OS</span></a></div>
+          <div><span className="footer-title">Contacto</span><a className="footer-icon-link" href={`mailto:${contact.email}`}><Icon name="mail" /><span>{contact.email}</span></a><a className="footer-icon-link" href={OS_SITE_URL}><Icon name="lock" /><span>Acceso privado</span></a></div>
         </div>
         <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis</span><span>Concepción · Región del Biobío · Chile</span></div>
       </footer>
