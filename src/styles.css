@@ -23534,3 +23534,156 @@ textarea::placeholder { color: #7f98ac; }
   .public-site #propuesta .proposal-editorial__closing {align-items:flex-start;flex-direction:column;gap:16px;}
   .public-site #contacto .audit-contact__intro h2 {width:auto;max-width:100% !important;white-space:normal !important;text-wrap:balance !important;font-size:clamp(1.55rem,6.3vw,2.2rem) !important;}
 }
+
+
+/* =============================================================================
+   PUBLIC DESIGN SYSTEM · TYPOGRAPHY / OCT 2026
+   Single authoritative layer for the four public sections. Edit tokens here,
+   rather than adding local font-size patches to historical version blocks.
+   Newsreader = editorial headlines; DM Sans = interface, subheads, body.
+   OS styles are deliberately excluded from this public scope.
+   ============================================================================= */
+.public-site {
+  --pub-font-display: "Newsreader", Georgia, serif;
+  --pub-font-text: "DM Sans", system-ui, -apple-system, sans-serif;
+  --pub-size-hero: clamp(2.85rem, 5.25vw, 5.1rem);
+  --pub-size-section: clamp(2.2rem, 3.35vw, 3.25rem);
+  --pub-size-subhead: clamp(1.55rem, 2.05vw, 2rem);
+  --pub-size-minor: clamp(1.11rem, 1.35vw, 1.3rem);
+  --pub-size-lead: clamp(1.025rem, 1.23vw, 1.14rem);
+  --pub-size-body: 1rem;
+  --pub-size-detail: .925rem;
+  --pub-size-label: .75rem;
+  --pub-leading-body: 1.58;
+  --pub-heading-ink: #173d38;
+  font-family: var(--pub-font-text);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: var(--pub-leading-body);
+}
+.public-site :is(button,input,select,textarea) { font-family: var(--pub-font-text); }
+.public-site :is(.v54-kicker,.v54-eyebrow,.kicker,.v537-offer__index,.proposal-editorial__label) {
+  font-family: var(--pub-font-text) !important;
+  font-size: var(--pub-size-label) !important;
+  font-weight: 700 !important;
+  letter-spacing: .12em;
+  line-height: 1.4;
+}
+/* A section's heading means one type level irrespective of background. */
+.public-site #propuesta .proposal-editorial__intro h2,
+.public-site #equipo .v534-team__intro h2,
+.public-site #contacto .audit-contact__intro h2 {
+  font-family: var(--pub-font-display) !important;
+  font-size: var(--pub-size-section) !important;
+  font-weight: 600 !important;
+  letter-spacing: -.035em !important;
+  line-height: 1.09 !important;
+  text-wrap: balance;
+}
+.public-site #inicio .v515-hero__headline h1 {
+  font-family: var(--pub-font-display) !important;
+  font-size: var(--pub-size-hero) !important;
+  font-weight: 600 !important;
+  letter-spacing: -.04em !important;
+  line-height: 1.03 !important;
+}
+/* Main content text: consistent size and leading across all sections. */
+.public-site #inicio .v532-hero-note p,
+.public-site #propuesta .proposal-editorial__intro > p,
+.public-site #propuesta .proposal-editorial__method > p,
+.public-site #equipo .v534-team__intro > p,
+.public-site #contacto .audit-contact__intro > p {
+  font-family: var(--pub-font-text) !important;
+  font-size: var(--pub-size-lead) !important;
+  font-weight: 400 !important;
+  line-height: var(--pub-leading-body) !important;
+  letter-spacing: 0 !important;
+}
+/* All major in-section subheads have a common display style. */
+.public-site #propuesta .proposal-editorial__method h3,
+.public-site #equipo .v54-team-card h3 {
+  font-family: var(--pub-font-display) !important;
+  font-size: var(--pub-size-subhead) !important;
+  font-weight: 600 !important;
+  line-height: 1.16 !important;
+  letter-spacing: -.025em !important;
+}
+/* The situation heading and the four labels are deliberately sans-serif. */
+.public-site #propuesta .proposal-editorial__situations > h3 {
+  font-family: var(--pub-font-text) !important;
+  font-size: var(--pub-size-minor) !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+}
+.public-site #propuesta .proposal-editorial__situation h4 {
+  font-family: var(--pub-font-text) !important;
+  font-size: var(--pub-size-body) !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  letter-spacing: 0 !important;
+}
+.public-site #propuesta .proposal-editorial__situation p,
+.public-site #propuesta .proposal-editorial__closing p,
+.public-site #equipo .v54-team-card > p,
+.public-site #contacto .field-help {
+  font-family: var(--pub-font-text) !important;
+  font-size: var(--pub-size-detail) !important;
+  line-height: 1.55 !important;
+  font-weight: 400 !important;
+}
+.public-site #propuesta .proposal-editorial__principle,
+.public-site #propuesta .proposal-editorial__closing strong,
+.public-site #inicio .v532-hero-note strong {
+  font-family: var(--pub-font-text) !important;
+  font-size: var(--pub-size-body) !important;
+  font-weight: 700 !important;
+  line-height: 1.45 !important;
+}
+/* Unified interactive text: buttons and site navigation must not inherit headings. */
+.public-site .site-nav button,
+.public-site .site-nav__os,
+.public-site .button,
+.public-site .quote-wizard button {
+  font-family: var(--pub-font-text) !important;
+  font-size: var(--pub-size-detail) !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  letter-spacing: 0 !important;
+}
+.public-site #contacto .quote-wizard :is(label,input,textarea,select,.quote-step-title,.form-headline) {
+  font-family: var(--pub-font-text) !important;
+}
+.public-site #contacto .quote-wizard :is(input,textarea,select) {
+  font-size: var(--pub-size-body) !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+}
+.public-site #contacto .quote-step-title {
+  font-size: var(--pub-size-body) !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+}
+/* Headline fits the column: one line when possible, never cropped at zoom. */
+.public-site #contacto .audit-contact__intro { min-width: 0 !important; overflow: visible !important; }
+.public-site #contacto .audit-contact__intro h2 {
+  width: auto !important;
+  max-width: 100% !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  overflow-wrap: normal;
+}
+@media (min-width: 1080px) {
+  .public-site #propuesta .proposal-editorial__intro h2 { white-space: nowrap !important; }
+}
+@media (max-width: 680px) {
+  .public-site {
+    --pub-size-hero: clamp(2.55rem, 10vw, 3.65rem);
+    --pub-size-section: clamp(2rem, 8vw, 2.55rem);
+    --pub-size-subhead: clamp(1.45rem, 6vw, 1.72rem);
+    --pub-size-minor: 1.14rem;
+    --pub-size-lead: 1rem;
+    --pub-size-body: 1rem;
+    --pub-size-detail: .925rem;
+  }
+  .public-site #propuesta .proposal-editorial__intro h2 { white-space: normal !important; }
+}
