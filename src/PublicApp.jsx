@@ -519,65 +519,49 @@ function IntegratedProposalMap() {
 }
 
 // -----------------------------------------------------------------------------
-// PROPUESTA · Primera vista autosuficiente y ampliación de rigor bajo demanda.
-// La sección evita duplicar el criterio expresado en el hero y no requiere
-// ninguna interacción para entender las dos formas de crear valor y el método.
+// PROPUESTA · Tres momentos: promesa, situaciones reconocibles y forma de trabajar.
+// La arquitectura empresarial interna no interfiere con la lectura comercial.
 // -----------------------------------------------------------------------------
+const proposalSituations = [
+  { icon: 'trending_up', title: 'Ante nuevos desafíos', description: 'Crecimiento, adaptación y nuevas exigencias.' },
+  { icon: 'account_tree', title: 'Ante capacidades dispersas', description: 'Conocimientos y recursos que aún no logran converger.' },
+  { icon: 'search', title: 'Ante decisiones complejas', description: 'Cuando es necesario comprender antes de actuar.' },
+  { icon: 'design_services', title: 'Ante oportunidades de innovación', description: 'Ideas que necesitan convertirse en soluciones viables.' }
+];
+
 function ProposalSection() {
   return (
-    <section id="propuesta" className="v537-proposal proposal-compact section-anchor" aria-labelledby="proposal-title">
-      <div className="shell v537-proposal__layout">
-        <header className="v537-proposal__intro">
+    <section id="propuesta" className="v537-proposal proposal-editorial section-anchor" aria-labelledby="proposal-title">
+      <div className="shell proposal-editorial__layout">
+        <header className="proposal-editorial__intro">
           <span className="v54-kicker">Nuestra propuesta</span>
-          <h2 id="proposal-title">Qué hacemos y cómo</h2>
-          <p>Convertimos conocimiento y capacidades existentes en soluciones concretas para organizaciones, actividades productivas y territorios.</p>
+          <h2 id="proposal-title">Del conocimiento a la transformación</h2>
+          <p>Transformamos información, conocimiento y capacidades existentes en soluciones aplicables para organizaciones, actividades productivas y territorios.</p>
         </header>
 
-        <div className="entry-signals" aria-labelledby="entry-signals-title">
-          <div className="entry-signals__heading">
-            <span className="v54-eyebrow">Cuándo podemos aportar</span>
-            <h3 id="entry-signals-title">Un buen punto de partida puede ser…</h3>
-          </div>
-          <div className="entry-signals__grid">
-            {activeOfferUseCases.map((item) => (
-              <div className="entry-signal" key={item.title}>
+        <div className="proposal-editorial__situations" aria-labelledby="proposal-situations-title">
+          <h3 id="proposal-situations-title">¿Dónde podemos aportar?</h3>
+          <div className="proposal-editorial__situations-grid">
+            {proposalSituations.map((item) => (
+              <article className="proposal-editorial__situation" key={item.title}>
                 <Icon name={item.icon} aria-hidden="true" />
-                <span>{item.title.replace(/^Cuando /, '')}</span>
-              </div>
+                <div>
+                  <h4>{item.title}</h4>
+                  <p>{item.description}</p>
+                </div>
+              </article>
             ))}
           </div>
         </div>
 
-        <div className="v537-offers" aria-label="Qué hacemos">
-          <article className="v537-offer">
-            <span className="v537-offer__index">01 / CREAMOS</span>
-            <h3>Soluciones propias</h3>
-            <p>Investigamos necesidades y desarrollamos herramientas, protocolos o prototipos que puedan probarse en contextos reales.</p>
-          </article>
-          <article className="v537-offer">
-            <span className="v537-offer__index">02 / FORTALECEMOS</span>
-            <h3>Incubación de impacto</h3>
-            <p>Ayudamos a organizaciones e iniciativas a ordenar sus capacidades y construir modelos sostenibles, viables y preparados para crecer.</p>
-          </article>
+        <div className="proposal-editorial__method" aria-labelledby="proposal-method-title">
+          <h3 id="proposal-method-title">Comprender antes de intervenir</h3>
+          <p>Integramos investigación, ingeniería y análisis jurídico con el conocimiento de quienes viven cada desafío. Diseñamos respuestas, las ponemos a prueba y aprendemos de sus resultados.</p>
+          <div className="proposal-editorial__principle"><Icon name="arrow_forward" aria-hidden="true" /><span>De la comprensión a soluciones que puedan sostenerse y mejorar.</span></div>
         </div>
 
-        <div className="v537-method" aria-labelledby="proposal-method-title">
-          <div className="v537-method__story">
-            <span className="v54-eyebrow">Nuestro método</span>
-            <h3 id="proposal-method-title">Comprender antes de intervenir</h3>
-            <p>Integramos investigación, análisis técnico y diálogo con quienes conocen el problema. Diseñamos respuestas, las ponemos a prueba y aprendemos de sus resultados.</p>
-          </div>
-          <ol className="v537-method__sequence" aria-label="Cinco etapas del método">
-            {processRoadmap.map((item, index) => (
-              <li className="v537-method__step" key={item.title}>
-                <span>0{index + 1}</span><strong>{item.title}</strong>
-              </li>
-            ))}
-          </ol>
-        </div>
-
-        <div className="v537-proposal__closing">
-          <p>¿Hay algo que vale la pena mirar de otra manera? No necesitas llegar con una solución definida.</p>
+        <div className="proposal-editorial__closing">
+          <div><strong>Toda transformación comienza con una pregunta.</strong><p>No necesitas llegar con una solución definida.</p></div>
           <SectionLink id="contacto" className="button button--small">Conversemos <Icon name="arrow_forward" /></SectionLink>
         </div>
       </div>
