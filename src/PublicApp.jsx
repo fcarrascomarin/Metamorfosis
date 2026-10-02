@@ -943,7 +943,7 @@ function PublicSite() {
             <div className="v532-hero-content">
               <div className="v532-hero-note">
                 <span className="v54-eyebrow">Nuestro punto de partida</span>
-                <p>Transformamos problemas complejos en soluciones aplicables. Estudiamos cómo funcionan las organizaciones, sus actividades y sus relaciones con el entorno para identificar oportunidades, fortalecer capacidades y desarrollar respuestas que puedan ponerse a prueba.</p>
+                <p>Estudiamos organizaciones, actividades productivas y territorios para transformar problemas complejos en soluciones aplicables. Integramos conocimiento y capacidades existentes para identificar oportunidades y poner a prueba nuevas respuestas.</p>
                 <strong>Comprender antes de intervenir. Medir para seguir mejorando.</strong>
               </div>
               <div className="hero__actions">

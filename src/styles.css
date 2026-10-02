@@ -23687,3 +23687,72 @@ textarea::placeholder { color: #7f98ac; }
   }
   .public-site #propuesta .proposal-editorial__intro h2 { white-space: normal !important; }
 }
+
+
+/* ============================================================================
+   PUBLIC LAYOUT BALANCE · HERO + CONTACT / 2026-10-02
+   Scoped overrides governed by the public typography tokens above.
+   This block supersedes legacy width constraints without changing OS styles.
+   ============================================================================ */
+@media (min-width: 1024px) {
+  .public-site #inicio .v515-hero { gap: clamp(30px, 4.3vh, 46px); }
+  .public-site #inicio .v515-hero__headline h1 {
+    font-size: clamp(3.15rem, 4.12vw, 4.35rem) !important;
+    line-height: 1.075 !important;
+    letter-spacing: -.035em !important;
+    max-width: 100%; white-space: nowrap; text-wrap: nowrap;
+  }
+  .public-site #inicio .v515-hero__headline .v54-kicker { margin-bottom: clamp(14px, 2vh, 21px); }
+  .public-site #inicio .v531-hero__origin { margin-top: 12px; font-size: clamp(1.05rem,1.3vw,1.33rem); }
+  .public-site #inicio .v532-hero-content {
+    width: min(100%, 800px); margin-inline: 0 auto; justify-items: start; gap: 20px;
+  }
+  .public-site #inicio .v532-hero-note {
+    width: 100%; max-width: 800px; margin: 0; text-align: left;
+    padding: clamp(22px,2.5vw,30px) clamp(26px,3.3vw,42px);
+  }
+  .public-site #inicio .v532-hero-note p { max-width: 66ch; margin: 12px 0; }
+  .public-site #inicio .v532-hero-content .hero__actions { justify-content: flex-start; }
+  .public-site #contacto .audit-contact__grid {
+    grid-template-columns: minmax(0, .99fr) minmax(0, 1.01fr);
+    gap: clamp(32px, 3.9vw, 58px);
+  }
+  .public-site #contacto .audit-contact__intro h2 {
+    font-size: clamp(2.35rem, 2.85vw, 3.05rem) !important;
+    line-height: 1.12 !important; letter-spacing: -.034em !important;
+    max-width: none !important; white-space: nowrap !important; text-wrap: nowrap !important;
+  }
+  .public-site #contacto .audit-contact__facts {
+    grid-template-columns: 1fr; max-width: 100%; gap: 10px;
+  }
+  .public-site #contacto .audit-contact__facts > span {
+    min-height: 66px; grid-template-columns: 28px minmax(0,1fr);
+    padding: 12px 18px;
+  }
+  .public-site #contacto .v525-contact-fact__copy small {
+    overflow-wrap: normal; word-break: normal; white-space: nowrap;
+    font-size: .87rem; line-height: 1.4;
+  }
+}
+@media (min-width: 681px) and (max-width: 1023px) {
+  .public-site #inicio .v515-hero__headline h1 {
+    font-size: clamp(2.5rem, 5.2vw, 3.6rem) !important;
+    white-space: normal; text-wrap: balance;
+  }
+  .public-site #contacto .audit-contact__intro h2 {
+    font-size: clamp(2.25rem,4.1vw,3rem) !important;
+    white-space: nowrap !important; text-wrap: nowrap !important;
+  }
+  .public-site #contacto .audit-contact__facts { grid-template-columns: 1fr; }
+  .public-site #contacto .v525-contact-fact__copy small { overflow-wrap: anywhere; }
+}
+@media (max-width: 680px) {
+  .public-site #inicio .v515-hero__headline h1 {
+    font-size: clamp(2.4rem,9vw,3.15rem) !important;
+    white-space: normal; text-wrap: balance;
+  }
+  .public-site #inicio .v532-hero-note { text-align: left; }
+  .public-site #inicio .v532-hero-note p { margin: 12px 0; }
+  .public-site #contacto .audit-contact__facts { grid-template-columns: 1fr; }
+  .public-site #contacto .v525-contact-fact__copy small { overflow-wrap: anywhere; }
+}
