@@ -23966,3 +23966,31 @@ textarea::placeholder { color: #7f98ac; }
   ) {text-align: left !important;}
   .public-site #equipo .v54-team-card h3 {white-space: normal !important;}
 }
+
+/* TEAM EDITORIAL CREDENTIALS · structured, concise and icon-free */
+.public-site #equipo .team-education {
+  display:grid; gap:10px; border-top:1px solid rgba(13,66,61,.14);
+  padding-top:15px; margin-top:auto;
+}
+.public-site #equipo .team-education__row {
+  display:grid; grid-template-columns:112px minmax(0,1fr);
+  column-gap:15px; align-items:start;
+}
+.public-site #equipo .team-education__level {
+  font-family:var(--font-body, 'DM Sans', sans-serif);
+  color:#007d76; text-transform:uppercase; letter-spacing:.055em;
+  font-size:.67rem; font-weight:750; line-height:1.45; padding-top:2px;
+}
+.public-site #equipo .team-education__details {
+  color:#506d70; font-size:clamp(.78rem,.85vw,.88rem);
+  line-height:1.4; overflow-wrap:normal; hyphens:none;
+}
+.public-site #equipo .team-education__separator {color:#159a91; padding-inline:2px;}
+.public-site #equipo .v534-team__intro > p {max-width:86ch !important;}
+.public-site #equipo .v534-team__profiles .v54-team-card {
+  gap:clamp(10px,1.15vh,14px) !important;
+}
+@media (max-width:680px) {
+ .public-site #equipo .team-education__row {grid-template-columns:1fr;row-gap:3px;}
+ .public-site #equipo .team-education {gap:12px;}
+}

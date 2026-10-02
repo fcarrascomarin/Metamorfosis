@@ -476,9 +476,15 @@ function TeamSection() {
             </div>
           </div>
           <p>{person.text}</p>
-          <div className="v54-team-card__meta" aria-label={`Formación de ${person.name}`}>
-            <span><Icon name="school" /> {person.profession}</span>
-            {person.credentials?.map((credential) => <span key={credential}><Icon name="verified" /> {credential}</span>)}
+          <div className="team-education" aria-label={`Formación de ${person.name}`}>
+            {person.education.map((group) => (
+              <div className="team-education__row" key={group.level}>
+                <span className="team-education__level">{group.level}</span>
+                <span className="team-education__details">{group.entries.map((entry, index) => (
+                  <span key={entry}>{index > 0 && <span className="team-education__separator" aria-hidden="true"> · </span>}{entry}</span>
+                ))}</span>
+              </div>
+            ))}
           </div>
         </article>
       ))}
@@ -964,7 +970,7 @@ function PublicSite() {
             <div className="v534-team__intro">
               <span className="v54-kicker">Equipo</span>
               <h2>Ingeniería y derecho en diálogo</h2>
-              <p>Unimos ingeniería civil industrial y derecho para comprender cómo se relacionan procesos, personas, exigencias y territorio. Esta mirada sistémica y multidisciplinaria nos permite reconocer capacidades, anticipar riesgos y convertir conocimiento en decisiones operativamente viables, jurídicamente fundadas y responsables con su entorno.</p>
+              <p>Combinamos ingeniería y derecho para comprender los desafíos desde sus dimensiones organizacionales, humanas y regulatorias. Una mirada complementaria que conecta el diagnóstico con decisiones viables y responsables.</p>
             </div>
             <div className="v534-team__profiles"><TeamSection /></div>
           </div>

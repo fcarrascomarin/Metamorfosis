@@ -206,26 +206,24 @@ export const team = [
   {
     initials: 'FC',
     name: 'Francisca Carrasco Marín',
-    role: 'Diseño organizacional e innovación aplicada',
-    profession: 'Ingeniera Civil Industrial · Universidad de Concepción',
-    credentials: [
-      'Diplomado en Economía Circular · Universidad de Chile',
-      'Diplomado en Diseño y Gestión Ágil de Proyectos · UPLA / Fundación Telefónica–SENCE',
-      'Sistema de Evaluación de Impacto Ambiental · Academia SEA'
-    ],
-    text: 'Integra procesos, datos y eficiencia con condiciones de trabajo, participación y sostenibilidad. Su investigación de título en la UdeC abordó la composición de género en la gestión empresarial.'
+    role: 'Ingeniería, procesos e innovación',
+    text: 'Conecta procesos y gestión con condiciones de trabajo, participación y sostenibilidad.',
+    education: [
+      { level: 'Título profesional', entries: ['Ingeniera Civil Industrial · U. de Concepción'] },
+      { level: 'Diplomados', entries: ['Economía Circular · U. de Chile', 'Diseño y Gestión Ágil de Proyectos · UPLA / Fundación Telefónica–SENCE'] },
+      { level: 'Cursos aplicados', entries: ['Evaluación de Impacto Ambiental · Academia SEA', 'Debida Diligencia en DD. HH. · Ministerio de Justicia'] }
+    ]
   },
   {
     initials: 'BS',
     name: 'Benjamín Sepúlveda Méndez',
-    role: 'Investigación, estrategia y dimensión jurídica',
-    profession: 'Abogado · Pontificia Universidad Católica de Valparaíso',
-    credentials: [
-      'Magíster en Derecho Penal · Universidad de Buenos Aires (en curso)',
-      'Participación Ciudadana en el SEIA · Academia SEA',
-      'Debida Diligencia en Derechos Humanos · Ministerio de Justicia y DD. HH.'
-    ],
-    text: 'Integra análisis jurídico-institucional, derechos humanos y prevención de daños para comprender decisiones y relaciones entre empresas, instituciones, trabajadores y comunidades.'
+    role: 'Derecho, investigación y estrategia',
+    text: 'Vincula análisis jurídico, derechos humanos y prevención de daños con decisiones organizacionales y territoriales.',
+    education: [
+      { level: 'Título profesional', entries: ['Abogado · P. Universidad Católica de Valparaíso'] },
+      { level: 'Magíster', entries: ['Derecho Penal · U. de Buenos Aires (en curso)'] },
+      { level: 'Cursos aplicados', entries: ['Participación Ciudadana en el SEIA · Academia SEA', 'Debida Diligencia en DD. HH. · Ministerio de Justicia'] }
+    ]
   }
 ];
 
