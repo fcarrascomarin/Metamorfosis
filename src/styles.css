@@ -23994,3 +23994,15 @@ textarea::placeholder { color: #7f98ac; }
  .public-site #equipo .team-education__row {grid-template-columns:1fr;row-gap:3px;}
  .public-site #equipo .team-education {gap:12px;}
 }
+
+/* Equipo: jerarquía editorial sin inventario de certificaciones. */
+.public-site #equipo .v54-team-card__head strong {
+  display:block; font-size:clamp(.82rem,.94vw,.96rem); line-height:1.42;
+  font-weight:600; color:#287b76; text-wrap:pretty;
+}
+.public-site #equipo .v54-team-card > p {
+  text-wrap:pretty; max-width:70ch; margin-bottom:auto;
+}
+@media (max-width:680px) {
+  .public-site #equipo .v54-team-card__head strong {font-size:.87rem;}
+}

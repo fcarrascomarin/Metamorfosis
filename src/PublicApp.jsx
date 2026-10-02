@@ -476,16 +476,6 @@ function TeamSection() {
             </div>
           </div>
           <p>{person.text}</p>
-          <div className="team-education" aria-label={`Formación de ${person.name}`}>
-            {person.education.map((group) => (
-              <div className="team-education__row" key={group.level}>
-                <span className="team-education__level">{group.level}</span>
-                <span className="team-education__details">{group.entries.map((entry, index) => (
-                  <span key={entry}>{index > 0 && <span className="team-education__separator" aria-hidden="true"> · </span>}{entry}</span>
-                ))}</span>
-              </div>
-            ))}
-          </div>
         </article>
       ))}
     </div>
@@ -543,7 +533,7 @@ function ProposalSection() {
         <header className="proposal-editorial__intro">
           <span className="v54-kicker">Nuestra propuesta</span>
           <h2 id="proposal-title">Del conocimiento a la transformación</h2>
-          <p>Transformamos información, conocimiento y capacidades existentes en soluciones aplicables para organizaciones, actividades productivas y territorios.</p>
+          <p>Trabajamos con organizaciones, actividades productivas y territorios donde existen desafíos que requieren conectar conocimientos, personas y recursos. Estudiamos cada situación para distinguir oportunidades reales y traducir esa comprensión en decisiones y soluciones aplicables.</p>
         </header>
 
         <div className="proposal-editorial__situations" aria-labelledby="proposal-situations-title">
@@ -563,7 +553,7 @@ function ProposalSection() {
 
         <div className="proposal-editorial__method" aria-labelledby="proposal-method-title">
           <h3 id="proposal-method-title">Comprender antes de intervenir</h3>
-          <p>Integramos investigación, ingeniería y análisis jurídico con el conocimiento de quienes viven cada desafío. Diseñamos respuestas, las ponemos a prueba y aprendemos de sus resultados.</p>
+          <p>Integramos información técnica, experiencia de quienes participan y conocimiento del contexto para comprender qué ocurre y qué condiciones deben considerarse. A partir de esa lectura, diseñamos respuestas proporcionales, las contrastamos en la práctica y utilizamos sus resultados para orientar los siguientes pasos.</p>
           <div className="proposal-editorial__principle"><Icon name="arrow_forward" aria-hidden="true" /><span>De la comprensión a soluciones que puedan sostenerse y mejorar.</span></div>
         </div>
 
@@ -640,7 +630,7 @@ function InnovationEnginesSection() {
         <header className="v516-section-head v524-engines__head">
           <span className="v54-kicker">Qué hacemos</span>
           <h2 id="v516-engines-title">Dos formas de crear valor</h2>
-          <p>Según la situación, desarrollamos una respuesta nueva o fortalecemos una iniciativa que ya existe. Cada camino tiene un propósito y un resultado diferente.</p>
+          <p>Trabajamos mediante dos caminos complementarios: crear soluciones a partir de necesidades concretas o fortalecer iniciativas que ya cuentan con capacidades valiosas. En ambos, el alcance se define según el contexto, la viabilidad y los resultados que tiene sentido buscar.</p>
         </header>
         <div className="v524-offer-grid">
           {innovationEngines.map((item, index) => (
@@ -681,7 +671,7 @@ function GardenKnowledgeSection() {
         <header className="v516-garden-column__head">
           <span className="v54-eyebrow">01 / Qué cultivamos</span>
           <h3>Líneas que estamos haciendo crecer</h3>
-          <p>Cuatro ámbitos donde transformamos preguntas y capacidades existentes en oportunidades de innovación aplicada.</p>
+          <p>Nuestro jardín reúne cuatro ámbitos de exploración conectados con desafíos productivos y organizacionales. Nos permiten observar oportunidades de mejora, adaptación y desarrollo con atención a sus efectos en las personas y el entorno.</p>
         </header>
         <div className="v530-garden-choices" aria-label="Explorar líneas de innovación">
           {cultivationAreas.map((item, index) => {
@@ -759,7 +749,7 @@ function IntegratedMethodSection() {
           <header className="v516-work__head v525-method-heading">
             <span className="v54-kicker">Cómo trabaja Metamorfosis</span>
             <h2 id="v516-work-title">Cómo convertimos evidencia en acción</h2>
-            <p>Cuatro dimensiones que se relacionan; cinco etapas para entender, delimitar, probar, medir y transferir. Selecciona cada elemento para profundizar.</p>
+            <p>Observamos cuatro dimensiones relacionadas —operación, personas, entorno y condiciones de operación— y desarrollamos el trabajo en cinco etapas. Este enfoque ayuda a reconocer lo que ya funciona, identificar restricciones y actuar con evidencia, sin aplicar una receta única. Selecciona cada elemento para profundizar.</p>
           </header>
           <div className="v516-map v529-system-map" aria-label="Sistema de relaciones de Metamorfosis">
           <svg className="v529-system-links" viewBox="0 0 1000 390" preserveAspectRatio="none" aria-hidden="true" focusable="false">
@@ -831,7 +821,7 @@ function ResearchGardenSection() {
         <div className="v58-research__head">
           <span className="v54-kicker">Investigación aplicada</span>
           <h2 id="v58-research-title">Preguntas que cultivamos</h2>
-          <p>Seguimos preguntas que pueden convertirse en proyectos, aprendizajes o nuevas formas de intervención.</p>
+          <p>La investigación aplicada nos permite reconocer necesidades emergentes, contrastar supuestos y explorar respuestas antes de dar por definida una solución. Estas preguntas orientan nuestra mirada; no constituyen un catálogo de proyectos.</p>
         </div>
         <div className="v58-research__grid">
           {researchQuestions.map((item, index) => {
@@ -970,7 +960,7 @@ function PublicSite() {
             <div className="v534-team__intro">
               <span className="v54-kicker">Equipo</span>
               <h2>Ingeniería y derecho en diálogo</h2>
-              <p>Combinamos ingeniería y derecho para comprender los desafíos desde sus dimensiones organizacionales, humanas y regulatorias. Una mirada complementaria que conecta el diagnóstico con decisiones viables y responsables.</p>
+              <p>Nuestra fortaleza está en analizar una misma situación desde dos disciplinas que se contrastan y enriquecen mutuamente. La lectura conjunta permite anticipar puntos ciegos, equilibrar factibilidad y responsabilidad, y formular criterios de decisión que consideren tanto lo que puede hacerse como las condiciones para sostenerlo.</p>
             </div>
             <div className="v534-team__profiles"><TeamSection /></div>
           </div>
@@ -983,7 +973,7 @@ function PublicSite() {
             <div className="audit-contact__intro">
               <span className="kicker">Conversemos</span>
               <h2>Cuéntanos tu desafío</h2>
-              <p>Podemos comenzar con una necesidad concreta, una pregunta abierta o una oportunidad por explorar.</p>
+              <p>Una primera conversación nos permite conocer tu contexto, entender qué necesitas y evaluar si nuestras capacidades pueden aportar. No hace falta llegar con una solución definida.</p>
               <div className="audit-contact__facts" aria-label="Modalidades de contacto">
                 <span><Icon name="schedule" /><span className="v525-contact-fact__copy"><strong>30 minutos</strong><small>Primera conversación</small></span></span>
                 <span><Icon name="mail" /><span className="v525-contact-fact__copy"><strong>Correo formal</strong><small>{contact.email}</small></span></span>

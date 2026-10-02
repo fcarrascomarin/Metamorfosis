@@ -201,29 +201,19 @@ export const researchQuestions = [
   }
 ];
 
-// 07 · EQUIPO · Perfiles y complementariedad profesional
+// 07 · EQUIPO · Título, profesión / universidad y trayectoria narrada
 export const team = [
   {
     initials: 'FC',
     name: 'Francisca Carrasco Marín',
-    role: 'Ingeniería, procesos e innovación',
-    text: 'Conecta procesos y gestión con condiciones de trabajo, participación y sostenibilidad.',
-    education: [
-      { level: 'Título profesional', entries: ['Ingeniera Civil Industrial · U. de Concepción'] },
-      { level: 'Diplomados', entries: ['Economía Circular · U. de Chile', 'Diseño y Gestión Ágil de Proyectos · UPLA / Fundación Telefónica–SENCE'] },
-      { level: 'Cursos aplicados', entries: ['Evaluación de Impacto Ambiental · Academia SEA', 'Debida Diligencia en DD. HH. · Ministerio de Justicia'] }
-    ]
+    role: 'Ingeniera Civil Industrial · Universidad de Concepción',
+    text: 'Su formación en economía circular, diseño y gestión ágil de proyectos, evaluación de impacto ambiental y debida diligencia en derechos humanos amplía su mirada sobre los procesos productivos. Aporta herramientas para examinar operaciones, recursos y capacidades, y traducir ese análisis en propuestas de mejora que consideren viabilidad, sostenibilidad y condiciones de trabajo.'
   },
   {
     initials: 'BS',
     name: 'Benjamín Sepúlveda Méndez',
-    role: 'Derecho, investigación y estrategia',
-    text: 'Vincula análisis jurídico, derechos humanos y prevención de daños con decisiones organizacionales y territoriales.',
-    education: [
-      { level: 'Título profesional', entries: ['Abogado · P. Universidad Católica de Valparaíso'] },
-      { level: 'Magíster', entries: ['Derecho Penal · U. de Buenos Aires (en curso)'] },
-      { level: 'Cursos aplicados', entries: ['Participación Ciudadana en el SEIA · Academia SEA', 'Debida Diligencia en DD. HH. · Ministerio de Justicia'] }
-    ]
+    role: 'Abogado · Pontificia Universidad Católica de Valparaíso',
+    text: 'Con experiencia en defensa penal pública, derechos humanos y desarrollo de proyectos, cursa el Magíster en Derecho Penal de la Universidad de Buenos Aires. Su formación complementaria en participación ciudadana en el SEIA y debida diligencia aporta una lectura de las responsabilidades, relaciones y riesgos que inciden en las decisiones de organizaciones y territorios.'
   }
 ];
 
