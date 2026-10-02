@@ -209,22 +209,23 @@ export const team = [
     role: 'Diseño organizacional e innovación aplicada',
     profession: 'Ingeniera Civil Industrial · Universidad de Concepción',
     credentials: [
-      'Investigación de título UdeC · Composición de género y gestión de empresas en Chile',
-      'Líneas de especialización · Procesos, gestión, economía circular y transformación organizacional'
+      'Diplomado en Economía Circular · Universidad de Chile',
+      'Diplomado en Diseño y Gestión Ágil de Proyectos · UPLA / Fundación Telefónica–SENCE',
+      'Sistema de Evaluación de Impacto Ambiental · Academia SEA'
     ],
-    text: 'Integra procesos, datos y eficiencia con las condiciones de trabajo, la participación y la relación de la actividad productiva con su entorno. Su mirada permite transformar capacidades existentes en soluciones operativas y sostenibles.'
+    text: 'Integra procesos, datos y eficiencia con condiciones de trabajo, participación y sostenibilidad. Su investigación de título en la UdeC abordó la composición de género en la gestión empresarial.'
   },
   {
     initials: 'BS',
     name: 'Benjamín Sepúlveda Méndez',
-    role: 'Estrategia, investigación y dimensión jurídica',
+    role: 'Investigación, estrategia y dimensión jurídica',
     profession: 'Abogado · Pontificia Universidad Católica de Valparaíso',
     credentials: [
       'Magíster en Derecho Penal · Universidad de Buenos Aires (en curso)',
-      'Formación complementaria · Participación Ciudadana en el SEIA (Academia SEA)',
-      'Debida Diligencia · Ministerio de Justicia y Derechos Humanos'
+      'Participación Ciudadana en el SEIA · Academia SEA',
+      'Debida Diligencia en Derechos Humanos · Ministerio de Justicia y DD. HH.'
     ],
-    text: 'Aborda regulación, derechos humanos, prevención de daños y relaciones entre instituciones, empresas y comunidades. Conecta el análisis jurídico con decisiones organizacionales y territoriales concretas.'
+    text: 'Integra análisis jurídico-institucional, derechos humanos y prevención de daños para comprender decisiones y relaciones entre empresas, instituciones, trabajadores y comunidades.'
   }
 ];
 

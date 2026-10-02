@@ -964,7 +964,7 @@ function PublicSite() {
             <div className="v534-team__intro">
               <span className="v54-kicker">Equipo</span>
               <h2>Ingeniería y derecho en diálogo</h2>
-              <p>Integramos ingeniería civil industrial, investigación y derecho para comprender una situación más allá de sus partes: cómo se relacionan procesos, personas, exigencias y territorio. Esta mirada multidisciplinaria permite reconocer capacidades, anticipar riesgos y diseñar respuestas operativamente viables, jurídicamente fundadas y sensibles a sus efectos humanos y ambientales.</p>
+              <p>Unimos ingeniería civil industrial y derecho para comprender cómo se relacionan procesos, personas, exigencias y territorio. Esta mirada sistémica y multidisciplinaria nos permite reconocer capacidades, anticipar riesgos y convertir conocimiento en decisiones operativamente viables, jurídicamente fundadas y responsables con su entorno.</p>
             </div>
             <div className="v534-team__profiles"><TeamSection /></div>
           </div>
