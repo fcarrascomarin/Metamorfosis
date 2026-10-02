@@ -533,21 +533,7 @@ function ProposalSection() {
     >
       <div className="shell v537-proposal__layout">
        
-        <div className="v537-method" aria-labelledby="v537-method-title">
-          <div className="v537-method__story">
-            <span className="v54-eyebrow">Cómo trabajamos</span>
-            <h3 id="v537-method-title">Investigación que orienta decisiones</h3>
-            <p>Combinamos información disponible, mapeo, entrevistas y análisis técnico para comprender cómo se relacionan la operación, las personas, el entorno y las condiciones de cada situación. Con esa evidencia delimitamos una respuesta, la probamos, evaluamos sus resultados y transferimos lo aprendido.</p>
-          </div>
-          <ol className="v537-method__sequence" aria-label="Cinco etapas del método">
-            {processRoadmap.map((item, index) => (
-              <li className="v537-method__step" key={item.title}>
-                <span>0{index + 1}</span>
-                <div><strong>{item.title}</strong><small>{item.eyebrow}</small></div>
-              </li>
-            ))}
-          </ol>
-        </div>
+
         <header className="v537-proposal__intro" >
                   <span className="v54-kicker">Nuestra propuesta</span>
                <h2 id="v537-title">Del conocimiento a soluciones aplicables</h2>
@@ -572,6 +558,21 @@ function ProposalSection() {
         <div className="v537-proposal__closing">
           <p>Una buena intervención no termina con la entrega: deja criterios, herramientas y capacidades para continuar.</p>
           <SectionLink id="contacto" className="button button--small">Conversemos <Icon name="arrow_forward" /></SectionLink>
+                  <div className="v537-method" aria-labelledby="v537-method-title">
+          <div className="v537-method__story">
+            <span className="v54-eyebrow">Cómo trabajamos</span>
+            <h3 id="v537-method-title">Investigación que orienta decisiones</h3>
+            <p>Combinamos información disponible, mapeo, entrevistas y análisis técnico para comprender cómo se relacionan la operación, las personas, el entorno y las condiciones de cada situación. Con esa evidencia delimitamos una respuesta, la probamos, evaluamos sus resultados y transferimos lo aprendido.</p>
+          </div>
+          <ol className="v537-method__sequence" aria-label="Cinco etapas del método">
+            {processRoadmap.map((item, index) => (
+              <li className="v537-method__step" key={item.title}>
+                <span>0{index + 1}</span>
+                <div><strong>{item.title}</strong><small>{item.eyebrow}</small></div>
+              </li>
+            ))}
+          </ol>
+        </div>
         </div>
 
         <details className="v537-details">
