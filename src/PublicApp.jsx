@@ -550,12 +550,11 @@ function ProposalSection() {
         </div>
         <header className="v537-proposal__intro" >
                   <span className="v54-kicker">Nuestra propuesta</span>
+               <h2 id="v537-title">Del conocimiento a soluciones aplicables</h2>
+          <p>Desarrollamos respuestas a problemas concretos y fortalecemos capacidades que necesitan una nueva forma de operar o crecer.</p>  
                 </header>
          <div className="v537-offers" aria-label="Qué hacemos">
-          
-           <h2 id="v537-title">Del conocimiento a soluciones aplicables</h2>
-          <p>Desarrollamos respuestas a problemas concretos y fortalecemos capacidades que necesitan una nueva forma de operar o crecer.</p>
-        
+                          
           <article className="v537-offer">
             <span className="v537-offer__index">01 / CREAMOS</span>
             <h3>Soluciones propias</h3>
