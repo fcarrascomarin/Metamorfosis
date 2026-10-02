@@ -207,13 +207,13 @@ export const team = [
     initials: 'FC',
     name: 'Francisca Carrasco Marín',
     role: 'Ingeniera Civil Industrial · Universidad de Concepción',
-    text: 'Su formación en economía circular, diseño y gestión ágil de proyectos, evaluación de impacto ambiental y debida diligencia en derechos humanos amplía su mirada sobre los procesos productivos. Aporta herramientas para examinar operaciones, recursos y capacidades, y traducir ese análisis en propuestas de mejora que consideren viabilidad, sostenibilidad y condiciones de trabajo.'
+    text: 'Cuenta con formación complementaria en economía circular (Diplomado, Universidad de Chile), gestión ágil de proyectos, evaluación de impacto ambiental (SEIA) y debida diligencia en derechos humanos. Su perfil combina el análisis de procesos productivos y organizacionales con herramientas de gestión e innovación, aportando una mirada orientada a la eficiencia, el aprovechamiento responsable de los recursos y el desarrollo de soluciones viables y sostenibles.'
   },
   {
     initials: 'BS',
     name: 'Benjamín Sepúlveda Méndez',
     role: 'Abogado · Pontificia Universidad Católica de Valparaíso',
-    text: 'Con experiencia en defensa penal pública, derechos humanos y desarrollo de proyectos, cursa el Magíster en Derecho Penal de la Universidad de Buenos Aires. Su formación complementaria en participación ciudadana en el SEIA y debida diligencia aporta una lectura de las responsabilidades, relaciones y riesgos que inciden en las decisiones de organizaciones y territorios.'
+    text: 'Cursa el Magíster en Derecho Penal de la Universidad de Buenos Aires y cuenta con experiencia profesional en defensa penal pública, derechos humanos y desarrollo de proyectos. Complementa su trayectoria con formación en participación ciudadana en el SEIA y debida diligencia empresarial. Su perfil integra el análisis jurídico e institucional con la investigación de problemáticas sociales y territoriales, aportando una mirada orientada a la identificación de riesgos, la prevención de daños y la construcción de respuestas responsables y contextualizadas.'
   }
 ];
 
