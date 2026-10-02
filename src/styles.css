@@ -1,10 +1,3 @@
-/* Entry point for the public website. Order intentionally preserves the existing cascade.
- * New work belongs in public-enhancements.css, not appended to legacy files.
- * See src/styles/README.md before refactoring an older selector.
- */
-@import './styles/legacy-01-foundations.css';
-@import './styles/legacy-02-components.css';
-@import './styles/legacy-03-scenes.css';
-@import './styles/legacy-04-iterations.css';
-@import './styles/public-editorial.css';
-@import './styles/public-enhancements.css';
+/* CSS imports are intentionally declared in public-main.jsx, in cascade order.
+   This avoids postcss-import path resolution differences in deployment.
+   See styles/README.md. */
