@@ -31,7 +31,9 @@ src/AdminApp.jsx           Metamorfosis OS
 src/publicContent.js       contenido público
 src/consultingTools.js     herramientas y expedientes comerciales
 src/osSeed.js              estado inicial/migración del OS
-src/styles.css             estilos públicos e internos
+src/styles.css             entrada CSS de la web pública
+src/styles/admin.css        entrada CSS del sistema interno
+src/styles/README.md       arquitectura CSS y guía de mantenimiento
 server.js                  API, autenticación, PostgreSQL y correo
 ```
 
