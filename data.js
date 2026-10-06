@@ -2,6 +2,7 @@ export const contact = {
   phoneDisplay: '+56 9 2377 0543',
   phoneDigits: '56923770543',
   email: 'contacto@metamorfosislab.cl',
+  linkedin: 'https://www.linkedin.com/company/metamorfosislabchile/',
   location: 'Biobío, Chile',
   coverage: 'Concepción, Laja, Los Ángeles y atención remota'
 };
