@@ -24006,3 +24006,165 @@ textarea::placeholder { color: #7f98ac; }
 @media (max-width:680px) {
   .public-site #equipo .v54-team-card__head strong {font-size:.87rem;}
 }
+
+
+/* ============================================================================
+   TEAM CONTACTS + RESPONSIVE BREATHING · 2026-10-06
+   Keeps the desktop proportions shown in the supplied 1920×1020 reference,
+   while adding compact, high-contrast contact actions and safer mobile gutters.
+   ============================================================================ */
+.public-site #equipo .v54-team-card {
+  overflow: hidden;
+}
+.public-site #equipo .v54-team-card__contact {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(16, 118, 109, .14);
+}
+.public-site #equipo .v54-team-card__contact-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 0;
+  padding: 9px 13px;
+  border: 1px solid rgba(8, 118, 109, .20);
+  border-radius: 999px;
+  background: rgba(18, 154, 145, .08);
+  color: #08766d;
+  font-family: var(--pub-font-text, "DM Sans", sans-serif);
+  font-size: .78rem;
+  font-weight: 760;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color .18s ease, border-color .18s ease, transform .18s ease;
+}
+.public-site #equipo .v54-team-card__contact-link:hover {
+  background: rgba(18, 154, 145, .15);
+  border-color: rgba(8, 118, 109, .34);
+  transform: translateY(-1px);
+}
+.public-site #equipo .v54-team-card__contact-link .app-icon {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 17px;
+}
+/* A restrained accent gives the pale team scene more visual energy without
+   competing with the editorial copy. */
+.public-site #equipo .v54-team-card {
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.99), rgba(245,252,249,.98));
+  box-shadow: 0 15px 34px rgba(22, 74, 67, .07);
+}
+.public-site #equipo .v54-team-card:nth-child(1) {
+  border-top: 3px solid rgba(23, 151, 140, .72);
+}
+.public-site #equipo .v54-team-card:nth-child(2) {
+  border-top: 3px solid rgba(32, 111, 102, .72);
+}
+.public-site #equipo .v54-team-card__initials {
+  background: linear-gradient(145deg, #0b6f68, #124b47);
+  color: #f2fffb;
+}
+/* Footer LinkedIn follows the existing contact line; no other footer hierarchy changes. */
+.public-site .site-footer .footer-icon-link {
+  max-width: 100%;
+  min-width: 0;
+}
+.public-site .site-footer .footer-icon-link span {
+  min-width: 0;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+/* Preserve the supplied full-screen desktop proportions. The extra contact
+   row fits inside the existing one-screen team composition instead of scaling
+   the whole site up. */
+@media (min-width: 1024px) {
+  .public-site #equipo .v534-team__profiles .v54-team-card {
+    padding-bottom: clamp(18px, 1.9vw, 25px) !important;
+  }
+  .public-site #equipo .v54-team-card__contact {
+    padding-top: clamp(10px, 1.2vh, 14px);
+  }
+}
+
+/* Tablet: keep breathing room and prevent buttons, names or cards from touching edges. */
+@media (min-width: 681px) and (max-width: 1023px) {
+  .public-site #equipo .v54-team-card__contact { flex-wrap: wrap; }
+  .public-site #equipo .v54-team-card__contact-link { min-height: 38px; }
+}
+
+/* Mobile: deliberately narrower than edge-to-edge, but with a smaller gutter
+   than desktop. Long words remain intact; headings and labels wrap only at
+   natural spaces. */
+@media (max-width: 680px) {
+  .public-site {
+    --page-gutter: 16px !important;
+  }
+  .public-site .shell,
+  .public-site #inicio > .shell,
+  .public-site #propuesta > .shell,
+  .public-site #equipo > .shell,
+  .public-site #contacto > .shell,
+  .public-site .site-header__inner.shell,
+  .public-site .site-footer .shell,
+  .public-site #equipo .v534-team__layout,
+  .public-site #contacto .audit-contact__grid {
+    width: calc(100% - 32px) !important;
+    max-width: none !important;
+    margin-inline: auto !important;
+  }
+  .public-site #equipo .v534-team__profiles .v54-team-card {
+    padding: 20px 18px !important;
+    border-radius: 21px;
+  }
+  .public-site #equipo .v54-team-card__head {
+    display: grid;
+    grid-template-columns: 48px minmax(0,1fr) !important;
+    align-items: center;
+    gap: 12px !important;
+  }
+  .public-site #equipo .v54-team-card__initials {
+    width: 46px !important;
+    height: 46px !important;
+  }
+  .public-site #equipo .v54-team-card h3,
+  .public-site #equipo .v54-team-card__head strong,
+  .public-site #equipo .v54-team-card > p,
+  .public-site #equipo .v534-team__intro h2,
+  .public-site #equipo .v534-team__intro > p {
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    hyphens: none !important;
+  }
+  .public-site #equipo .v54-team-card__contact {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 9px;
+    padding-top: 13px;
+  }
+  .public-site #equipo .v54-team-card__contact-link {
+    width: 100%;
+    min-height: 40px;
+    padding: 10px 8px;
+    font-size: .79rem;
+  }
+  .public-site .site-footer__grid,
+  .public-site .audit-footer__grid {
+    min-width: 0;
+  }
+  .public-site .site-footer .footer-icon-link span {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 380px) {
+  .public-site #equipo .v54-team-card__contact {
+    grid-template-columns: 1fr;
+  }
+}

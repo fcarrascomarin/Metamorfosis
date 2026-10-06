@@ -476,6 +476,16 @@ function TeamSection() {
             </div>
           </div>
           <p>{person.text}</p>
+          <div className="v54-team-card__contact" aria-label={`Contacto de ${person.name}`}>
+            <a className="v54-team-card__contact-link" href={`mailto:${person.email}`} aria-label={`Enviar correo a ${person.name}`}>
+              <Icon name="mail" />
+              <span>Correo</span>
+            </a>
+            <a className="v54-team-card__contact-link" href={person.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`LinkedIn de ${person.name}`}>
+              <Icon name="linkedin" />
+              <span>LinkedIn</span>
+            </a>
+          </div>
         </article>
       ))}
     </div>
@@ -988,7 +998,7 @@ function PublicSite() {
         <div className="shell audit-footer__grid">
           <div className="site-footer__brand"><Brand /><p>Investigación e innovación aplicada. Concepción · Región del Biobío.</p></div>
           <div><span className="footer-title">Navegación</span><SectionLink id="inicio">Inicio</SectionLink><SectionLink id="propuesta">Propuesta</SectionLink><SectionLink id="equipo">Equipo</SectionLink><SectionLink id="contacto">Contacto</SectionLink></div>
-          <div><span className="footer-title">Contacto</span><a className="footer-icon-link" href={`mailto:${contact.email}`}><Icon name="mail" /><span>{contact.email}</span></a><a className="footer-icon-link" href={OS_SITE_URL}><Icon name="lock" /><span>Acceso privado</span></a></div>
+          <div><span className="footer-title">Contacto</span><a className="footer-icon-link" href={`mailto:${contact.email}`}><Icon name="mail" /><span>{contact.email}</span></a><a className="footer-icon-link" href={contact.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Metamorfosis Lab"><Icon name="linkedin" /><span>LinkedIn</span></a><a className="footer-icon-link" href={OS_SITE_URL}><Icon name="lock" /><span>Acceso privado</span></a></div>
         </div>
         <div className="shell site-footer__bottom"><span>© {new Date().getFullYear()} Metamorfosis</span><span>Concepción · Región del Biobío · Chile</span></div>
       </footer>
