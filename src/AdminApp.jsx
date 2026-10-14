@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from './components/Icon.jsx';
 import CompanyWorkspace from './features/companies/CompanyWorkspace.jsx';
-import { mergeRepositories } from './features/companies/companyModel.js';
+import AgendaFocus, { futureTasks } from './features/agenda/AgendaFocus.jsx';
+import { mergeRepositories, buildCompanyIndex } from './features/companies/companyModel.js';
 import { createDefaultOsState, OS_SCHEMA_VERSION, OWNERS, TOPICS } from './osSeed.js';
 
 const STORAGE_KEY = 'metamorfosis-os-draft-v10';
@@ -431,50 +432,19 @@ function ViewHeading({ kicker, title, description, action }) {
 }
 
 function DashboardView({ osState, dirty, onNavigate, onAddTask }) {
-  const today = new Date().toISOString().slice(0, 10);
-  const todayTasks = osState.tasks
-    .filter((task) => task.date === today && task.status !== 'done')
-    .sort((a, b) => String(a.start).localeCompare(String(b.start)));
-  const nextTask = osState.tasks
-    .filter((task) => task.status !== 'done' && task.date >= today)
-    .sort((a, b) => `${a.date}-${a.start || ''}`.localeCompare(`${b.date}-${b.start || ''}`))[0];
-
-
-  return (
-    <div className="admin-view admin-view--dashboard-summary">
-      <ViewHeading
-        kicker="Resumen"
-        title="Lo importante ahora"
-        description="Inicio muestra solo el estado necesario para orientarse. El detalle está en Agenda, Empresas y las herramientas de gestión."
-        action={<button type="button" className="button button--small" onClick={() => onAddTask({ date: today })}><Icon name="add" /> Nueva tarea</button>}
-      />
-
-      <div className="dashboard-summary-actions" aria-label="Accesos principales">
-        <button type="button" onClick={() => onNavigate('day')}><Icon name="today" /><span><strong>Hoy</strong><small>{todayTasks.length ? `${todayTasks.length} pendiente${todayTasks.length === 1 ? '' : 's'}` : 'Sin pendientes'}</small></span></button>
-        <button type="button" onClick={() => onNavigate('month')}><Icon name="calendar_month" /><span><strong>Agenda</strong><small>Disponibilidad compartida</small></span></button>
-        <button type="button" onClick={() => onNavigate('companies')}><Icon name="map" /><span><strong>Empresas</strong><small>Ficha y próximos pasos</small></span></button>
-        <button type="button" onClick={() => onNavigate('metrics')}><Icon name="query_stats" /><span><strong>Tiempo</strong><small>Horas y rentabilidad</small></span></button>
-      </div>
-
-      <div className="dashboard-summary-grid">
-        <section className="panel-card panel-card--wide dashboard-today-card">
-          <div className="panel-card__heading"><div><span className="kicker">Hoy</span><h2>{todayTasks.length ? 'Qué requiere atención' : 'Día despejado'}</h2></div><button type="button" className="text-button" onClick={() => onNavigate('day')}>Abrir día</button></div>
-          {todayTasks.length ? <div className="compact-task-list">{todayTasks.slice(0, 3).map((task) => <div className="compact-task" key={task.id}><span>{task.start || '—'}</span><div><strong>{task.title}</strong><small>{task.owner} · {task.topic}</small></div></div>)}</div> : <div className="empty-inline"><Icon name="check_circle" /><span>No hay pendientes cargados para hoy.</span></div>}
-          {todayTasks.length > 3 && <button type="button" className="text-button dashboard-more-link" onClick={() => onNavigate('day')}>+{todayTasks.length - 3} más</button>}
-        </section>
-
-        <section className="panel-card dashboard-next-card">
-          <div className="panel-card__heading"><div><span className="kicker">Próximo hito</span><h2>{nextTask ? formatDate(nextTask.date, { weekday: 'short', day: 'numeric', month: 'short' }) : 'Sin hitos'}</h2></div><Icon name={nextTask ? agendaTaskIcon(nextTask) : 'event_available'} /></div>
-          {nextTask ? <><strong className="dashboard-next-title">{nextTask.title}</strong><p>{nextTask.start && nextTask.start !== '—' ? `${nextTask.start}${nextTask.end ? `–${nextTask.end}` : ''} · ` : ''}{nextTask.owner}</p><button type="button" className="text-button" onClick={() => { setTimeout(() => onNavigate('month'), 0); }}>Ver agenda</button></> : <p>No hay próximos hitos registrados.</p>}
-        </section>
-
-
-      </div>
-
-      <div className="company-os__dashboard-footer"><span className={`dashboard-save-state ${dirty ? 'is-dirty' : ''}`}><Icon name={dirty ? 'warning' : 'save'} /><span>{dirty ? 'Hay cambios sin guardar.' : 'OS guardado.'}</span></span><button className="text-button" type="button" onClick={() => onNavigate('fronts')}>Dirección y criterios <Icon name="chevron_right" /></button></div>
-    </div>
-  );
+  const today = todayLocalISO();
+  const next = futureTasks(osState.tasks, today).slice(0, 5);
+  const historical = osState.tasks.filter((t) => t.date < today && t.status !== 'done').length;
+  const activeCompanies = buildCompanyIndex({expedientes:osState.expedientes,fieldRegister:osState.fieldRegister}).filter(c=>c.stage !== 'Cerrada');
+  return <section className="os-focus">
+    <header className="os-focus__head"><div><h1>Inicio</h1><p>Lo que requiere una decisión. El resto permanece en su ficha.</p></div><button type="button" onClick={()=>onAddTask({date:today})} className="af-primary"><Icon name="add"/> Tarea</button></header>
+    <div className="os-focus__shortcuts"><button type="button" onClick={()=>onNavigate('companies')}><strong>Empresas</strong><small>{activeCompanies.length} fichas abiertas</small></button><button type="button" onClick={()=>onNavigate('month')}><strong>Agenda</strong><small>{next.length} próximos compromisos{next.length===5?' o más':''}</small></button><button type="button" onClick={()=>onNavigate('finance')}><strong>Caja</strong><small>Registrar movimientos</small></button></div>
+    <section className="os-focus__agenda"><div className="os-focus__sectionhead"><h2>Próximos compromisos</h2><button type="button" onClick={()=>onNavigate('month')}>Abrir agenda →</button></div>{next.length ? next.map(t=><div key={t.id} className="os-focus__task"><time>{t.date}</time><strong>{t.title}</strong><span>{t.owner}</span></div>) : <p>Sin compromisos futuros registrados. Verifica los hitos propuestos en Agenda.</p>}</section>
+    <footer className="os-focus__footer"><span>{dirty?'Cambios por guardar':'Información guardada'} · {historical} registros históricos pendientes de revisión</span><button type="button" onClick={()=>onNavigate('month')}>Revisar histórico</button></footer>
+  </section>;
 }
+
+function todayLocalISO() { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 
 function getMonthDays(cursor) {
   const year = cursor.getFullYear();
@@ -1503,7 +1473,7 @@ function AdminShell({ session, onLogout }) {
 
   const currentItem = [...BUSINESS_MENU_GROUPS, ...FAMILY_MENU_GROUPS].flatMap((group) => group.items).find(([key]) => key === active) || (active === 'fronts' ? ['fronts', 'Dirección y criterios'] : active === 'quotes' ? ['quotes', 'Solicitudes anteriores'] : null);
   const view = active === 'dashboard' ? <DashboardView osState={osState} dirty={dirty} onNavigate={navigate} onAddTask={openTask} />
-    : active === 'month' ? <MonthView osState={osState} setOsState={setOsState} onNavigate={navigate} onAddTask={openTask} />
+    : active === 'month' ? <AgendaFocus osState={osState} setOsState={setOsState} onAddTask={openTask} />
     : active === 'day' ? <DayView osState={osState} setOsState={setOsState} onAddTask={openTask} onEditTask={setTaskDraft} />
     : active === 'companies' ? <CompanyWorkspace osState={osState} setOsState={setOsState} quotes={quotes} onEditQuote={setQuoteDraft} onChangeQuoteStatus={updateQuoteStatus} onDeleteQuote={deleteQuote} onRetryQuoteEmail={retryQuoteEmail} onNavigate={navigate} />
     : active === 'quotes' ? <QuotesView quotes={quotes} loading={loadingQuotes} onStatusChange={updateQuoteStatus} onRetryEmail={retryQuoteEmail} onEdit={setQuoteDraft} onDelete={deleteQuote} notice={notice} />

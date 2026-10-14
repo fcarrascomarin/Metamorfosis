@@ -22364,3 +22364,12 @@ textarea::placeholder { color: #7f98ac; }
 
 
 
+
+/* OS 5.5: inicio de una plana, contenido transaccional, sin cajas vacías */
+.admin-frame--business .admin-main:has(.os-focus){height:calc(100svh - 74px);min-height:0;overflow:hidden;display:flex;flex-direction:column;padding-bottom:12px}
+.os-focus{flex:1;min-height:0;display:flex;flex-direction:column;gap:13px;color:#173b34}
+.os-focus__head{display:flex;justify-content:space-between;align-items:center;gap:18px}
+.os-focus__head h1{font-size:1.5rem;margin:0}.os-focus__head p{font-size:.78rem;color:#647c75;margin:4px 0 0}
+.os-focus__shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.os-focus__shortcuts button{background:white;border:1px solid #d9e5df;border-radius:11px;padding:15px;text-align:left;cursor:pointer;display:grid;gap:5px;color:#173b34}.os-focus__shortcuts strong{font-size:.91rem}.os-focus__shortcuts small{font-size:.73rem;color:#617b71}
+.os-focus__agenda{background:white;border:1px solid #d9e5df;border-radius:12px;flex:1;min-height:0;overflow:auto;padding:16px}.os-focus__sectionhead{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e3ebe6;padding-bottom:12px}.os-focus__sectionhead h2{font-size:.96rem;margin:0}.os-focus__sectionhead button,.os-focus__footer button{background:transparent;border:0;color:#126054;cursor:pointer;font-size:.78rem}.os-focus__task{display:grid;grid-template-columns:96px minmax(0,1fr) 90px;gap:12px;padding:12px 0;border-bottom:1px solid #eef1ef;align-items:center;font-size:.8rem}.os-focus__task time,.os-focus__task span{color:#657d73;font-size:.73rem}.os-focus__agenda>p{font-size:.82rem;color:#647c75}.os-focus__footer{display:flex;justify-content:space-between;gap:12px;color:#6c8178;font-size:.73rem}
+@media(max-width:900px){.admin-frame--business .admin-main:has(.os-focus){height:auto;min-height:calc(100svh - 74px);overflow:visible}.os-focus__shortcuts{grid-template-columns:1fr}.os-focus__agenda{overflow:visible}.os-focus__task{grid-template-columns:1fr;gap:4px}}
