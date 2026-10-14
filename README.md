@@ -10,16 +10,20 @@ La web pública no expone el OS ni usa clientes, logos, testimonios o casos sin 
 
 ## Versión operativa actual
 
-**5.3.3 · OS 10.7**. Actualiza la planificación vigente del 31/08 al 04/09, integra compromisos externos y seminarios de Benjamín en la agenda compartida para visualizar disponibilidad, y reduce Inicio de Empresa a un resumen operativo. Mantiene la agenda móvil táctil, la iconografía consistente y la lógica Familiar orientada a calma y uso cotidiano.
+**Versión 5.4.0 · OS con Empresas unificadas (octubre de 2026).** La vista empresarial lista las organizaciones por nombre e integra sus personas, investigación, solicitudes y documentos en una sola ficha desplegable. Se mantiene la separación con Vida familiar y la compatibilidad con los datos previamente guardados. La versión del esquema de persistencia no se modifica por este ajuste de interfaz.
+
+Para conocer decisiones de diseño, estructura, edición, pruebas y deuda técnica, leer [ARQUITECTURA-OS.md](ARQUITECTURA-OS.md).
 
 ## Comandos
 
 ```bash
+npm install
 npm run dev:public
 npm run dev:admin
 npm run build:public
 npm run build:admin
 npm run build:all
+npm run test
 npm run start
 ```
 
@@ -27,14 +31,15 @@ npm run start
 
 ```text
 src/PublicApp.jsx          web pública
-src/AdminApp.jsx           Metamorfosis OS
+src/AdminApp.jsx           Shell del OS y módulos históricos
 src/publicContent.js       contenido público
 src/consultingTools.js     herramientas y expedientes comerciales
 src/osSeed.js              estado inicial/migración del OS
 src/styles.css             entrada CSS de la web pública
-src/styles/admin.css        entrada CSS del sistema interno
-src/styles/README.md       arquitectura CSS y guía de mantenimiento
+src/admin-styles.css      estilos generales y heredados del OS
+src/features/companies/   módulo de empresas, modelo, interfaz y estilos
+ARQUITECTURA-OS.md        guía técnica de mantenimiento y evolución
 server.js                  API, autenticación, PostgreSQL y correo
 ```
 
-Ver `ACTUALIZACION_4.8.0.md` para configuración de Cloudflare, Render y DNS.
+Para configuración de despliegue y variables de entorno, revisar `DEPLOYMENT.md` y `.env.example`.
