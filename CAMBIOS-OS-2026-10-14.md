@@ -30,3 +30,9 @@
 4. Revisar visualmente escritorio y móvil; publicar solo después.
 
 Este paquete contiene código fuente y no incluye ni sobrescribe los datos de la base de producción. Tampoco implica un despliegue automático.
+
+## Revisión 5.4.1 · corrección de inicio (14-10-2026)
+
+Se repararon los scripts de arranque locales para Windows y Unix sin cambiar el modo producción de Render, se añadió un único comando de desarrollo (`npm run dev:os`) con Vite y API, se ajustó el proxy `/api`, se habilitó el archivo de bloqueo para instalaciones futuras y se reparó la ruta de pruebas (`test/*.test.js`). Se incluye diagnóstico sin exposición de secretos e instrucciones de recuperación. No hay migraciones de base de datos ni cambios a los expedientes.
+
+**Límite de verificación:** tests locales completos (7/7), sintaxis de scripts y dependencias de importación relativa verificadas; empaquetado. No fue posible instalar dependencias ni ejecutar build Vite por indisponibilidad DNS del registro npm. Para fallos del OS remoto en Render es necesario revisar logs de despliegue y de runtime.
