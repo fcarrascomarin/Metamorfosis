@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from './components/Icon.jsx';
-import { initialProjects, repositoryTemplates } from './data.js';
+import CompanyWorkspace from './features/companies/CompanyWorkspace.jsx';
+import { mergeRepositories } from './features/companies/companyModel.js';
 import { createDefaultOsState, OS_SCHEMA_VERSION, OWNERS, TOPICS } from './osSeed.js';
-import { CONSULTING_TOOLS, EXPEDIENTE_STATUSES, createEmptyExpediente, expedienteProgress } from './consultingTools.js';
 
 const STORAGE_KEY = 'metamorfosis-os-draft-v10';
 const LEGACY_STORAGE_KEYS = ['metamorfosis-os-draft-v9', 'metamorfosis-os-draft-v8', 'metamorfosis-os-draft-v7', 'metamorfosis-os-draft-v6'];
@@ -11,34 +11,18 @@ const PUBLIC_EVENTS_KEY = 'metamorfosis-public-events';
 const PUBLIC_SITE_URL = String(import.meta.env.VITE_PUBLIC_SITE_URL || 'https://metamorfosislab.cl').replace(/\/$/, '');
 const STATUS_OPTIONS = ['nueva', 'contactada', 'evaluacion', 'propuesta', 'cerrada', 'descartada'];
 
+// Una sola entrada por organización. Las áreas técnicas permanecen disponibles
+// sin fragmentar el registro comercial en tres módulos independientes.
 const BUSINESS_MENU_GROUPS = [
-  {
-    id: 'operacion',
-    label: 'Operación',
-    items: [
-      ['dashboard', 'Inicio', 'dashboard'],
-      ['month', 'Agenda', 'calendar_month']
-    ]
-  },
-  {
-    id: 'comercial',
-    label: 'Comercial',
-    items: [
-      ['field', 'Campo comercial', 'map'],
-      ['expedientes', 'Expedientes', 'folder_open'],
-      ['quotes', 'Oportunidades', 'request_quote']
-    ]
-  },
-  {
-    id: 'gestion',
-    label: 'Gestión',
-    items: [
-      ['finance', 'Finanzas', 'payments'],
-      ['metrics', 'Tiempo y rentabilidad', 'query_stats'],
-      ['documents', 'Repositorio', 'folder_open'],
-      ['fronts', 'Criterios', 'gavel']
-    ]
-  }
+  { id: 'principal', label: 'Trabajo', items: [
+    ['dashboard', 'Inicio', 'dashboard'],
+    ['month', 'Agenda', 'calendar_month'],
+    ['companies', 'Empresas', 'briefcase']
+  ] },
+  { id: 'administracion', label: 'Administración', items: [
+    ['finance', 'Caja del negocio', 'payments'],
+    ['metrics', 'Horas y rentabilidad', 'query_stats']
+  ] }
 ];
 
 const FAMILY_MENU_GROUPS = [
@@ -55,9 +39,9 @@ const FAMILY_MENU_GROUPS = [
 ];
 
 const FAMILY_KEYS = new Set(FAMILY_MENU_GROUPS.flatMap((group) => group.items.map(([key]) => key)));
-const BUSINESS_KEYS = new Set([...BUSINESS_MENU_GROUPS.flatMap((group) => group.items.map(([key]) => key)), 'day']);
+const BUSINESS_KEYS = new Set([...BUSINESS_MENU_GROUPS.flatMap((group) => group.items.map(([key]) => key)), 'day', 'fronts', 'quotes']);
 const ALL_ADMIN_KEYS = new Set([...BUSINESS_KEYS, ...FAMILY_KEYS]);
-const LEGACY_VIEW_MAP = { family: 'family-overview', tools: 'expedientes' };
+const LEGACY_VIEW_MAP = { family: 'family-overview', tools: 'companies', field: 'companies', expedientes: 'companies', documents: 'companies' };
 
 
 async function fetchJsonWithTimeout(url, options = {}, timeoutMs = 15000) {
@@ -251,18 +235,7 @@ function migrateOsState(candidate, fallback) {
     decisions: [...fallback.decisions, ...decisions.filter((decision) => !fallback.decisions.includes(decision))],
     fieldRegister: [...fieldById.values()],
     expedientes,
-    repository: {
-      ...fallback.repository,
-      ...(candidate.repository || {}),
-      documentsByExpediente: {
-        ...(fallback.repository?.documentsByExpediente || {}),
-        ...(candidate.repository?.documentsByExpediente || {}),
-        'EXP-001': {
-          ...(candidate.repository?.documentsByExpediente?.['EXP-001'] || {}),
-          ...(fallback.repository?.documentsByExpediente?.['EXP-001'] || {})
-        }
-      }
-    },
+    repository: mergeRepositories(fallback.repository, candidate.repository),
     timeTracking: { ...fallback.timeTracking, ...currentTracking, note: trackingNote, projects: timeProjects, entries: timeEntries },
     family: {
       ...fallback.family,
@@ -410,18 +383,7 @@ function hydrateState(candidate) {
     inbox: (Array.isArray(candidate.inbox) ? candidate.inbox : fallback.inbox).map(normalizeId),
     fieldRegister: (Array.isArray(candidate.fieldRegister) ? candidate.fieldRegister : fallback.fieldRegister).map(normalizeId),
     expedientes: Array.isArray(candidate.expedientes) ? candidate.expedientes : fallback.expedientes,
-    repository: {
-      ...fallback.repository,
-      ...(candidate.repository || {}),
-      documentsByExpediente: {
-        ...(fallback.repository?.documentsByExpediente || {}),
-        ...(candidate.repository?.documentsByExpediente || {}),
-        'EXP-001': {
-          ...(candidate.repository?.documentsByExpediente?.['EXP-001'] || {}),
-          ...(fallback.repository?.documentsByExpediente?.['EXP-001'] || {})
-        }
-      }
-    },
+    repository: mergeRepositories(fallback.repository, candidate.repository),
     family: normalizeFamilyState(candidate.family, fallback.family)
   };
 }
@@ -476,23 +438,21 @@ function DashboardView({ osState, dirty, onNavigate, onAddTask }) {
   const nextTask = osState.tasks
     .filter((task) => task.status !== 'done' && task.date >= today)
     .sort((a, b) => `${a.date}-${a.start || ''}`.localeCompare(`${b.date}-${b.start || ''}`))[0];
-  const commercialSignal = osState.fieldRegister
-    .filter((item) => !/cerrado|descartado|fuera/i.test(`${item.status || ''} ${item.priority || ''}`))
-    .sort((a, b) => String(a.priority).localeCompare(String(b.priority)))[0];
+
 
   return (
     <div className="admin-view admin-view--dashboard-summary">
       <ViewHeading
         kicker="Resumen"
         title="Lo importante ahora"
-        description="Inicio muestra solo el estado necesario para orientarse. El detalle vive en Agenda, Campo comercial y las demás herramientas."
+        description="Inicio muestra solo el estado necesario para orientarse. El detalle está en Agenda, Empresas y las herramientas de gestión."
         action={<button type="button" className="button button--small" onClick={() => onAddTask({ date: today })}><Icon name="add" /> Nueva tarea</button>}
       />
 
       <div className="dashboard-summary-actions" aria-label="Accesos principales">
         <button type="button" onClick={() => onNavigate('day')}><Icon name="today" /><span><strong>Hoy</strong><small>{todayTasks.length ? `${todayTasks.length} pendiente${todayTasks.length === 1 ? '' : 's'}` : 'Sin pendientes'}</small></span></button>
         <button type="button" onClick={() => onNavigate('month')}><Icon name="calendar_month" /><span><strong>Agenda</strong><small>Disponibilidad compartida</small></span></button>
-        <button type="button" onClick={() => onNavigate('field')}><Icon name="map" /><span><strong>Campo comercial</strong><small>Actores y próximos pasos</small></span></button>
+        <button type="button" onClick={() => onNavigate('companies')}><Icon name="map" /><span><strong>Empresas</strong><small>Ficha y próximos pasos</small></span></button>
         <button type="button" onClick={() => onNavigate('metrics')}><Icon name="query_stats" /><span><strong>Tiempo</strong><small>Horas y rentabilidad</small></span></button>
       </div>
 
@@ -508,13 +468,10 @@ function DashboardView({ osState, dirty, onNavigate, onAddTask }) {
           {nextTask ? <><strong className="dashboard-next-title">{nextTask.title}</strong><p>{nextTask.start && nextTask.start !== '—' ? `${nextTask.start}${nextTask.end ? `–${nextTask.end}` : ''} · ` : ''}{nextTask.owner}</p><button type="button" className="text-button" onClick={() => { setTimeout(() => onNavigate('month'), 0); }}>Ver agenda</button></> : <p>No hay próximos hitos registrados.</p>}
         </section>
 
-        <section className="panel-card dashboard-signal-card">
-          <div className="panel-card__heading"><div><span className="kicker">Señal comercial</span><h2>{commercialSignal?.organization || 'Sin señal prioritaria'}</h2></div><Icon name="insights" /></div>
-          {commercialSignal ? <><strong>{commercialSignal.actor}</strong><p>{commercialSignal.nextAction}</p><button type="button" className="text-button" onClick={() => onNavigate('field')}>Abrir campo</button></> : <p>Campo comercial sin actores activos.</p>}
-        </section>
+
       </div>
 
-      <div className={`dashboard-save-state ${dirty ? 'is-dirty' : ''}`}><Icon name={dirty ? 'warning' : 'save'} /><span>{dirty ? 'Hay cambios sin guardar.' : 'OS guardado.'}</span></div>
+      <div className="company-os__dashboard-footer"><span className={`dashboard-save-state ${dirty ? 'is-dirty' : ''}`}><Icon name={dirty ? 'warning' : 'save'} /><span>{dirty ? 'Hay cambios sin guardar.' : 'OS guardado.'}</span></span><button className="text-button" type="button" onClick={() => onNavigate('fronts')}>Dirección y criterios <Icon name="chevron_right" /></button></div>
     </div>
   );
 }
@@ -1152,217 +1109,6 @@ function TimeTrackingView({ osState, setOsState }) {
 }
 
 
-function FieldRegisterView({ osState, setOsState }) {
-  const records = Array.isArray(osState.fieldRegister) ? osState.fieldRegister : [];
-  const [newRecord, setNewRecord] = useState({ actor: '', organization: '', type: 'Informante', role: '', status: 'Nuevo', nextAction: '' });
-  const updateRecord = (id, patch) => setOsState((current) => ({
-    ...current,
-    fieldRegister: (current.fieldRegister || []).map((item) => item.id === id ? { ...item, ...patch } : item)
-  }));
-  const removeRecord = (id, actor) => {
-    if (!window.confirm(`¿Eliminar ${actor} del registro de campo?`)) return;
-    setOsState((current) => ({ ...current, fieldRegister: (current.fieldRegister || []).filter((item) => item.id !== id) }));
-  };
-  const addRecord = (event) => {
-    event.preventDefault();
-    if (!newRecord.actor.trim()) return;
-    const item = {
-      id: crypto.randomUUID(),
-      actor: newRecord.actor.trim(),
-      organization: newRecord.organization.trim() || 'Organización por confirmar',
-      type: newRecord.type,
-      role: newRecord.role.trim() || 'Rol por precisar',
-      access: 'Por definir',
-      priority: 'Por definir',
-      status: newRecord.status.trim() || 'Nuevo',
-      commercial: newRecord.type === 'Informante' ? 'No prospecto' : newRecord.type === 'Exclusión' ? 'No prospectar' : 'Por validar',
-      nextAction: newRecord.nextAction.trim() || 'Definir próximo paso antes de contactar.',
-      context: 'Registro incorporado desde campo. Completar contexto cuando exista evidencia suficiente.',
-      limit: 'No confundir vínculo, intuición o acceso con necesidad comercial.'
-    };
-    setOsState((current) => ({ ...current, fieldRegister: [...(current.fieldRegister || []), item] }));
-    setNewRecord({ actor: '', organization: '', type: 'Informante', role: '', status: 'Nuevo', nextAction: '' });
-  };
-  const informants = records.filter((item) => item.type === 'Informante').length;
-  const commercial = records.filter((item) => ['Discovery', 'Piloto comercial'].includes(item.type)).length;
-  const waiting = records.filter((item) => /espera|agendar|preparación/i.test(item.status || '')).length;
-  const excluded = records.filter((item) => item.type === 'Exclusión' || /descartado|no prospectar/i.test(`${item.status} ${item.commercial}`)).length;
-
-  return (
-    <div className="admin-view field-view">
-      <ViewHeading kicker="Inteligencia y validación" title="Registro de campo comercial" description="Un solo mapa para distinguir informantes, discovery, pilotos y exclusiones. El vínculo abre una conversación; nunca se confunde con necesidad, demanda o permiso para vender." />
-      <div className="field-summary-strip">
-        <span><b>{records.length}</b> actores registrados</span>
-        <span><b>{informants}</b> informantes</span>
-        <span><b>{commercial}</b> pruebas comerciales</span>
-        <span><b>{waiting}</b> por coordinar / en espera</span>
-        <span><b>{excluded}</b> exclusiones</span>
-      </div>
-      <p className="field-register-rule"><Icon name="rule" /><span><b>Regla de campo:</b> primero comprender. Solo se pasa a venta cuando la organización reconoce un problema, existe intención de actuar y Metamorfosis puede aportar sin traicionar su identidad.</span></p>
-      <div className="field-confirmed-meetings" aria-label="Reuniones informativas confirmadas">
-        {(osState.tasks || []).filter((task) => task.confirmed && /Reunión informativa Metamorfosis/i.test(task.title || '')).map((task) => (
-          <article key={task.id}><span><Icon name="event_available" /> Confirmada</span><strong>{formatDate(task.date, { day: '2-digit', month: 'short' })}</strong><p>{task.title.replace(/ · confirmada \d+$/i, '')}</p><small>Contraparte exacta pendiente de completar desde el registro original; el OS no la inventa.</small></article>
-        ))}
-      </div>
-      <form className="field-capture" onSubmit={addRecord}>
-        <div><span className="kicker">Captura rápida</span><strong>Agregar actor al campo</strong><small>Registrar primero; clasificar mejor cuando exista evidencia.</small></div>
-        <label>Persona / actor<input value={newRecord.actor} onChange={(event) => setNewRecord({ ...newRecord, actor: event.target.value })} placeholder="Nombre" required /></label>
-        <label>Organización<input value={newRecord.organization} onChange={(event) => setNewRecord({ ...newRecord, organization: event.target.value })} placeholder="Empresa o institución" /></label>
-        <label>Tipo<select value={newRecord.type} onChange={(event) => setNewRecord({ ...newRecord, type: event.target.value })}><option>Informante</option><option>Discovery</option><option>Piloto comercial</option><option>Radar</option><option>Exclusión</option></select></label>
-        <label>Función<input value={newRecord.role} onChange={(event) => setNewRecord({ ...newRecord, role: event.target.value })} placeholder="Qué puede enseñarnos o validar" /></label>
-        <label>Estado<input value={newRecord.status} onChange={(event) => setNewRecord({ ...newRecord, status: event.target.value })} /></label>
-        <label className="field-capture__next">Próximo paso<input value={newRecord.nextAction} onChange={(event) => setNewRecord({ ...newRecord, nextAction: event.target.value })} placeholder="Acción concreta" /></label>
-        <button type="submit" className="button button--small"><Icon name="add" /> Agregar al registro</button>
-      </form>
-      <div className="field-register-grid">
-        {records.map((item) => (
-          <article className={`field-record field-record--${String(item.type || '').toLowerCase().replaceAll(' ', '-').replaceAll('ó', 'o')}`} key={item.id}>
-            <header><span className="field-type">{item.type}</span><span className="field-priority">{item.priority}</span><IconButton icon="delete" label={`Eliminar ${item.actor}`} className="icon-button--danger field-record__delete" onClick={() => removeRecord(item.id, item.actor)} /></header>
-            <div className="field-record__title"><div><small>{item.organization}</small><h2>{item.actor}</h2></div><span>{item.access}</span></div>
-            <div className="field-record__facts">
-              <span><small>Función</small><strong>{item.role}</strong></span>
-              <span><small>Lectura comercial</small><strong>{item.commercial}</strong></span>
-            </div>
-            <label>Estado actual<input value={item.status || ''} onChange={(event) => updateRecord(item.id, { status: event.target.value })} /></label>
-            <label>Próximo paso<textarea rows="3" value={item.nextAction || ''} onChange={(event) => updateRecord(item.id, { nextAction: event.target.value })} /></label>
-            <details className="field-record__editor"><summary>Ver / editar detalle</summary><div className="field-record__editor-grid">
-              <label>Persona / actor<input value={item.actor || ''} onChange={(event) => updateRecord(item.id, { actor: event.target.value })} /></label>
-              <label>Organización<input value={item.organization || ''} onChange={(event) => updateRecord(item.id, { organization: event.target.value })} /></label>
-              <label>Tipo<select value={item.type || 'Informante'} onChange={(event) => updateRecord(item.id, { type: event.target.value })}><option>Informante</option><option>Discovery</option><option>Piloto comercial</option><option>Radar</option><option>Exclusión</option></select></label>
-              <label>Prioridad<input value={item.priority || ''} onChange={(event) => updateRecord(item.id, { priority: event.target.value })} /></label>
-              <label>Acceso<input value={item.access || ''} onChange={(event) => updateRecord(item.id, { access: event.target.value })} /></label>
-              <label>Función<input value={item.role || ''} onChange={(event) => updateRecord(item.id, { role: event.target.value })} /></label>
-              <label className="field-full">Lectura comercial<input value={item.commercial || ''} onChange={(event) => updateRecord(item.id, { commercial: event.target.value })} /></label>
-              <label className="field-full">Contexto<textarea rows="4" value={item.context || ''} onChange={(event) => updateRecord(item.id, { context: event.target.value })} /></label>
-              <label className="field-full">Límite<textarea rows="3" value={item.limit || ''} onChange={(event) => updateRecord(item.id, { limit: event.target.value })} /></label>
-            </div></details>
-          </article>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-
-function ExpedientesView({ osState, setOsState }) {
-  const expedientes = Array.isArray(osState.expedientes) ? osState.expedientes : [];
-  const [selectedId, setSelectedId] = useState(expedientes[0]?.id || '');
-  const [newForm, setNewForm] = useState({ name: '', sector: '', territory: 'Biobío', owner: 'Francisca' });
-
-  useEffect(() => {
-    if (!expedientes.length) return setSelectedId('');
-    if (!expedientes.some((item) => item.id === selectedId)) setSelectedId(expedientes[0].id);
-  }, [expedientes, selectedId]);
-
-  const selected = expedientes.find((item) => item.id === selectedId) || null;
-  const updateExpediente = (id, updater) => setOsState((current) => ({
-    ...current,
-    expedientes: (current.expedientes || []).map((item) => item.id === id
-      ? { ...(typeof updater === 'function' ? updater(item) : { ...item, ...updater }), lastUpdate: new Date().toISOString().slice(0, 10) }
-      : item)
-  }));
-
-  const addExpediente = (event) => {
-    event.preventDefault();
-    if (!newForm.name.trim()) return;
-    const usedNumbers = expedientes.map((item) => Number(String(item.id).replace(/\D/g, '')) || 0);
-    const next = createEmptyExpediente(Math.max(0, ...usedNumbers) + 1);
-    const created = { ...next, ...newForm, name: newForm.name.trim(), sector: newForm.sector.trim(), territory: newForm.territory.trim() || 'Biobío' };
-    setOsState((current) => ({ ...current, expedientes: [...(current.expedientes || []), created] }));
-    setSelectedId(created.id);
-    setNewForm({ name: '', sector: '', territory: 'Biobío', owner: 'Francisca' });
-  };
-
-  const removeExpediente = (item) => {
-    if (!window.confirm(`¿Eliminar ${item.id} · ${item.name}?`)) return;
-    setOsState((current) => ({ ...current, expedientes: (current.expedientes || []).filter((entry) => entry.id !== item.id) }));
-  };
-
-  const updateToolStatus = (toolId, status) => updateExpediente(selected.id, (item) => ({
-    ...item,
-    tools: { ...item.tools, [toolId]: { ...(item.tools?.[toolId] || { data: {} }), status } }
-  }));
-
-  const updateToolField = (toolId, key, value) => updateExpediente(selected.id, (item) => ({
-    ...item,
-    tools: {
-      ...item.tools,
-      [toolId]: {
-        ...(item.tools?.[toolId] || { status: 'En curso', data: {} }),
-        status: item.tools?.[toolId]?.status === 'Pendiente' ? 'En curso' : (item.tools?.[toolId]?.status || 'En curso'),
-        data: { ...(item.tools?.[toolId]?.data || {}), [key]: value }
-      }
-    }
-  }));
-
-  return (
-    <div className="admin-view expediente-view">
-      <ViewHeading kicker="Validación comercial" title="Expedientes de prospectos" description="Cada prospecto conserva su evidencia, hipótesis, preguntas y avance. El objetivo es aprender sin depender de chats o archivos dispersos." />
-      <div className="expediente-summary-strip">
-        <span><b>{expedientes.length}</b> expedientes</span>
-        <span><b>{expedientes.filter((item) => expedienteProgress(item) === 100).length}</b> listos para siguiente etapa</span>
-        <span><b>{expedientes.filter((item) => item.tools?.conversacion?.status === 'Pendiente').length}</b> conversaciones pendientes</span>
-      </div>
-      <section className="expediente-method-strip" aria-label="Método de trabajo del expediente">
-        <div><span className="kicker">Método integrado</span><strong>La herramienta aparece donde se usa</strong><p>No existe un módulo separado de “Método”. Abre cada etapa del expediente para ver cuándo usarla, para qué sirve y cuál es su límite.</p></div>
-        <ol>{CONSULTING_TOOLS.map((tool) => <li key={tool.id}><span>{tool.number}</span><div><small>{tool.stage}</small><strong>{tool.title}</strong></div></li>)}</ol>
-      </section>
-
-      <div className="expediente-layout">
-        <aside className="expediente-sidebar">
-          <form className="expediente-new-form" onSubmit={addExpediente}>
-            <strong>Nuevo expediente</strong>
-            <input aria-label="Nombre del prospecto" placeholder="Nombre del prospecto" value={newForm.name} onChange={(event) => setNewForm({ ...newForm, name: event.target.value })} required />
-            <input aria-label="Rubro" placeholder="Rubro o actividad" value={newForm.sector} onChange={(event) => setNewForm({ ...newForm, sector: event.target.value })} />
-            <input aria-label="Territorio" placeholder="Territorio" value={newForm.territory} onChange={(event) => setNewForm({ ...newForm, territory: event.target.value })} />
-            <select aria-label="Responsable" value={newForm.owner} onChange={(event) => setNewForm({ ...newForm, owner: event.target.value })}>{OWNERS.map((owner) => <option key={owner}>{owner}</option>)}</select>
-            <button className="button button--small" type="submit"><Icon name="add" /> Crear expediente</button>
-          </form>
-          <div className="expediente-list">
-            {expedientes.map((item) => {
-              const progress = expedienteProgress(item);
-              return <button type="button" key={item.id} className={selectedId === item.id ? 'is-active' : ''} onClick={() => setSelectedId(item.id)}><span><b>{item.id}</b><small>{progress}%</small></span><strong>{item.name || 'Sin nombre'}</strong><em>{item.status}</em><div className="expediente-progress"><i style={{ width: `${progress}%` }} /></div></button>;
-            })}
-          </div>
-        </aside>
-
-        {selected ? <section className="expediente-detail">
-          <header className="expediente-detail__header">
-            <div><span className="kicker">{selected.id}</span><input className="expediente-title-input" value={selected.name} onChange={(event) => updateExpediente(selected.id, { name: event.target.value })} aria-label="Nombre del expediente" /><p>{selected.sector} · {selected.territory}</p></div>
-            <div className="expediente-detail__controls"><span className="progress-badge">{expedienteProgress(selected)}% completo</span><select value={selected.status} onChange={(event) => updateExpediente(selected.id, { status: event.target.value })}><option>Prospecto</option><option>Preparación previa</option><option>Conversación</option><option>En espera</option><option>Propuesta</option><option>En pausa</option><option>Cerrado sin conversión</option><option>Cerrado</option><option>Descartado</option></select><IconButton icon="delete" label={`Eliminar ${selected.id}`} className="icon-button--danger" onClick={() => removeExpediente(selected)} /></div>
-          </header>
-          <div className="expediente-meta-grid">
-            <label>Responsable<select value={selected.owner} onChange={(event) => updateExpediente(selected.id, { owner: event.target.value })}>{OWNERS.map((owner) => <option key={owner}>{owner}</option>)}</select></label>
-            <label>Rubro<input value={selected.sector} onChange={(event) => updateExpediente(selected.id, { sector: event.target.value })} /></label>
-            <label>Territorio<input value={selected.territory} onChange={(event) => updateExpediente(selected.id, { territory: event.target.value })} /></label>
-            <label>Última actualización<input value={selected.lastUpdate || ''} readOnly /></label>
-          </div>
-          <label className="expediente-notes">Nota general<textarea value={selected.notes || ''} onChange={(event) => updateExpediente(selected.id, { notes: event.target.value })} /></label>
-
-          <div className="expediente-tools">
-            {CONSULTING_TOOLS.map((tool) => {
-              const state = selected.tools?.[tool.id] || { status: 'Pendiente', data: {} };
-              return <details className={`expediente-tool expediente-tool--${String(state.status).toLowerCase().replaceAll(' ', '-')}`} key={tool.id} open={tool.id === 'perfil' && selected.id === 'EXP-001'}>
-                <summary><span className="expediente-tool__number">{tool.number}</span><div><small>{tool.stage}</small><strong>{tool.title}</strong></div><select aria-label={`Estado de ${tool.title}`} value={state.status} onClick={(event) => event.stopPropagation()} onChange={(event) => updateToolStatus(tool.id, event.target.value)}>{EXPEDIENTE_STATUSES.map((status) => <option key={status}>{status}</option>)}</select></summary>
-                <div className="expediente-tool__body">
-                  <div className="tool-guidance"><span><b>Cuándo usarla</b>{tool.when}</span><span><b>Para qué sirve</b>{tool.purpose}</span></div>
-                  <div className="expediente-fields">
-                    {tool.fields.map((field) => {
-                      const value = state.data?.[field.key] ?? '';
-                      return <label key={field.key} className={field.type === 'textarea' ? 'field-wide' : ''}><span>{field.label}</span>{field.type === 'textarea' ? <textarea value={value} onChange={(event) => updateToolField(tool.id, field.key, event.target.value)} /> : field.type === 'select' ? <select value={value} onChange={(event) => updateToolField(tool.id, field.key, event.target.value)}><option value="">Seleccionar</option>{field.options.map((option) => <option key={option}>{option}</option>)}</select> : <input type={field.type} min={field.min} max={field.max} value={value} onChange={(event) => updateToolField(tool.id, field.key, field.type === 'number' ? Number(event.target.value) : event.target.value)} />}</label>;
-                    })}
-                  </div>
-                  <p className="tool-limit"><Icon name="rule" /> {tool.limit}</p>
-                </div>
-              </details>;
-            })}
-          </div>
-        </section> : <section className="panel-card empty-expediente"><Icon name="folder_open" /><h2>Crea el primer expediente</h2><p>Los expedientes ordenan la evidencia comercial desde el filtro inicial hasta la conversación.</p></section>}
-      </div>
-    </div>
-  );
-}
-
 function QuotesView({ quotes, loading, onStatusChange, onRetryEmail, onEdit, onDelete, notice }) {
   return <div className="admin-view quotes-view">
     <ViewHeading kicker="Comercial" title="Oportunidades y cotizaciones" description="Cada solicitud puede revisarse, editarse y eliminarse. El registro comercial es una herramienta viva: corrige datos, agrega contexto y retira entradas que ya no sirven." />
@@ -1466,183 +1212,6 @@ function AnalyticsView({ events, loading }) {
   </div>;
 }
 
-function ProjectsView() {
-  return <div className="admin-view"><ViewHeading kicker="Gestión interna" title="Proyectos" description="Lectura compacta de etapas, próximos hitos y evidencia esperada." /><p className="admin-notice" role="note">Estos registros describen la configuración inicial. La edición y persistencia individual se incorporarán después de validar el sistema operativo central.</p><div className="project-grid">{initialProjects.map((project) => <article className="project-card" key={project.name}><div className="project-card__top"><span className="status-badge">{project.status}</span><span>{project.progress}%</span></div><span className="kicker">{project.client}</span><h2>{project.name}</h2><p>{project.stage}</p><div className="progress-track"><span style={{ width: `${project.progress}%` }} /></div><div className="next-action"><Icon name="arrow_forward" /><span><small>Próxima acción</small><strong>{project.next}</strong></span></div></article>)}</div></div>;
-}
-
-function repositoryToolContent(expediente, template) {
-  if (!template.sourceTool || !expediente) return '';
-  const tool = CONSULTING_TOOLS.find((item) => item.id === template.sourceTool);
-  const state = expediente.tools?.[template.sourceTool];
-  if (!tool || !state) return '';
-  return tool.fields.map((field) => {
-    const raw = state.data?.[field.key];
-    const value = raw === 0 ? '0' : raw || '—';
-    return `${field.label}\n${value}`;
-  }).join('\n\n');
-}
-
-function repositoryToolStatus(expediente, template) {
-  const value = template.sourceTool ? expediente?.tools?.[template.sourceTool]?.status : '';
-  if (value === 'Completa') return 'Listo';
-  if (value === 'En curso') return 'En curso';
-  if (value === 'No aplica') return 'No aplica';
-  return 'Pendiente';
-}
-
-function DocumentsView({ osState, setOsState, onNavigate }) {
-  const expedientes = Array.isArray(osState.expedientes) ? osState.expedientes : [];
-  const repository = osState.repository || {};
-  const selectedId = expedientes.some((item) => item.id === repository.selectedExpedienteId)
-    ? repository.selectedExpedienteId
-    : expedientes[0]?.id || '';
-  const selected = expedientes.find((item) => item.id === selectedId) || null;
-  const companyDocs = repository.documentsByExpediente?.[selectedId] || {};
-  const fieldRecords = Array.isArray(osState.fieldRegister) ? osState.fieldRegister : [];
-  const today = new Date().toISOString().slice(0, 10);
-  const statusOptions = ['Pendiente', 'En curso', 'Listo', 'Bloqueado', 'No aplica'];
-  const priorityScore = (value = '') => /máxima/i.test(value) ? 5 : /muy alta/i.test(value) ? 4 : /alta/i.test(value) ? 3 : /media/i.test(value) ? 2 : /baja/i.test(value) ? 1 : 0;
-  const compactField = [...fieldRecords]
-    .filter((item) => item.type !== 'Exclusión')
-    .sort((a, b) => priorityScore(b.priority) - priorityScore(a.priority))
-    .slice(0, 6);
-
-  const setSelected = (id) => setOsState((current) => ({
-    ...current,
-    repository: { ...(current.repository || {}), selectedExpedienteId: id }
-  }));
-
-  const effectiveDoc = (template) => {
-    const stored = companyDocs[template.id] || {};
-    const derived = repositoryToolContent(selected, template);
-    return {
-      status: stored.status || repositoryToolStatus(selected, template),
-      updatedAt: stored.updatedAt || '',
-      content: stored.content !== undefined ? stored.content : derived
-    };
-  };
-
-  const updateDoc = (template, patch) => setOsState((current) => {
-    const currentRepository = current.repository || {};
-    const byExpediente = currentRepository.documentsByExpediente || {};
-    const currentCompany = byExpediente[selectedId] || {};
-    const previous = currentCompany[template.id] || {};
-    return {
-      ...current,
-      repository: {
-        ...currentRepository,
-        selectedExpedienteId: selectedId,
-        documentsByExpediente: {
-          ...byExpediente,
-          [selectedId]: {
-            ...currentCompany,
-            [template.id]: { ...previous, ...patch, updatedAt: patch.updatedAt !== undefined ? patch.updatedAt : today }
-          }
-        }
-      }
-    };
-  });
-
-  const syncFromExpediente = (template) => {
-    const content = repositoryToolContent(selected, template);
-    updateDoc(template, { content, status: repositoryToolStatus(selected, template), updatedAt: today });
-  };
-
-  const clearDoc = (template) => {
-    if (!window.confirm(`¿Limpiar ${template.title} para ${selected?.name || 'esta empresa'}?`)) return;
-    setOsState((current) => {
-      const currentRepository = current.repository || {};
-      const byExpediente = currentRepository.documentsByExpediente || {};
-      const currentCompany = { ...(byExpediente[selectedId] || {}) };
-      delete currentCompany[template.id];
-      return {
-        ...current,
-        repository: {
-          ...currentRepository,
-          documentsByExpediente: { ...byExpediente, [selectedId]: currentCompany }
-        }
-      };
-    });
-  };
-
-  const templateStates = repositoryTemplates.map((template) => ({ template, ...effectiveDoc(template) }));
-  const ready = templateStates.filter((item) => item.status === 'Listo').length;
-  const inProgress = templateStates.filter((item) => item.status === 'En curso').length;
-  const blocked = templateStates.filter((item) => item.status === 'Bloqueado').length;
-  const categories = [...new Set(repositoryTemplates.map((item) => item.category))];
-  const selectedField = /club vegan/i.test(selected?.name || '') ? fieldRecords.find((item) => /club vegan/i.test(item.actor || '')) : null;
-
-  return <div className="admin-view repository-view">
-    <ViewHeading kicker="Repositorio operativo" title="Documentos y campo en una sola vista" description="Cada empresa abre su propio expediente documental. Club Vegan queda habilitado como piloto; los documentos se completan solo cuando el proceso real los necesita." />
-
-    <section className="repository-command panel-card">
-      <div className="repository-company-picker">
-        <span className="kicker">Empresa activa</span>
-        <div className="repository-company-picker__row">
-          <select value={selectedId} onChange={(event) => setSelected(event.target.value)} disabled={!expedientes.length} aria-label="Seleccionar empresa o expediente">
-            {expedientes.map((item) => <option value={item.id} key={item.id}>{item.name || item.id}</option>)}
-          </select>
-          <button type="button" className="button button--ghost button--small" onClick={() => onNavigate('expedientes')}><Icon name="add" /> Nueva empresa</button>
-        </div>
-        {selected && <div className="repository-company-meta"><strong>{selected.name}</strong><span>{selected.sector}</span><span>{selected.status}</span><span>Actualizado {formatDate(selected.lastUpdate, { day: '2-digit', month: 'short', year: 'numeric' })}</span></div>}
-      </div>
-      <div className="repository-metrics">
-        <span><b>{repositoryTemplates.length}</b><small>plantillas habilitadas</small></span>
-        <span><b>{ready}</b><small>listas</small></span>
-        <span><b>{inProgress}</b><small>en curso</small></span>
-        <span><b>{blocked}</b><small>bloqueadas por validación</small></span>
-      </div>
-    </section>
-
-    {selected?.id === 'EXP-001' && <section className="repository-pilot-note">
-      <div><Icon name="hourglass_top" /><span><b>Club Vegan · estado real</b> Solo comentó que le gustó el mockup. El 27-08 se envió el mensaje indicando que existe un servicio para pymes a bajo costo por si le interesa y todavía no lo ha visto.</span></div>
-      <strong>No enviar propuesta formal ni nuevo mensaje hasta que exista lectura y respuesta.</strong>
-    </section>}
-
-    <section className="repository-field panel-card">
-      <div className="panel-card__heading repository-section-heading"><div><span className="kicker">Campo comercial · resumen</span><h2>Puertas que estamos observando</h2><p>La vista completa sigue en Campo comercial; aquí solo aparecen las prioridades para decidir rápido.</p></div><button type="button" className="button button--ghost button--small" onClick={() => onNavigate('field')}><Icon name="map" /> Ver registro completo</button></div>
-      <div className="repository-field-table">
-        {compactField.map((item) => <details key={item.id} className="repository-field-row" open={selectedField?.id === item.id}>
-          <summary><span className="repository-field-row__actor"><b>{item.actor}</b><small>{item.organization}</small></span><span className="repository-field-row__type">{item.type}</span><span className="repository-field-row__status">{item.status}</span><span className="repository-field-row__next">{item.nextAction}</span><Icon name="expand_more" /></summary>
-          <div className="repository-field-row__detail"><span><small>Función</small><b>{item.role}</b></span><span><small>Lectura comercial</small><b>{item.commercial}</b></span><p>{item.context}</p><p><b>Límite:</b> {item.limit}</p></div>
-        </details>)}
-      </div>
-    </section>
-
-    <section className="repository-documents panel-card">
-      <div className="panel-card__heading repository-section-heading"><div><span className="kicker">Expediente documental</span><h2>{selected ? `Documentos · ${selected.name}` : 'Documentos por empresa'}</h2><p>Haz clic en una fila para ver cuándo usarla, revisar su descripción y desarrollar el contenido. Guardar cambios persiste el trabajo en Metamorfosis OS.</p></div><span className="count-pill">{repositoryTemplates.length}</span></div>
-      {!selected ? <div className="empty-state-inline"><Icon name="folder_open" /><p>Crea un expediente para habilitar sus documentos.</p></div> : <div className="repository-category-grid">
-        {categories.map((category, categoryIndex) => {
-          const categoryTemplates = repositoryTemplates.filter((item) => item.category === category);
-          const categoryReady = categoryTemplates.filter((template) => effectiveDoc(template).status === 'Listo').length;
-          return <details className="repository-category" key={category} open={categoryIndex === 0}>
-            <summary><span><Icon name={category === 'Administrativos' ? 'briefcase' : category === 'Metodológicos' ? 'menu_book' : category === 'Operativos' ? 'folder_open' : 'account_tree'} /><b>{category}</b></span><small>{categoryReady}/{categoryTemplates.length} listos</small><Icon name="expand_more" /></summary>
-            <div className="repository-document-list">
-              {categoryTemplates.map((template) => {
-                const doc = effectiveDoc(template);
-                return <details className={`repository-document repository-document--${String(doc.status).toLowerCase().replaceAll(' ', '-').replaceAll('ó', 'o')}`} key={template.id}>
-                  <summary><span className="repository-document__name"><Icon name={template.icon} /><span><b>{template.title}</b><small>{template.activate}</small></span></span><span className="repository-document__status">{doc.status}</span><Icon name="expand_more" /></summary>
-                  <div className="repository-document__body">
-                    <div className="repository-document__guidance"><p>{template.description}</p><span><b>Se activa:</b> {template.activate}</span></div>
-                    <div className="repository-document__controls">
-                      <label>Estado<select value={doc.status} onChange={(event) => updateDoc(template, { status: event.target.value })}>{statusOptions.map((status) => <option key={status}>{status}</option>)}</select></label>
-                      <label>Última edición<input type="date" value={doc.updatedAt || ''} onChange={(event) => updateDoc(template, { updatedAt: event.target.value })} /></label>
-                      {template.sourceTool && <button type="button" className="button button--ghost button--small" onClick={() => syncFromExpediente(template)}><Icon name="sync" /> Sincronizar expediente</button>}
-                      {template.navigateTo && <button type="button" className="button button--ghost button--small" onClick={() => onNavigate(template.navigateTo)}><Icon name="open_in_new" /> Abrir módulo</button>}
-                      <button type="button" className="button button--ghost button--small repository-document__delete" onClick={() => clearDoc(template)}><Icon name="delete" /> Limpiar documento</button>
-                    </div>
-                    <label className="repository-document__editor">Contenido de trabajo<textarea rows="9" value={doc.content || ''} onChange={(event) => updateDoc(template, { content: event.target.value })} placeholder="Desarrollar este documento cuando el proceso lo requiera…" /></label>
-                  </div>
-                </details>;
-              })}
-            </div>
-          </details>;
-        })}
-      </div>}
-    </section>
-  </div>;
-}
-
 function GenericView({ active }) {
   const content = {
     assets: ['Activos intangibles', 'Marcas, métodos, diseños, experiencias, software, bases de datos y know-how.'],
@@ -1712,7 +1281,7 @@ function AdminShell({ session, onLogout }) {
           setOsStateRaw(hydrateState(payload.state));
           if (needsMigration) {
             setDirty(true);
-            setNotice({ type: 'success', message: 'Metamorfosis OS fue actualizado a la arquitectura 10.7: planificación vigente 31/08–04/09, agenda compartida con compromisos de Benjamín e Inicio reducido a resumen. Guarda los cambios para persistir la migración.' });
+            setNotice({ type: 'success', message: 'Metamorfosis OS actualizó su estructura de datos conservando los registros históricos. Guarda los cambios para persistir la migración.' });
           }
         } else {
           const key = [STORAGE_KEY, ...LEGACY_STORAGE_KEYS].find((item) => window.localStorage.getItem(item));
@@ -1723,7 +1292,7 @@ function AdminShell({ session, onLogout }) {
             setOsStateRaw(hydrateState(parsed));
             if (needsMigration) {
               setDirty(true);
-              setNotice({ type: 'success', message: 'Se recuperó tu borrador anterior y se migró a Metamorfosis OS 10.7. Guarda los cambios para consolidarlo.' });
+              setNotice({ type: 'success', message: 'Se recuperó tu borrador anterior y se adaptó al formato actual. Guarda los cambios para consolidarlo.' });
             }
           }
         }
@@ -1932,19 +1501,17 @@ function AdminShell({ session, onLogout }) {
     catch (error) { setNotice({ type: 'error', message: error.message }); }
   };
 
-  const currentItem = [...BUSINESS_MENU_GROUPS, ...FAMILY_MENU_GROUPS].flatMap((group) => group.items).find(([key]) => key === active);
-  const view = active === 'dashboard' ? <DashboardView osState={osState} quotes={quotes} dirty={dirty} onNavigate={navigate} onAddTask={openTask} />
+  const currentItem = [...BUSINESS_MENU_GROUPS, ...FAMILY_MENU_GROUPS].flatMap((group) => group.items).find(([key]) => key === active) || (active === 'fronts' ? ['fronts', 'Dirección y criterios'] : active === 'quotes' ? ['quotes', 'Solicitudes anteriores'] : null);
+  const view = active === 'dashboard' ? <DashboardView osState={osState} dirty={dirty} onNavigate={navigate} onAddTask={openTask} />
     : active === 'month' ? <MonthView osState={osState} setOsState={setOsState} onNavigate={navigate} onAddTask={openTask} />
-      : active === 'day' ? <DayView osState={osState} setOsState={setOsState} onAddTask={openTask} onEditTask={setTaskDraft} />
-        : active === 'field' ? <FieldRegisterView osState={osState} setOsState={setOsState} />
-        : active === 'expedientes' ? <ExpedientesView osState={osState} setOsState={setOsState} />
-          : active === 'quotes' ? <QuotesView quotes={quotes} loading={loadingQuotes} onStatusChange={updateQuoteStatus} onRetryEmail={retryQuoteEmail} onEdit={setQuoteDraft} onDelete={deleteQuote} notice={notice} />
-            : active === 'finance' ? <FinanceView osState={osState} setOsState={setOsState} />
-              : active === 'metrics' ? <TimeTrackingView osState={osState} setOsState={setOsState} />
-                : active === 'documents' ? <DocumentsView osState={osState} setOsState={setOsState} onNavigate={navigate} />
-                  : active === 'fronts' ? <FrontsView osState={osState} setOsState={setOsState} />
-                  : FAMILY_KEYS.has(active) ? <FamilyView osState={osState} setOsState={setOsState} section={active} />
-                    : <GenericView active={active} />;
+    : active === 'day' ? <DayView osState={osState} setOsState={setOsState} onAddTask={openTask} onEditTask={setTaskDraft} />
+    : active === 'companies' ? <CompanyWorkspace osState={osState} setOsState={setOsState} quotes={quotes} onEditQuote={setQuoteDraft} onChangeQuoteStatus={updateQuoteStatus} onDeleteQuote={deleteQuote} onRetryQuoteEmail={retryQuoteEmail} onNavigate={navigate} />
+    : active === 'quotes' ? <QuotesView quotes={quotes} loading={loadingQuotes} onStatusChange={updateQuoteStatus} onRetryEmail={retryQuoteEmail} onEdit={setQuoteDraft} onDelete={deleteQuote} notice={notice} />
+    : active === 'finance' ? <FinanceView osState={osState} setOsState={setOsState} />
+    : active === 'metrics' ? <TimeTrackingView osState={osState} setOsState={setOsState} />
+    : active === 'fronts' ? <FrontsView osState={osState} setOsState={setOsState} />
+    : FAMILY_KEYS.has(active) ? <FamilyView osState={osState} setOsState={setOsState} section={active} />
+    : <GenericView active={active} />;
 
   if (loadingState) return <div className="app-loading"><Brand mode={mode} /><span>Cargando sistema operativo…</span></div>;
 
