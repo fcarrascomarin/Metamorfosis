@@ -1,7 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from './components/Icon.jsx';
 import CompanyWorkspace from './features/companies/CompanyWorkspace.jsx';
-import AgendaFocus, { futureTasks } from './features/agenda/AgendaFocus.jsx';
+import AgendaFocus from './features/agenda/AgendaFocus.jsx';
+import ManagementWorkspace from './features/management/ManagementWorkspace.jsx';
+import './features/workspace/lean-shell.css';
 import { mergeRepositories, buildCompanyIndex } from './features/companies/companyModel.js';
 import { createDefaultOsState, OS_SCHEMA_VERSION, OWNERS, TOPICS } from './osSeed.js';
 
@@ -15,14 +17,10 @@ const STATUS_OPTIONS = ['nueva', 'contactada', 'evaluacion', 'propuesta', 'cerra
 // Una sola entrada por organización. Las áreas técnicas permanecen disponibles
 // sin fragmentar el registro comercial en tres módulos independientes.
 const BUSINESS_MENU_GROUPS = [
-  { id: 'principal', label: 'Trabajo', items: [
-    ['dashboard', 'Inicio', 'dashboard'],
+  { id: 'trabajo', label: 'Trabajo', items: [
+    ['companies', 'Empresas', 'briefcase'],
     ['month', 'Agenda', 'calendar_month'],
-    ['companies', 'Empresas', 'briefcase']
-  ] },
-  { id: 'administracion', label: 'Administración', items: [
-    ['finance', 'Caja del negocio', 'payments'],
-    ['metrics', 'Horas y rentabilidad', 'query_stats']
+    ['management', 'Gestión', 'query_stats']
   ] }
 ];
 
@@ -40,9 +38,9 @@ const FAMILY_MENU_GROUPS = [
 ];
 
 const FAMILY_KEYS = new Set(FAMILY_MENU_GROUPS.flatMap((group) => group.items.map(([key]) => key)));
-const BUSINESS_KEYS = new Set([...BUSINESS_MENU_GROUPS.flatMap((group) => group.items.map(([key]) => key)), 'day', 'fronts', 'quotes']);
+const BUSINESS_KEYS = new Set([...BUSINESS_MENU_GROUPS.flatMap((group) => group.items.map(([key]) => key)), 'day', 'fronts', 'quotes', 'finance', 'metrics']);
 const ALL_ADMIN_KEYS = new Set([...BUSINESS_KEYS, ...FAMILY_KEYS]);
-const LEGACY_VIEW_MAP = { family: 'family-overview', tools: 'companies', field: 'companies', expedientes: 'companies', documents: 'companies' };
+const LEGACY_VIEW_MAP = { family: 'family-overview', dashboard: 'companies', tools: 'companies', field: 'companies', expedientes: 'companies', documents: 'companies', finance: 'management', metrics: 'management' };
 
 
 async function fetchJsonWithTimeout(url, options = {}, timeoutMs = 15000) {
@@ -81,7 +79,7 @@ function WorkspaceSwitch({ mode }) {
   };
   return (
     <div className="workspace-switch" role="tablist" aria-label="Cambiar área del sistema">
-      <a href="/?workspace=business#dashboard" role="tab" aria-selected={mode === 'business'} className={mode === 'business' ? 'is-active' : ''} onClick={() => remember('dashboard')}><Icon name="briefcase" /><span>Empresa</span></a>
+      <a href="/?workspace=business#companies" role="tab" aria-selected={mode === 'business'} className={mode === 'business' ? 'is-active' : ''} onClick={() => remember('companies')}><Icon name="briefcase" /><span>Empresa</span></a>
       <a href="/?workspace=family#family-overview" role="tab" aria-selected={mode === 'family'} className={mode === 'family' ? 'is-active' : ''} onClick={() => remember('family-overview')}><Icon name="home" /><span>Familiar</span></a>
     </div>
   );
@@ -429,19 +427,6 @@ function MetricCard({ icon, label, value, note, tone = '' }) {
 
 function ViewHeading({ kicker, title, description, action }) {
   return <div className="admin-view__heading"><div><span className="kicker">{kicker}</span><h1>{title}</h1><p>{description}</p></div>{action}</div>;
-}
-
-function DashboardView({ osState, dirty, onNavigate, onAddTask }) {
-  const today = todayLocalISO();
-  const next = futureTasks(osState.tasks, today).slice(0, 5);
-  const historical = osState.tasks.filter((t) => t.date < today && t.status !== 'done').length;
-  const activeCompanies = buildCompanyIndex({expedientes:osState.expedientes,fieldRegister:osState.fieldRegister}).filter(c=>c.stage !== 'Cerrada');
-  return <section className="os-focus">
-    <header className="os-focus__head"><div><h1>Inicio</h1><p>Lo que requiere una decisión. El resto permanece en su ficha.</p></div><button type="button" onClick={()=>onAddTask({date:today})} className="af-primary"><Icon name="add"/> Tarea</button></header>
-    <div className="os-focus__shortcuts"><button type="button" onClick={()=>onNavigate('companies')}><strong>Empresas</strong><small>{activeCompanies.length} fichas abiertas</small></button><button type="button" onClick={()=>onNavigate('month')}><strong>Agenda</strong><small>{next.length} próximos compromisos{next.length===5?' o más':''}</small></button><button type="button" onClick={()=>onNavigate('finance')}><strong>Caja</strong><small>Registrar movimientos</small></button></div>
-    <section className="os-focus__agenda"><div className="os-focus__sectionhead"><h2>Próximos compromisos</h2><button type="button" onClick={()=>onNavigate('month')}>Abrir agenda →</button></div>{next.length ? next.map(t=><div key={t.id} className="os-focus__task"><time>{t.date}</time><strong>{t.title}</strong><span>{t.owner}</span></div>) : <p>Sin compromisos futuros registrados. Verifica los hitos propuestos en Agenda.</p>}</section>
-    <footer className="os-focus__footer"><span>{dirty?'Cambios por guardar':'Información guardada'} · {historical} registros históricos pendientes de revisión</span><button type="button" onClick={()=>onNavigate('month')}>Revisar histórico</button></footer>
-  </section>;
 }
 
 function todayLocalISO() { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
@@ -1205,9 +1190,9 @@ function AdminShell({ session, onLogout }) {
     const hashView = window.location.hash.replace(/^#/, '');
     const queryWorkspace = new URLSearchParams(window.location.search).get('workspace');
     // El dominio raíz siempre abre Empresa. La vista Familiar se activa solo de forma explícita.
-    const candidate = hashView || (queryWorkspace === 'family' ? 'family-overview' : queryWorkspace === 'business' ? 'dashboard' : 'dashboard');
+    const candidate = hashView || (queryWorkspace === 'family' ? 'family-overview' : 'companies');
     const normalized = LEGACY_VIEW_MAP[candidate] || candidate;
-    return normalized && ALL_ADMIN_KEYS.has(normalized) ? normalized : 'dashboard';
+    return normalized && ALL_ADMIN_KEYS.has(normalized) ? normalized : 'companies';
   });
   const [menuOpen, setMenuOpen] = useState(false);
   const [osState, setOsStateRaw] = useState(createDefaultOsState);
@@ -1472,8 +1457,8 @@ function AdminShell({ session, onLogout }) {
   };
 
   const currentItem = [...BUSINESS_MENU_GROUPS, ...FAMILY_MENU_GROUPS].flatMap((group) => group.items).find(([key]) => key === active) || (active === 'fronts' ? ['fronts', 'Dirección y criterios'] : active === 'quotes' ? ['quotes', 'Solicitudes anteriores'] : null);
-  const view = active === 'dashboard' ? <DashboardView osState={osState} dirty={dirty} onNavigate={navigate} onAddTask={openTask} />
-    : active === 'month' ? <AgendaFocus osState={osState} setOsState={setOsState} onAddTask={openTask} />
+  const view = active === 'management' ? <ManagementWorkspace osState={osState} setOsState={setOsState} />
+    : active === 'month' ? <AgendaFocus osState={osState} setOsState={setOsState} onAddTask={openTask} onEditTask={setTaskDraft} />
     : active === 'day' ? <DayView osState={osState} setOsState={setOsState} onAddTask={openTask} onEditTask={setTaskDraft} />
     : active === 'companies' ? <CompanyWorkspace osState={osState} setOsState={setOsState} quotes={quotes} onEditQuote={setQuoteDraft} onChangeQuoteStatus={updateQuoteStatus} onDeleteQuote={deleteQuote} onRetryQuoteEmail={retryQuoteEmail} onNavigate={navigate} />
     : active === 'quotes' ? <QuotesView quotes={quotes} loading={loadingQuotes} onStatusChange={updateQuoteStatus} onRetryEmail={retryQuoteEmail} onEdit={setQuoteDraft} onDelete={deleteQuote} notice={notice} />
@@ -1489,7 +1474,8 @@ function AdminShell({ session, onLogout }) {
     <div className={`admin-frame admin-frame--${mode}`}>
       <a className="skip-link" href="#admin-main">Saltar al contenido del panel</a>
       <header className="admin-header">
-        <div className="admin-header__brand"><IconButton icon="menu" label="Abrir menú" className="admin-menu-button" onClick={() => setMenuOpen(true)} /><Brand mode={mode} /></div>
+        <div className="admin-header__brand">{mode === 'family' && <IconButton icon="menu" label="Abrir menú" className="admin-menu-button" onClick={() => setMenuOpen(true)} />}<Brand mode={mode} /></div>
+        {mode === 'business' ? <nav className="os-main-tabs" aria-label="Navegación principal">{BUSINESS_MENU_GROUPS[0].items.map(([key,label,icon]) => <button key={key} type="button" onClick={() => navigate(key)} className={active===key?'is-active':''} aria-current={active===key?'page':undefined}>{label}</button>)}</nav> : null}
         <WorkspaceSwitch mode={mode} />
         <div className="admin-header__actions">
           <a className="admin-action-button admin-action-button--public" href={PUBLIC_SITE_URL}><Icon name="public" /><span>Sitio público</span></a>
@@ -1515,7 +1501,7 @@ function AdminShell({ session, onLogout }) {
         </aside>
         {menuOpen && <button type="button" className="sidebar-backdrop" aria-label="Cerrar menú" onClick={() => setMenuOpen(false)} />}
         <main id="admin-main" className="admin-main">
-          <div className="admin-breadcrumb"><span>{currentItem?.[1] || (mode === 'family' ? 'Resumen familiar' : 'Inicio')}</span><em className="admin-context-badge">{mode === 'family' ? 'Familiar' : 'Empresa'}</em>{notice && active !== 'quotes' && <p className={`save-notice ${notice.type === 'error' ? 'is-error' : ''}`} role="status">{notice.message}</p>}</div>
+          <div className="admin-breadcrumb">{mode === 'family' && <><span>{currentItem?.[1] || 'Resumen familiar'}</span><em className="admin-context-badge">Familiar</em></>}{notice && active !== 'quotes' && <p className={`save-notice ${notice.type === 'error' ? 'is-error' : ''}`} role="status">{notice.message}</p>}</div>
           {view}
         </main>
       </div>
@@ -1552,7 +1538,7 @@ class AdminErrorBoundary extends React.Component {
           <details className="admin-runtime-diagnostic" open><summary>Detalle técnico</summary><code>{this.state.error?.message || 'Error de renderizado sin mensaje'}</code></details>
           <div className="admin-fatal-error__actions">
             <button className="button" type="button" onClick={() => window.location.reload()}><Icon name="refresh" /> Recargar OS</button>
-            <button className="button button--ghost-light" type="button" onClick={() => { try { window.localStorage.removeItem('metamorfosis-admin-view'); } catch {} window.location.href = '/?workspace=business#dashboard'; }}><Icon name="dashboard" /> Abrir Empresa</button>
+            <button className="button button--ghost-light" type="button" onClick={() => { try { window.localStorage.removeItem('metamorfosis-admin-view'); } catch {} window.location.href = '/?workspace=business#companies'; }}><Icon name="dashboard" /> Abrir Empresa</button>
             <a href="/api/health" target="_blank" rel="noreferrer">Ver diagnóstico del servidor</a>
           </div>
         </div>
