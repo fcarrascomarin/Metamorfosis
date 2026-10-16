@@ -61,3 +61,12 @@ test('documentos editados y limpiezas intencionales no se sobrescriben con el se
   const cleared = mergeRepositories(defaults, { documentsByExpediente: { 'EXP-001': {} } });
   assert.deepEqual(cleared.documentsByExpediente['EXP-001'], {});
 });
+
+test('un contacto cerrado no marca cerrada a una organización con otra conversación activa', () => {
+  const org = buildCompanyIndex({ fieldRegister: [
+    { id: 'c1', actor: 'Persona 1', organization: 'Empresa X', status: 'Descartado', type: 'Informante' },
+    { id: 'c2', actor: 'Persona 2', organization: 'Empresa X', status: 'En espera', type: 'Discovery' }
+  ] });
+  assert.equal(org.length, 1);
+  assert.notEqual(org[0].stage, 'Cerrada');
+});
