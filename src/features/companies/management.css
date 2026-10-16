@@ -1,0 +1,39 @@
+.mg-page {flex:1;display:flex;flex-direction:column;min-height:0;min-width:0;color:#1b3c37;gap:8px}
+.mg-page * {box-sizing:border-box}
+.mg-bar {display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:37px}
+.mg-bar h1 {margin:0;font:700 1.12rem/1.2 system-ui,sans-serif;letter-spacing:0}
+.mg-tabs {display:flex;gap:4px;border:1px solid #d9e4de;border-radius:7px;padding:3px;background:white}
+.mg-tabs button {border:0;background:transparent;border-radius:5px;padding:6px 13px;font-weight:650;font-size:.79rem;color:#56706a}
+.mg-tabs button.active {background:#d7eee6;color:#124d43}
+.mg-content {flex:1;display:flex;flex-direction:column;gap:8px;min-height:0}
+.mg-summary {display:flex;gap:24px;align-items:center;padding:9px 10px;background:#eef5f1;border:1px solid #d9e6df;border-radius:7px;flex-wrap:wrap;font-size:.77rem;color:#61746e}
+.mg-summary span {display:flex;align-items:center;gap:10px}.mg-summary b {color:#19483e;font-size:.95rem}
+.mg-scroll {overflow-y:auto;min-height:0;flex:1;background:white;border:1px solid #dbe5de;border-radius:7px;padding:7px 12px}
+.mg-table-head,.mg-line {display:grid;grid-template-columns:minmax(0,1fr) 150px;align-items:center;gap:10px;padding:7px 9px;border-bottom:1px solid #e7eeea;font-size:.82rem}
+.mg-table-head {text-transform:uppercase;font-size:.68rem;color:#63796f}
+.mg-line input,.mg-project-detail input,.mg-form input,.mg-form select,.mg-fold textarea {min-height:30px;padding:5px 8px;border:1px solid #cdded5;border-radius:5px;background:white;color:#244e43;width:100%}
+.mg-line input {text-align:right}
+.mg-fold {border-top:1px solid #e7eeea;padding:0 8px}.mg-fold>summary {font-size:.8rem;color:#246455;font-weight:650;padding:10px 2px;cursor:pointer}
+.mg-fold textarea {margin:0 0 12px;resize:vertical}
+.mg-note {font-size:.73rem;color:#72867c;margin:15px 8px}
+.mg-actions {display:flex;flex-wrap:wrap;gap:8px;padding:4px 0 12px;align-items:flex-start}.mg-action-fold {border:1px solid #d5e3da;border-radius:7px;min-width:160px;background:#f9fcfa}
+.mg-action-fold[open] {width:100%}.mg-action-fold summary {padding:7px 10px}
+.mg-form,.mg-project-detail {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:10px 4px 13px;font-size:.76rem}
+.mg-form label,.mg-project-detail label {display:grid;gap:3px;font-weight:600;color:#58766a}
+.mg-form .mg-full {grid-column:span 2}.mg-form .mg-check {display:flex;align-items:center;gap:7px}.mg-check input {width:auto;min-height:0}
+.mg-primary {align-self:end;background:#0c5448;color:white;border:0;border-radius:6px;min-height:30px;padding:6px 12px;font-size:.76rem;font-weight:700}
+.mg-project-head,.mg-project>summary {grid-template-columns:minmax(0,2fr) 90px 130px 130px}
+.mg-project {border-bottom:1px solid #e6eee9}.mg-project>summary {display:grid;align-items:center;gap:10px;padding:9px;cursor:pointer;list-style:none;font-size:.8rem;color:#24483d}
+.mg-project>summary::-webkit-details-marker {display:none}.mg-project>summary:hover {background:#f3f8f5}.mg-project>summary span:first-child {font-weight:650}
+.mg-history-row {display:grid;grid-template-columns:90px 1fr 90px 50px auto;align-items:center;gap:7px;font-size:.73rem;padding:7px;border-bottom:1px solid #e7eeea}
+.mg-history-row button {border:0;background:none;color:#a64b3f;padding:4px}
+@media(max-width:720px){.mg-summary{gap:8px}.mg-summary span{min-width:100%}.mg-form,.mg-project-detail{grid-template-columns:1fr 1fr}.mg-project-head,.mg-project>summary{grid-template-columns:1fr 70px 95px}.mg-project-head>*:last-child,.mg-project>summary>*:last-child{display:none}.mg-history-row{grid-template-columns:90px minmax(80px,1fr) 55px}.mg-history-row>*:nth-child(3),.mg-history-row>*:nth-child(5){display:none}}
+.mg-entry{border-bottom:1px solid #e9efeb}
+.mg-entry>summary{cursor:pointer;list-style:none}
+.mg-entry>summary::-webkit-details-marker{display:none}
+.mg-entry[open]{background:#f8fbf9}
+.mg-entry .mg-history-row{color:#2c5147}
+.mg-entry .mg-history-row span:last-child{font-weight:650;color:#247566}
+.mg-entry-edit{padding:9px 8px 14px}
+.mg-project-delete{grid-column:1/-1}
+.mg-project-delete button,.mg-delete{border:0;background:transparent;color:#994b42;cursor:pointer;font-size:.72rem;text-align:left;padding:6px 1px}
