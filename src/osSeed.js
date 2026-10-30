@@ -1,7 +1,8 @@
 import { createClubVeganExpediente } from './consultingTools.js';
+import { institutionalTasks, initialInstitutionalLog } from './institutionalPlan.js';
 
 const iso = (date) => date.toISOString().slice(0, 10);
-export const OS_SCHEMA_VERSION = '10.7';
+export const OS_SCHEMA_VERSION = '10.8';
 
 const WEEK = {
   monday: '2026-08-24',
@@ -27,6 +28,7 @@ export function createDefaultOsState() {
     version: OS_SCHEMA_VERSION,
     selectedDate: today < '2026-08-31' ? '2026-08-31' : today,
     tasks: [
+      ...institutionalTasks,
       task('2026-08-28', '—', '', 'Benjamín', 'Contacto informativo preparado · Víctor Erices / RUDEL', 'Se definió el objetivo y guion para conocer tecnologías internas, estandarización de procesos y automatización/IA.', 'Guion y propósito quedaron preparados.', { status: 'done' }),
       task('2026-08-28', '—', '', 'Benjamín', 'Contacto informativo preparado · Jorge Beltrán / CMPC', 'Se definió el objetivo y guion para comprender exigencias de mandantes y fricciones con proveedores.', 'Guion y propósito quedaron preparados.', { status: 'done' }),
       task('2026-08-28', '—', '', 'Benjamín', 'Contacto informativo preparado · Cristian Méndez / Blumar', 'Se definió el objetivo y guion sobre procesos, excelencia operacional y apoyo externo.', 'Guion y propósito quedaron preparados.', { status: 'done' }),
@@ -151,6 +153,7 @@ export function createDefaultOsState() {
       { id: 'CAMPO-010', actor: 'Club Vegan / Emporio', organization: 'Concepción', type: 'Piloto comercial', role: 'Vitrina Pyme · B2C/B2B pequeño', access: 'Directa', priority: 'Cerrado', status: 'Cerrado sin conversión', commercial: 'No convertido', nextAction: 'Ninguno. Reabrir solo si Club Vegan retoma espontáneamente el contacto.', context: 'Hubo reacción estética positiva al mockup (\"wau estaa hermoso\" + Me gusta), pero no se validó necesidad, intención de compra ni contratación. El aprendizaje se conserva como evidencia comercial.', limit: 'No insistir, no enviar seguimiento ni producir trabajo adicional sin una nueva señal espontánea de apertura.' }
     ],
     inbox: [],
+    institutionalLog: initialInstitutionalLog.map(item => ({ ...item })),
     family: {
       phase: 'COTIDIANO',
       phaseNote: 'El espacio familiar prioriza lo que facilita la semana: carga, caja y hogar. Lo secundario queda plegado para no abrumar.',

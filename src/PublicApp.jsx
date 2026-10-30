@@ -530,10 +530,10 @@ function IntegratedProposalMap() {
 // La arquitectura empresarial interna no interfiere con la lectura comercial.
 // -----------------------------------------------------------------------------
 const proposalSituations = [
-  { icon: 'trending_up', title: 'Ante nuevos desafíos', description: 'Crecimiento, adaptación y nuevas exigencias.' },
-  { icon: 'account_tree', title: 'Ante capacidades dispersas', description: 'Conocimientos y recursos que aún no logran converger.' },
-  { icon: 'search', title: 'Ante decisiones complejas', description: 'Cuando es necesario comprender antes de actuar.' },
-  { icon: 'design_services', title: 'Ante oportunidades de innovación', description: 'Ideas que necesitan convertirse en soluciones viables.' }
+  { icon: 'trending_up', title: 'Cuando necesitamos mejorar', description: 'Procesos, costos y recursos que podrían aprovecharse mejor.' },
+  { icon: 'account_tree', title: 'Cuando hay capacidades dispersas', description: 'Personas, información y recursos que necesitan conectarse.' },
+  { icon: 'verified_user', title: 'Cuando aparecen nuevos riesgos', description: 'Cambios productivos, regulatorios o territoriales que conviene anticipar.' },
+  { icon: 'design_services', title: 'Cuando existe una oportunidad', description: 'Ideas y conocimientos que pueden convertirse en soluciones viables.' }
 ];
 
 function ProposalSection() {
@@ -543,7 +543,7 @@ function ProposalSection() {
         <header className="proposal-editorial__intro">
           <span className="v54-kicker">Nuestra propuesta</span>
           <h2 id="proposal-title">Del conocimiento a la transformación</h2>
-          <p>Trabajamos con organizaciones, actividades productivas y territorios donde existen desafíos que requieren conectar conocimientos, personas y recursos. Estudiamos cada situación para distinguir oportunidades reales y traducir esa comprensión en decisiones y soluciones aplicables.</p>
+          <p>Trabajamos con organizaciones públicas y privadas, con y sin fines de lucro. Investigamos cómo funcionan sus actividades, cómo utilizan sus recursos y qué relaciones condicionan sus resultados, para identificar mejoras productivas, oportunidades y riesgos que merecen atención.</p>
         </header>
 
         <div className="proposal-editorial__situations" aria-labelledby="proposal-situations-title">
@@ -563,8 +563,8 @@ function ProposalSection() {
 
         <div className="proposal-editorial__method" aria-labelledby="proposal-method-title">
           <h3 id="proposal-method-title">Comprender antes de intervenir</h3>
-          <p>Integramos información técnica, experiencia de quienes participan y conocimiento del contexto para comprender qué ocurre y qué condiciones deben considerarse. A partir de esa lectura, diseñamos respuestas proporcionales, las contrastamos en la práctica y utilizamos sus resultados para orientar los siguientes pasos.</p>
-          <div className="proposal-editorial__principle"><Icon name="arrow_forward" aria-hidden="true" /><span>De la comprensión a soluciones que puedan sostenerse y mejorar.</span></div>
+          <p>Integramos ingeniería, derecho e investigación aplicada con la experiencia de quienes participan. Analizamos procesos, costos, responsabilidades y vínculos con el entorno, incluidos los sistemas vivos cuando son relevantes. A partir de esa evidencia, podemos desarrollar diagnósticos, propuestas de mejora, herramientas o pilotos acotados, y evaluar qué cambia en la práctica.</p>
+          <div className="proposal-editorial__principle"><Icon name="arrow_forward" aria-hidden="true" /><span>De la investigación a decisiones, capacidades y resultados verificables.</span></div>
         </div>
 
         <div className="proposal-editorial__closing">
@@ -950,7 +950,7 @@ function PublicSite() {
             <div className="v532-hero-content">
               <div className="v532-hero-note">
                 <span className="v54-eyebrow">Nuestro punto de partida</span>
-                <p>Estudiamos organizaciones, actividades productivas y territorios para transformar problemas complejos en soluciones aplicables. Integramos conocimiento y capacidades existentes para identificar oportunidades y poner a prueba nuevas respuestas.</p>
+                <p>Investigamos cómo funcionan organizaciones y territorios para mejorar decisiones, productividad y uso de recursos. Conectamos ingeniería, derecho y conocimiento del entorno para anticipar problemas y diseñar soluciones aplicables.</p>
                 <strong>Comprender antes de intervenir. Medir para seguir mejorando.</strong>
               </div>
               <div className="hero__actions">
@@ -970,7 +970,7 @@ function PublicSite() {
             <div className="v534-team__intro">
               <span className="v54-kicker">Equipo</span>
               <h2>Ingeniería y derecho en diálogo</h2>
-              <p>Nuestra fortaleza está en analizar una misma situación desde dos disciplinas que se contrastan y enriquecen mutuamente. La lectura conjunta permite anticipar puntos ciegos, equilibrar factibilidad y responsabilidad, y formular criterios de decisión que consideren tanto lo que puede hacerse como las condiciones para sostenerlo.</p>
+              <p>Integramos ingeniería civil industrial y derecho —incluidos el análisis jurídico-penal y la prevención— para investigar problemas desde perspectivas complementarias. Buscamos soluciones que consideren viabilidad operativa y económica, responsabilidades, condiciones humanas y relaciones con el territorio.</p>
             </div>
             <div className="v534-team__profiles"><TeamSection /></div>
           </div>

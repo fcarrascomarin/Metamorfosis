@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from './components/Icon.jsx';
 import CompanyWorkspace from './features/companies/CompanyWorkspace.jsx';
 import AgendaFocus from './features/agenda/AgendaFocus.jsx';
+import InstitutionalRoadmap from './features/institutional/InstitutionalRoadmap.jsx';
+import { appendInstitutionalTasks, initialInstitutionalLog } from './institutionalPlan.js';
 import ManagementWorkspace from './features/management/ManagementWorkspace.jsx';
 import './features/workspace/lean-shell.css';
 import { mergeRepositories, buildCompanyIndex } from './features/companies/companyModel.js';
@@ -20,7 +22,8 @@ const BUSINESS_MENU_GROUPS = [
   { id: 'trabajo', label: 'Trabajo', items: [
     ['companies', 'Empresas', 'briefcase'],
     ['month', 'Agenda', 'calendar_month'],
-    ['management', 'Gestión', 'query_stats']
+    ['management', 'Gestión', 'query_stats'],
+    ['institutional', 'Ruta', 'rule']
   ] }
 ];
 
@@ -156,6 +159,15 @@ const RETIRED_TIME_PROJECT_PATTERN = /CM|Banquetería|Consolidación|Juana de Ar
 function migrateOsState(candidate, fallback) {
   if (!candidate || typeof candidate !== 'object') return fallback;
   if (String(candidate.version || '') === OS_SCHEMA_VERSION) return candidate;
+  // Actualización aditiva 10.7 -> 10.8. No reiniciar ni depurar registros previos.
+  if (String(candidate.version || '') === '10.7') {
+    return {
+      ...candidate,
+      version: OS_SCHEMA_VERSION,
+      tasks: appendInstitutionalTasks(Array.isArray(candidate.tasks) ? candidate.tasks : []),
+      institutionalLog: Array.isArray(candidate.institutionalLog) ? candidate.institutionalLog : initialInstitutionalLog.map(item => ({ ...item }))
+    };
+  }
 
   const campaignTasks = fallback.tasks || [];
   const existingTasks = Array.isArray(candidate.tasks)
@@ -229,6 +241,7 @@ function migrateOsState(candidate, fallback) {
     version: OS_SCHEMA_VERSION,
     selectedDate: candidate.selectedDate && candidate.selectedDate >= '2026-08-31' ? candidate.selectedDate : '2026-08-31',
     tasks,
+    institutionalLog: Array.isArray(candidate.institutionalLog) ? candidate.institutionalLog : initialInstitutionalLog.map(item => ({ ...item })),
     guides: { ...(candidate.guides || {}), ...fallback.guides },
     fronts: [...frontsByName.values()],
     decisions: [...fallback.decisions, ...decisions.filter((decision) => !fallback.decisions.includes(decision))],
@@ -368,6 +381,7 @@ function hydrateState(candidate) {
     ...fallback,
     ...candidate,
     tasks: (Array.isArray(candidate.tasks) ? candidate.tasks : fallback.tasks).map(normalizeId),
+    institutionalLog: Array.isArray(candidate.institutionalLog) ? candidate.institutionalLog : fallback.institutionalLog,
     guides: candidate.guides && typeof candidate.guides === 'object' ? candidate.guides : fallback.guides,
     finance: { ...fallback.finance, ...(candidate.finance || {}) },
     timeTracking: {
@@ -1182,7 +1196,7 @@ function TaskModal({ draft, onClose, onSave }) {
   useEffect(() => { dialogRef.current?.focus(); }, []);
   const update = (event) => setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
   const submit = (event) => { event.preventDefault(); if (!form.title.trim() || !form.date) return; onSave({ ...form, id: form.id || crypto.randomUUID(), title: form.title.trim(), status: form.status || 'pending', comments: Array.isArray(form.comments) ? form.comments : [] }); };
-  return <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><section className="modal-card" role="dialog" aria-modal="true" aria-labelledby="task-modal-title" tabIndex="-1" ref={dialogRef}><div className="modal-heading"><div><span className="kicker">Sistema operativo</span><h2 id="task-modal-title">{form.id ? 'Editar tarea' : 'Agregar tarea'}</h2></div><IconButton icon="close" label="Cerrar ventana" onClick={onClose} /></div><form className="compact-form" onSubmit={submit}><label>Fecha<input name="date" type="date" value={form.date} onChange={update} required /></label><label>Responsable<select name="owner" value={form.owner} onChange={update}>{OWNERS.map((owner) => <option key={owner}>{owner}</option>)}</select></label><label>Inicio<input name="start" type="time" value={form.start} onChange={update} /></label><label>Fin<input name="end" type="time" value={form.end} onChange={update} /></label><label className="field-full">Tarea<input name="title" value={form.title} onChange={update} required /></label><label>Tópico<select name="topic" value={form.topic} onChange={update}>{TOPICS.map((topic) => <option key={topic}>{topic}</option>)}</select></label><label>Estado<select name="status" value={form.status} onChange={update}><option value="pending">Pendiente</option><option value="waiting">En espera</option><option value="done">Terminada</option></select></label><label className="field-full">Explicación concreta<textarea name="explain" value={form.explain} onChange={update} /></label><label className="field-full">Por qué importa<textarea name="why" value={form.why} onChange={update} /></label><label className="field-full">Termina cuando<textarea name="done_when" value={form.done_when} onChange={update} /></label><div className="modal-actions field-full"><button type="button" className="button button--ghost" onClick={onClose}>Cancelar</button><button type="submit" className="button"><Icon name="save" /> Guardar tarea</button></div></form></section></div>;
+  return <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><section className="modal-card" role="dialog" aria-modal="true" aria-labelledby="task-modal-title" tabIndex="-1" ref={dialogRef}><div className="modal-heading"><div><span className="kicker">Sistema operativo</span><h2 id="task-modal-title">{form.id ? 'Editar tarea' : 'Agregar tarea'}</h2></div><IconButton icon="close" label="Cerrar ventana" onClick={onClose} /></div><form className="compact-form" onSubmit={submit}><label>Fecha<input name="date" type="date" value={form.date} onChange={update} required /></label><label>Responsable<select name="owner" value={form.owner} onChange={update}>{OWNERS.map((owner) => <option key={owner}>{owner}</option>)}</select></label><label>Inicio<input name="start" type="time" value={form.start} onChange={update} /></label><label>Fin<input name="end" type="time" value={form.end} onChange={update} /></label><label className="field-full">Tarea<input name="title" value={form.title} onChange={update} required /></label><label>Tópico<select name="topic" value={form.topic} onChange={update}>{TOPICS.map((topic) => <option key={topic}>{topic}</option>)}</select></label><label>Estado<select name="status" value={form.status} onChange={update}><option value="pending">Pendiente</option><option value="progress">En curso</option><option value="waiting">En espera</option><option value="done">Terminada</option></select></label><label className="field-full">Explicación concreta<textarea name="explain" value={form.explain} onChange={update} /></label><label className="field-full">Por qué importa<textarea name="why" value={form.why} onChange={update} /></label><label className="field-full">Termina cuando<textarea name="done_when" value={form.done_when} onChange={update} /></label><div className="modal-actions field-full"><button type="button" className="button button--ghost" onClick={onClose}>Cancelar</button><button type="submit" className="button"><Icon name="save" /> Guardar tarea</button></div></form></section></div>;
 }
 
 function AdminShell({ session, onLogout }) {
@@ -1443,7 +1457,15 @@ function AdminShell({ session, onLogout }) {
   const mode = FAMILY_KEYS.has(active) ? 'family' : 'business';
   const menuGroups = mode === 'family' ? FAMILY_MENU_GROUPS : BUSINESS_MENU_GROUPS;
   const openTask = (defaults = {}) => setTaskDraft({ id: '', date: osState.selectedDate, start: '09:00', end: '10:00', owner: 'Francisca', topic: 'Metamorfosis', title: '', explain: '', why: '', done_when: '', status: 'pending', comments: [], ...defaults });
-  const saveTask = (task) => { setOsState((current) => ({ ...current, selectedDate: task.date, tasks: current.tasks.some((item) => item.id === task.id) ? current.tasks.map((item) => item.id === task.id ? task : item) : [...current.tasks, task] })); setTaskDraft(null); };
+  const saveTask = (task) => { setOsState((current) => {
+    const previous = current.tasks.find(item=>item.id===task.id);
+    const changed = Boolean(previous?.program==='institucional-2026') && (previous.date!==task.date || previous.title!==task.title || previous.explain!==task.explain || previous.status!==task.status || previous.done_when!==task.done_when);
+    return {
+      ...current, selectedDate: task.date,
+      tasks: previous ? current.tasks.map(item=>item.id===task.id?task:item) : [...current.tasks,task],
+      institutionalLog: changed ? [{id:crypto.randomUUID(),date:new Date().toISOString().slice(0,10),title:task.title,text:'Se actualizó fecha, estado o detalle de la tarea mediante la ficha de edición.',kind:'avance'},...(current.institutionalLog||[])] : current.institutionalLog
+    };
+  }); setTaskDraft(null); };
 
   const exportBackup = () => {
     const blob = new Blob([JSON.stringify(osState, null, 2)], { type: 'application/json' });
@@ -1457,7 +1479,8 @@ function AdminShell({ session, onLogout }) {
   };
 
   const currentItem = [...BUSINESS_MENU_GROUPS, ...FAMILY_MENU_GROUPS].flatMap((group) => group.items).find(([key]) => key === active) || (active === 'fronts' ? ['fronts', 'Dirección y criterios'] : active === 'quotes' ? ['quotes', 'Solicitudes anteriores'] : null);
-  const view = active === 'management' ? <ManagementWorkspace osState={osState} setOsState={setOsState} />
+  const view = active === 'institutional' ? <InstitutionalRoadmap osState={osState} setOsState={setOsState} onEditTask={setTaskDraft} />
+    : active === 'management' ? <ManagementWorkspace osState={osState} setOsState={setOsState} />
     : active === 'month' ? <AgendaFocus osState={osState} setOsState={setOsState} onAddTask={openTask} onEditTask={setTaskDraft} />
     : active === 'day' ? <DayView osState={osState} setOsState={setOsState} onAddTask={openTask} onEditTask={setTaskDraft} />
     : active === 'companies' ? <CompanyWorkspace osState={osState} setOsState={setOsState} quotes={quotes} onEditQuote={setQuoteDraft} onChangeQuoteStatus={updateQuoteStatus} onDeleteQuote={deleteQuote} onRetryQuoteEmail={retryQuoteEmail} onNavigate={navigate} />
