@@ -1,8 +1,9 @@
 import { createClubVeganExpediente } from './consultingTools.js';
 import { institutionalTasks, initialInstitutionalLog } from './institutionalPlan.js';
+import { initialWorkstreams } from './workboard.js';
 
 const iso = (date) => date.toISOString().slice(0, 10);
-export const OS_SCHEMA_VERSION = '10.8';
+export const OS_SCHEMA_VERSION = '10.9';
 
 const WEEK = {
   monday: '2026-08-24',
@@ -154,6 +155,7 @@ export function createDefaultOsState() {
     ],
     inbox: [],
     institutionalLog: initialInstitutionalLog.map(item => ({ ...item })),
+    workstreams: initialWorkstreams.map(item => ({ ...item })),
     family: {
       phase: 'COTIDIANO',
       phaseNote: 'El espacio familiar prioriza lo que facilita la semana: carga, caja y hogar. Lo secundario queda plegado para no abrumar.',

@@ -3,14 +3,16 @@ import Icon from './components/Icon.jsx';
 import CompanyWorkspace from './features/companies/CompanyWorkspace.jsx';
 import AgendaFocus from './features/agenda/AgendaFocus.jsx';
 import InstitutionalRoadmap from './features/institutional/InstitutionalRoadmap.jsx';
+import WorkDesk from './features/workdesk/WorkDesk.jsx';
+import { normalizeWorkstreams } from './workboard.js';
 import { appendInstitutionalTasks, initialInstitutionalLog } from './institutionalPlan.js';
 import ManagementWorkspace from './features/management/ManagementWorkspace.jsx';
 import './features/workspace/lean-shell.css';
 import { mergeRepositories, buildCompanyIndex } from './features/companies/companyModel.js';
 import { createDefaultOsState, OS_SCHEMA_VERSION, OWNERS, TOPICS } from './osSeed.js';
 
-const STORAGE_KEY = 'metamorfosis-os-draft-v10';
-const LEGACY_STORAGE_KEYS = ['metamorfosis-os-draft-v9', 'metamorfosis-os-draft-v8', 'metamorfosis-os-draft-v7', 'metamorfosis-os-draft-v6'];
+const STORAGE_KEY = 'metamorfosis-os-draft-v11';
+const LEGACY_STORAGE_KEYS = ['metamorfosis-os-draft-v10', 'metamorfosis-os-draft-v9', 'metamorfosis-os-draft-v8', 'metamorfosis-os-draft-v7', 'metamorfosis-os-draft-v6'];
 const PUBLIC_QUOTES_KEY = 'metamorfosis-public-quotes';
 const PUBLIC_EVENTS_KEY = 'metamorfosis-public-events';
 const PUBLIC_SITE_URL = String(import.meta.env.VITE_PUBLIC_SITE_URL || 'https://metamorfosislab.cl').replace(/\/$/, '');
@@ -20,9 +22,9 @@ const STATUS_OPTIONS = ['nueva', 'contactada', 'evaluacion', 'propuesta', 'cerra
 // sin fragmentar el registro comercial en tres módulos independientes.
 const BUSINESS_MENU_GROUPS = [
   { id: 'trabajo', label: 'Trabajo', items: [
+    ['workdesk', 'Mesa', 'space_dashboard'],
     ['companies', 'Empresas', 'briefcase'],
     ['month', 'Agenda', 'calendar_month'],
-    ['management', 'Gestión', 'query_stats'],
     ['institutional', 'Ruta', 'rule']
   ] }
 ];
@@ -41,9 +43,9 @@ const FAMILY_MENU_GROUPS = [
 ];
 
 const FAMILY_KEYS = new Set(FAMILY_MENU_GROUPS.flatMap((group) => group.items.map(([key]) => key)));
-const BUSINESS_KEYS = new Set([...BUSINESS_MENU_GROUPS.flatMap((group) => group.items.map(([key]) => key)), 'day', 'fronts', 'quotes', 'finance', 'metrics']);
+const BUSINESS_KEYS = new Set([...BUSINESS_MENU_GROUPS.flatMap((group) => group.items.map(([key]) => key)), 'management', 'day', 'fronts', 'quotes', 'finance', 'metrics']);
 const ALL_ADMIN_KEYS = new Set([...BUSINESS_KEYS, ...FAMILY_KEYS]);
-const LEGACY_VIEW_MAP = { family: 'family-overview', dashboard: 'companies', tools: 'companies', field: 'companies', expedientes: 'companies', documents: 'companies', finance: 'management', metrics: 'management' };
+const LEGACY_VIEW_MAP = { family: 'family-overview', dashboard: 'workdesk', tools: 'companies', field: 'companies', expedientes: 'companies', documents: 'companies', finance: 'management', metrics: 'management' };
 
 
 async function fetchJsonWithTimeout(url, options = {}, timeoutMs = 15000) {
@@ -159,13 +161,14 @@ const RETIRED_TIME_PROJECT_PATTERN = /CM|Banquetería|Consolidación|Juana de Ar
 function migrateOsState(candidate, fallback) {
   if (!candidate || typeof candidate !== 'object') return fallback;
   if (String(candidate.version || '') === OS_SCHEMA_VERSION) return candidate;
-  // Actualización aditiva 10.7 -> 10.8. No reiniciar ni depurar registros previos.
-  if (String(candidate.version || '') === '10.7') {
+  // Actualizaciones aditivas desde 10.7: conservar íntegros los registros históricos.
+  if (['10.7', '10.8'].includes(String(candidate.version || ''))) {
     return {
       ...candidate,
       version: OS_SCHEMA_VERSION,
       tasks: appendInstitutionalTasks(Array.isArray(candidate.tasks) ? candidate.tasks : []),
-      institutionalLog: Array.isArray(candidate.institutionalLog) ? candidate.institutionalLog : initialInstitutionalLog.map(item => ({ ...item }))
+      institutionalLog: Array.isArray(candidate.institutionalLog) ? candidate.institutionalLog : initialInstitutionalLog.map(item => ({ ...item })),
+      workstreams: normalizeWorkstreams(candidate.workstreams)
     };
   }
 
@@ -242,6 +245,7 @@ function migrateOsState(candidate, fallback) {
     selectedDate: candidate.selectedDate && candidate.selectedDate >= '2026-08-31' ? candidate.selectedDate : '2026-08-31',
     tasks,
     institutionalLog: Array.isArray(candidate.institutionalLog) ? candidate.institutionalLog : initialInstitutionalLog.map(item => ({ ...item })),
+    workstreams: normalizeWorkstreams(candidate.workstreams),
     guides: { ...(candidate.guides || {}), ...fallback.guides },
     fronts: [...frontsByName.values()],
     decisions: [...fallback.decisions, ...decisions.filter((decision) => !fallback.decisions.includes(decision))],
@@ -382,6 +386,7 @@ function hydrateState(candidate) {
     ...candidate,
     tasks: (Array.isArray(candidate.tasks) ? candidate.tasks : fallback.tasks).map(normalizeId),
     institutionalLog: Array.isArray(candidate.institutionalLog) ? candidate.institutionalLog : fallback.institutionalLog,
+    workstreams: normalizeWorkstreams(candidate.workstreams),
     guides: candidate.guides && typeof candidate.guides === 'object' ? candidate.guides : fallback.guides,
     finance: { ...fallback.finance, ...(candidate.finance || {}) },
     timeTracking: {
@@ -1204,9 +1209,9 @@ function AdminShell({ session, onLogout }) {
     const hashView = window.location.hash.replace(/^#/, '');
     const queryWorkspace = new URLSearchParams(window.location.search).get('workspace');
     // El dominio raíz siempre abre Empresa. La vista Familiar se activa solo de forma explícita.
-    const candidate = hashView || (queryWorkspace === 'family' ? 'family-overview' : 'companies');
+    const candidate = hashView || (queryWorkspace === 'family' ? 'family-overview' : 'workdesk');
     const normalized = LEGACY_VIEW_MAP[candidate] || candidate;
-    return normalized && ALL_ADMIN_KEYS.has(normalized) ? normalized : 'companies';
+    return normalized && ALL_ADMIN_KEYS.has(normalized) ? normalized : 'workdesk';
   });
   const [menuOpen, setMenuOpen] = useState(false);
   const [osState, setOsStateRaw] = useState(createDefaultOsState);
@@ -1479,7 +1484,8 @@ function AdminShell({ session, onLogout }) {
   };
 
   const currentItem = [...BUSINESS_MENU_GROUPS, ...FAMILY_MENU_GROUPS].flatMap((group) => group.items).find(([key]) => key === active) || (active === 'fronts' ? ['fronts', 'Dirección y criterios'] : active === 'quotes' ? ['quotes', 'Solicitudes anteriores'] : null);
-  const view = active === 'institutional' ? <InstitutionalRoadmap osState={osState} setOsState={setOsState} onEditTask={setTaskDraft} />
+  const view = active === 'workdesk' ? <WorkDesk osState={osState} setOsState={setOsState} navigate={navigate} onAddTask={openTask} />
+    : active === 'institutional' ? <InstitutionalRoadmap osState={osState} setOsState={setOsState} onEditTask={setTaskDraft} />
     : active === 'management' ? <ManagementWorkspace osState={osState} setOsState={setOsState} />
     : active === 'month' ? <AgendaFocus osState={osState} setOsState={setOsState} onAddTask={openTask} onEditTask={setTaskDraft} />
     : active === 'day' ? <DayView osState={osState} setOsState={setOsState} onAddTask={openTask} onEditTask={setTaskDraft} />
