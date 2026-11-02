@@ -209,7 +209,7 @@ export const team = [
     role: 'Ingeniera Civil Industrial · Universidad de Concepción',
     email: 'francisca.carrasco@metamorfosislab.cl',
     linkedin: 'https://www.linkedin.com/in/francisca-carrasco/',
-    text: 'Ingeniera civil industrial de la Universidad de Concepción. Ha trabajado en gestión de proyectos, mejora de procesos y sostenibilidad. Su formación incluye economía circular, gestión ágil y evaluación ambiental.'
+    text: 'Especializada en gestión organizacional, innovación y sostenibilidad, con una trayectoria vinculada al análisis de procesos, desarrollo de proyectos y mejora de capacidades productivas. Complementa su experiencia con un Diplomado en Economía Circular de la Universidad de Chile y formación en gestión ágil, evaluación ambiental y debida diligencia empresarial.'
   },
   {
     initials: 'BS',
@@ -217,7 +217,7 @@ export const team = [
     role: 'Abogado · Pontificia Universidad Católica de Valparaíso',
     email: 'benjamin.sepulveda@metamorfosislab.cl',
     linkedin: 'https://www.linkedin.com/in/benjamin-sepulveda-mendez/',
-    text: 'Abogado de la Pontificia Universidad Católica de Valparaíso. Su experiencia en defensa penal pública y trabajo con organizaciones sociales alimenta su interés por la prevención y las decisiones institucionales. Cursa el Magíster en Derecho Penal en la Universidad de Buenos Aires.'
+    text: 'Especializado en derecho, derechos humanos y problemáticas socioinstitucionales, con una trayectoria vinculada a la defensa penal pública, la intervención social y el desarrollo de proyectos. Complementa su experiencia con estudios de Magíster en Derecho Penal en la Universidad de Buenos Aires y formación en evaluación ambiental, participación ciudadana y debida diligencia empresarial.'
   }
 ];
 

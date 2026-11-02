@@ -2,11 +2,9 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from './components/Icon.jsx';
 import CompanyWorkspace from './features/companies/CompanyWorkspace.jsx';
 import AgendaFocus from './features/agenda/AgendaFocus.jsx';
-import InstitutionalRoadmap from './features/institutional/InstitutionalRoadmap.jsx';
-import WorkDesk from './features/workdesk/WorkDesk.jsx';
-import { normalizeWorkstreams } from './workboard.js';
-import { appendInstitutionalTasks, initialInstitutionalLog } from './institutionalPlan.js';
 import ManagementWorkspace from './features/management/ManagementWorkspace.jsx';
+import OfficeWorkspace from './features/office/OfficeWorkspace.jsx';
+import { mergeOffice } from './features/office/officeModel.js';
 import './features/workspace/lean-shell.css';
 import { mergeRepositories, buildCompanyIndex } from './features/companies/companyModel.js';
 import { createDefaultOsState, OS_SCHEMA_VERSION, OWNERS, TOPICS } from './osSeed.js';
@@ -22,10 +20,10 @@ const STATUS_OPTIONS = ['nueva', 'contactada', 'evaluacion', 'propuesta', 'cerra
 // sin fragmentar el registro comercial en tres módulos independientes.
 const BUSINESS_MENU_GROUPS = [
   { id: 'trabajo', label: 'Trabajo', items: [
-    ['workdesk', 'Mesa', 'space_dashboard'],
+    ['office', 'Mesa', 'dashboard'],
     ['companies', 'Empresas', 'briefcase'],
     ['month', 'Agenda', 'calendar_month'],
-    ['institutional', 'Ruta', 'rule']
+    ['management', 'Gestión', 'query_stats']
   ] }
 ];
 
@@ -43,9 +41,9 @@ const FAMILY_MENU_GROUPS = [
 ];
 
 const FAMILY_KEYS = new Set(FAMILY_MENU_GROUPS.flatMap((group) => group.items.map(([key]) => key)));
-const BUSINESS_KEYS = new Set([...BUSINESS_MENU_GROUPS.flatMap((group) => group.items.map(([key]) => key)), 'management', 'day', 'fronts', 'quotes', 'finance', 'metrics']);
+const BUSINESS_KEYS = new Set([...BUSINESS_MENU_GROUPS.flatMap((group) => group.items.map(([key]) => key)), 'day', 'fronts', 'quotes', 'finance', 'metrics']);
 const ALL_ADMIN_KEYS = new Set([...BUSINESS_KEYS, ...FAMILY_KEYS]);
-const LEGACY_VIEW_MAP = { family: 'family-overview', dashboard: 'workdesk', tools: 'companies', field: 'companies', expedientes: 'companies', documents: 'companies', finance: 'management', metrics: 'management' };
+const LEGACY_VIEW_MAP = { family: 'family-overview', dashboard: 'office', tools: 'companies', field: 'companies', expedientes: 'companies', documents: 'companies', finance: 'management', metrics: 'management' };
 
 
 async function fetchJsonWithTimeout(url, options = {}, timeoutMs = 15000) {
@@ -84,7 +82,7 @@ function WorkspaceSwitch({ mode }) {
   };
   return (
     <div className="workspace-switch" role="tablist" aria-label="Cambiar área del sistema">
-      <a href="/?workspace=business#companies" role="tab" aria-selected={mode === 'business'} className={mode === 'business' ? 'is-active' : ''} onClick={() => remember('companies')}><Icon name="briefcase" /><span>Empresa</span></a>
+      <a href="/?workspace=business#office" role="tab" aria-selected={mode === 'business'} className={mode === 'business' ? 'is-active' : ''} onClick={() => remember('office')}><Icon name="briefcase" /><span>Empresa</span></a>
       <a href="/?workspace=family#family-overview" role="tab" aria-selected={mode === 'family'} className={mode === 'family' ? 'is-active' : ''} onClick={() => remember('family-overview')}><Icon name="home" /><span>Familiar</span></a>
     </div>
   );
@@ -161,16 +159,6 @@ const RETIRED_TIME_PROJECT_PATTERN = /CM|Banquetería|Consolidación|Juana de Ar
 function migrateOsState(candidate, fallback) {
   if (!candidate || typeof candidate !== 'object') return fallback;
   if (String(candidate.version || '') === OS_SCHEMA_VERSION) return candidate;
-  // Actualizaciones aditivas desde 10.7: conservar íntegros los registros históricos.
-  if (['10.7', '10.8'].includes(String(candidate.version || ''))) {
-    return {
-      ...candidate,
-      version: OS_SCHEMA_VERSION,
-      tasks: appendInstitutionalTasks(Array.isArray(candidate.tasks) ? candidate.tasks : []),
-      institutionalLog: Array.isArray(candidate.institutionalLog) ? candidate.institutionalLog : initialInstitutionalLog.map(item => ({ ...item })),
-      workstreams: normalizeWorkstreams(candidate.workstreams)
-    };
-  }
 
   const campaignTasks = fallback.tasks || [];
   const existingTasks = Array.isArray(candidate.tasks)
@@ -244,8 +232,6 @@ function migrateOsState(candidate, fallback) {
     version: OS_SCHEMA_VERSION,
     selectedDate: candidate.selectedDate && candidate.selectedDate >= '2026-08-31' ? candidate.selectedDate : '2026-08-31',
     tasks,
-    institutionalLog: Array.isArray(candidate.institutionalLog) ? candidate.institutionalLog : initialInstitutionalLog.map(item => ({ ...item })),
-    workstreams: normalizeWorkstreams(candidate.workstreams),
     guides: { ...(candidate.guides || {}), ...fallback.guides },
     fronts: [...frontsByName.values()],
     decisions: [...fallback.decisions, ...decisions.filter((decision) => !fallback.decisions.includes(decision))],
@@ -385,8 +371,6 @@ function hydrateState(candidate) {
     ...fallback,
     ...candidate,
     tasks: (Array.isArray(candidate.tasks) ? candidate.tasks : fallback.tasks).map(normalizeId),
-    institutionalLog: Array.isArray(candidate.institutionalLog) ? candidate.institutionalLog : fallback.institutionalLog,
-    workstreams: normalizeWorkstreams(candidate.workstreams),
     guides: candidate.guides && typeof candidate.guides === 'object' ? candidate.guides : fallback.guides,
     finance: { ...fallback.finance, ...(candidate.finance || {}) },
     timeTracking: {
@@ -402,6 +386,7 @@ function hydrateState(candidate) {
     fieldRegister: (Array.isArray(candidate.fieldRegister) ? candidate.fieldRegister : fallback.fieldRegister).map(normalizeId),
     expedientes: Array.isArray(candidate.expedientes) ? candidate.expedientes : fallback.expedientes,
     repository: mergeRepositories(fallback.repository, candidate.repository),
+    office: mergeOffice(candidate.office, fallback.office),
     family: normalizeFamilyState(candidate.family, fallback.family)
   };
 }
@@ -1201,7 +1186,7 @@ function TaskModal({ draft, onClose, onSave }) {
   useEffect(() => { dialogRef.current?.focus(); }, []);
   const update = (event) => setForm((current) => ({ ...current, [event.target.name]: event.target.value }));
   const submit = (event) => { event.preventDefault(); if (!form.title.trim() || !form.date) return; onSave({ ...form, id: form.id || crypto.randomUUID(), title: form.title.trim(), status: form.status || 'pending', comments: Array.isArray(form.comments) ? form.comments : [] }); };
-  return <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><section className="modal-card" role="dialog" aria-modal="true" aria-labelledby="task-modal-title" tabIndex="-1" ref={dialogRef}><div className="modal-heading"><div><span className="kicker">Sistema operativo</span><h2 id="task-modal-title">{form.id ? 'Editar tarea' : 'Agregar tarea'}</h2></div><IconButton icon="close" label="Cerrar ventana" onClick={onClose} /></div><form className="compact-form" onSubmit={submit}><label>Fecha<input name="date" type="date" value={form.date} onChange={update} required /></label><label>Responsable<select name="owner" value={form.owner} onChange={update}>{OWNERS.map((owner) => <option key={owner}>{owner}</option>)}</select></label><label>Inicio<input name="start" type="time" value={form.start} onChange={update} /></label><label>Fin<input name="end" type="time" value={form.end} onChange={update} /></label><label className="field-full">Tarea<input name="title" value={form.title} onChange={update} required /></label><label>Tópico<select name="topic" value={form.topic} onChange={update}>{TOPICS.map((topic) => <option key={topic}>{topic}</option>)}</select></label><label>Estado<select name="status" value={form.status} onChange={update}><option value="pending">Pendiente</option><option value="progress">En curso</option><option value="waiting">En espera</option><option value="done">Terminada</option></select></label><label className="field-full">Explicación concreta<textarea name="explain" value={form.explain} onChange={update} /></label><label className="field-full">Por qué importa<textarea name="why" value={form.why} onChange={update} /></label><label className="field-full">Termina cuando<textarea name="done_when" value={form.done_when} onChange={update} /></label><div className="modal-actions field-full"><button type="button" className="button button--ghost" onClick={onClose}>Cancelar</button><button type="submit" className="button"><Icon name="save" /> Guardar tarea</button></div></form></section></div>;
+  return <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><section className="modal-card" role="dialog" aria-modal="true" aria-labelledby="task-modal-title" tabIndex="-1" ref={dialogRef}><div className="modal-heading"><div><span className="kicker">Sistema operativo</span><h2 id="task-modal-title">{form.id ? 'Editar tarea' : 'Agregar tarea'}</h2></div><IconButton icon="close" label="Cerrar ventana" onClick={onClose} /></div><form className="compact-form" onSubmit={submit}><label>Fecha<input name="date" type="date" value={form.date} onChange={update} required /></label><label>Responsable<select name="owner" value={form.owner} onChange={update}>{OWNERS.map((owner) => <option key={owner}>{owner}</option>)}</select></label><label>Inicio<input name="start" type="time" value={form.start} onChange={update} /></label><label>Fin<input name="end" type="time" value={form.end} onChange={update} /></label><label className="field-full">Tarea<input name="title" value={form.title} onChange={update} required /></label><label>Tópico<select name="topic" value={form.topic} onChange={update}>{TOPICS.map((topic) => <option key={topic}>{topic}</option>)}</select></label><label>Estado<select name="status" value={form.status} onChange={update}><option value="pending">Pendiente</option><option value="waiting">En espera</option><option value="done">Terminada</option></select></label><label className="field-full">Explicación concreta<textarea name="explain" value={form.explain} onChange={update} /></label><label className="field-full">Por qué importa<textarea name="why" value={form.why} onChange={update} /></label><label className="field-full">Termina cuando<textarea name="done_when" value={form.done_when} onChange={update} /></label><div className="modal-actions field-full"><button type="button" className="button button--ghost" onClick={onClose}>Cancelar</button><button type="submit" className="button"><Icon name="save" /> Guardar tarea</button></div></form></section></div>;
 }
 
 function AdminShell({ session, onLogout }) {
@@ -1209,15 +1194,16 @@ function AdminShell({ session, onLogout }) {
     const hashView = window.location.hash.replace(/^#/, '');
     const queryWorkspace = new URLSearchParams(window.location.search).get('workspace');
     // El dominio raíz siempre abre Empresa. La vista Familiar se activa solo de forma explícita.
-    const candidate = hashView || (queryWorkspace === 'family' ? 'family-overview' : 'workdesk');
+    const candidate = hashView || (queryWorkspace === 'family' ? 'family-overview' : 'office');
     const normalized = LEGACY_VIEW_MAP[candidate] || candidate;
-    return normalized && ALL_ADMIN_KEYS.has(normalized) ? normalized : 'workdesk';
+    return normalized && ALL_ADMIN_KEYS.has(normalized) ? normalized : 'office';
   });
   const [menuOpen, setMenuOpen] = useState(false);
   const [osState, setOsStateRaw] = useState(createDefaultOsState);
   const [dirty, setDirty] = useState(false);
   const [loadingState, setLoadingState] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [localOnly, setLocalOnly] = useState(false);
   const [notice, setNotice] = useState(null);
   const [quotes, setQuotes] = useState([]);
   const [loadingQuotes, setLoadingQuotes] = useState(false);
@@ -1250,6 +1236,7 @@ function AdminShell({ session, onLogout }) {
       try {
         const response = await fetch('/api/os-state');
         const payload = await response.json();
+        if (response.ok) setLocalOnly(payload.saved === false);
         if (response.ok && payload.state) {
           const needsMigration = String(payload.state.version || '') !== OS_SCHEMA_VERSION;
           setOsStateRaw(hydrateState(payload.state));
@@ -1271,6 +1258,7 @@ function AdminShell({ session, onLogout }) {
           }
         }
       } catch {
+        setLocalOnly(true);
         try {
           const key = [STORAGE_KEY, ...LEGACY_STORAGE_KEYS].find((item) => window.localStorage.getItem(item));
           const local = key ? window.localStorage.getItem(key) : null;
@@ -1365,7 +1353,7 @@ function AdminShell({ session, onLogout }) {
       const response = await fetch('/api/os-state', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ state: osState }) });
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.message || 'No fue posible guardar el sistema.');
-      setDirty(false); setNotice({ type: 'success', message: payload.saved === false ? 'Borrador guardado en este navegador. Conecta PostgreSQL para persistencia compartida.' : 'Sistema guardado correctamente.' });
+      setDirty(false); setLocalOnly(payload.saved === false); setNotice({ type: 'success', message: payload.saved === false ? 'Borrador guardado en este navegador. Conecta PostgreSQL para persistencia compartida.' : 'Sistema guardado correctamente.' });
     } catch (error) { setNotice({ type: 'error', message: error.message }); }
     finally { setSaving(false); }
   };
@@ -1462,15 +1450,7 @@ function AdminShell({ session, onLogout }) {
   const mode = FAMILY_KEYS.has(active) ? 'family' : 'business';
   const menuGroups = mode === 'family' ? FAMILY_MENU_GROUPS : BUSINESS_MENU_GROUPS;
   const openTask = (defaults = {}) => setTaskDraft({ id: '', date: osState.selectedDate, start: '09:00', end: '10:00', owner: 'Francisca', topic: 'Metamorfosis', title: '', explain: '', why: '', done_when: '', status: 'pending', comments: [], ...defaults });
-  const saveTask = (task) => { setOsState((current) => {
-    const previous = current.tasks.find(item=>item.id===task.id);
-    const changed = Boolean(previous?.program==='institucional-2026') && (previous.date!==task.date || previous.title!==task.title || previous.explain!==task.explain || previous.status!==task.status || previous.done_when!==task.done_when);
-    return {
-      ...current, selectedDate: task.date,
-      tasks: previous ? current.tasks.map(item=>item.id===task.id?task:item) : [...current.tasks,task],
-      institutionalLog: changed ? [{id:crypto.randomUUID(),date:new Date().toISOString().slice(0,10),title:task.title,text:'Se actualizó fecha, estado o detalle de la tarea mediante la ficha de edición.',kind:'avance'},...(current.institutionalLog||[])] : current.institutionalLog
-    };
-  }); setTaskDraft(null); };
+  const saveTask = (task) => { setOsState((current) => ({ ...current, selectedDate: task.date, tasks: current.tasks.some((item) => item.id === task.id) ? current.tasks.map((item) => item.id === task.id ? task : item) : [...current.tasks, task] })); setTaskDraft(null); };
 
   const exportBackup = () => {
     const blob = new Blob([JSON.stringify(osState, null, 2)], { type: 'application/json' });
@@ -1484,8 +1464,7 @@ function AdminShell({ session, onLogout }) {
   };
 
   const currentItem = [...BUSINESS_MENU_GROUPS, ...FAMILY_MENU_GROUPS].flatMap((group) => group.items).find(([key]) => key === active) || (active === 'fronts' ? ['fronts', 'Dirección y criterios'] : active === 'quotes' ? ['quotes', 'Solicitudes anteriores'] : null);
-  const view = active === 'workdesk' ? <WorkDesk osState={osState} setOsState={setOsState} navigate={navigate} onAddTask={openTask} />
-    : active === 'institutional' ? <InstitutionalRoadmap osState={osState} setOsState={setOsState} onEditTask={setTaskDraft} />
+  const view = active === 'office' ? <OfficeWorkspace osState={osState} setOsState={setOsState} onNavigate={navigate} />
     : active === 'management' ? <ManagementWorkspace osState={osState} setOsState={setOsState} />
     : active === 'month' ? <AgendaFocus osState={osState} setOsState={setOsState} onAddTask={openTask} onEditTask={setTaskDraft} />
     : active === 'day' ? <DayView osState={osState} setOsState={setOsState} onAddTask={openTask} onEditTask={setTaskDraft} />
@@ -1511,7 +1490,7 @@ function AdminShell({ session, onLogout }) {
           <IconButton icon="upload" label="Importar respaldo JSON" onClick={() => importRef.current?.click()} />
           <input ref={importRef} type="file" accept="application/json,.json" hidden onChange={importBackup} />
           <IconButton icon="download" label="Descargar respaldo JSON" onClick={exportBackup} />
-          <button type="button" className={`admin-action-button ${dirty ? 'is-dirty' : ''}`} onClick={saveState} disabled={saving}><Icon name="save" /><span>{saving ? 'Guardando…' : dirty ? 'Guardar cambios' : 'Guardado'}</span></button>
+          <button type="button" className={`admin-action-button ${dirty ? 'is-dirty' : ''}`} onClick={saveState} disabled={saving}><Icon name="save" /><span>{saving ? 'Guardando…' : dirty ? 'Guardar cambios' : localOnly ? 'Guardado local' : 'Guardado'}</span></button>
           <button type="button" className="admin-action-button admin-action-button--exit" onClick={onLogout}><Icon name="logout" /><span>Salir</span></button>
         </div>
       </header>
@@ -1567,7 +1546,7 @@ class AdminErrorBoundary extends React.Component {
           <details className="admin-runtime-diagnostic" open><summary>Detalle técnico</summary><code>{this.state.error?.message || 'Error de renderizado sin mensaje'}</code></details>
           <div className="admin-fatal-error__actions">
             <button className="button" type="button" onClick={() => window.location.reload()}><Icon name="refresh" /> Recargar OS</button>
-            <button className="button button--ghost-light" type="button" onClick={() => { try { window.localStorage.removeItem('metamorfosis-admin-view'); } catch {} window.location.href = '/?workspace=business#companies'; }}><Icon name="dashboard" /> Abrir Empresa</button>
+            <button className="button button--ghost-light" type="button" onClick={() => { try { window.localStorage.removeItem('metamorfosis-admin-view'); } catch {} window.location.href = '/?workspace=business#office'; }}><Icon name="dashboard" /> Abrir Empresa</button>
             <a href="/api/health" target="_blank" rel="noreferrer">Ver diagnóstico del servidor</a>
           </div>
         </div>

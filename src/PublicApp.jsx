@@ -228,11 +228,11 @@ function SectionHeading({ kicker, title, description, align = 'center' }) {
 }
 
 function getMailtoUrl(form) {
-  const subject = `Conversación desde la web · ${form.company || form.contactName || 'Nuevo contacto'}`;
+  const subject = `Solicitud formal Metamorfosis · ${form.company || form.contactName || 'Nueva organización'}`;
   const body = [
     'Hola Metamorfosis,',
     '',
-    'Me gustaría conversar con ustedes sobre esta situación:',
+    'Quiero solicitar una evaluación inicial por correo.',
     '',
     `Entrada de interés: ${form.serviceType}`,
     `Organización: ${form.company || 'No indicada'}`,
@@ -240,7 +240,7 @@ function getMailtoUrl(form) {
     `Correo de respuesta: ${form.email || 'No indicado'}`,
     `Teléfono: ${form.phone || 'No indicado'}`,
     '',
-    'Lo que está ocurriendo:',
+    'Necesidad principal:',
     form.details || 'No indicada',
     '',
     'Gracias.'
@@ -357,7 +357,7 @@ function QuoteForm() {
       const response = await postQuoteToApi(form);
       if (response.saved) saveQuoteLocally(form, response.id);
       if (response.saved && response.emailSent) {
-        setStatus({ type: 'success', message: 'Tu mensaje fue enviado y quedó registrado. Te responderemos al correo indicado.' });
+        setStatus({ type: 'success', message: 'Solicitud enviada por correo y registrada en Metamorfosis OS. Te responderemos al correo indicado.' });
         trackPublicEvent('formal_request_sent', { label: form.serviceType, serviceTitle: form.serviceType, section: 'contacto' });
         return;
       }
@@ -382,15 +382,15 @@ function QuoteForm() {
   return (
     <form className="quote-wizard tpr-form tpr-form--steps" onSubmit={prepareFormalContact} noValidate>
       <div className="form-headline form-headline--steps">
-        <span><Icon name="mail" /> Primer contacto</span>
-        <strong>Cuéntanos un poco</strong>
-        <small>Una idea general basta para empezar. Lo demás podemos conversarlo.</small>
+        <span><Icon name="mail" /> Canal formal</span>
+        <strong>Iniciemos una conversación</strong>
+        <small>Cuéntanos brevemente qué necesitas explorar. No hace falta tener una solución definida.</small>
       </div>
 
       <ol className="quote-steps" aria-label="Pasos de la solicitud">
         {[
-          [1, 'Situación'],
-          [2, 'Organización'],
+          [1, 'Necesidad'],
+          [2, 'Identificación'],
           [3, 'Contacto']
         ].map(([item, label]) => (
           <li key={item} className={`${step === item ? 'is-active' : ''} ${step > item ? 'is-complete' : ''}`} aria-current={step === item ? 'step' : undefined}>
@@ -401,14 +401,14 @@ function QuoteForm() {
 
       {step === 1 && (
         <div className="quote-step-panel">
-          <span className="quote-step-title"><Icon name="target" /> ¿Qué está pasando?</span>
+          <span className="quote-step-title"><Icon name="target" /> ¿Qué situación quieres conversar?</span>
           <div className="choice-grid choice-grid--compact">
-            {['Crecimiento o cambios en la organización', 'Procesos, recursos o información', 'Nuevas exigencias o riesgos', 'Proveedores, comunidades o territorio', 'Aún no sé cómo definirlo'].map((option) => (
+            {['Crecimiento o cambio organizacional', 'Procesos, información o trazabilidad', 'Nuevas exigencias o regulación', 'Proveedores, territorio o colaboración', 'Otro / aún no está claro'].map((option) => (
               <button type="button" key={option} className={form.serviceType === option ? 'is-selected' : ''} onClick={() => chooseService(option)}>{option}</button>
             ))}
           </div>
-          <label className="field-label field-label--full"><span><Icon name="edit" /> Cuéntanos un poco más</span>
-            <textarea name="details" value={form.details} onChange={update} placeholder="¿Qué te preocupa o qué te gustaría hacer de otra manera?" required aria-describedby="details-help" />
+          <label className="field-label field-label--full"><span><Icon name="edit" /> Qué necesitas resolver</span>
+            <textarea name="details" value={form.details} onChange={update} placeholder="Describe brevemente qué está ocurriendo, qué cambió o qué pregunta necesitas comprender mejor." required aria-describedby="details-help" />
             <small id="details-help" className="field-help">Selecciona una opción y escribe al menos 10 caracteres. {form.details.trim().length}/10 mínimo.</small>
           </label>
           <button type="button" className="button button--full" disabled={!stepOneReady} onClick={() => setStep(2)}>Continuar <Icon name="arrow_forward" /></button>
@@ -417,10 +417,10 @@ function QuoteForm() {
 
       {step === 2 && (
         <div className="quote-step-panel">
-          <span className="quote-step-title"><Icon name="briefcase" /> ¿Con quién conversamos?</span>
+          <span className="quote-step-title"><Icon name="briefcase" /> Identificación</span>
           <div className="form-grid form-grid--two tpr-form-grid">
-            <label className="field-label"><span><Icon name="briefcase" /> Organización o proyecto</span>
-              <input name="company" value={form.company} onChange={update} placeholder="Nombre de la organización o iniciativa" required />
+            <label className="field-label"><span><Icon name="briefcase" /> Organización</span>
+              <input name="company" value={form.company} onChange={update} placeholder="Nombre de la empresa" required />
             </label>
             <label className="field-label"><span><Icon name="group" /> Contacto</span>
               <input name="contactName" value={form.contactName} onChange={update} placeholder="Tu nombre" required />
@@ -438,7 +438,7 @@ function QuoteForm() {
           <span className="quote-step-title"><Icon name="mail" /> Canal de respuesta</span>
           <div className="form-grid form-grid--two tpr-form-grid">
             <label className="field-label"><span><Icon name="mail" /> Correo</span>
-              <input name="email" type="email" inputMode="email" value={form.email} onChange={update} placeholder="Tu correo electrónico" required />
+              <input name="email" type="email" inputMode="email" value={form.email} onChange={update} placeholder="correo@empresa.cl" required />
             </label>
             <label className="field-label"><span><Icon name="phone" /> Teléfono opcional</span>
               <input name="phone" inputMode="tel" value={form.phone} onChange={update} placeholder="+56 9..." />
@@ -448,7 +448,7 @@ function QuoteForm() {
           <div className="quote-step-actions">
             <button type="button" className="button button--ghost-light" onClick={() => setStep(2)}><Icon name="arrow_back" /> Volver</button>
             <button className="button form-submit" type="submit" disabled={!isValid || status.type === 'loading' || status.type === 'success' || status.saved}>
-              <Icon name="mail" /> {status.type === 'loading' ? 'Enviando…' : status.type === 'success' ? 'Mensaje enviado' : stepThreeReady ? 'Enviar mensaje' : 'Completa los datos'}
+              <Icon name="mail" /> {status.type === 'loading' ? 'Enviando…' : status.type === 'success' ? 'Solicitud enviada' : stepThreeReady ? 'Enviar solicitud formal' : 'Completa los datos'}
             </button>
           </div>
           {status.message && <p className={`form-helper form-helper--${status.type}`} role="status"><Icon name={(status.type === 'error' || status.type === 'warning') ? 'warning' : 'check_circle'} /> {status.message}</p>}
@@ -530,10 +530,10 @@ function IntegratedProposalMap() {
 // La arquitectura empresarial interna no interfiere con la lectura comercial.
 // -----------------------------------------------------------------------------
 const proposalSituations = [
-  { icon: 'trending_up', title: 'Algo cuesta más de lo previsto', description: 'Tiempo, materiales o energía que se consumen sin dar el resultado esperado.' },
-  { icon: 'account_tree', title: 'La información está repartida', description: 'Equipos, proveedores o instituciones conocen solo una parte de la situación.' },
-  { icon: 'verified_user', title: 'El escenario está cambiando', description: 'Nuevas exigencias o riesgos pueden afectar la forma de trabajar.' },
-  { icon: 'design_services', title: 'Una buena idea todavía no despega', description: 'Antes de invertir, conviene saber si puede funcionar y cómo empezar.' }
+  { icon: 'trending_up', title: 'Ante nuevos desafíos', description: 'Crecimiento, adaptación y nuevas exigencias.' },
+  { icon: 'account_tree', title: 'Ante capacidades dispersas', description: 'Conocimientos y recursos que aún no logran converger.' },
+  { icon: 'search', title: 'Ante decisiones complejas', description: 'Cuando es necesario comprender antes de actuar.' },
+  { icon: 'design_services', title: 'Ante oportunidades de innovación', description: 'Ideas que necesitan convertirse en soluciones viables.' }
 ];
 
 function ProposalSection() {
@@ -542,8 +542,8 @@ function ProposalSection() {
       <div className="shell proposal-editorial__layout">
         <header className="proposal-editorial__intro">
           <span className="v54-kicker">Nuestra propuesta</span>
-          <h2 id="proposal-title">Cuando el problema está en otra parte</h2>
-          <p>El costo aparece en una etapa, pero su causa puede estar en otra. Lo vemos en procesos que se encarecen, decisiones que llegan tarde o proyectos que tropiezan con exigencias que nadie previó. Seguimos ese recorrido para descubrir qué vale la pena cambiar.</p>
+          <h2 id="proposal-title">Del conocimiento a la transformación</h2>
+          <p>Trabajamos con organizaciones, actividades productivas y territorios donde existen desafíos que requieren conectar conocimientos, personas y recursos. Estudiamos cada situación para distinguir oportunidades reales y traducir esa comprensión en decisiones y soluciones aplicables.</p>
         </header>
 
         <div className="proposal-editorial__situations" aria-labelledby="proposal-situations-title">
@@ -562,13 +562,14 @@ function ProposalSection() {
         </div>
 
         <div className="proposal-editorial__method" aria-labelledby="proposal-method-title">
-          <h3 id="proposal-method-title">Del problema a una mejora posible</h3>
-          <p>Hablamos con quienes conocen el trabajo, revisamos los registros y observamos el proceso tal como ocurre. Con ingeniería y derecho evaluamos alternativas, costos y responsabilidades. Una mejora tiene que funcionar en la práctica, sin trasladar el problema a las personas o al entorno.</p>
+          <h3 id="proposal-method-title">Comprender antes de intervenir</h3>
+          <p>Integramos información técnica, experiencia de quienes participan y conocimiento del contexto para comprender qué ocurre y qué condiciones deben considerarse. A partir de esa lectura, diseñamos respuestas proporcionales, las contrastamos en la práctica y utilizamos sus resultados para orientar los siguientes pasos.</p>
+          <div className="proposal-editorial__principle"><Icon name="arrow_forward" aria-hidden="true" /><span>De la comprensión a soluciones que puedan sostenerse y mejorar.</span></div>
         </div>
 
         <div className="proposal-editorial__closing">
-          <div><strong>¿Hay algo que no termina de funcionar?</strong><p>Cuéntanos qué ocurre. Tal vez haya otra forma de mirarlo.</p></div>
-          <SectionLink id="contacto" className="button button--small">Hablemos <Icon name="arrow_forward" /></SectionLink>
+          <div><strong>Toda transformación comienza con una pregunta.</strong><p>No necesitas llegar con una solución definida.</p></div>
+          <SectionLink id="contacto" className="button button--small">Conversemos <Icon name="arrow_forward" /></SectionLink>
         </div>
       </div>
     </section>
@@ -949,11 +950,12 @@ function PublicSite() {
             <div className="v532-hero-content">
               <div className="v532-hero-note">
                 <span className="v54-eyebrow">Nuestro punto de partida</span>
-                <p>Un proyecto se estanca y nadie tiene del todo claro por qué. Quizás se pierde tiempo entre áreas, se desperdician materiales o una decisión no considera lo que ocurre fuera de la organización. Ahí nos interesa entrar: investigar qué está pasando y encontrar una manera concreta de hacerlo mejor.</p>
+                <p>Estudiamos organizaciones, actividades productivas y territorios para transformar problemas complejos en soluciones aplicables. Integramos conocimiento y capacidades existentes para identificar oportunidades y poner a prueba nuevas respuestas.</p>
+                <strong>Comprender antes de intervenir. Medir para seguir mejorando.</strong>
               </div>
               <div className="hero__actions">
-                <SectionLink className="button audit-primary-cta" id="contacto">Escríbenos</SectionLink>
-                <SectionLink className="button button--ghost-light" id="propuesta">Cómo trabajamos</SectionLink>
+                <SectionLink className="button audit-primary-cta" id="contacto">Conversemos</SectionLink>
+                <SectionLink className="button button--ghost-light" id="propuesta">Explorar la propuesta</SectionLink>
               </div>
             </div>
           </div>
@@ -968,7 +970,7 @@ function PublicSite() {
             <div className="v534-team__intro">
               <span className="v54-kicker">Equipo</span>
               <h2>Ingeniería y derecho en diálogo</h2>
-              <p>Un problema de gestión puede convertirse en un conflicto, y una decisión jurídica puede afectar toda la operación. Por eso unimos la experiencia de Francisca en ingeniería industrial y gestión con la de Benjamín en derecho e investigación. No para hacer todo en cada proyecto, sino para hacer las preguntas adecuadas.</p>
+              <p>Nuestra fortaleza está en analizar una misma situación desde dos disciplinas que se contrastan y enriquecen mutuamente. La lectura conjunta permite anticipar puntos ciegos, equilibrar factibilidad y responsabilidad, y formular criterios de decisión que consideren tanto lo que puede hacerse como las condiciones para sostenerlo.</p>
             </div>
             <div className="v534-team__profiles"><TeamSection /></div>
           </div>
@@ -979,9 +981,9 @@ function PublicSite() {
           <div className="audit-scene__shade" aria-hidden="true" />
           <div className="shell audit-contact__grid">
             <div className="audit-contact__intro">
-              <span className="kicker">Contacto</span>
-              <h2>Cuéntanos tu situación</h2>
-              <p>Puede que tengas el problema bien identificado, o que solo notes que algo no está funcionando. Cuéntanos qué ocurre y vemos si tiene sentido trabajarlo juntos.</p>
+              <span className="kicker">Conversemos</span>
+              <h2>Cuéntanos tu desafío</h2>
+              <p>Una primera conversación nos permite conocer tu contexto, entender qué necesitas y evaluar si nuestras capacidades pueden aportar. No hace falta llegar con una solución definida.</p>
               <div className="audit-contact__facts" aria-label="Modalidades de contacto">
                 <span><Icon name="schedule" /><span className="v525-contact-fact__copy"><strong>30 minutos</strong><small>Primera conversación</small></span></span>
                 <span><Icon name="mail" /><span className="v525-contact-fact__copy"><strong>Correo formal</strong><small>{contact.email}</small></span></span>
@@ -994,7 +996,7 @@ function PublicSite() {
       {/* 05.10 · FOOTER · Cierre institucional */}
       <footer className="site-footer audit-footer v54-footer">
         <div className="shell audit-footer__grid">
-          <div className="site-footer__brand"><Brand /><p>Desde Concepción, Región del Biobío.</p></div>
+          <div className="site-footer__brand"><Brand /><p>Investigación e innovación aplicada. Concepción · Región del Biobío.</p></div>
           <div><span className="footer-title">Navegación</span><SectionLink id="inicio">Inicio</SectionLink><SectionLink id="propuesta">Propuesta</SectionLink><SectionLink id="equipo">Equipo</SectionLink><SectionLink id="contacto">Contacto</SectionLink></div>
           <div><span className="footer-title">Contacto</span><a className="footer-icon-link" href={`mailto:${contact.email}`}><Icon name="mail" /><span>{contact.email}</span></a><a className="footer-icon-link" href={contact.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Metamorfosis Lab"><Icon name="linkedin" /><span>LinkedIn</span></a><a className="footer-icon-link" href={OS_SITE_URL}><Icon name="lock" /><span>Acceso privado</span></a></div>
         </div>
