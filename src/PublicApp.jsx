@@ -140,7 +140,7 @@ function Brand({ compact = false }) {
       <img className="brand-logo" src="/logo-metamorfosis-transparente.png" alt="Isotipo de Metamorfosis" width="44" height="44" />
       <span className="brand-copy">
         <strong>METAMORFOSIS LAB</strong>
-        <small>Investigación e innovación aplicada</small>
+        <small>Investigación e innovación territorial aplicada</small>
       </span>
     </a>
   );
@@ -944,7 +944,7 @@ function PublicSite() {
           <div className="shell v515-hero">
             <header className="v515-hero__headline">
               <span className="v54-kicker">METAMORFOSIS LAB</span>
-              <h1>Investigación e innovación aplicada</h1>
+              <h1>Investigación e innovación territorial aplicada</h1>
               <p className="v531-hero__origin">Desde la Región del Biobío</p>
             </header>
             <div className="v532-hero-content">
@@ -996,7 +996,7 @@ function PublicSite() {
       {/* 05.10 · FOOTER · Cierre institucional */}
       <footer className="site-footer audit-footer v54-footer">
         <div className="shell audit-footer__grid">
-          <div className="site-footer__brand"><Brand /><p>Investigación e innovación aplicada. Concepción · Región del Biobío.</p></div>
+          <div className="site-footer__brand"><Brand /><p>Investigación e innovación territorial aplicada. Concepción · Región del Biobío.</p></div>
           <div><span className="footer-title">Navegación</span><SectionLink id="inicio">Inicio</SectionLink><SectionLink id="propuesta">Propuesta</SectionLink><SectionLink id="equipo">Equipo</SectionLink><SectionLink id="contacto">Contacto</SectionLink></div>
           <div><span className="footer-title">Contacto</span><a className="footer-icon-link" href={`mailto:${contact.email}`}><Icon name="mail" /><span>{contact.email}</span></a><a className="footer-icon-link" href={contact.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Metamorfosis Lab"><Icon name="linkedin" /><span>LinkedIn</span></a><a className="footer-icon-link" href={OS_SITE_URL}><Icon name="lock" /><span>Acceso privado</span></a></div>
         </div>
